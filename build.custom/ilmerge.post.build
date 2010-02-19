@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="ILMergeBuilder" default="go">
+  <!-- Project UppercuT - http://projectuppercut.org -->
+  <property name="build.config.settings" value="__NONE__" overwrite="false" />
+  <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
+  <property name="file.current.no_extension" value="ilmerge" />
+  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />
+  <property name="path.to.toplevel" value=".." />
+  <property name="folder.build_scripts" value="build" overwrite="false" />
+  <property name="folder.build_scripts_custom" value="build.custom" overwrite="false" />
+  <property name="dirs.build_scripts_custom" value="${dirs.current}\..\${folder.build_scripts_custom}" />
+  <property name="folder.code_drop" value="code_drop" overwrite="false" />
+  <property name="dirs.drop" value="${dirs.current}\${path.to.toplevel}\${folder.code_drop}" overwrite="false" />
+  <property name="folder.app.drop" value="${project.name}" overwrite="false" />
+  <property name="folder.deployment" value="deployment" overwrite="false" />
+  <property name="dirs.deployment" value="${dirs.drop}\${folder.deployment}" />
+  <property name="dirs.merge.from" value="${dirs.drop}\${folder.app.drop}" overwrite="false" />
+  <property name="dirs.merge.to" value="${dirs.drop}\merge" overwrite="false" />
+
+  <target name="go" depends="remove_unneeded_assemblies, copy_from_merge, copy_roundhouse_files_to_deploy_console, delete_merge_folder" />
+ 
+  <target name="remove_unneeded_assemblies">
+    <echo message="Removing unneeded assemblies before moving the merged assembly back into ${dirs.merge.from}."/>
+    <delete>
+      <fileset basedir="${dirs.merge.from}" >
+        <include name="*.*" />
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="copy_from_merge">
+      <copy todir="${dirs.merge.from}">
+      <fileset basedir="${dirs.merge.to}">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="copy_roundhouse_files_to_deploy_console">
+  <echo message="Removing original roundhouse assemblies from ${dirs.deployment}\Console."/>
+    <delete>
+      <fileset basedir="${dirs.deployment}\Console" >
+        <include name="*.*" />
+      </fileset>
+    </delete>
+  
+    <echo message="Copying roundhouse assemblies to ${dirs.deployment}\Console."/>
+    <copy todir="${dirs.deployment}\Console">
+      <fileset basedir="${dirs.merge.from}">
+        <include name="*.*" />
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="delete_merge_folder">
+      <delete dir="${dirs.merge.to}" failonerror="false"  />
+  </target>
+  
+</project>

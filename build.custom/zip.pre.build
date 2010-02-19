@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="BuildZipperCustom" default="go">
+  <!-- Project UppercuT - http://projectuppercut.org -->
+  <property name="build.config.settings" value="__NONE__" overwrite="false" />
+  <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
+  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />
+  <property name="project.name" value="__SOLUTION_NAME_WITHOUT_SLN_EXTENSION__" overwrite="false" />
+  <property name="folder.build_artifacts" value="build_artifacts" overwrite="false" />
+  <property name="folder.code_drop" value="code_drop" overwrite="false" />
+  <property name="folder.database" value="__DATABASE_FOLDER_NAME__" overwrite="false" />
+  <property name="folder.deployment" value="deployment" overwrite="false" />
+  <property name="folder.settings" value="settings" overwrite="false" />
+  <property name="folder.app.drop" value="${project.name}" overwrite="false" />
+  <property name="folder.sample" value="sample" overwrite="false" />
+  <property name="dirs.drop" value="${dirs.current}\..\${folder.code_drop}" overwrite="false" />
+  
+  <target name="go" depends="create_sample_drop, remove_unnecessary_folders" />
+  
+  <target name="create_sample_drop">
+    <copy todir="${dirs.drop}\${folder.sample}">
+      <fileset basedir="${dirs.drop}">
+        <include name="${folder.database}\**" />
+        <include name="${folder.deployment}\**" />
+        <include name="${folder.settings}\**" />
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="remove_unnecessary_folders">
+    <echo message="Deleting unnecessary folders before zipping up project." />
+    <delete dir="${dirs.drop}\${folder.build_artifacts}" />
+    <delete dir="${dirs.drop}\${folder.database}" />
+    <delete dir="${dirs.drop}\${folder.deployment}" />
+    <delete dir="${dirs.drop}\${folder.settings}" />
+  </target>
+
+</project>

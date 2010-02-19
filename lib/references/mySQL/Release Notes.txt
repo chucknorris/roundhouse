@@ -1,0 +1,35 @@
+Connector/Net 6.1  Release Notes
+------------------------------------
+
+Welcome to the release notes for Connector/Net 6.1
+
+What's new in 6.1
+--------------------
+This release introduces a couple of exciting new features.
+
+Website Configuration Dialog -- This is a new wizard that is activated by clicking
+a button on the toolbar at the top of the solution explorer.  It is meant to work in
+conjunction with the ASP.Net administration pages.  It makes it easier to activate 
+and set advanced options for the different web providers we include.
+
+Session State Provider -- We are now including a session state provider that allows
+you to store your websites state in a MySql server.  
+
+Support for native output parameters -- With this release we now support native output
+parameters when connected to a server that supports them.  Currently we know that includes
+6.0.8 and later servers.  It also will include 5.4 servers.
+
+Changed GUID type -- We have changed our backend representation of a guid type to be
+CHAR(36).  We are doing this because we feel users will want to use the server UUID() function
+to populate a guid table and UUID generates a 36 character string.  Developers of older
+applications can add 'old guids=true' to the connection string and the old binary(16) type will be used.
+
+Functionality changes
+----------------------------
+We are now treating the command builder just like SqlClient.  This means that if you want to
+return an autoincrement value back to your dataset, you will need to clone the generated command
+and manually add the proper SQL onto the end of your command text.  The command builder 
+was not designed to handle this.  In previous versions we have tried to support this but
+it is causing more headaches than it is solving.
+
+Please let us know what else we broke and how we can make it better!

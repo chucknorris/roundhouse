@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project name="UppercuTBuild" default="go">
+  <!-- Project UppercuT - http://projectuppercut.org -->
+  <property name="build.config.settings" value="__NONE__" overwrite="false" />
+  <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
+  <property name="repository.path" value="__REPOSITORY_PATH__" overwrite="false" />
+  <property name="folder.code_build" value="build_output" overwrite="false" />
+  <property name="dirs.build" value="${dirs.current}\..\${folder.code_build}" />
+  <property name="folder.code_drop" value="code_drop" overwrite="false" />
+  <property name="dirs.drop" value="${dirs.current}\..\${folder.code_drop}" overwrite="false" />
+  <property name="folder.app.drop" value="${project.name}" overwrite="false" />
+  <property name="file.roundhouse.tasks" value="${dirs.build}\${folder.app.drop}\roundhouse.tasks.dll" />
+  
+  <target name="go" depends="load_roundhouse_task" />
+
+  <target name="load_roundhouse_task">
+   <loadtasks assembly="${file.roundhouse.tasks}" if="${file::exists(file.roundhouse.tasks)}" />
+  </target>
+
+  <target name="roundhouse_test">
+    <echo message="Running RoundhousE test." />
+    <roundhouse
+      serverName="(local)"
+      databaseName="TestRoundhouse"
+      sqlFilesDirectory="..\TestRoundhouse"
+      repositoryUrl="${repository.path}" />
+  </target>
+
+</project>

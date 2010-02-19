@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="ILMergeBuilder" default="go">
+  <!-- Project UppercuT - http://projectuppercut.org -->
+  <property name="build.config.settings" value="__NONE__" overwrite="false" />
+  <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
+  <property name="file.current.no_extension" value="ilmerge" />
+  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />
+  <property name="path.to.toplevel" value=".." />
+  <property name="folder.build_scripts" value="build" overwrite="false" />
+  <property name="folder.build_scripts_custom" value="build.custom" overwrite="false" />
+  <property name="dirs.build_scripts_custom" value="${dirs.current}\..\${folder.build_scripts_custom}" />
+  <property name="folder.code_drop" value="code_drop" overwrite="false" />
+  <property name="dirs.drop" value="${dirs.current}\${path.to.toplevel}\${folder.code_drop}" overwrite="false" />
+  <property name="folder.app.drop" value="${project.name}" overwrite="false" />
+  
+  <property name="dirs.merge.from" value="${dirs.drop}\${folder.app.drop}" overwrite="false" />
+  <property name="dirs.merge.to" value="${dirs.drop}\merge" overwrite="false" />
+
+  <target name="go" depends="clean_out_sql_dlls" />
+ 
+  <target name="clean_out_sql_dlls">
+    <echo message="Before merging - removing the Microsoft.SqlServer dlls from ${dirs.merge.from}."/>
+    <delete>
+      <fileset basedir="${dirs.merge.from}" >
+        <exclude name="${file.merge.name}" />
+        <include name="Microsoft.SqlServer*.dll" />
+      </fileset>
+    </delete>
+  </target>
+
+</project>

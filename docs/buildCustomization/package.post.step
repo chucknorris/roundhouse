@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="Packager" default="go">
+  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />
+  <property name="path.to.toplevel" value=".." />
+  <property name="folder.build_scripts" value="build" overwrite="false" />
+  <property name="folder.build_scripts_custom" value="build.custom" overwrite="false" />
+  <property name="dirs.build_scripts_custom" value="${dirs.current}\${path.to.toplevel}\${folder.build_scripts_custom}" />
+  <property name="folder.code_build" value="build_output" overwrite="false" />
+  <property name="dirs.build" value="${dirs.current}\${path.to.toplevel}\${folder.code_build}" />
+  <property name="folder.code_drop" value="code_drop" overwrite="false" />
+  <property name="dirs.drop" value="${dirs.current}\${path.to.toplevel}\${folder.code_drop}" overwrite="false" />
+  <property name="folder.app.drop" value="${project.name}" overwrite="false" />
+  <property name="folder.database" value="__DATABASE_FOLDER_NAME__" overwrite="false" />
+  <property name="folder.reports" value="${project.name}.Reports" overwrite="false" />
+  <property name="folder.file_server" value="file.server" overwrite="false" />
+  <property name="folder.environment_files" value="environment.files" overwrite="false" />
+  <property name="folder.deployment" value="deployment" overwrite="false" />
+  <property name="folder.settings" value="settings" overwrite="false" />
+  <property name="folder.documentation" value="docs" overwrite="false" />
+
+
+  <target name="go" depends="package_nant_in_deploy_folder, package_roundhouse_in_deploy_folder" description="Packaging" />
+
+  <target name="package_nant_in_deploy_folder">
+    <echo message="Moving NAnt over to deployment folder" />
+    <copy todir="${dirs.drop}\${folder.deployment}\NAnt" >
+      <fileset basedir="${dirs.current}\..\lib\NAnt">
+        <exclude name="**\*.template" />
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="package_roundhouse_in_deploy_folder">
+    <echo message="Moving RoundhousE over to deployment folder" />
+    <copy todir="${dirs.drop}\${folder.deployment}\NAnt" >
+      <fileset basedir="${dirs.current}\..\lib\RoundhousE">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="copy_roundhouse_files_to_deploy_console">
+    <echo message="Copying roundhouse assemblies to ${dirs.deployment}\Console."/>
+    <copy todir="${dirs.deployment}\Console">
+      <fileset basedir="${dirs.current}\..\lib\RoundhousE">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+  </target>
+  
+</project>

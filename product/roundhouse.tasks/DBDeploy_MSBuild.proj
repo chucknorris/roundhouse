@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project DefaultTargets="DBDeploy" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Visit http://roundhouse.googlecode.com/ for details -->
+  
+  <UsingTask AssemblyFile="roundhouse.tasks.dll" TaskName="roundhouse.tasks.Roundhouse" />
+
+  <PropertyGroup>
+    <Environment>LOCAL</Environment>
+    <DBServer>(local)</DBServer>
+    <DBName>YOURDATABASENAME</DBName>
+    <DBConnectionString>INSERTCONNECTIONSTRING</DBConnectionString>
+    <DBSqlFilesPath>..\..\db</DBSqlFilesPath>
+    <RepositoryPath>http://tellmewherethisis.com/svn/</RepositoryPath>
+    <VersionFile>..\_BuildInfo.xml</VersionFile>
+    <VersionFileXPath>//buildInfo/version</VersionFileXPath>
+    <DBRestore>false</DBRestore>
+    <DBRestorePath>\\tell\me\where\YOURDATABASENAME.bak</DBRestorePath>
+    <DBRestoreOptions>INSERTRESTOREOPTIONS</DBRestoreOptions>
+    <DBCreateDatabaseCustomScript></DBCreateDatabaseCustomScript>
+    <DBDrop>false</DBDrop>
+    <Interactive>true</Interactive>
+  </PropertyGroup>
+
+
+  <Target Name="ApplyDatabaseChanges">
+    <!--<Message Text="Running RoundhousE on $(DBServer) ($(DBName)). Looking in $(DBSqlFilesPath) for sql scripts." />-->
+    <Roundhouse
+        ServerName="$(DBServer)"
+        DatabaseName="$(DBName)"
+        ConnectionString="$(DBConnectionString)"
+        SqlFilesDirectory="$(DBSqlFilesPath)"
+        RepositoryPath="$(RepositoryPath)"
+        VersionFile="$(VersionFile)"
+        VersionXPath="$(VersionFileXPath)"
+        UpFolderName="up"
+        DownFolderName="down"
+        RunFirstAfterUpFolderName="runFirstAfterUp"
+        FunctionsFolderName="functions"
+        ViewsFolderName="views"
+        SprocsFolderName="sprocs"
+        PermissionsFolderName="permissions"
+        SchemaName="RoundhousE"
+        VersionTableName="Version"
+        ScriptsRunTableName="ScriptsRun"
+        EnvironmentName="$(Environment)"
+        Restore="$(DBRestore)"
+        RestoreFromPath="$(DBRestorePath)"
+        RestoreCustomOptions="$(DBRestoreOptions)"
+        RestoreTimeout="900"
+        CreateDatabaseCustomScript="$(DBCreateDatabaseCustomScript)"
+        Drop="$(DBDrop)"
+        OutputPath="C:\RoundhousE_runs"
+        WarnOnOneTimeScriptChanges="false"
+        NonInteractive="false"
+        DatabaseType="roundhouse.databases.sqlserver2008.SqlServerDatabase, roundhouse.databases.sqlserver2008"
+        WithTransaction="false"
+        RecoveryModeSimple="false"
+        />
+  </Target>
+
+  <Target Name = "DBDeploy"
+		  DependsOnTargets="
+        ApplyDatabaseChanges;
+      "
+     >
+  </Target>
+
+</Project>

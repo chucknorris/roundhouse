@@ -1,0 +1,6 @@
+ul.concern {list-style-type: none; width:80%;}
+ul.concern li {background: #909090; padding-bottom:20px; padding-left:10px}
+ul.observation  { width:80%;list-style-type: none;}
+ul.observation li {background: #CFD4E6; margin-bottom: 0px; padding-bottom:0px;}
+ul.observation li.fail {background: red} 
+ul.observation li.pass {background: lime} 

@@ -1,0 +1,93 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse", "product\roundhouse\roundhouse.csproj", "{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.tests", "product\roundhouse.tests\roundhouse.tests.csproj", "{0726928C-FDAC-4C79-B423-841C7E0DF5B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.tasks", "product\roundhouse.tasks\roundhouse.tasks.csproj", "{7CC86537-E4F4-42F0-973F-39F38E43E347}"
+	ProjectSection(ProjectDependencies) = postProject
+		{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2} = {97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.console", "product\roundhouse.console\roundhouse.console.csproj", "{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.tests.integration", "product\roundhouse.tests.integration\roundhouse.tests.integration.csproj", "{705033B8-10BA-4E7F-854E-08A7C5590DC5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "databases", "databases", "{BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserver2008", "product\roundhouse.databases.sqlserver2008\roundhouse.databases.sqlserver2008.csproj", "{8613D56F-B226-49BC-AC7A-19B70C827668}"
+	ProjectSection(ProjectDependencies) = postProject
+		{587F4BDF-FF76-4266-9D68-349FA4E6335D} = {587F4BDF-FF76-4266-9D68-349FA4E6335D}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserver2005", "product\roundhouse.databases.sqlserver2005\roundhouse.databases.sqlserver2005.csproj", "{587F4BDF-FF76-4266-9D68-349FA4E6335D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.oracle", "product\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj", "{3828D379-C96A-49C8-8BC9-0182CC8C55B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.mysql", "product\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj", "{71419DBB-4809-4102-A002-D484242FCFC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.oledb", "product\roundhouse.databases.oledb\roundhouse.databases.oledb.csproj", "{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0726928C-FDAC-4C79-B423-841C7E0DF5B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0726928C-FDAC-4C79-B423-841C7E0DF5B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0726928C-FDAC-4C79-B423-841C7E0DF5B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0726928C-FDAC-4C79-B423-841C7E0DF5B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CC86537-E4F4-42F0-973F-39F38E43E347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CC86537-E4F4-42F0-973F-39F38E43E347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CC86537-E4F4-42F0-973F-39F38E43E347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CC86537-E4F4-42F0-973F-39F38E43E347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{705033B8-10BA-4E7F-854E-08A7C5590DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{705033B8-10BA-4E7F-854E-08A7C5590DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{705033B8-10BA-4E7F-854E-08A7C5590DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{705033B8-10BA-4E7F-854E-08A7C5590DC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8613D56F-B226-49BC-AC7A-19B70C827668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8613D56F-B226-49BC-AC7A-19B70C827668}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8613D56F-B226-49BC-AC7A-19B70C827668}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8613D56F-B226-49BC-AC7A-19B70C827668}.Release|Any CPU.Build.0 = Release|Any CPU
+		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3828D379-C96A-49C8-8BC9-0182CC8C55B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3828D379-C96A-49C8-8BC9-0182CC8C55B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3828D379-C96A-49C8-8BC9-0182CC8C55B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3828D379-C96A-49C8-8BC9-0182CC8C55B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71419DBB-4809-4102-A002-D484242FCFC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71419DBB-4809-4102-A002-D484242FCFC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71419DBB-4809-4102-A002-D484242FCFC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71419DBB-4809-4102-A002-D484242FCFC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0726928C-FDAC-4C79-B423-841C7E0DF5B8} = {807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}
+		{705033B8-10BA-4E7F-854E-08A7C5590DC5} = {807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}
+		{8613D56F-B226-49BC-AC7A-19B70C827668} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
+		{587F4BDF-FF76-4266-9D68-349FA4E6335D} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
+		{3828D379-C96A-49C8-8BC9-0182CC8C55B1} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
+		{71419DBB-4809-4102-A002-D484242FCFC9} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
+		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
+	EndGlobalSection
+EndGlobal

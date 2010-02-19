@@ -1,0 +1,33 @@
+Version 6.1.3
+- fixed session state provider table definition to allow more than 64K per-session data (bug#47339)
+- fixed compilation problem in NativeDriver inside ExecuteDirect  (bug #47354)
+- fixed default collation bug with session provider table (bug #47332)
+- in sessionState provider, timeout value was read from the wrong (root) web.config (bug#47815)
+- fixed crash that can occur when oldGuids are used and binary(16) column  used for GUID 
+  contains a null value (thanks Troy!) (bug#47928)
+- fixed indexes schema collection so that it still works with bad table names such as b``a`d (bug #48101)
+- fixed guid type so that multi-byte character sets will not effect how it works.  A column would be
+  considered a guid if it has a *character* length of 36, not a *byte* length of 36 (bug #47985)
+- fixed unsigned types in views when used as entities (bug # 47872) 
+- now exposing the MySqlDecimal type along with GetMySqlDecimal methods on data reader (bug #48100)    
+- applied user-suggested patch to enable type-safe cloning (bug #48460)
+
+Version 6.1.2
+- fixed hanging after losing network connectivity to server (bug#43761) 
+  Better fix is planned for 6.2
+- removed ReturnGeneratedIdentifiers.  We are now treating the command builder exactly
+  the same way SqlClient does
+- fixed some bugs with session state provider
+- fixed typo in asp.net config wizard  
+  
+Version 6.1.1
+- lots of bug fixes merged up from 6.0.5
+- fixed website config wizard so that it shows for all web types
+
+Version 6.1.0
+- Added new MySQL Website Configuration Wizard
+- Now supports native inout and output parameters when in prepared mode and running against a server
+  that supports it
+- Changed our native guid support to char(32)
+- Added a connection string option 'old guids=yes|no' to allow users who have older applications
+  to continue using binary(16) guids

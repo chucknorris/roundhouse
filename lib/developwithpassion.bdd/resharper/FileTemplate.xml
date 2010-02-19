@@ -1,0 +1,242 @@
+<TemplatesExport family="File Templates">
+  <Template uid="cc48a0c6-82d1-46d3-a4b3-93807b6b2f08" text="namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_sut_with_a_contract&lt;$contract_interface$,$contract_implementation$&gt;&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        [Concern(typeof($contract_implementation$))]&#xD;&#xA;        public class when_$obsertvation_name$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			public context c = () =&gt;&#xD;&#xA;            {&#xD;&#xA;            };&#xD;&#xA;        &#xD;&#xA;            public because b = () =&gt; result = sut.$what_happened$;&#xD;&#xA;&#xD;&#xA;            public it should_$have_result$ = () =&gt;&#xD;&#xA;            {&#xD;&#xA;                $END$&#xD;&#xA;            };&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="ObservationsWithContract_DWP_BDD" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="contract_interface" expression="" initialRange="0" />
+      <Variable name="contract_implementation" expression="" initialRange="0" />
+      <Variable name="obsertvation_name" expression="" initialRange="0" />
+      <Variable name="what_happened" expression="" initialRange="0" />
+      <Variable name="have_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="ObservationsWithContract" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="46080921-ca29-4e93-b240-bf6f99c62cfd" text="namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_sut_without_a_contract&lt;$implementation$&gt;&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        [Concern(typeof($implementation$))]&#xD;&#xA;        public class when_$obsertvation_name$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			public context c = () =&gt;&#xD;&#xA;            {&#xD;&#xA;            };&#xD;&#xA;        &#xD;&#xA;			public because b = () =&gt; result = sut.$what_happened$;&#xD;&#xA;&#xD;&#xA;            public it should_$have_result$ = () =&gt;&#xD;&#xA;            {&#xD;&#xA;                $END$&#xD;&#xA;            };&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="ObservationsWithoutContract_DWP_BDD" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="implementation" expression="" initialRange="0" />
+      <Variable name="obsertvation_name" expression="" initialRange="0" />
+      <Variable name="what_happened" expression="" initialRange="0" />
+      <Variable name="have_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="Class" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="49a266eb-771d-4d5b-aab7-3fa64c3fe603" text="namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_static_sut&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        public class when_$obsertvation_name$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			public context c = () =&gt;&#xD;&#xA;            {&#xD;&#xA;            };&#xD;&#xA;        &#xD;&#xA;            public because b = () =&gt; result = $concern_name$.$what_happened$;&#xD;&#xA;&#xD;&#xA;            public it should_$have_result$ = () =&gt;&#xD;&#xA;            {&#xD;&#xA;                $END$&#xD;&#xA;            };&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="StaticObservations_DWP_BDD" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="obsertvation_name" expression="" initialRange="0" />
+      <Variable name="what_happened" expression="" initialRange="0" />
+      <Variable name="have_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="Class" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="62b1879a-9010-4460-a66c-65b32967cbc8" text="using bdddoc.core;&#xD;&#xA;using developwithpassion.bdd.contexts;&#xD;&#xA;using developwithpassion.bdd.mbunit;&#xD;&#xA;using developwithpassion.bdd.mbunit.standard.observations;&#xD;&#xA;&#xD;&#xA;namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_sut_with_a_contract&lt;$contract_interface$,$implementation$&gt;&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        [Concern(typeof($implementation$))]&#xD;&#xA;        public class when_$observation$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			protected static object result;&#xD;&#xA;        &#xD;&#xA;			context c = () =&gt;&#xD;&#xA;						{&#xD;&#xA;&#xD;&#xA;						};&#xD;&#xA;        &#xD;&#xA;            because b = () =&gt; result = sut.$this_happened$;&#xD;&#xA;&#xD;&#xA;            it should_$have_this_result$ = () =&gt;&#xD;&#xA;						{&#xD;&#xA;							result$END$&#xD;&#xA;						};&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="ObervationsWithContract_3_5" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="contract_interface" expression="" initialRange="0" />
+      <Variable name="implementation" expression="" initialRange="0" />
+      <Variable name="observation" expression="" initialRange="0" />
+      <Variable name="this_happened" expression="" initialRange="0" />
+      <Variable name="have_this_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="ObervationsWithContract" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="c3cc12d3-1ed2-4f30-a350-ba0acb61acf5" text="using bdddoc.core;&#xD;&#xA;using developwithpassion.bdd.contexts;&#xD;&#xA;using developwithpassion.bdd.mbunit;&#xD;&#xA;using developwithpassion.bdd.mbunit.standard.observations;&#xD;&#xA;&#xD;&#xA;namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_sut_without_a_contract&lt;$implementation$&gt;&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        [Concern(typeof($implementation$))]&#xD;&#xA;        public class when_$observation$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			protected static object result;&#xD;&#xA;        &#xD;&#xA;			context c = () =&gt;&#xD;&#xA;						{&#xD;&#xA;&#xD;&#xA;						};&#xD;&#xA;        &#xD;&#xA;            because b = () =&gt; result = sut.$this_happened$;&#xD;&#xA;&#xD;&#xA;            it should_$have_this_result$ = () =&gt;&#xD;&#xA;						{&#xD;&#xA;							result$END$&#xD;&#xA;						};&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="ObervationsWithoutContract_3_5" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="implementation" expression="" initialRange="0" />
+      <Variable name="observation" expression="" initialRange="0" />
+      <Variable name="this_happened" expression="" initialRange="0" />
+      <Variable name="have_this_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="ObervationsWithoutContract" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="784ffef9-66e0-4fc5-ad39-44585d1c8ce9" text="using bdddoc.core;&#xD;&#xA;using developwithpassion.bdd.contexts;&#xD;&#xA;using developwithpassion.bdd.mbunit;&#xD;&#xA;using developwithpassion.bdd.mbunit.standard.observations;&#xD;&#xA;&#xD;&#xA;namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_static_sut&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        public class when_$observation_name$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			protected static object result;&#xD;&#xA;			&#xD;&#xA;			context c = () =&gt;&#xD;&#xA;						{&#xD;&#xA;			            &#xD;&#xA;						};&#xD;&#xA;        &#xD;&#xA;            because b = () =&gt; result = $concern_name$.$this_happened$;&#xD;&#xA;&#xD;&#xA;            it should_$have_this_result$ = () =&gt;&#xD;&#xA;						{&#xD;&#xA;							$END$&#xD;&#xA;						};&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="StaticObservations_3_5" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="observation_name" expression="" initialRange="0" />
+      <Variable name="this_happened" expression="" initialRange="0" />
+      <Variable name="have_this_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="StaticObservations" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="62b1879a-9010-4460-a66c-65b32967cbc8" text="using bdddoc.core;&#xD;&#xA;using developwithpassion.bdd.contexts;&#xD;&#xA;using developwithpassion.bdd.mbunit;&#xD;&#xA;using developwithpassion.bdd.mbunit.standard.observations;&#xD;&#xA;&#xD;&#xA;namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_sut_with_a_contract&lt;$contract_interface$,$implementation$&gt;&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        [Concern(typeof($implementation$))]&#xD;&#xA;        public class when_$observation$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			protected static object result;&#xD;&#xA;        &#xD;&#xA;			context c = () =&gt;&#xD;&#xA;						{&#xD;&#xA;&#xD;&#xA;						};&#xD;&#xA;        &#xD;&#xA;            because b = () =&gt; result = sut.$this_happened$;&#xD;&#xA;&#xD;&#xA;            it should_$have_this_result$ = () =&gt;&#xD;&#xA;						{&#xD;&#xA;							result$END$&#xD;&#xA;						};&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="ObervationsWithContract_3_5" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="contract_interface" expression="" initialRange="0" />
+      <Variable name="implementation" expression="" initialRange="0" />
+      <Variable name="observation" expression="" initialRange="0" />
+      <Variable name="this_happened" expression="" initialRange="0" />
+      <Variable name="have_this_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="ObervationsWithContract" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="c3cc12d3-1ed2-4f30-a350-ba0acb61acf5" text="using bdddoc.core;&#xD;&#xA;using developwithpassion.bdd.contexts;&#xD;&#xA;using developwithpassion.bdd.mbunit;&#xD;&#xA;using developwithpassion.bdd.mbunit.standard.observations;&#xD;&#xA;&#xD;&#xA;namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_sut_without_a_contract&lt;$implementation$&gt;&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        [Concern(typeof($implementation$))]&#xD;&#xA;        public class when_$observation$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			protected static object result;&#xD;&#xA;        &#xD;&#xA;			context c = () =&gt;&#xD;&#xA;						{&#xD;&#xA;&#xD;&#xA;						};&#xD;&#xA;        &#xD;&#xA;            because b = () =&gt; result = sut.$this_happened$;&#xD;&#xA;&#xD;&#xA;            it should_$have_this_result$ = () =&gt;&#xD;&#xA;						{&#xD;&#xA;							result$END$&#xD;&#xA;						};&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="ObervationsWithoutContract_3_5" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="implementation" expression="" initialRange="0" />
+      <Variable name="observation" expression="" initialRange="0" />
+      <Variable name="this_happened" expression="" initialRange="0" />
+      <Variable name="have_this_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="ObervationsWithoutContract" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="cc48a0c6-82d1-46d3-a4b3-93807b6b2f08" text="using bdddoc.core;&#xD;&#xA;using developwithpassion.bdd.contexts;&#xD;&#xA;using developwithpassion.bdd.mbunit;&#xD;&#xA;using developwithpassion.bdd.mbunit.standard.observations;&#xD;&#xA;&#xD;&#xA;namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_sut_with_a_contract&lt;$contract_interface$,$implementation$&gt;&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        [Concern(typeof($implementation$))]&#xD;&#xA;        public class when_$observation$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			protected static object result;&#xD;&#xA;		&#xD;&#xA;			protected override void establish_context()&#xD;&#xA;			{&#xD;&#xA;				base.establish_context();&#xD;&#xA;			}&#xD;&#xA;&#xD;&#xA;			protected override void because()&#xD;&#xA;			{&#xD;&#xA;				result = sut.$this_happened$;&#xD;&#xA;			}&#xD;&#xA;&#xD;&#xA;			[Observation]&#xD;&#xA;			public void should_$have_this_result$()&#xD;&#xA;			{&#xD;&#xA;				result$END$&#xD;&#xA;			}&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="ObservationsWithContract" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="contract_interface" expression="" initialRange="0" />
+      <Variable name="implementation" expression="" initialRange="0" />
+      <Variable name="observation" expression="" initialRange="0" />
+      <Variable name="this_happened" expression="" initialRange="0" />
+      <Variable name="have_this_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="ObservationsWithContract" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="46080921-ca29-4e93-b240-bf6f99c62cfd" text="using bdddoc.core;&#xD;&#xA;using developwithpassion.bdd.contexts;&#xD;&#xA;using developwithpassion.bdd.mbunit;&#xD;&#xA;using developwithpassion.bdd.mbunit.standard.observations;&#xD;&#xA;&#xD;&#xA;namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_sut_without_a_contract&lt;$implementation$&gt;&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        [Concern(typeof($implementation$))]&#xD;&#xA;        public class when_$observation$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			protected static object result;&#xD;&#xA;        &#xD;&#xA;			protected override void establish_context()&#xD;&#xA;			{&#xD;&#xA;				base.establish_context();&#xD;&#xA;			}&#xD;&#xA;&#xD;&#xA;			protected override void because()&#xD;&#xA;			{&#xD;&#xA;				result = sut.$this_happened$;&#xD;&#xA;			}&#xD;&#xA;&#xD;&#xA;			[Observation]&#xD;&#xA;			public void should_$have_this_result$()&#xD;&#xA;			{&#xD;&#xA;				result$END$&#xD;&#xA;			}&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="ObservationsWithoutContract" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="implementation" expression="" initialRange="0" />
+      <Variable name="observation" expression="" initialRange="0" />
+      <Variable name="this_happened" expression="" initialRange="0" />
+      <Variable name="have_this_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="ObservationsWithoutContract" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="49a266eb-771d-4d5b-aab7-3fa64c3fe603" text="using bdddoc.core;&#xD;&#xA;using developwithpassion.bdd.contexts;&#xD;&#xA;using developwithpassion.bdd.mbunit;&#xD;&#xA;using developwithpassion.bdd.mbunit.standard.observations;&#xD;&#xA;&#xD;&#xA;namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_static_sut&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        public class when_$observation_name$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			protected static object result;&#xD;&#xA;			&#xD;&#xA;			protected override void establish_context()&#xD;&#xA;			{&#xD;&#xA;				&#xD;&#xA;			}&#xD;&#xA;&#xD;&#xA;			protected override void because()&#xD;&#xA;			{&#xD;&#xA;				result = $concern_name$.$this_happened$();&#xD;&#xA;			}&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;			[Observation]&#xD;&#xA;			public void should_$have_this_result$()&#xD;&#xA;			{&#xD;&#xA;				result$END$&#xD;&#xA;			}&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="StaticObservations" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="observation_name" expression="" initialRange="0" />
+      <Variable name="this_happened" expression="" initialRange="0" />
+      <Variable name="have_this_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="StaticObservations" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+  <Template uid="784ffef9-66e0-4fc5-ad39-44585d1c8ce9" text="using bdddoc.core;&#xD;&#xA;using developwithpassion.bdd.contexts;&#xD;&#xA;using developwithpassion.bdd.mbunit;&#xD;&#xA;using developwithpassion.bdd.mbunit.standard.observations;&#xD;&#xA;&#xD;&#xA;namespace $namespace$&#xD;&#xA;{&#xD;&#xA;    public class $class$&#xD;&#xA;    {&#xD;&#xA;        public abstract class concern_for_$concern_name$ : observations_for_a_static_sut&#xD;&#xA;        {&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;        public class when_$observation_name$ : concern_for_$concern_name$&#xD;&#xA;        {&#xD;&#xA;			protected static object result;&#xD;&#xA;			&#xD;&#xA;			context c = () =&gt;&#xD;&#xA;						{&#xD;&#xA;			            &#xD;&#xA;						};&#xD;&#xA;        &#xD;&#xA;            because b = () =&gt; result = $concern_name$.$this_happened$;&#xD;&#xA;&#xD;&#xA;            it should_$have_this_result$ = () =&gt;&#xD;&#xA;						{&#xD;&#xA;							$END$&#xD;&#xA;						};&#xD;&#xA;        }&#xD;&#xA;    }&#xD;&#xA;}" shortcut="" description="StaticObservations_3_5" reformat="false" shortenQualifiedReferences="true">
+    <Context>
+      <ProjectLanguageContext language="CSharp" />
+    </Context>
+    <Categories />
+    <Variables>
+      <Variable name="namespace" expression="fileDefaultNamespace()" initialRange="-1" />
+      <Variable name="class" expression="getFileNameWithoutExtension()" initialRange="-1" />
+      <Variable name="concern_name" expression="" initialRange="0" />
+      <Variable name="observation_name" expression="" initialRange="0" />
+      <Variable name="this_happened" expression="" initialRange="0" />
+      <Variable name="have_this_result" expression="" initialRange="0" />
+    </Variables>
+    <CustomProperties>
+      <Property key="FileName" value="StaticObservations" />
+      <Property key="Extension" value="cs" />
+      <Property key="ValidateFileName" value="False" />
+    </CustomProperties>
+  </Template>
+</TemplatesExport>
