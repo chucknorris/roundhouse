@@ -19,8 +19,5 @@ _ReSharper*
  
 TestResult.xml
 submit.xml
-src/tests/*
-tests/*
-doc/*
 SolutionVersion.cs
 SolutionVersion.vb
