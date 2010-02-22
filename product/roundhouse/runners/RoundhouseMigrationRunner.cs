@@ -9,7 +9,7 @@ namespace roundhouse.runners
     using infrastructure.logging;
     using migrators;
     using resolvers;
-    using Environment = roundhouse.environments.Environment;
+    using Environment = environments.Environment;
 
     public sealed class RoundhouseMigrationRunner : IRunner
     {
@@ -21,9 +21,10 @@ namespace roundhouse.runners
         private readonly VersionResolver version_resolver;
         private readonly bool interactive;
         private readonly bool dropping_the_database;
-        private readonly bool run_in_a_transaction;
-        private readonly bool use_simple_recovery;
-        private const string SQL_EXTENSION = "*.sql";
+    	private readonly bool dont_create_the_database;
+    	private readonly bool run_in_a_transaction;
+    	private readonly bool use_simple_recovery;
+    	private const string SQL_EXTENSION = "*.sql";
 
         public RoundhouseMigrationRunner(
                 string repository_path,
@@ -34,6 +35,7 @@ namespace roundhouse.runners
                 VersionResolver version_resolver,
                 bool interactive,
                 bool dropping_the_database,
+				bool dont_create_the_database,
                 bool run_in_a_transaction,
                 bool use_simple_recovery)
         {
@@ -45,6 +47,7 @@ namespace roundhouse.runners
             this.version_resolver = version_resolver;
             this.interactive = interactive;
             this.dropping_the_database = dropping_the_database;
+        	this.dont_create_the_database = dont_create_the_database;
             this.run_in_a_transaction = run_in_a_transaction;
             this.use_simple_recovery = use_simple_recovery;
         }
@@ -77,8 +80,11 @@ namespace roundhouse.runners
                 if (!dropping_the_database)
                 {
 
-                    database_migrator.create_or_restore_database();
-                    database_migrator.set_recovery_mode(use_simple_recovery);
+                	if (!dont_create_the_database)
+                	{
+						database_migrator.create_or_restore_database();
+						database_migrator.set_recovery_mode(use_simple_recovery);                    	
+                	}
                     database_migrator.transfer_to_database_for_changes();
                     database_migrator.verify_or_create_roundhouse_tables();
 

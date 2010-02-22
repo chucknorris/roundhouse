@@ -14,7 +14,7 @@ namespace roundhouse.tasks
     using NAnt.Core.Attributes;
     using resolvers;
     using runners;
-    using Environment = roundhouse.environments.Environment;
+    using Environment = environments.Environment;
 
     [TaskName("roundhouse")]
     public sealed class Roundhouse : Task, ITask, ConfigurationPropertyHolder
@@ -171,6 +171,10 @@ namespace roundhouse.tasks
         [StringValidator(AllowEmpty = false)]
         public bool Drop { get; set; }
 
+		[TaskAttribute("doNotCreateDatabase", Required = false)]
+		[StringValidator(AllowEmpty = false)]
+		public bool DoNotCreateDatabase { get; set; }
+
         [TaskAttribute("outputPath", Required = false)]
         [StringValidator(AllowEmpty = true)]
         public string OutputPath { get; set; }
@@ -222,6 +226,7 @@ namespace roundhouse.tasks
                 Container.get_an_instance_of<VersionResolver>(),
                 !NonInteractive,
                 Drop,
+				DoNotCreateDatabase,
                 WithTransaction,
                 RecoveryModeSimple);
 

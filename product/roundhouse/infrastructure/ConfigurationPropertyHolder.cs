@@ -38,8 +38,9 @@ namespace roundhouse.infrastructure
         bool NonInteractive { get; set; }
         string DatabaseType { get; set; }
         bool Drop { get; set; }
+		bool DoNotCreateDatabase { get; set; }
         bool WithTransaction { get; set; }
         bool RecoveryModeSimple { get; set; }
-        bool Debug { get; set; }
+        bool Debug { get; set; }    	
     }
 }

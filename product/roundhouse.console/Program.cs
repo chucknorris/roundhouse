@@ -91,6 +91,7 @@
                 Container.get_an_instance_of<VersionResolver>(),
                 !configuration.NonInteractive,
                 configuration.Drop,
+				configuration.DoNotCreateDatabase,
                 configuration.WithTransaction,
                 configuration.RecoveryModeSimple);
 
@@ -209,7 +210,11 @@
                 .Add("drop",
                     "Drop - This instructs RH to remove a database and not run migration scripts. Defaults to false.",
                     option => configuration.Drop = option != null)
-                //output
+				//don't create the database if it doesn't exist
+				.Add("dc|dnc|donotcreatedatabase",
+					"DontCreateDatabase - This instructs RH to not create a database if it does not exists. Defaults to false.",
+					option => configuration.DoNotCreateDatabase = option != null)
+				//output
                 .Add("o=|output=|outputpath=",
                     string.Format("OutputPath - This is where everything related to the migration is stored. This includes any backups, all items that ran, permission dumps, logs, etc. Defaults to \"{0}\".",
                         ApplicationParameters.default_output_path),
@@ -267,6 +272,7 @@
                     "/n[on]i[nteractive] " +
                     "/d[atabase]t[ype] VALUE " +
                     "/drop " +
+					"/d[onot]c[reatedatabase] " +
                     "/t[ransaction] " +
                     "]";
                 show_help(usage_message, option_set);

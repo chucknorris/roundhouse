@@ -52,6 +52,7 @@
       restoreTimeout="900"
       createDatabaseCustomScript="${create.database.custom.script}"
       drop="${drop}"
+      doNotCreateDatabase="false"
       outputPath="C:\RoundhousE_runs"
       warnOnOneTimeScriptChanges="false"
       nonInteractive="false"

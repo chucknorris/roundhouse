@@ -49,6 +49,7 @@
         RestoreTimeout="900"
         CreateDatabaseCustomScript="$(DBCreateDatabaseCustomScript)"
         Drop="$(DBDrop)"
+        DoNotCreateDatabase="false"
         OutputPath="C:\RoundhousE_runs"
         WarnOnOneTimeScriptChanges="false"
         NonInteractive="false"
