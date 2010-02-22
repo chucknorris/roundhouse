@@ -27,7 +27,7 @@ namespace roundhouse.databases.oledb
         public const string MASTER_DATABASE_NAME = "Master";
         private string connect_options = "Trusted_Connection";
         private OleDbConnection server_connection;
-        private bool running_a_transaction;
+        private OleDbTransaction transaction;
         private bool disposing;
         private SqlScript sql_scripts;
         private int command_timeout = 60;
@@ -100,16 +100,16 @@ namespace roundhouse.databases.oledb
 
             if (with_transaction)
             {
-                server_connection.BeginTransaction();
-                running_a_transaction = true;
+                transaction = server_connection.BeginTransaction();
             }
         }
 
         public void close_connection()
         {
-            if (running_a_transaction)
+            if (transaction !=null)
             {
-                //commit?
+                transaction.Commit();
+                transaction = null;
             }
             server_connection.Close();
         }
@@ -247,6 +247,7 @@ namespace roundhouse.databases.oledb
 
             using (OleDbCommand command = server_connection.CreateCommand())
             {
+                command.Transaction = transaction;
                 command.CommandText = sql_to_run;
                 command.CommandType = CommandType.Text;
                 command.CommandTimeout = command_timeout;
@@ -353,6 +354,7 @@ namespace roundhouse.databases.oledb
 
             using (OleDbCommand command = server_connection.CreateCommand())
             {
+                command.Transaction = transaction;
                 command.CommandText = sql_to_run;
                 command.CommandType = CommandType.Text;
                 command.CommandTimeout = command_timeout;
@@ -369,6 +371,7 @@ namespace roundhouse.databases.oledb
 
             using (OleDbCommand command = server_connection.CreateCommand())
             {
+                command.Transaction = transaction; 
                 command.CommandText = sql_to_run;
                 command.CommandType = CommandType.Text;
                 command.CommandTimeout = command_timeout;

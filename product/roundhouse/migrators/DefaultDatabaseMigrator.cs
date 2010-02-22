@@ -71,9 +71,9 @@ namespace roundhouse.migrators
             database.backup_database(output_path);
         }
 
-        public void restore_database(string restore_from_path,string restore_options)
+        public void restore_database(string restore_from_path, string restore_options)
         {
-            Log.bound_to(this).log_an_info_event_containing("Restoring {0} database on {1} server from path {2}.",database.database_name, database.server_name, restore_from_path);
+            Log.bound_to(this).log_an_info_event_containing("Restoring {0} database on {1} server from path {2}.", database.database_name, database.server_name, restore_from_path);
             database.restore_database(restore_from_path, restore_options);
         }
 
@@ -100,11 +100,11 @@ namespace roundhouse.migrators
 
         public void verify_or_create_roundhouse_tables()
         {
-            Log.bound_to(this).log_an_info_event_containing("Creating {0} schema if it doesn't exist.",database.roundhouse_schema_name);
+            Log.bound_to(this).log_an_info_event_containing("Creating {0} schema if it doesn't exist.", database.roundhouse_schema_name);
             database.create_roundhouse_schema_if_it_doesnt_exist();
-            Log.bound_to(this).log_an_info_event_containing("Creating [{0}].[{1}] table if it doesn't exist.",database.roundhouse_schema_name,database.version_table_name);
+            Log.bound_to(this).log_an_info_event_containing("Creating [{0}].[{1}] table if it doesn't exist.", database.roundhouse_schema_name, database.version_table_name);
             database.create_roundhouse_version_table_if_it_doesnt_exist();
-            Log.bound_to(this).log_an_info_event_containing("Creating [{0}].[{1}] table if it doesn't exist.",database.roundhouse_schema_name,database.scripts_run_table_name);
+            Log.bound_to(this).log_an_info_event_containing("Creating [{0}].[{1}] table if it doesn't exist.", database.roundhouse_schema_name, database.scripts_run_table_name);
             database.create_roundhouse_scripts_run_table_if_it_doesnt_exist();
         }
 
@@ -164,8 +164,7 @@ namespace roundhouse.migrators
             {
                 Log.bound_to(this).log_an_info_event_containing("Running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
 
-                var script_regex = new Regex(database.sql_statement_separator_regex_pattern);
-                foreach (var sql_statement in script_regex.Split(sql_to_run))
+                foreach (var sql_statement in Regex.Split(sql_to_run, database.sql_statement_separator_regex_pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))
                 {
                     if (script_has_text_to_run(sql_statement))
                     {
@@ -185,6 +184,8 @@ namespace roundhouse.migrators
 
         private bool script_has_text_to_run(string sql_statement)
         {
+            sql_statement = Regex.Replace(sql_statement, database.sql_statement_separator_regex_pattern, string.Empty, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
             return !string.IsNullOrEmpty(sql_statement.to_lower().Replace(Environment.NewLine, string.Empty).Replace(" ", string.Empty));
         }
 

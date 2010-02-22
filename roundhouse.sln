@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.mysql"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.oledb", "product\roundhouse.databases.oledb\roundhouse.databases.oledb.csproj", "{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserver", "product\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj", "{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,5 +95,6 @@ Global
 		{3828D379-C96A-49C8-8BC9-0182CC8C55B1} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{71419DBB-4809-4102-A002-D484242FCFC9} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
+		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 	EndGlobalSection
 EndGlobal

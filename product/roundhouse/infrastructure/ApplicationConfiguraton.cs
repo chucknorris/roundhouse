@@ -213,6 +213,13 @@ namespace roundhouse.infrastructure
                     throw new NotSupportedException(
                         "Microsoft SQL Server 2000? Really? Like SNL's \"really.\" Really?! Nice try though.");
                     break;
+                case "sql" :
+                case "sql.net":
+                case "sqlserver":
+                case "sqlado.net":
+                    database_type_full_name =
+                       "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
+                    break;
                 case "mysql":
                     database_type_full_name =
                       "roundhouse.databases.mysql.MySqlDatabase, roundhouse.databases.mysql";

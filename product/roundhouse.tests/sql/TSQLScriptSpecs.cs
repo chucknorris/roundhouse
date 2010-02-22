@@ -19,7 +19,7 @@ namespace roundhouse.tests.sql
         public class when_splitting_statements_on_the_batch_terminator : concern_for_TSQLScript
         {
             protected static Regex script_regex;
-            protected static string symbols_to_check = "='.>?<()-*";
+            protected static string symbols_to_check = "='.>?<()[];-*";
 
 
             private because b = () =>
@@ -84,6 +84,23 @@ GO
             }
 
             [Observation]
+            public void should_not_split_on_g()
+            {
+                const string sql_to_match = @" G
+";
+                Assert.IsFalse(script_regex.Match(sql_to_match).Success);
+            }
+
+            [Observation]
+            public void should_not_split_on_o()
+            {
+                const string sql_to_match = @" O
+";
+                Assert.IsFalse(script_regex.Match(sql_to_match).Success);
+            }
+
+
+            [Observation]
             public void should_not_split_on_go_when_go_is_the_last_part_of_the_last_word_on_a_line()
             {
                 const string sql_to_match = @" BOBGO
@@ -118,8 +135,7 @@ GO
                 string sql_to_match = @" BOB" + symbols_to_check + " GO BOB" + symbols_to_check;
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
-
-
+            
             [Observation]
             public void should_not_split_on_go_with_double_dash_comment_starting_line()
             {
@@ -182,8 +198,7 @@ GO
 */";
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
-
-
+            
             [Observation]
             public void should_not_split_on_go_inside_of_comments_with_words_before()
             {
@@ -220,6 +235,17 @@ adf
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
+            [Observation]
+            public void should_not_split_on_go_inside_of_comments_with_symbols_after_on_different_lines()
+            {
+                string sql_to_match =
+@"/* 
+GO
+
+" + symbols_to_check + @" 
+*/";
+                Assert.IsFalse(script_regex.Match(sql_to_match).Success);
+            }
 
         }
     }
