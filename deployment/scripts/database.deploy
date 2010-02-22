@@ -37,7 +37,6 @@
       restoreFromPath="${restore.from.path.full}" 
       drop="${drop}"
       withTransaction="${transaction}"
-      databaseType="sqlserver"
       />
   </target>
 
