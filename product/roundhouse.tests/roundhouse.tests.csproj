@@ -98,6 +98,7 @@
     <Compile Include="infrastructure\logging\custom\Log4NetLoggerSpecs.cs" />
     <Compile Include="infrastructure\logging\LogSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sql\TSQLScriptSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\roundhouse.databases.sqlserver2008\roundhouse.databases.sqlserver2008.csproj">
