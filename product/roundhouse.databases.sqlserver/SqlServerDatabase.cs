@@ -15,13 +15,12 @@ namespace roundhouse.databases.sqlserver
         public string version_table_name { get; set; }
         public string scripts_run_table_name { get; set; }
         public string user_name { get; set; }
-
         public string sql_statement_separator_regex_pattern
         {
             get { return sql_scripts.separator_characters_regex; }
         }
-
         public string custom_create_database_script { get; set; }
+        public int command_timeout { get; set; }
         public int restore_timeout { get; set; }
 
         public const string MASTER_DATABASE_NAME = "Master";
@@ -30,7 +29,6 @@ namespace roundhouse.databases.sqlserver
         private SqlTransaction transaction;
         private bool disposing;
         private SqlScript sql_scripts;
-        private int command_timeout = 60;
 
         public void initialize_connection()
         {
@@ -139,10 +137,10 @@ namespace roundhouse.databases.sqlserver
         {
             use_database(MASTER_DATABASE_NAME);
 
-            int current_connetion_timeout = command_timeout;
+            int current_timeout = command_timeout;
             command_timeout = restore_timeout;
             run_sql(sql_scripts.restore_database(database_name, restore_from_path, custom_restore_options));
-            command_timeout = current_connetion_timeout;
+            command_timeout = current_timeout;
         }
 
         public void delete_database_if_it_exists()

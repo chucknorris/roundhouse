@@ -14,6 +14,7 @@ namespace roundhouse.databases
         string user_name { get; set; }
         string sql_statement_separator_regex_pattern { get;}
         string custom_create_database_script { get; set; }
+        int command_timeout { get; set; }
         int restore_timeout { get; set; }
 
 

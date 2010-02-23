@@ -12,7 +12,7 @@ namespace roundhouse.resolvers
         private readonly string x_path;
         private readonly string version_file;
         private const string xml_extension = ".xml";
-      
+
         public XmlFileVersionResolver(FileSystemAccess file_system, string x_path, string version_file)
         {
             this.file_system = file_system;
@@ -36,17 +36,24 @@ namespace roundhouse.resolvers
                                                                 version_file, x_path);
             string version = "0";
             XmlDocument xml = new XmlDocument();
-            try
+            if (file_system.file_exists(version_file))
             {
-                xml.Load(version_file);
-                XmlNode node = xml.SelectSingleNode(x_path);
-                version = node.InnerText;
-                Log.bound_to(this).log_an_info_event_containing("Found version {0} from {1}.", version, version_file);
-            }
-            catch (Exception)
+                try
+                {
+                    xml.Load(version_file);
+                    XmlNode node = xml.SelectSingleNode(x_path);
+                    version = node.InnerText;
+                    Log.bound_to(this).log_an_info_event_containing("Found version {0} from {1}.", version, version_file);
+                }
+                catch (Exception)
+                {
+                    Log.bound_to(this).log_an_error_event_containing(
+                        "Unable to get version from xml file {0} using xpath {1}", version_file, x_path);
+                }
+            } else
             {
-                Log.bound_to(this).log_an_error_event_containing(
-                    "Unable to get version from xml file {0} using xpath {1}",version_file,x_path);
+                Log.bound_to(this).log_a_warning_event_containing(
+                        "Unable to get version from xml file {0}. File doesn't exist.", version_file);
             }
 
             return version;

@@ -39,8 +39,9 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
-=0.2.0.127= 
-* More fine-grained splitting by the word GO - see http://code.google.com/p/roundhouse/issues/detail?id=25 for details. (r127) 
+=0.2.0.131= 
+* More fine-grained splitting by the word GO - see http://code.google.com/p/roundhouse/issues/detail?id=25 for details. (r130) 
+* Command timeout became more explicit so database decorators can access and manipulate the value now. (r129)
 * RH should be able to use ADO.NET instead of SMO for SqlServer - see http://code.google.com/p/roundhouse/issues/detail?id=22 for details. (r125)
 * Option not to create a database if none exists - see http://code.google.com/p/roundhouse/issues/detail?id=24 for details. (r123)
 * Console should exit with an error code instead of crashing on errors - see http://code.google.com/p/roundhouse/issues/detail?id=23 for details. (r119) 
