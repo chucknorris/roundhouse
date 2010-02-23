@@ -67,6 +67,13 @@ namespace roundhouse.databases
             get { return database.custom_create_database_script; }
             set { database.custom_create_database_script = value; }
         }
+
+        public int command_timeout
+        {
+            get { return database.command_timeout; }
+            set { database.command_timeout = value; }
+        }
+
         public int restore_timeout
         {
             get { return database.restore_timeout; }
@@ -105,7 +112,9 @@ namespace roundhouse.databases
 
         public void restore_database(string restore_from_path, string custom_restore_options)
         {
-            database.run_sql(string.Format(
+            int current_timeout = command_timeout;
+            command_timeout = restore_timeout;
+            run_sql(string.Format(
                                  @"USE Master 
                         ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
                         ALTER DATABASE [{0}] SET MULTI_USER;
@@ -124,9 +133,9 @@ namespace roundhouse.databases
                         --DBCC SHRINKDATABASE ([{0}]);
                         ",
                          database_name, restore_from_path,
-                         string.IsNullOrEmpty(custom_restore_options) ? string.Empty : ", @with = N'" + custom_restore_options.Replace("'","''") + "'"
+                         string.IsNullOrEmpty(custom_restore_options) ? string.Empty : ", @with = N'" + custom_restore_options.Replace("'", "''") + "'"
                        ));
-
+            command_timeout = current_timeout;
         }
 
         public void delete_database_if_it_exists()

@@ -24,6 +24,7 @@ namespace roundhouse.infrastructure
         public static string log4net_configuration_assembly = @"roundhouse";
         public static string log4net_configuration_resource = @"roundhouse.infrastructure.app.logging.log4net.config.xml";
         public static string log4net_configuration_resource_no_console = @"roundhouse.infrastructure.app.logging.log4net.config.no.console.xml";
+        public static int default_command_timeout = 60;
         public static int default_restore_timeout = 900;
     }
 }

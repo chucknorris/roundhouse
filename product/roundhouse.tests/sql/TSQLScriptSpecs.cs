@@ -20,8 +20,8 @@ namespace roundhouse.tests.sql
         public class when_splitting_statements_on_the_batch_terminator : concern_for_TSQLScript
         {
             protected static Regex script_regex;
-            protected static string symbols_to_check = "='.>?<()[];-*";
-
+            protected static string symbols_to_check = "`~!@#$%^&*()-_+=,.;:'\"[]\\/?<>";
+            protected static string words_to_check = "abcdefghijklmnopqrstuvwzyz0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
             private because b = () =>
                                     {
@@ -32,6 +32,7 @@ namespace roundhouse.tests.sql
             public void should_split_on_go_with_space()
             {
                 const string sql_to_match = @" GO ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
             
@@ -48,6 +49,7 @@ namespace roundhouse.tests.sql
             {
                 const string sql_to_match = @" GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
 
@@ -58,16 +60,18 @@ namespace roundhouse.tests.sql
 @"--
 GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_split_on_go_with_on_new_line_after_double_dash_comments_and_words()
             {
-                const string sql_to_match =
-@"-- BOB
+                string sql_to_match =
+@"-- " + words_to_check + @"
 GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
 
@@ -78,6 +82,7 @@ GO
 @"-- " + symbols_to_check + @"
 GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
 
@@ -88,6 +93,7 @@ GO
 @" 
 GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
 
@@ -95,30 +101,34 @@ GO
             public void should_split_on_go_with_no_line_terminator()
             {
                 const string sql_to_match = @" GO";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_split_on_go_with_words_before()
             {
-                const string sql_to_match = @"BOB GO
+                string sql_to_match = words_to_check + @" GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_split_on_go_with_symbols_and_words_before()
             {
-                string sql_to_match = symbols_to_check + @"BOB GO
+                string sql_to_match = symbols_to_check + words_to_check + @" GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_split_on_go_with_words_and_symbols_before()
             {
-                string sql_to_match = @"BOB" + symbols_to_check + @" GO
+                string sql_to_match = words_to_check + symbols_to_check + @" GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsTrue(script_regex.Match(sql_to_match).Success);
             }
 
@@ -127,6 +137,7 @@ GO
             {
                 const string sql_to_match = @" G
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -135,42 +146,48 @@ GO
             {
                 const string sql_to_match = @" O
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
             
             [Observation]
             public void should_not_split_on_go_when_go_is_the_last_part_of_the_last_word_on_a_line()
             {
-                const string sql_to_match = @" BOBGO
+                string sql_to_match = words_to_check + @"GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_not_split_on_go_with_words_after_on_the_same_line()
             {
-                const string sql_to_match = @" GO BOB";
+                string sql_to_match = @" GO " + words_to_check;
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_not_split_on_go_with_words_after_on_the_same_line_including_symbols()
             {
-                string sql_to_match = @" GO BOB" + symbols_to_check;
+                string sql_to_match = @" GO " + words_to_check + symbols_to_check;
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_not_split_on_go_with_words_before_and_after_on_the_same_line()
             {
-                const string sql_to_match = @" BOB GO BOB";
+                string sql_to_match = words_to_check + @" GO " + words_to_check;
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_not_split_on_go_with_words_before_and_after_on_the_same_line_including_symbols()
             {
-                string sql_to_match = @" BOB" + symbols_to_check + " GO BOB" + symbols_to_check;
+                string sql_to_match = words_to_check + symbols_to_check + " GO BOB" + symbols_to_check;
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
             
@@ -179,6 +196,7 @@ GO
             {
                 string sql_to_match = @"--GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -187,14 +205,16 @@ GO
             {
                 string sql_to_match = @"-- GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_not_split_on_go_with_double_dash_comment_and_space_starting_line_and_words_after_go()
             {
-                string sql_to_match = @"-- GO bob
+                string sql_to_match = @"-- GO " + words_to_check + @"
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -203,6 +223,7 @@ GO
             {
                 string sql_to_match = @"-- GO " + symbols_to_check + @"
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -218,7 +239,7 @@ GO
             [Observation]
             public void should_not_split_on_go_with_double_dash_comment_and_tab_starting_line_and_words_after_go()
             {
-                string sql_to_match = @"--" + string.Format("\t") + @"GO bob
+                string sql_to_match = @"--" + string.Format("\t") + @"GO " + words_to_check + @"
 ";
                 Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
@@ -236,8 +257,9 @@ GO
             [Observation]
             public void should_not_split_on_go_with_double_dash_comment_starting_line_with_words_before_go()
             {
-                const string sql_to_match = @"-- BOB GO
+                string sql_to_match = @"-- " + words_to_check + @" GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -246,6 +268,7 @@ GO
 //            {
 //                const string sql_to_match = @"' GO
 //'";
+//                Console.WriteLine(sql_to_match);
 //                Assert.IsFalse(script_regex.Match(sql_to_match).Success);
 //            }
 
@@ -254,14 +277,16 @@ GO
             {
                 string sql_to_match = @"--" + symbols_to_check + @" GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
             [Observation]
             public void should_not_split_on_go_with_double_dash_comment_starting_line_with_words_and_symbols_before_go()
             {
-                string sql_to_match = @"--" + symbols_to_check + @" BOB GO
+                string sql_to_match = @"--" + symbols_to_check + words_to_check + @" GO
 ";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -269,6 +294,7 @@ GO
             public void should_not_split_on_go_inside_of_comments()
             {
                 string sql_to_match = @"/* GO */";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -277,6 +303,7 @@ GO
             {
                 string sql_to_match = @"/* GO 
 */";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
             
@@ -285,9 +312,10 @@ GO
             {
                 string sql_to_match =
                     @"/* 
-BOB GO
+" + words_to_check + @" GO
 
 */";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -296,10 +324,11 @@ BOB GO
             {
                 string sql_to_match =
                     @"/* 
-BOB 
+" + words_to_check + @" 
 GO
 
 */";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -308,11 +337,12 @@ GO
             {
                 string sql_to_match =
 @"/* 
-BOB 
+" + words_to_check + @" 
 GO
 
-adf
+" + words_to_check + @"
 */";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 
@@ -325,6 +355,7 @@ GO
 
 " + symbols_to_check + @" 
 */";
+                Console.WriteLine(sql_to_match);
                 Assert.IsFalse(script_regex.Match(sql_to_match).Success);
             }
 

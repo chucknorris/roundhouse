@@ -23,6 +23,7 @@ namespace roundhouse.databases.sqlserver2008
             get { return sql_scripts.separator_characters_regex; }
         }
         public string custom_create_database_script { get; set; }
+        public int command_timeout { get; set; }
         public int restore_timeout { get; set; }
 
         public const string MASTER_DATABASE_NAME = "Master";
@@ -137,11 +138,10 @@ namespace roundhouse.databases.sqlserver2008
         public void restore_database(string restore_from_path, string custom_restore_options)
         {
             use_database(MASTER_DATABASE_NAME);
-
-            int current_connetion_timeout = sql_server.ConnectionContext.StatementTimeout;
-            sql_server.ConnectionContext.StatementTimeout = restore_timeout;
+            int current_timeout = command_timeout;
+            command_timeout = restore_timeout;
             run_sql(sql_scripts.restore_database(database_name, restore_from_path, custom_restore_options));
-            sql_server.ConnectionContext.StatementTimeout = current_connetion_timeout;
+            command_timeout = current_timeout;
         }
 
         public void delete_database_if_it_exists()
@@ -172,6 +172,7 @@ namespace roundhouse.databases.sqlserver2008
 
         public void run_sql(string sql_to_run)
         {
+            sql_server.ConnectionContext.StatementTimeout = command_timeout;
             sql_server.ConnectionContext.ExecuteNonQuery(sql_to_run);
         }
 
@@ -212,6 +213,7 @@ namespace roundhouse.databases.sqlserver2008
 
         public object run_sql_scalar(string sql_to_run)
         {
+            sql_server.ConnectionContext.StatementTimeout = command_timeout;
             object return_value = sql_server.ConnectionContext.ExecuteScalar(sql_to_run);
 
             return return_value;
@@ -219,6 +221,7 @@ namespace roundhouse.databases.sqlserver2008
 
         private DataTable execute_datatable(string sql_to_run)
         {
+            sql_server.ConnectionContext.StatementTimeout = command_timeout;
             DataSet result = sql_server.ConnectionContext.ExecuteWithResults(sql_to_run);
 
             return result.Tables.Count == 0 ? null : result.Tables[0];
