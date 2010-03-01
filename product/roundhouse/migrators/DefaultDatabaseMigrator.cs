@@ -4,6 +4,7 @@ namespace roundhouse.migrators
     using System.Text.RegularExpressions;
     using cryptography;
     using databases;
+    using infrastructure;
     using infrastructure.extensions;
     using infrastructure.logging;
     using Environment=roundhouse.environments.Environment;
@@ -19,16 +20,15 @@ namespace roundhouse.migrators
         private readonly bool error_on_one_time_script_changes;
         private bool running_in_a_transaction;
 
-        public DefaultDatabaseMigrator(Database database, CryptographicService crypto_provider, bool restoring_database, string restore_path,
-                                       string custom_restore_options, string output_path, bool error_on_one_time_script_changes)
+        public DefaultDatabaseMigrator(Database database, CryptographicService crypto_provider, ConfigurationPropertyHolder configuration)
         {
             this.database = database;
             this.crypto_provider = crypto_provider;
-            this.restoring_database = restoring_database;
-            this.restore_path = restore_path;
-            this.custom_restore_options = custom_restore_options;
-            this.output_path = output_path;
-            this.error_on_one_time_script_changes = error_on_one_time_script_changes;
+            this.restoring_database = configuration.Restore;
+            this.restore_path = configuration.RestoreFromPath;
+            this.custom_restore_options = configuration.RestoreCustomOptions;
+            this.output_path = configuration.OutputPath;
+            this.error_on_one_time_script_changes = !configuration.WarnOnOneTimeScriptChanges;
         }
 
         public void connect(bool with_transaction)

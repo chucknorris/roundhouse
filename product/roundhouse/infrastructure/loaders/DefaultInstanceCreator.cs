@@ -14,6 +14,10 @@ namespace roundhouse.infrastructure.loaders
         //http://www.google.com/search?hl=en&q=passing+runtime+Type+to+Generic&aq=f&oq=&aqi=
         //http://stackoverflow.com/questions/513952/c-specifying-generic-collection-type-param-at-runtime
 
+        public static T create_object_from_string_type<T>(string object_to_create)
+        {
+            return (T) create_object_from_string_type(object_to_create);
+        }
         public static object create_object_from_string_type(string object_to_create)
         {
             Log.bound_to(typeof(DefaultInstanceCreator)).log_a_debug_event_containing("Resolving and creating an instance of \"{0}\".", object_to_create);

@@ -2,11 +2,13 @@ using roundhouse.infrastructure.extensions;
 
 namespace roundhouse.environments
 {
+    using infrastructure;
+
     public sealed class DefaultEnvironment : Environment
     {
-        public DefaultEnvironment(string name)
+        public DefaultEnvironment(ConfigurationPropertyHolder configuration)
         {
-            this.name = name;
+            this.name = configuration.EnvironmentName;
         }
 
         public string name { get; private set; }

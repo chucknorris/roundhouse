@@ -2,7 +2,6 @@ namespace roundhouse.tests.infrastructure.containers
 {
     using System;
     using bdddoc.core;
-    using Castle.Windsor;
     using developwithpassion.bdd.contexts;
     using developwithpassion.bdd.mbunit;
     using developwithpassion.bdd.mbunit.standard;
@@ -11,6 +10,8 @@ namespace roundhouse.tests.infrastructure.containers
     using roundhouse.infrastructure.containers;
     using roundhouse.infrastructure.logging;
     using roundhouse.infrastructure.logging.custom;
+    using StructureMap;
+    using Container=roundhouse.infrastructure.containers.Container;
 
     public class ContainerSpecs
     {
@@ -36,7 +37,7 @@ namespace roundhouse.tests.infrastructure.containers
             [Observation]
             public void should_not_be_of_type_IWindsorContainer()
             {
-                the_container.should_not_be_an_instance_of<IWindsorContainer>();
+                the_container.should_not_be_an_instance_of<IContainer>();
             }
         }
 

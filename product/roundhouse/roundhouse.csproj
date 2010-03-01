@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -33,22 +33,6 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\references\Castle\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\references\Castle\Castle.DynamicProxy2.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.MicroKernel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\references\Castle\Castle.MicroKernel.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\references\Castle\Castle.Windsor.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.9.0, Culture=neutral, PublicKeyToken=b32731d11ce58905">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\references\log4net\log4net.dll</HintPath>
@@ -59,6 +43,10 @@
     <Reference Include="NAnt.Core, Version=0.86.3412.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\references\NAnt\NAnt.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=2.5.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\StructureMap\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -80,6 +68,7 @@
     <Compile Include="consoles\ConsoleConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />
     <Compile Include="cryptography\MD5CryptographicService.cs" />
+    <Compile Include="databases\DatabaseExtension.cs" />
     <Compile Include="environments\DefaultEnvironment.cs" />
     <Compile Include="environments\Environment.cs" />
     <Compile Include="folders\DefaultFolder.cs" />
@@ -94,8 +83,9 @@
     <Compile Include="infrastructure\commandline.options\Options.cs" />
     <Compile Include="infrastructure\ConfigurationPropertyHolder.cs" />
     <Compile Include="infrastructure\containers\Container.cs" />
-    <Compile Include="infrastructure\containers\custom\WindsorContainer.cs" />
+    <Compile Include="infrastructure\containers\custom\StructureMapContainer.cs" />
     <Compile Include="infrastructure\containers\InversionContainer.cs" />
+    <Compile Include="infrastructure\DatabaseFactory.cs" />
     <Compile Include="infrastructure\extensions\Iteration.cs" />
     <Compile Include="infrastructure\extensions\StringExtensions.cs">
       <SubType>Code</SubType>
@@ -104,6 +94,7 @@
     <Compile Include="infrastructure\extensions\TypeExtensions.cs" />
     <Compile Include="infrastructure\filesystem\FileSystemAccess.cs" />
     <Compile Include="infrastructure\filesystem\WindowsFileSystemAccess.cs" />
+    <Compile Include="infrastructure\KnownFoldersBuilder.cs" />
     <Compile Include="infrastructure\loaders\DefaultAssemblyLoader.cs" />
     <Compile Include="infrastructure\loaders\DefaultInstanceCreator.cs" />
     <Compile Include="infrastructure\logging\custom\FileLogger.cs" />

@@ -5,9 +5,9 @@ namespace roundhouse.infrastructure.logging.custom
 
     public sealed class MultipleLoggerLogFactory : LogFactory
     {
-        public Logger create_logger_bound_to(Object type)
+        public SubLogger create_logger_bound_to(Object type)
         {
-            return Container.get_an_instance_of<Logger>();
+            return Container.get_an_instance_of<SubLogger>();
         }
         
     }

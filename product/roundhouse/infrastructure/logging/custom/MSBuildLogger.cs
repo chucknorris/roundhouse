@@ -2,15 +2,15 @@ namespace roundhouse.infrastructure.logging.custom
 {
     using Microsoft.Build.Framework;
 
-    public sealed class MSBuildLogger : Logger
+    public sealed class MSBuildLogger : SubLogger
     {
         private readonly IBuildEngine build_engine;
         private readonly object calling_task;
 
-        public MSBuildLogger(object calling_task, IBuildEngine build_engine)
+        public MSBuildLogger(ConfigurationPropertyHolder configuration)
         {
-            this.build_engine = build_engine;
-            this.calling_task = calling_task;
+            this.build_engine = configuration.MSBuildTask.BuildEngine;
+            this.calling_task = configuration;
         }
 
         public void log_a_debug_event_containing(string message, params object[] args)

@@ -9,9 +9,9 @@ namespace roundhouse.infrastructure.logging
     {
         private static bool have_displayed_error_message;
 
-        public static Logger bound_to(object object_that_needs_logging)
+        public static SubLogger bound_to(object object_that_needs_logging)
         {
-            Logger logger;
+            SubLogger logger;
             try
             {
                 logger = Container.get_an_instance_of<LogFactory>().create_logger_bound_to(object_that_needs_logging);

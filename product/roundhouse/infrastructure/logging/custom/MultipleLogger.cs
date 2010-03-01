@@ -4,11 +4,11 @@ namespace roundhouse.infrastructure.logging.custom
 
     public sealed class MultipleLogger : Logger
     {
-        private readonly IList<Logger> the_loggers;
+        private readonly IList<SubLogger> the_loggers;
 
-        public MultipleLogger(IList<Logger> loggers)
+        public MultipleLogger(IList<SubLogger> loggers)
         {
-            the_loggers = loggers ?? new List<Logger>();
+            the_loggers = loggers ?? new List<SubLogger>();
         }
 
 

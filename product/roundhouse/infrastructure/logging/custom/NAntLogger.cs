@@ -3,13 +3,13 @@ namespace roundhouse.infrastructure.logging.custom
     using System;
     using NAnt.Core;
 
-    public sealed class NAntLogger : Logger
+    public sealed class NAntLogger : SubLogger
     {
         private readonly Task nant_task;
 
-        public NAntLogger(Task nant_task)
+        public NAntLogger(ConfigurationPropertyHolder configuration)
         {
-            this.nant_task = nant_task;
+            this.nant_task = configuration.NAntTask;
         }
 
         private void log_message(Level log_level, string message)

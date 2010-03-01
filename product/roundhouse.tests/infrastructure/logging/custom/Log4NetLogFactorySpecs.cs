@@ -26,7 +26,7 @@ namespace roundhouse.tests.infrastructure.logging.custom
             [Observation]
             public void should_create_an_object_of_type_Logger()
             {
-                result.should_be_an_instance_of<Logger>();
+                result.should_be_an_instance_of<SubLogger>();
             }
         }
     }
