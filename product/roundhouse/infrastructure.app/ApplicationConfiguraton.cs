@@ -1,22 +1,22 @@
-using roundhouse.databases;
-using roundhouse.infrastructure.extensions;
-
-namespace roundhouse.infrastructure
+namespace roundhouse.infrastructure.app
 {
     using System;
-    using System.Collections.Generic;
+    using builders;
     using containers;
+    using containers.custom;
     using cryptography;
+    using databases;
     using environments;
+    using extensions;
     using filesystem;
     using folders;
-    using logging;
-    using logging.custom;
+    using infrastructure.logging;
+    using infrastructure.logging.custom;
     using migrators;
     using resolvers;
     using StructureMap;
     using Container=roundhouse.infrastructure.containers.Container;
-    using Environment = roundhouse.environments.Environment;
+    using Environment=roundhouse.environments.Environment;
 
     public static class ApplicationConfiguraton
     {
@@ -85,8 +85,8 @@ namespace roundhouse.infrastructure
             if (string.IsNullOrEmpty(configuration_property_holder.DatabaseType))
             {
                 configuration_property_holder.DatabaseType = ApplicationParameters.default_database_type;
-            } 
-            if (configuration_property_holder.RestoreTimeout==0)
+            }
+            if (configuration_property_holder.RestoreTimeout == 0)
             {
                 configuration_property_holder.RestoreTimeout = ApplicationParameters.default_restore_timeout;
             }
@@ -104,44 +104,25 @@ namespace roundhouse.infrastructure
             configuration_property_holder.DatabaseType = convert_database_type_synonyms(configuration_property_holder.DatabaseType);
 
             ObjectFactory.Configure(cfg =>
-                                    {
-                                        cfg.For<ConfigurationPropertyHolder>().Use(configuration_property_holder);
+                                        {
+                                            cfg.For<ConfigurationPropertyHolder>().Use(configuration_property_holder);
+                                            cfg.For<FileSystemAccess>().Use<WindowsFileSystemAccess>();
+                                            cfg.For<KnownFolders>().Use(
+                                                context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<LogFactory>().Use<MultipleLoggerLogFactory>();
+                                            cfg.For<Logger>().Use(
+                                                context => LogBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<Database>().Use(
+                                                context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<CryptographicService>().Use<MD5CryptographicService>();
+                                            cfg.For<DatabaseMigrator>().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(),context.GetInstance<CryptographicService>(),configuration_property_holder));
+                                            cfg.For<VersionResolver>().Use(
+                                                context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<Environment>().Use(new DefaultEnvironment(configuration_property_holder));
+                                        });
 
-                                        cfg.For<FileSystemAccess>().Use<WindowsFileSystemAccess>();
-                                        cfg.For<KnownFolders>().Use(cxt => KnownFoldersBuilder.Build(cxt.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                        cfg.For<LogFactory>().Use<MultipleLoggerLogFactory>();
-                                        cfg.Scan(scan=>
-                                                 {
-                                                     scan.AssemblyContainingType<SubLogger>();
-                                                     scan.AddAllTypesOf<SubLogger>();
-                                                 });
-                                        cfg.For<Logger>().Use<MultipleLogger>();
-
-
-                                        cfg.For<Database>().Use(cxt => DatabaseFactory.Build(cxt.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                        cfg.For<CryptographicService>().Use<MD5CryptographicService>();
-
-
-                                        cfg.For<DatabaseMigrator>().Use<DefaultDatabaseMigrator>();
-
-                                        cfg.For<VersionResolver>().Use(cxt =>
-                                                                       {
-                                                                           VersionResolver xml_version_finder = new XmlFileVersionResolver(cxt.GetInstance<FileSystemAccess>(),
-                                                                           configuration_property_holder.VersionXPath,
-                                                                           configuration_property_holder.VersionFile);
-                                                                           VersionResolver dll_version_finder = new DllFileVersionResolver(cxt.GetInstance<FileSystemAccess>(),
-                                                                                                                                           configuration_property_holder.VersionFile);
-                                                                           IEnumerable<VersionResolver> resolvers = new List<VersionResolver> { xml_version_finder, dll_version_finder };
-
-                                                                           return new ComplexVersionResolver(resolvers);
-                                                                       });
-
-                                        cfg.For<Environment>().Use<DefaultEnvironment>();
-                                    });
-
-            return new containers.custom.StructureMapContainer(ObjectFactory.Container);
+            return new StructureMapContainer(ObjectFactory.Container);
         }
-
 
         private static string convert_database_type_synonyms(string database_type)
         {
@@ -159,34 +140,34 @@ namespace roundhouse.infrastructure
                 case "sql2005":
                 case "sqlserver2005":
                     database_type_full_name =
-                       "roundhouse.databases.sqlserver2005.SqlServerDatabase, roundhouse.databases.sqlserver2005";
+                        "roundhouse.databases.sqlserver2005.SqlServerDatabase, roundhouse.databases.sqlserver2005";
                     break;
                 case "2000":
                 case "sql2000":
                 case "sqlserver2000":
                     database_type_full_name =
-                      "roundhouse.databases.sqlserver2000.SqlServerDatabase, roundhouse.databases.sqlserver2000";
+                        "roundhouse.databases.sqlserver2000.SqlServerDatabase, roundhouse.databases.sqlserver2000";
                     throw new NotSupportedException(
                         "Microsoft SQL Server 2000? Really? Like SNL's \"really.\" Really?! Nice try though.");
                     break;
-                case "sql" :
+                case "sql":
                 case "sql.net":
                 case "sqlserver":
                 case "sqlado.net":
                     database_type_full_name =
-                       "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
+                        "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
                     break;
                 case "mysql":
                     database_type_full_name =
-                      "roundhouse.databases.mysql.MySqlDatabase, roundhouse.databases.mysql";
+                        "roundhouse.databases.mysql.MySqlDatabase, roundhouse.databases.mysql";
                     break;
                 case "oracle":
                     database_type_full_name =
-                     "roundhouse.databases.oracle.OracleDatabase, roundhouse.databases.oracle";
+                        "roundhouse.databases.oracle.OracleDatabase, roundhouse.databases.oracle";
                     break;
                 case "oledb":
                     database_type_full_name =
-                     "roundhouse.databases.oledb.OleDbDatabase, roundhouse.databases.oledb";
+                        "roundhouse.databases.oledb.OleDbDatabase, roundhouse.databases.oledb";
                     break;
             }
 

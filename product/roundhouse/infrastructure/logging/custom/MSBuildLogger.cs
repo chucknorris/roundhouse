@@ -1,16 +1,21 @@
 namespace roundhouse.infrastructure.logging.custom
 {
+    using app;
     using Microsoft.Build.Framework;
 
-    public sealed class MSBuildLogger : SubLogger
+    public sealed class MSBuildLogger : Logger
     {
         private readonly IBuildEngine build_engine;
         private readonly object calling_task;
 
         public MSBuildLogger(ConfigurationPropertyHolder configuration)
         {
-            this.build_engine = configuration.MSBuildTask.BuildEngine;
-            this.calling_task = configuration;
+            if (configuration.MSBuildTask != null)
+            {
+                build_engine = configuration.MSBuildTask.BuildEngine;
+            }
+            
+            calling_task = configuration;
         }
 
         public void log_a_debug_event_containing(string message, params object[] args)
@@ -18,8 +23,8 @@ namespace roundhouse.infrastructure.logging.custom
             if (build_engine == null) return;
 
             build_engine.LogMessageEvent(new BuildMessageEventArgs(
-                string.Format(message,args), 
-                string.Empty, 
+                string.Format(message, args),
+                string.Empty,
                 calling_task.GetType().Name,
                 MessageImportance.Low));
         }
@@ -59,7 +64,7 @@ namespace roundhouse.infrastructure.logging.custom
             build_engine.LogErrorEvent(new BuildErrorEventArgs(
                 string.Empty,
                 string.Empty,
-                string.Empty,0,0,0,0,
+                string.Empty, 0, 0, 0, 0,
                 string.Format(message, args),
                 string.Empty, calling_task.GetType().Name));
         }

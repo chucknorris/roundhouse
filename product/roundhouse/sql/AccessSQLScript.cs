@@ -6,7 +6,7 @@ namespace roundhouse.sql
     {
         public string separator_characters_regex
         {
-            get { return @"(?<!--[\s\t\w\`\~\!\@\#\$\%\^\&\*\(\)\-_\+\=\,\.\;\:\'\""\[\]\\\/\?\<\>]*)\;[\t\s]*$(?![\t\s\w\`\~\!\@\#\$\%\^\&\*\(\)\-_\+\=\,\.\;\:\'\""\[\]\\\/\?\<\>\r\n\f]*\*\/)"; }
+            get { return @"(?<KEEP1>(?:--).*$|/\*[\S\s]*?\*/)|(?<KEEP1>'(?:\\.|[^'\\])*')|(?<KEEP1>""(?:\\.|[^""\\])*"")|^(?<BATCHSPLITTER>\;)(?<KEEP2>.*)$|(?<KEEP1>^[^\S\n]*.*\s)(?<BATCHSPLITTER>\;)(?<KEEP2>[^\S\n]*.*[^\S\n]*(?:(?:--).*)?$)"; }
         }
 
         public string create_database(string database_name)

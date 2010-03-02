@@ -15,11 +15,11 @@ namespace roundhouse.tests.infrastructure.logging
     {
         public abstract class concern_for_logging : observations_for_a_static_sut
         {
-            protected static SubLogger result;
+            protected static Logger result;
 
             protected static InversionContainer the_container;
             protected static LogFactory mock_log_factory;
-            protected static SubLogger mock_logger;
+            protected static Logger mock_logger;
 
             private context c = () =>
                                     {
@@ -36,7 +36,7 @@ namespace roundhouse.tests.infrastructure.logging
             private context c = () =>
                                     {
                                         mock_log_factory = an<LogFactory>();
-                                        mock_logger = an<SubLogger>();
+                                        mock_logger = an<Logger>();
                                         the_container.Stub(x => x.Resolve<LogFactory>())
                                             .Return(mock_log_factory);
                                         mock_log_factory.Stub(x => x.create_logger_bound_to(typeof (StructureMapContainer)))

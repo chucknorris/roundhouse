@@ -4,6 +4,7 @@
     using consoles;
     using folders;
     using infrastructure;
+    using infrastructure.app;
     using infrastructure.containers;
     using infrastructure.filesystem;
     using log4net;
@@ -21,7 +22,7 @@
 
     internal class Program
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(Program));
+        private static readonly ILog the_logger = LogManager.GetLogger(typeof(Program));
         private static readonly FileSystemAccess file_system = new WindowsFileSystemAccess();
         private static KnownFolders known_folders;
 
@@ -54,7 +55,7 @@
                 }
                 catch (Exception ex)
                 {
-                    _logger.Info(ex.Message);
+                    the_logger.Info(ex.Message);
                     Environment.Exit(1);
                 }
             }
@@ -64,13 +65,13 @@
         public static void report_version()
         {
             string version = infrastructure.Version.get_current_assembly_version();
-            _logger.InfoFormat("{0} - version {1} from http://projectroundhouse.org.", ApplicationParameters.name, version);
+            the_logger.InfoFormat("{0} - version {1} from http://projectroundhouse.org.", ApplicationParameters.name, version);
 
         }
 
         public static void run_migrator(string[] args)
         {
-            ConfigurationPropertyHolder configuration = new ConsoleConfiguration(_logger);
+            ConfigurationPropertyHolder configuration = new ConsoleConfiguration(the_logger);
             parse_arguments_and_set_up_migrator_configuration(configuration, args);
             if (configuration.Debug)
             {
@@ -252,7 +253,7 @@
 
             if (help)
             {
-                _logger.Info("Usage of RoundhousE (RH)");
+                the_logger.Info("Usage of RoundhousE (RH)");
                 const string usage_message =
                     "rh.exe /d[atabase] VALUE /[sql]f[ilesdirectory] VALUE " +
                     "[" +
@@ -292,7 +293,7 @@
         public static void show_help(string message, OptionSet option_set)
         {
             //Console.Error.WriteLine(message);
-            _logger.Info(message);
+            the_logger.Info(message);
             option_set.WriteOptionDescriptions(Console.Error);
             Environment.Exit(-1);
         }

@@ -1,4 +1,4 @@
-namespace roundhouse.infrastructure
+namespace roundhouse.infrastructure.app.builders
 {
     using System;
     using System.Reflection;
@@ -7,9 +7,9 @@ namespace roundhouse.infrastructure
     using filesystem;
     using loaders;
 
-    public static class DatabaseFactory
+    public static class DatabaseBuilder
     {
-        public static Database Build(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
+        public static Database build(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
         {
             Database database_to_migrate;
             try
@@ -18,8 +18,7 @@ namespace roundhouse.infrastructure
             }
             catch (NullReferenceException)
             {
-                if (!Assembly.GetExecutingAssembly().FullName.Contains("rh"))
-                    throw;
+                if (!Assembly.GetExecutingAssembly().FullName.Contains("rh")) throw;
 
                 string database_type = configuration_property_holder.DatabaseType;
                 database_type = database_type.Substring(0, database_type.IndexOf(','));
@@ -44,7 +43,6 @@ namespace roundhouse.infrastructure
 
             return database_to_migrate;
         }
-
 
         private static string get_identity_of_person_running_rh()
         {

@@ -4,13 +4,12 @@ namespace roundhouse.infrastructure.logging.custom
 
     public sealed class MultipleLogger : Logger
     {
-        private readonly IList<SubLogger> the_loggers;
+        private readonly IList<Logger> the_loggers;
 
-        public MultipleLogger(IList<SubLogger> loggers)
+        public MultipleLogger(IList<Logger> loggers)
         {
-            the_loggers = loggers ?? new List<SubLogger>();
+            the_loggers = loggers ?? new List<Logger>();
         }
-
 
         public void log_a_debug_event_containing(string message, params object[] args)
         {

@@ -4,6 +4,6 @@ namespace roundhouse.infrastructure.logging
 
     public interface LogFactory
     {
-        SubLogger create_logger_bound_to(Object type);
+        Logger create_logger_bound_to(Object type);
     }
 }

@@ -1,4 +1,4 @@
-namespace roundhouse.infrastructure
+namespace roundhouse.infrastructure.app.builders
 {
     using System;
     using filesystem;
@@ -6,7 +6,7 @@ namespace roundhouse.infrastructure
 
     public static class KnownFoldersBuilder
     {
-        public static KnownFolders Build(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
+        public static KnownFolders build(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
         {
             MigrationsFolder up_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
                                                                      configuration_property_holder.UpFolderName, true, false);

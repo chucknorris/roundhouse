@@ -12,7 +12,7 @@ namespace roundhouse.tests.infrastructure.logging.custom
 
     public class Log4NetLoggerSpecs
     {
-        public abstract class concern_for_Log4NetLogger : observations_for_a_sut_with_a_contract<SubLogger, Log4NetLogger>
+        public abstract class concern_for_Log4NetLogger : observations_for_a_sut_with_a_contract<Logger, Log4NetLogger>
         {
         }
 
@@ -29,7 +29,7 @@ namespace roundhouse.tests.infrastructure.logging.custom
             [Observation]
             public void should_be_an_instance_of_Logger()
             {
-                sut.should_be_an_instance_of<SubLogger>();
+                sut.should_be_an_instance_of<Logger>();
             }
         }
 
