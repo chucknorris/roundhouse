@@ -4,7 +4,7 @@ namespace roundhouse.tasks
 {
     using System;
     using folders;
-    using infrastructure;
+    using infrastructure.app;
     using infrastructure.containers;
     using infrastructure.filesystem;
     using log4net;

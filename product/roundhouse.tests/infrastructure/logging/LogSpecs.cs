@@ -39,17 +39,17 @@ namespace roundhouse.tests.infrastructure.logging
                                         mock_logger = an<Logger>();
                                         the_container.Stub(x => x.Resolve<LogFactory>())
                                             .Return(mock_log_factory);
-                                        mock_log_factory.Stub(x => x.create_logger_bound_to(typeof (WindsorContainer)))
+                                        mock_log_factory.Stub(x => x.create_logger_bound_to(typeof (StructureMapContainer)))
                                             .IgnoreArguments()
                                             .Return(mock_logger);
                                         //when(the_container).is_told_to(x => x.Resolve<LogFactory>())
                                         //    .Return(mock_log_factory);
-                                        //when_the(mock_log_factory).is_told_to(x => x.create_logger_bound_to(typeof(WindsorContainer)))
+                                        //when_the(mock_log_factory).is_told_to(x => x.create_logger_bound_to(typeof(StructureMapContainer)))
                                         //    .IgnoreArguments()
                                         //    .Return(mock_logger);
                                     };
 
-            private because b = () => { result = Log.bound_to(typeof (WindsorContainer)); };
+            private because b = () => { result = Log.bound_to(typeof (StructureMapContainer)); };
 
             [Observation]
             public void should_have_called_the_container_to_resolve_a_registered_logger()

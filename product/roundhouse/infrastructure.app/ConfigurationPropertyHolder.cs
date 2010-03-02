@@ -1,4 +1,4 @@
-namespace roundhouse.infrastructure
+namespace roundhouse.infrastructure.app
 {
     using log4net;
     using Microsoft.Build.Framework;
@@ -38,7 +38,7 @@ namespace roundhouse.infrastructure
         bool NonInteractive { get; set; }
         string DatabaseType { get; set; }
         bool Drop { get; set; }
-		bool DoNotCreateDatabase { get; set; }
+        bool DoNotCreateDatabase { get; set; }
         bool WithTransaction { get; set; }
         bool RecoveryModeSimple { get; set; }
         bool Debug { get; set; }    	

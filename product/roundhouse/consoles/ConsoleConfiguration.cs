@@ -1,6 +1,6 @@
 namespace roundhouse.consoles
 {
-    using infrastructure;
+    using infrastructure.app;
     using log4net;
     using Microsoft.Build.Framework;
     using NAnt.Core;

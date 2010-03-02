@@ -1,12 +1,19 @@
 namespace roundhouse.infrastructure.logging.custom
 {
+    using app;
+    using log4net;
+
     public sealed class Log4NetLogger : Logger
     {
         private readonly log4net.ILog logger;
 
-        public Log4NetLogger(log4net.ILog logger)
+        public Log4NetLogger(ILog logger)
         {
             this.logger = logger;
+        }
+        public Log4NetLogger(ConfigurationPropertyHolder configuration)
+        {
+            this.logger = configuration.Log4NetLogger;
             //logger.DebugFormat("Initializing {0}<{1}>", GetType().FullName, logger.Logger.Name);
         }
 

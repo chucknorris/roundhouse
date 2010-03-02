@@ -10,7 +10,7 @@ namespace roundhouse.infrastructure.app.logging
 {
     public class Log4NetAppender
     {
-        private static ILog _logger = LogManager.GetLogger(typeof (Log4NetAppender));
+        private static readonly ILog the_logger = LogManager.GetLogger(typeof (Log4NetAppender));
       
         private static IAppender set_up_console_appender()
         {
@@ -68,7 +68,7 @@ namespace roundhouse.infrastructure.app.logging
 
             XmlConfigurator.Configure(xml_config_stream);
 
-            _logger.DebugFormat("Configured {0} from assembly {1}", assembly_name, ApplicationParameters.log4net_configuration_resource);
+            the_logger.DebugFormat("Configured {0} from assembly {1}", assembly_name, ApplicationParameters.log4net_configuration_resource);
         }
 
         public static void configure_without_console()
@@ -94,7 +94,7 @@ namespace roundhouse.infrastructure.app.logging
 
             XmlConfigurator.Configure(xml_config_stream);
 
-            _logger.DebugFormat("Configured {0} from assembly {1}", ApplicationParameters.log4net_configuration_resource_no_console, assembly_name);
+            the_logger.DebugFormat("Configured {0} from assembly {1}", ApplicationParameters.log4net_configuration_resource_no_console, assembly_name);
         }
 
     }

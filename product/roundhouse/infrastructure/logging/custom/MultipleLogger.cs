@@ -11,7 +11,6 @@ namespace roundhouse.infrastructure.logging.custom
             the_loggers = loggers ?? new List<Logger>();
         }
 
-
         public void log_a_debug_event_containing(string message, params object[] args)
         {
             foreach (Logger logger in the_loggers)

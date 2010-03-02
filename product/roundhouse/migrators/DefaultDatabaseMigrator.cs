@@ -1,12 +1,13 @@
 namespace roundhouse.migrators
 {
     using System;
-    using System.Text.RegularExpressions;
     using cryptography;
     using databases;
+    using infrastructure.app;
     using infrastructure.extensions;
     using infrastructure.logging;
-    using Environment=roundhouse.environments.Environment;
+    using sqlsplitters;
+    using Environment = roundhouse.environments.Environment;
 
     public sealed class DefaultDatabaseMigrator : DatabaseMigrator
     {
@@ -19,16 +20,15 @@ namespace roundhouse.migrators
         private readonly bool error_on_one_time_script_changes;
         private bool running_in_a_transaction;
 
-        public DefaultDatabaseMigrator(Database database, CryptographicService crypto_provider, bool restoring_database, string restore_path,
-                                       string custom_restore_options, string output_path, bool error_on_one_time_script_changes)
+        public DefaultDatabaseMigrator(Database database, CryptographicService crypto_provider, ConfigurationPropertyHolder configuration)
         {
             this.database = database;
             this.crypto_provider = crypto_provider;
-            this.restoring_database = restoring_database;
-            this.restore_path = restore_path;
-            this.custom_restore_options = custom_restore_options;
-            this.output_path = output_path;
-            this.error_on_one_time_script_changes = error_on_one_time_script_changes;
+            restoring_database = configuration.Restore;
+            restore_path = configuration.RestoreFromPath;
+            custom_restore_options = configuration.RestoreCustomOptions;
+            output_path = configuration.OutputPath;
+            error_on_one_time_script_changes = !configuration.WarnOnOneTimeScriptChanges;
         }
 
         public void connect(bool with_transaction)
@@ -151,8 +151,7 @@ namespace roundhouse.migrators
             return database.insert_version_and_get_version_id(repository_path, repository_version);
         }
 
-        public bool run_sql(string sql_to_run, string script_name, bool run_this_script_once, bool run_this_script_every_time, long version_id,
-                            Environment environment)
+        public bool run_sql(string sql_to_run, string script_name, bool run_this_script_once, bool run_this_script_every_time, long version_id, Environment environment)
         {
             bool this_sql_ran = false;
 
@@ -160,46 +159,29 @@ namespace roundhouse.migrators
             {
                 if (error_on_one_time_script_changes)
                 {
-                    throw new Exception(
-                        string.Format(
-                            "{0} has changed since the last time it was run. By default this is not allowed - scripts that run once should never change. To change this behavior to a warning, please set warnOnOneTimeScriptChanges to true and run again. Stopping execution.",
-                            script_name));
+                    throw new Exception(string.Format("{0} has changed since the last time it was run. By default this is not allowed - scripts that run once should never change. To change this behavior to a warning, please set warnOnOneTimeScriptChanges to true and run again. Stopping execution.", script_name));
                 }
                 Log.bound_to(this).log_a_warning_event_containing("{0} is a one time script that has changed since it was run.", script_name);
             }
 
-            if (if_this_is_an_environment_file_its_in_the_right_environment(script_name, environment) &&
-                this_script_should_run(script_name, sql_to_run, run_this_script_once, run_this_script_every_time))
+            if (if_this_is_an_environment_file_its_in_the_right_environment(script_name, environment)
+                && this_script_should_run(script_name, sql_to_run, run_this_script_once, run_this_script_every_time))
             {
                 Log.bound_to(this).log_an_info_event_containing("Running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
 
-                foreach (
-                    var sql_statement in
-                        Regex.Split(sql_to_run, database.sql_statement_separator_regex_pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))
+                foreach (var sql_statement in StatementSplitter.split_sql_on_regex_and_remove_empty_statements(sql_to_run, database.sql_statement_separator_regex_pattern))
                 {
-                    if (script_has_text_to_run(sql_statement))
-                    {
-                        database.run_sql(sql_statement);
-                    }
+                    database.run_sql(sql_statement);
                 }
                 record_script_in_scripts_run_table(script_name, sql_to_run, run_this_script_once, version_id);
                 this_sql_ran = true;
             }
             else
             {
-                Log.bound_to(this).log_an_info_event_containing("Skipped {0} - {1}.", script_name,
-                                                                run_this_script_once ? "One time script" : "No changes were found to run");
+                Log.bound_to(this).log_an_info_event_containing("Skipped {0} - {1}.", script_name, run_this_script_once ? "One time script" : "No changes were found to run");
             }
 
             return this_sql_ran;
-        }
-
-        private bool script_has_text_to_run(string sql_statement)
-        {
-            sql_statement = Regex.Replace(sql_statement, database.sql_statement_separator_regex_pattern, string.Empty,
-                                          RegexOptions.IgnoreCase | RegexOptions.Multiline);
-
-            return !string.IsNullOrEmpty(sql_statement.to_lower().Replace(System.Environment.NewLine, string.Empty).Replace(" ", string.Empty));
         }
 
         public void record_script_in_scripts_run_table(string script_name, string sql_to_run, bool run_this_script_once, long version_id)
