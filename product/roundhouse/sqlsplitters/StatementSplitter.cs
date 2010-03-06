@@ -6,21 +6,6 @@ namespace roundhouse.sqlsplitters
 
     public class StatementSplitter
     {
-        //public static IEnumerable<string> split_sql_on_regex_and_remove_empty_statements(string sql_to_run, string sql_statement_separator_regex_pattern)
-        //{
-        //    IList<string> return_sql_list = new List<string>();
-
-        //    foreach (string sql_statement in Regex.Split(sql_to_run, sql_statement_separator_regex_pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))
-        //    {
-        //        if (script_has_text_to_run(sql_statement, sql_statement_separator_regex_pattern))
-        //        {
-        //            return_sql_list.Add(sql_statement);
-        //        }
-        //    }
-
-        //    return return_sql_list;
-        //}
-
         public static string batch_terminator_replacement_string = @" |{[_REMOVE_]}| ";
         public static string regex_split_string = @"\|\{\[_REMOVE_\]\}\|";
 

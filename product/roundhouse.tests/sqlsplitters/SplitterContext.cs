@@ -56,8 +56,13 @@ INSERT INTO POGO (id,desc) VALUES (1,'GO')
 
 BOB11
 
+  -- TODO: To be good, there should be type column
+
 -- dfgjhdfgdjkgk dfgdfg GO
 BOB12
+
+UPDATE Timmy SET id = 'something something go'
+UPDATE Timmy SET id = 'something something: go'
 ";
 
             public static string sql_statement_scrubbed = @"
@@ -109,8 +114,13 @@ INSERT INTO POGO (id,desc) VALUES (1,'GO')
 
 BOB11
 
+  -- TODO: To be good, there should be type column
+
 -- dfgjhdfgdjkgk dfgdfg GO
 BOB12
+
+UPDATE Timmy SET id = 'something something go'
+UPDATE Timmy SET id = 'something something: go'
 ";
         }
 

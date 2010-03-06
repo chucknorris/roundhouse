@@ -218,8 +218,8 @@ GO
             [Observation]
             public void should_replace_on_go_with_words_before_and_after_on_the_same_line_including_symbols()
             {
-                string sql_to_match = words_to_check + symbols_to_check + " GO BOB" + symbols_to_check;
-                string expected_scrubbed = words_to_check + symbols_to_check + " " + batch_terminator_replacement_string + " BOB" + symbols_to_check;
+                string sql_to_match = words_to_check + symbols_to_check.Replace("'","").Replace("\"","") + " GO BOB" + symbols_to_check;
+                string expected_scrubbed = words_to_check + symbols_to_check.Replace("'", "").Replace("\"", "") + " " + batch_terminator_replacement_string + " BOB" + symbols_to_check;
                 Console.WriteLine(sql_to_match);
                 string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
                 Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
