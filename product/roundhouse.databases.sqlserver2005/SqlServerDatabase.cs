@@ -24,7 +24,13 @@ namespace roundhouse.databases.sqlserver2005
         }
         public string custom_create_database_script { get; set; }
         public int command_timeout { get; set; }
-        public int restore_timeout { get; set; }
+        public int restore_timeout { get; set; } 
+        private bool split_batches = false;
+        public bool split_batch_statements
+        {
+            get { return split_batches; }
+            set { split_batches = value; }
+        }
 
         public const string MASTER_DATABASE_NAME = "Master";
         private string connect_options = "Integrated Security";
