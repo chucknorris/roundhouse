@@ -24,6 +24,13 @@ namespace roundhouse.databases.oledb
         public string custom_create_database_script { get; set; }
         public int command_timeout { get; set; }
         public int restore_timeout { get; set; }
+        private bool split_batches = true;
+        public bool split_batch_statements
+        {
+            get { return split_batches;  }
+            set { split_batches = value;}
+        }
+
 
         public const string MASTER_DATABASE_NAME = "Master";
         private string connect_options = "Trusted_Connection";
@@ -106,7 +113,7 @@ namespace roundhouse.databases.oledb
 
         public void close_connection()
         {
-            if (transaction !=null)
+            if (transaction != null)
             {
                 transaction.Commit();
                 transaction = null;
@@ -371,7 +378,7 @@ namespace roundhouse.databases.oledb
 
             using (OleDbCommand command = server_connection.CreateCommand())
             {
-                command.Transaction = transaction; 
+                command.Transaction = transaction;
                 command.CommandText = sql_to_run;
                 command.CommandType = CommandType.Text;
                 command.CommandTimeout = command_timeout;

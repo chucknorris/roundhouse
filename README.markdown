@@ -39,6 +39,10 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+=0.2.0.150=  
+* Turning off batch splitting where it is not necessary as it does affect performance. (r150)  
+* Splitting statements on GO has been enhanced to catch end of file GOs - see http://code.google.com/p/roundhouse/issues/detail?id=25 for details. (r149)  
+  
 =0.2.0.148=  
 * Splitting statements on GO has been enhanced - see http://code.google.com/p/roundhouse/issues/detail?id=25 for details. (r147)  
   

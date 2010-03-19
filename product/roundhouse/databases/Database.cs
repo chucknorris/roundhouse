@@ -16,8 +16,8 @@ namespace roundhouse.databases
         string custom_create_database_script { get; set; }
         int command_timeout { get; set; }
         int restore_timeout { get; set; }
-
-
+        bool split_batch_statements { get; set; }
+        
         void initialize_connection();
         void open_connection(bool with_transaction);
         void close_connection();

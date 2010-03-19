@@ -80,6 +80,12 @@ namespace roundhouse.databases
             set { database.restore_timeout = value; }
         }
 
+        public bool split_batch_statements
+        {
+            get { return database.split_batch_statements; }
+            set { database.split_batch_statements = value; }
+        }
+
         public void initialize_connection()
         {
             database.initialize_connection();

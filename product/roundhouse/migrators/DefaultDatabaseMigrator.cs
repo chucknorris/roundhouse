@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace roundhouse.migrators
 {
     using System;
@@ -169,7 +171,7 @@ namespace roundhouse.migrators
             {
                 Log.bound_to(this).log_an_info_event_containing("Running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
 
-                foreach (var sql_statement in StatementSplitter.split_sql_on_regex_and_remove_empty_statements(sql_to_run, database.sql_statement_separator_regex_pattern))
+                foreach (var sql_statement in get_statements_to_run(sql_to_run))
                 {
                     database.run_sql(sql_statement);
                 }
@@ -182,6 +184,24 @@ namespace roundhouse.migrators
             }
 
             return this_sql_ran;
+        }
+
+        public IEnumerable<string> get_statements_to_run(string sql_to_run)
+        {
+            IList<string> sql_statements = new List<string>();
+
+            if (database.split_batch_statements)
+            {
+                foreach (var sql_statement in StatementSplitter.split_sql_on_regex_and_remove_empty_statements(sql_to_run, database.sql_statement_separator_regex_pattern))
+                {
+                    sql_statements.Add(sql_statement);
+                }
+            } else
+            {
+                sql_statements.Add(sql_to_run);
+            }
+
+            return sql_statements;
         }
 
         public void record_script_in_scripts_run_table(string script_name, string sql_to_run, bool run_this_script_once, long version_id)
