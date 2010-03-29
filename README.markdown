@@ -25,9 +25,12 @@ This is the best way to get to the bleeding edge of what we are doing.
 
 1. Clone the source down to your machine.  
   `git clone git://github.com/chucknorris/roundhouse.git`  
-2. Run `build.bat`. NOTE: You must have git on the path (open a regular command line and type git).  
-
- 
+2. Type `cd roundhouse`  
+3. Type `git config core.autocrlf true` to set line endings to auto convert for this repository  
+4. Type `git status`. You should not see any files to change.
+5. Run `build.bat`. NOTE: You must have git on the path (open a regular command line and type git).
+  
+  
 # REQUIREMENTS
 * .NET Framework 3.5  
 * SQL Server 2005/2008 installed (or required DLLS in the GAC for SQL Server 2005/2008)  

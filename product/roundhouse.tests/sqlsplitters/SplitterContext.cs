@@ -63,6 +63,17 @@ BOB12
 
 UPDATE Timmy SET id = 'something something go'
 UPDATE Timmy SET id = 'something something: go'
+
+ALTER TABLE Inv.something ADD
+	gagagag decimal(20, 12) NULL,
+    asdfasdf DECIMAL(20, 6) NULL,
+	didbibi decimal(20, 6) NULL,
+	yeppsasd decimal(20, 6) NULL,
+	uhuhhh datetime NULL,
+	slsald varchar(15) NULL,
+	uhasdf varchar(15) NULL,
+    daf_asdfasdf DECIMAL(20,6) NULL;
+GO
 ";
 
             public static string sql_statement_scrubbed = @"
@@ -121,6 +132,17 @@ BOB12
 
 UPDATE Timmy SET id = 'something something go'
 UPDATE Timmy SET id = 'something something: go'
+
+ALTER TABLE Inv.something ADD
+	gagagag decimal(20, 12) NULL,
+    asdfasdf DECIMAL(20, 6) NULL,
+	didbibi decimal(20, 6) NULL,
+	yeppsasd decimal(20, 6) NULL,
+	uhuhhh datetime NULL,
+	slsald varchar(15) NULL,
+	uhasdf varchar(15) NULL,
+    daf_asdfasdf DECIMAL(20,6) NULL;
+" + StatementSplitter.batch_terminator_replacement_string + @"
 ";
         }
 

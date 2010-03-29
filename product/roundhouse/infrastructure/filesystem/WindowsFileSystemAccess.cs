@@ -5,6 +5,7 @@ namespace roundhouse.infrastructure.filesystem
 {
     using System;
     using System.IO;
+    using System.Runtime.InteropServices;
     using logging;
     using extensions;
 
@@ -56,6 +57,25 @@ namespace roundhouse.infrastructure.filesystem
             Log.bound_to(this).log_a_debug_event_containing("Attempting to copy from \"{0}\" to \"{1}\".", source_file_name, destination_file_name);
             File.Copy(source_file_name, destination_file_name, overwrite_the_existing_file);
         }
+
+        /// <summary>
+        /// Copies a file from one directory to another using PInvoke
+        /// </summary>
+        /// <param name="source_file_name">Where is the file now?</param>
+        /// <param name="destination_file_name">Where would you like it to go?</param>
+        /// <param name="overwrite_the_existing_file">If there is an existing file already there, would you like to delete it?</param>
+        public void file_copy_unsafe(string source_file_name, string destination_file_name, bool overwrite_the_existing_file)
+        {
+            Log.bound_to(this).log_a_debug_event_containing("Attempting to copy from \"{0}\" to \"{1}\".", source_file_name, destination_file_name);
+            //Private Declare Function apiCopyFile Lib "kernel32" Alias "CopyFileA" _
+            int success = CopyFileA(source_file_name, destination_file_name, overwrite_the_existing_file ? 0 : 1);
+
+            //File.Copy(source_file_name, destination_file_name, overwrite_the_existing_file);
+        }
+
+        [DllImport("kernel32")]
+        private static extern int CopyFileA(string lpExistingFileName, string lpNewFileName, int bFailIfExists);
+
 
         /// <summary>
         /// Determines the file information given a path to an existing file
