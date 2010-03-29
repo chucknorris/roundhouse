@@ -21,10 +21,10 @@ namespace roundhouse.runners
         private readonly VersionResolver version_resolver;
         private readonly bool interactive;
         private readonly bool dropping_the_database;
-    	private readonly bool dont_create_the_database;
-    	private readonly bool run_in_a_transaction;
-    	private readonly bool use_simple_recovery;
-    	private const string SQL_EXTENSION = "*.sql";
+        private readonly bool dont_create_the_database;
+        private readonly bool run_in_a_transaction;
+        private readonly bool use_simple_recovery;
+        private const string SQL_EXTENSION = "*.sql";
 
         public RoundhouseMigrationRunner(
                 string repository_path,
@@ -35,7 +35,7 @@ namespace roundhouse.runners
                 VersionResolver version_resolver,
                 bool interactive,
                 bool dropping_the_database,
-				bool dont_create_the_database,
+                bool dont_create_the_database,
                 bool run_in_a_transaction,
                 bool use_simple_recovery)
         {
@@ -47,7 +47,7 @@ namespace roundhouse.runners
             this.version_resolver = version_resolver;
             this.interactive = interactive;
             this.dropping_the_database = dropping_the_database;
-        	this.dont_create_the_database = dont_create_the_database;
+            this.dont_create_the_database = dont_create_the_database;
             this.run_in_a_transaction = run_in_a_transaction;
             this.use_simple_recovery = use_simple_recovery;
         }
@@ -80,11 +80,11 @@ namespace roundhouse.runners
                 if (!dropping_the_database)
                 {
 
-                	if (!dont_create_the_database)
-                	{
-						database_migrator.create_or_restore_database();
-						database_migrator.set_recovery_mode(use_simple_recovery);                    	
-                	}
+                    if (!dont_create_the_database)
+                    {
+                        database_migrator.create_or_restore_database();
+                        database_migrator.set_recovery_mode(use_simple_recovery);
+                    }
                     database_migrator.transfer_to_database_for_changes();
                     database_migrator.verify_or_create_roundhouse_tables();
 
@@ -100,7 +100,7 @@ namespace roundhouse.runners
                     //todo: remember when looking through all files below here, change CREATE to ALTER
                     // we are going to create the create if not exists script
 
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run First After Update",known_folders.run_first_after_up.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run First After Update", known_folders.run_first_after_up.folder_full_path);
                     traverse_files_and_run_sql(known_folders.run_first_after_up.folder_full_path, version_id, known_folders.run_first_after_up, environment);
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Function", known_folders.functions.folder_full_path);
                     traverse_files_and_run_sql(known_folders.functions.folder_full_path, version_id, known_folders.functions, environment);
@@ -133,10 +133,10 @@ namespace roundhouse.runners
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_an_error_event_containing("{0} encountered an error.{1}{2}{3}", 
+                Log.bound_to(this).log_an_error_event_containing("{0} encountered an error.{1}{2}{3}",
                         ApplicationParameters.name,
-                        run_in_a_transaction ? " You were running in a transaction though, so the database should be in the state it was in prior to this piece running. This does not include a drop/create or any creation of a database, as those items can not run in a transaction." : string.Empty, 
-                        System.Environment.NewLine, 
+                        run_in_a_transaction ? " You were running in a transaction though, so the database should be in the state it was in prior to this piece running. This does not include a drop/create or any creation of a database, as those items can not run in a transaction." : string.Empty,
+                        System.Environment.NewLine,
                         ex.ToString());
                 throw;
             }
@@ -176,7 +176,14 @@ namespace roundhouse.runners
                 bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file), migration_folder.should_run_items_in_folder_once, migration_folder.should_run_items_in_folder_every_time, version_id, migrating_environment);
                 if (the_sql_ran)
                 {
-                    copy_to_change_drop_folder(sql_file, migration_folder);
+                    try
+                    {
+                        copy_to_change_drop_folder(sql_file, migration_folder);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.bound_to(this).log_a_warning_event_containing("Unable to copy {0} to {1}. {2}{3}", sql_file,migration_folder.folder_full_path, System.Environment.NewLine, ex.ToString());
+                    }
                 }
             }
 
@@ -191,7 +198,7 @@ namespace roundhouse.runners
             string destination_file = file_system.combine_paths(known_folders.change_drop.folder_full_path, "itemsRan", sql_file_ran.Replace(migration_folder.folder_path + "\\", string.Empty));
             file_system.verify_or_create_directory(file_system.get_directory_name_from(destination_file));
             Log.bound_to(this).log_a_debug_event_containing("Copying file {0} to {1}.", file_system.get_file_name_from(sql_file_ran), destination_file);
-            file_system.file_copy(sql_file_ran, destination_file, true);
+            file_system.file_copy_unsafe(sql_file_ran, destination_file, true);
         }
 
         private void copy_log_file_to_change_drop_folder()

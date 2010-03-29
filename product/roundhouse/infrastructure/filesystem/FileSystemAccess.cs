@@ -53,6 +53,14 @@ namespace roundhouse.infrastructure.filesystem
         void file_copy(string source_file_name, string destination_file_name, bool overwrite_the_existing_file);
 
         /// <summary>
+        /// Copies a file from one directory to another using PInvoke
+        /// </summary>
+        /// <param name="source_file_name">Where is the file now?</param>
+        /// <param name="destination_file_name">Where would you like it to go?</param>
+        /// <param name="overwrite_the_existing_file">If there is an existing file already there, would you like to delete it?</param>
+        void file_copy_unsafe(string source_file_name, string destination_file_name, bool overwrite_the_existing_file);
+
+        /// <summary>
         /// Determines if a file is a system file
         /// </summary>
         /// <param name="file">File to check</param>
