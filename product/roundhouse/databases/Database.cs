@@ -1,3 +1,65 @@
+     //                          :iji                         
+     //                         #WWWWWW                       
+     //                     :,#WWWWWWWGW                      
+     //                   ,WWWWWWWWWWWWW;K                    
+     //                  iWWWWWWWWWWWWWWW D                   
+     //                  WWWWWWWWWWWWWWWWWW:                  
+     //                 WWWWWWWWWWWWWWWWWWWW                  
+     //                ,WWWWWWWWWWWWWWWWWWWW.                 
+     //                iWWWWWWWWWWWWWWWWWWWWi                 
+     //                 WWWWWWWWWWWWWWWWWWWWK                 
+     //                ,WWWWWWWWWWtWWWWWWWWW#                 
+     //                LWWWWWWWWWL: LW#WWWWWW:                
+     //                ,WWWWWWWW#i    ,WWWWWWj                
+     //                ,WWWWGWWW      .WWWWWWW                
+     //                 WWWWWWWK       EWWWWW#                
+     //                 #WWW:::         WWWWW#                
+     //                 tWW.           .WWW#W#                
+     //                  DW j :EKGf     WWD.WW                
+     //  .G.             #WWWE WWW#W    .fK.W#                
+     //   #j             LWWW# L ,      Li  WD                
+     //   .EL            ;WEWG          W  :W                 
+     //    E;:           i  W,         :W  KW                 
+     //     #j              W.         iE tWE                 
+     //     fKWD          D W          K# LW                  
+     //     :WWWD         WGW   ,G     i.                     
+     //     :WWW#,:#iK    EWW:L:      W#:  G                  
+     //      fWW K  # ,   :WWWW;.  t #WL,  WL                 
+     //       WW#f   :tjDWWWWWWWWWWWWWWW   EW                 
+     //      .WWWGL  WWWWWWWWWt:  GWWEW    WW:                
+     //       WWWW,. #WWWWWWWWE,,iEWiW#   GWWj                
+     //       #WWWWD  WWWWWWWWWWWWWWWWL  fWWWW;               
+     //       :WWWWfD; WWWWWWWWWWWWWWW. ;WWWWWWL              
+     //        #WWWW.W: WWWWWWWWWWWWWWGWWWWWWWWWW             
+     //        iWWWWWK, #WWWWWWWWWWWWWWWWWWWWWWWW#            
+     //         WWWWW:D :WWWWWWWWWWWWWWWWWWWWWWWWWW.          
+     //         :WWWW# G  #WWWWWWWWWWWWWWWWWWWWWWWWW,         
+     //          WWWWWW,   WWWWWWWWWWWWWWWWWWWWWWWWWW         
+     //         ;WWWWWW.K  KWWWWWWWWWWWWWWWWWWWWWWWWWD        
+     //         DWWWWWWW L  WWWWWWWWWWWWWWWWWWWWWWWWWWf       
+     //         WWWWWWW L:  :WWWWWWWWWWWWWWWWWWWWWWWWWWK      
+     //         #WWWWWE: jW  KWWWWWWWWWWWWWWWWWWWWWWWWWW;     
+     //         WWWWWWWGt; ;  WWWWWWWWWWWWWWWWWWWWWWWWWWW     
+     //        GWWWWWWWW; GjEjtWWWWWWWWWWWWWWWWWWWWWWEWWW.    
+     //        WWWWWWtKtWt WWW EWWWWWWWWWWWWWWWWWWj    #WD    
+     //;.     WWWWWWWi  DKGGWWK WWWWWWWWWWWWWWWWL       WD    
+     //;:    .WWWWWWWW   W  WWWijWWWWWWWWWWWWWWf        #E    
+     //t :   WWWWWL EW:  :WG,WWK WWWWWWWWWWWWW,         #E    
+     //L i  DWWWWiWE .. : fDGD:j  WWWWWWWWWWW           LE    
+     //G .K WWWWWfLWi    K W .f.  jWWWWWWWWW.           tL    
+     //G   #K##fWWW#G     :DLG. W  WWWWWWWWW            t     
+     //fjj;   t LWE       tKWG   : WWWWWWWW:            L     
+     //Df   j  :WWK        WWW:.Dt LWWWWWWWj            W     
+     //WG  W   WWG         WWWWf  E WL .WWW             G     
+     //WWKK    :WG         WWWWjiG .Li  :Wi             .     
+     //#WW     .WW         WWWWW  G;   : K                    
+     //WWWL     WWj       :WWWWW#D      ,              L      
+     //#WWW   L GWW        KWWWWWL     .#              K      
+     //#WWK  G  W:WW        WW#WKE     LL              f      
+     //jWWW,Ef     Lf                                  .      
+     // t##K#       i,                                j       
+     //      ;i                                           
+
 namespace roundhouse.databases
 {
     using System;
