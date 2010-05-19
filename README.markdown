@@ -42,6 +42,12 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+=0.2.0.175=  
+* RH should handle when user names have apostrophes (') in them - see http://code.google.com/p/roundhouse/issues/detail?id=32 for details. (r175)  
+* Database names should have delimiters to allow for non standard characters - see http://code.google.com/p/roundhouse/issues/detail?id=31 for details. (r174)  
+* Added autowiring permissions sample. (r169)  
+* If copying to change output fails, log a warning and move on. (r156)  
+  
 =0.2.0.150=  
 * Turning off batch splitting where it is not necessary as it does affect performance. (r150)  
 * Splitting statements on GO has been enhanced to catch end of file GOs - see http://code.google.com/p/roundhouse/issues/detail?id=25 for details. (r149)  

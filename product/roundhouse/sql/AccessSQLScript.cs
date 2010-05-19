@@ -38,7 +38,7 @@ namespace roundhouse.sql
         {
             return string.Format(
                 @"
-                      CREATE TABLE [{0}]
+                      CREATE TABLE [{0}_{1}]
                         (
                             id                  AUTOINCREMENT 
                             ,repository_path    TEXT(255)
@@ -48,14 +48,14 @@ namespace roundhouse.sql
                             ,entered_by         TEXT(255)
                         );
                 ",
-                    version_table_name);
+                    roundhouse_schema_name, version_table_name);
         }
 
         public string create_roundhouse_scripts_run_table(string roundhouse_schema_name, string version_table_name, string scripts_run_table_name)
         {
             return string.Format(
                 @"
-                        CREATE TABLE [{0}]
+                        CREATE TABLE [{0}_{1}]
                         (
                             id                          AUTOINCREMENT
                             ,version_id                 LONG
@@ -67,7 +67,7 @@ namespace roundhouse.sql
                             ,entered_by                 TEXT(255)
                         );
                 ",
-                scripts_run_table_name);
+                roundhouse_schema_name, scripts_run_table_name);
         }
 
         public string use_database(string database_name)
@@ -80,19 +80,19 @@ namespace roundhouse.sql
             return string.Format(
                @"
                     SELECT TOP 1 version 
-                    FROM [{0}]
+                    FROM [{0}_{1}]
                     WHERE 
-                        repository_path = '{1}' 
+                        repository_path = '{2}' 
                     ORDER BY entry_date DESC;
                 ",
-               version_table_name, repository_path);
+               roundhouse_schema_name, version_table_name, repository_path);
         }
 
         public string insert_version(string roundhouse_schema_name, string version_table_name, string repository_path, string repository_version, string user_name)
         {
             return string.Format(
                 @"
-                    INSERT INTO [{0}]
+                    INSERT INTO [{0}_{1}]
                     (
                         repository_path
                         ,version
@@ -102,14 +102,14 @@ namespace roundhouse.sql
                     )
                     VALUES
                     (
-                        '{1}'
-                        ,'{2}'
+                        '{2}'
                         ,'{3}'
                         ,'{4}'
                         ,'{5}'
+                        ,'{6}'
                     );
                 ",
-                version_table_name, repository_path, repository_version, user_name,
+                roundhouse_schema_name, version_table_name, repository_path, repository_version, user_name.Replace(@"'", @"''"),
                 DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
         }
 
@@ -119,12 +119,12 @@ namespace roundhouse.sql
                @"
                    
                     SELECT TOP 1 id 
-                    FROM [{0}]
+                    FROM [{0}_{1}]
                     WHERE 
-                        repository_path = '{1}' 
+                        repository_path = '{2}' 
                     ORDER BY entry_date DESC;
                 ",
-              version_table_name, repository_path);
+              roundhouse_schema_name, version_table_name, repository_path);
         }
 
         public string get_current_script_hash(string roundhouse_schema_name, string scripts_run_table_name, string script_name)
@@ -133,11 +133,11 @@ namespace roundhouse.sql
                @"
                     SELECT TOP 1
                         text_hash
-                    FROM [{0}]
-                    WHERE script_name = '{1}'
+                    FROM [{0}_{1}]
+                    WHERE script_name = '{2}'
                     ORDER BY entry_date DESC;
                 ",
-               scripts_run_table_name, script_name
+               roundhouse_schema_name, scripts_run_table_name, script_name
                );
         }
 
@@ -147,10 +147,10 @@ namespace roundhouse.sql
                 @"
                     SELECT 
                         script_name
-                    FROM [{0}]
-                    WHERE script_name = '{1}';
+                    FROM [{0}_{1}]
+                    WHERE script_name = '{2}';
                 ",
-                scripts_run_table_name, script_name
+                roundhouse_schema_name, scripts_run_table_name, script_name
                 );
         }
 
@@ -158,7 +158,7 @@ namespace roundhouse.sql
         {
             return string.Format(
                 @"
-                    INSERT INTO [{0}] 
+                    INSERT INTO [{0}_{1}] 
                     (
                         version_id
                         ,script_name
@@ -170,19 +170,19 @@ namespace roundhouse.sql
                     )
                     VALUES
                     (
-                        {1}
-                        ,'{2}'
+                        {2}
                         ,'{3}'
-                        ,{4}
-                        ,'{5}'
+                        ,'{4}'
+                        ,{5}
                         ,'{6}'
                         ,'{7}'
+                        ,'{8}'
                     );
                 ",
-                scripts_run_table_name, version_id,
+                roundhouse_schema_name, scripts_run_table_name, version_id,
                 script_name, 
                 sql_to_run_hash,
-                run_this_script_once ? 1 : 0, user_name,
+                run_this_script_once ? 1 : 0, user_name.Replace(@"'", @"''"),
                 DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
         }
     }

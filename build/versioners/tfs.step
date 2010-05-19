@@ -12,6 +12,7 @@
   <property name="dirs.build_scripts_custom" value="${dirs.current}\${path.to.toplevel}\${folder.build_scripts_custom}\versioners" />
   <property name="repository.path" value="__REPOSITORY_PATH__" overwrite="false" />
   <property name="version.revision" value="0" overwrite="false" />
+  <property name="tfs.history.output" value="" overwrite="false" />
   <property name="file.custom.step.before" value="${dirs.build_scripts_custom}\${file.current.no_extension}.pre.step" />
   <property name="file.custom.step.after" value="${dirs.build_scripts_custom}\${file.current.no_extension}.post.step" />
   <property name="file.custom.step.replace" value="${dirs.build_scripts_custom}\${file.current.no_extension}.replace.step" />
