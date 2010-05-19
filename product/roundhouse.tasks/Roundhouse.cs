@@ -143,6 +143,10 @@ namespace roundhouse.tasks
         [StringValidator(AllowEmpty = false)]
         public string ScriptsRunTableName { get; set; }
 
+        [TaskAttribute("scriptsRunErrorsTableName", Required = false)]
+        [StringValidator(AllowEmpty = false)]
+        public string ScriptsRunErrorsTableName { get; set; }
+
         [TaskAttribute("environmentName", Required = false)]
         [StringValidator(AllowEmpty = true)]
         public string EnvironmentName { get; set; }
@@ -171,9 +175,9 @@ namespace roundhouse.tasks
         [StringValidator(AllowEmpty = false)]
         public bool Drop { get; set; }
 
-		[TaskAttribute("doNotCreateDatabase", Required = false)]
-		[StringValidator(AllowEmpty = false)]
-		public bool DoNotCreateDatabase { get; set; }
+        [TaskAttribute("doNotCreateDatabase", Required = false)]
+        [StringValidator(AllowEmpty = false)]
+        public bool DoNotCreateDatabase { get; set; }
 
         [TaskAttribute("outputPath", Required = false)]
         [StringValidator(AllowEmpty = true)]
@@ -226,7 +230,7 @@ namespace roundhouse.tasks
                 Container.get_an_instance_of<VersionResolver>(),
                 !NonInteractive,
                 Drop,
-				DoNotCreateDatabase,
+                DoNotCreateDatabase,
                 WithTransaction,
                 RecoveryModeSimple);
 

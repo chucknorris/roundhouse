@@ -77,7 +77,7 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
+    <Compile Include="databases\SqlServer2008DatabaseSpecs.cs" />
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="cryptography\CryptographicServiceSpecs.cs" />
     <Compile Include="infrastructure\containers\ContainerSpecs.cs" />

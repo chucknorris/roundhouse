@@ -22,7 +22,7 @@ namespace roundhouse.runners
         private readonly bool interactive;
         private readonly bool dropping_the_database;
         private readonly bool dont_create_the_database;
-        private readonly bool run_in_a_transaction;
+        private bool run_in_a_transaction;
         private readonly bool use_simple_recovery;
         private const string SQL_EXTENSION = "*.sql";
 
@@ -63,7 +63,18 @@ namespace roundhouse.runners
             if (interactive)
             {
                 Log.bound_to(this).log_an_info_event_containing("Please press enter when ready to kick...");
-                Console.ReadLine();
+                Console.ReadLine();                
+            }
+
+            if (run_in_a_transaction && !database_migrator.database.supports_ddl_transactions)
+            {
+                Log.bound_to(this).log_a_warning_event_containing("You asked to run in a transaction, but this dabasetype doesn't support DDL transactions.");
+                if (interactive)
+                {
+                    Log.bound_to(this).log_an_info_event_containing("Please press enter to continue without transaction support...");
+                    Console.ReadLine();
+                }
+                run_in_a_transaction = false;
             }
 
             create_change_drop_folder();
@@ -73,6 +84,9 @@ namespace roundhouse.runners
             {
                 database_migrator.connect(run_in_a_transaction);
 
+                Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
+                Log.bound_to(this).log_an_info_event_containing("Setup, Backup, Create/Restore/Drop");
+                Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                 create_share_and_set_permissions_for_change_drop_folder();
                 database_migrator.backup_database_if_it_exists();
                 remove_share_from_change_drop_folder();
@@ -86,29 +100,48 @@ namespace roundhouse.runners
                         database_migrator.set_recovery_mode(use_simple_recovery);
                     }
                     database_migrator.transfer_to_database_for_changes();
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
+                    Log.bound_to(this).log_an_info_event_containing("RoundhousE Structure");
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     database_migrator.verify_or_create_roundhouse_tables();
 
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
+                    Log.bound_to(this).log_an_info_event_containing("Versioning");
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     string current_version = database_migrator.get_current_version(repository_path);
                     string new_version = version_resolver.resolve_version();
-                    Log.bound_to(this).log_an_info_event_containing("Migrating {0} from version {1} to {2}.", database_migrator.database.database_name, current_version, new_version);
-
+                    Log.bound_to(this).log_an_info_event_containing(" Migrating {0} from version {1} to {2}.", database_migrator.database.database_name, current_version, new_version);
                     long version_id = database_migrator.version_the_database(repository_path, new_version);
 
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
+                    Log.bound_to(this).log_an_info_event_containing("Migration Scripts");
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These should be one time only scripts.", "Update", known_folders.up.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.up.folder_full_path, version_id, known_folders.up, environment);
 
                     //todo: remember when looking through all files below here, change CREATE to ALTER
                     // we are going to create the create if not exists script
 
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run First After Update", known_folders.run_first_after_up.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50,'-'));
                     traverse_files_and_run_sql(known_folders.run_first_after_up.folder_full_path, version_id, known_folders.run_first_after_up, environment);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Function", known_folders.functions.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.functions.folder_full_path, version_id, known_folders.functions, environment);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "View", known_folders.views.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.views.folder_full_path, version_id, known_folders.views, environment);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Stored Procedure", known_folders.sprocs.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.sprocs.folder_full_path, version_id, known_folders.sprocs, environment);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Permission", known_folders.permissions.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.permissions.folder_full_path, version_id, known_folders.permissions, environment);
 
                     Log.bound_to(this).log_an_info_event_containing("{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",
@@ -172,7 +205,7 @@ namespace roundhouse.runners
             foreach (string sql_file in file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION))
             {
                 string sql_file_text = File.ReadAllText(sql_file);
-                Log.bound_to(this).log_a_debug_event_containing("Found and running {0}.", sql_file);
+                Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
                 bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file), migration_folder.should_run_items_in_folder_once, migration_folder.should_run_items_in_folder_every_time, version_id, migrating_environment);
                 if (the_sql_ran)
                 {

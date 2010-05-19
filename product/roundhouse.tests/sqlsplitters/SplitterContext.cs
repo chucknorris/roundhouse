@@ -7,7 +7,7 @@ namespace roundhouse.tests.sqlsplitters
 
         public class FullSplitter
         {
-            public static string sql_statement = @"
+            public static string tsql_statement = @"
 BOB1
 GO
 
@@ -76,7 +76,7 @@ ALTER TABLE Inv.something ADD
 GO
 ";
 
-            public static string sql_statement_scrubbed = @"
+			public static string tsql_statement_scrubbed = @"
 BOB1
 " + StatementSplitter.batch_terminator_replacement_string + @"
 
@@ -144,7 +144,34 @@ ALTER TABLE Inv.something ADD
     daf_asdfasdf DECIMAL(20,6) NULL;
 " + StatementSplitter.batch_terminator_replacement_string + @"
 ";
-        }
 
+        	public static string plsql_statement =
+				@"
+SQL1;
+;
+SQL2;
+;
+tmpSql := 'DROP SEQUENCE mutatieStockID';
+EXECUTE IMMEDIATE tmpSql; 
+;
+BEGIN
+INSERT into Table (columnname) values ("";"");
+UPDATE Table set columnname="";"";
+END;
+";
+			public static string plsql_statement_scrubbed = @"
+SQL1;
+" + StatementSplitter.batch_terminator_replacement_string + @"
+SQL2;
+" + StatementSplitter.batch_terminator_replacement_string + @"
+tmpSql := 'DROP SEQUENCE mutatieStockID';
+EXECUTE IMMEDIATE tmpSql; 
+" + StatementSplitter.batch_terminator_replacement_string + @"
+BEGIN
+INSERT into Table (columnname) values ("";"");
+UPDATE Table set columnname="";"";
+END;
+";
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace roundhouse.resolvers
 
         public string resolve_version()
         {
-            Log.bound_to(this).log_an_info_event_containing("Attempting to resolve version from {0} using {1}.",
+            Log.bound_to(this).log_an_info_event_containing(" Attempting to resolve version from {0} using {1}.",
                                                                 version_file, x_path);
             string version = "0";
             XmlDocument xml = new XmlDocument();
@@ -43,7 +43,7 @@ namespace roundhouse.resolvers
                     xml.Load(version_file);
                     XmlNode node = xml.SelectSingleNode(x_path);
                     version = node.InnerText;
-                    Log.bound_to(this).log_an_info_event_containing("Found version {0} from {1}.", version, version_file);
+                    Log.bound_to(this).log_an_info_event_containing(" Found version {0} from {1}.", version, version_file);
                 }
                 catch (Exception)
                 {

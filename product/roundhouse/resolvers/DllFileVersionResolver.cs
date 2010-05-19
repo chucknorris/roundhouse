@@ -28,10 +28,15 @@ namespace roundhouse.resolvers
 
         public string resolve_version()
         {
-            Log.bound_to(this).log_an_info_event_containing(
-                "Attempting to resolve assembly file version from {0}.", version_file);
+            string version = "0";
 
-            return file_system.get_file_version_from(version_file);
+            Log.bound_to(this).log_an_info_event_containing(
+                " Attempting to resolve assembly file version from {0}.", version_file);
+
+            version = file_system.get_file_version_from(version_file);
+            Log.bound_to(this).log_an_info_event_containing(" Found version {0} from {1}.", version, version_file);
+
+            return version;
         }
 
         private bool version_file_is_dll(string version_file)

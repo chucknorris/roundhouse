@@ -36,6 +36,7 @@ namespace roundhouse.infrastructure.app.builders
             database_to_migrate.roundhouse_schema_name = configuration_property_holder.SchemaName;
             database_to_migrate.version_table_name = configuration_property_holder.VersionTableName;
             database_to_migrate.scripts_run_table_name = configuration_property_holder.ScriptsRunTableName;
+            database_to_migrate.scripts_run_errors_table_name = configuration_property_holder.ScriptsRunErrorsTableName;
             database_to_migrate.user_name = get_identity_of_person_running_rh();
             database_to_migrate.custom_create_database_script = configuration_property_holder.CreateDatabaseCustomScript;
             database_to_migrate.command_timeout = ApplicationParameters.default_command_timeout;

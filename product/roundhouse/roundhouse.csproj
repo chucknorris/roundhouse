@@ -65,13 +65,19 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="connections\AdoNetConnection.cs" />
+    <Compile Include="connections\IConnection.cs" />
+    <Compile Include="databases\DefaultDatabase.cs" />
     <Compile Include="infrastructure.app\builders\LogBuilder.cs" />
     <Compile Include="infrastructure.app\builders\VersionResolverBuilder.cs" />
+    <Compile Include="parameters\AdoNetParameter.cs" />
+    <Compile Include="parameters\IParameter.cs" />
     <Compile Include="sqlsplitters\StatementSplitter.cs" />
     <Compile Include="consoles\ConsoleConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />
     <Compile Include="cryptography\MD5CryptographicService.cs" />
     <Compile Include="databases\DatabaseExtension.cs" />
+    <Compile Include="databases\AdoNetDatabase.cs" />
     <Compile Include="environments\DefaultEnvironment.cs" />
     <Compile Include="environments\Environment.cs" />
     <Compile Include="folders\DefaultFolder.cs" />
@@ -123,8 +129,10 @@
     <Compile Include="migrators\DefaultDatabaseMigrator.cs" />
     <Compile Include="databases\SqlServerLiteSpeedDatabase.cs" />
     <Compile Include="sql\AccessSQLScript.cs" />
+    <Compile Include="sql\PLSQLScript.cs" />
     <Compile Include="sql\SqlScript.cs" />
     <Compile Include="sql\SqlScripts.cs" />
+    <Compile Include="sql\TSQL2000Script.cs" />
     <Compile Include="sql\TSQLScript.cs" />
   </ItemGroup>
   <ItemGroup>

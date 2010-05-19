@@ -40,6 +40,7 @@ namespace roundhouse.consoles
         public string SchemaName { get; set; }
         public string VersionTableName { get; set; }
         public string ScriptsRunTableName { get; set; }
+        public string ScriptsRunErrorsTableName { get; set; }
         public string EnvironmentName { get; set; }
         public bool Restore { get; set; }
         public string RestoreFromPath { get; set; }

@@ -27,6 +27,7 @@ namespace roundhouse.infrastructure.app
         string SchemaName { get; set; }
         string VersionTableName { get; set; }
         string ScriptsRunTableName { get; set; }
+        string ScriptsRunErrorsTableName { get; set; }
         string EnvironmentName { get; set; }
         bool Restore { get; set; }
         string RestoreFromPath { get; set; }
@@ -41,6 +42,6 @@ namespace roundhouse.infrastructure.app
         bool DoNotCreateDatabase { get; set; }
         bool WithTransaction { get; set; }
         bool RecoveryModeSimple { get; set; }
-        bool Debug { get; set; }    	
+        bool Debug { get; set; }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace roundhouse.databases
 {
     public sealed class SqlServerLiteSpeedDatabase : Database
@@ -51,6 +53,13 @@ namespace roundhouse.databases
             set { database.scripts_run_table_name = value; }
         }
 
+        public string scripts_run_errors_table_name
+        {
+            get { return database.scripts_run_errors_table_name; }
+            set { database.scripts_run_errors_table_name = value; }
+        }
+
+
         public string user_name
         {
             get { return database.user_name; }
@@ -86,6 +95,11 @@ namespace roundhouse.databases
             set { database.split_batch_statements = value; }
         }
 
+        public bool supports_ddl_transactions
+        {
+            get { return database.supports_ddl_transactions; }            
+        }
+
         public void initialize_connection()
         {
             database.initialize_connection();
@@ -99,6 +113,11 @@ namespace roundhouse.databases
         public void close_connection()
         {
             database.close_connection();
+        }
+
+        public void rollback()
+        {
+            database.rollback();
         }
 
         public void create_database_if_it_doesnt_exist()
@@ -169,6 +188,11 @@ namespace roundhouse.databases
             database.create_roundhouse_scripts_run_table_if_it_doesnt_exist();
         }
 
+        public void create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist()
+        {
+            database.create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist();
+        }
+
         public void run_sql(string sql_to_run)
         {
             database.run_sql(sql_to_run);
@@ -177,6 +201,11 @@ namespace roundhouse.databases
         public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)
         {
             database.insert_script_run(script_name, sql_to_run, sql_to_run_hash, run_this_script_once, version_id);
+        }
+
+        public void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, long version_id)
+        {
+            database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, version_id);
         }
 
         public string get_version(string repository_path)

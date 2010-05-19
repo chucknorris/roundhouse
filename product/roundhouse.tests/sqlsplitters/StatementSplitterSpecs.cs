@@ -16,6 +16,7 @@ namespace roundhouse.tests.sqlsplitters
         {
             protected static string tsql_separator_regex_string;
             protected static string access_sql_separator_regex_string;
+            protected static string plsql_separator_regex_string;
 
             private context c = () =>
                                     {
@@ -23,11 +24,13 @@ namespace roundhouse.tests.sqlsplitters
                                         tsql_separator_regex_string = script.separator_characters_regex;
                                         script = new AccessSQLScript();
                                         access_sql_separator_regex_string = script.separator_characters_regex;
+                                    	script = new PLSQLScript();
+                                    	plsql_separator_regex_string = script.separator_characters_regex;
                                     };
         }
 
         [Concern(typeof(StatementSplitter))]
-        public class when_replacing_statements_with_the_statement_splitters_match_evaluator : concern_for_StatementSplitter
+        public class when_replacing_tsql_statements_with_the_statement_splitters_match_evaluator : concern_for_StatementSplitter
         {
             protected static Regex script_regex_replace;
             protected static string batch_terminator_replacement_string = StatementSplitter.batch_terminator_replacement_string;
@@ -43,10 +46,10 @@ namespace roundhouse.tests.sqlsplitters
             [Observation]
             public void should_replace_on_full_statement_without_issue()
             {
-                string sql_to_match = SplitterContext.FullSplitter.sql_statement;
+                string sql_to_match = SplitterContext.FullSplitter.tsql_statement;
                 Console.WriteLine(sql_to_match);
                 string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
-                Assert.AreEqual(SplitterContext.FullSplitter.sql_statement_scrubbed, sql_statement_scrubbed);
+                Assert.AreEqual(SplitterContext.FullSplitter.tsql_statement_scrubbed, sql_statement_scrubbed);
             }
 
             [Observation]
@@ -530,5 +533,73 @@ GO
             }
 
         }
+
+		[Concern(typeof(StatementSplitter))]
+		public class when_replacing_plsql_statements_with_the_statement_splitters_match_evaluator : concern_for_StatementSplitter
+		{
+			protected static Regex script_regex_replace;
+			protected static string batch_terminator_replacement_string = StatementSplitter.batch_terminator_replacement_string;
+			protected static string regex_split_string = StatementSplitter.regex_split_string;
+			
+			private because b = () =>
+			{
+				script_regex_replace = new Regex(plsql_separator_regex_string, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+			};
+
+			[Observation]
+			public void should_replace_on_full_statement_without_issue()
+			{
+				string sql_to_match = SplitterContext.FullSplitter.plsql_statement;
+				Console.WriteLine(sql_to_match);
+				string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
+				Assert.AreEqual(SplitterContext.FullSplitter.plsql_statement_scrubbed, sql_statement_scrubbed);
+			}
+
+			[Observation]
+			public void should_replace_on_semicolon_on_its_own_line()
+			{
+				const string sql_to_match = @"SQL1 
+;
+SQL2";
+				string expected_scrubbed = @"SQL1 
+" + batch_terminator_replacement_string + @"
+SQL2";
+				Console.WriteLine(sql_to_match);
+				string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
+				Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+			}
+
+			[Observation]
+			public void should_not_replace_on_semicolon_inside_of_comments()
+			{
+				string sql_to_match = @"/* ; */";
+				string expected_scrubbed = @"/* ; */";
+				Console.WriteLine(sql_to_match);
+				string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
+				Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+			}
+
+			[Observation]
+			public void should_not_replace_on_semicolon_at_end_of_line()
+			{
+				string sql_to_match = @"SQL1;";
+				string expected_scrubbed = @"SQL1;";
+				Console.WriteLine(sql_to_match);
+				string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
+				Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+			}
+
+			[Observation]
+			public void should_not_replace_on_assigning_values_to_variables()
+			{
+				string sql_to_match = @"tmpSql := 'DROP SEQUENCE mutatieStockID';
+EXECUTE IMMEDIATE tmpSql; ";
+				string expected_scrubbed = @"tmpSql := 'DROP SEQUENCE mutatieStockID';
+EXECUTE IMMEDIATE tmpSql; ";
+				Console.WriteLine(sql_to_match);
+				string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
+				Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+			}
+		}
     }
 }
