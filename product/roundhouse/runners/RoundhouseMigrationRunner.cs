@@ -88,7 +88,7 @@ namespace roundhouse.runners
                 Log.bound_to(this).log_an_info_event_containing("Setup, Backup, Create/Restore/Drop");
                 Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                 create_share_and_set_permissions_for_change_drop_folder();
-                database_migrator.backup_database_if_it_exists();
+                //database_migrator.backup_database_if_it_exists();
                 remove_share_from_change_drop_folder();
 
                 if (!dropping_the_database)
