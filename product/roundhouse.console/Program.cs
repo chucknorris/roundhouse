@@ -92,7 +92,7 @@
                 Container.get_an_instance_of<VersionResolver>(),
                 !configuration.NonInteractive,
                 configuration.Drop,
-				configuration.DoNotCreateDatabase,
+                configuration.DoNotCreateDatabase,
                 configuration.WithTransaction,
                 configuration.RecoveryModeSimple);
 
@@ -185,6 +185,10 @@
                     string.Format("ScriptsRunTableName - This is the table where RH stores information about scripts that have been run. Once you set this a certain way, do not change this. This is definitelly running with scissors and very sharp. Defaults to \"{0}\".",
                         ApplicationParameters.default_scripts_run_table_name),
                     option => configuration.ScriptsRunTableName = option)
+                .Add("sret=|scriptsrunerrorstable=|scriptsrunerrorstablename=",
+                    string.Format("ScriptsRunErrorsTableName - This is the table where RH stores information about scripts that have been run with errors. Once you set this a certain way, do not change this. This is definitelly running with scissors and very sharp. Defaults to \"{0}\".",
+                        ApplicationParameters.default_scripts_run_errors_table_name),
+                    option => configuration.ScriptsRunErrorsTableName = option)
                 //environment
                 .Add("env=|environment=|environmentname=",
                     string.Format("EnvironmentName - This allows RH to be environment aware and only run scripts that are in a particular environment based on the naming of the script. LOCAL.something.sql would only be run in the LOCAL environment. Defaults to \"{0}\".",
@@ -211,11 +215,11 @@
                 .Add("drop",
                     "Drop - This instructs RH to remove a database and not run migration scripts. Defaults to false.",
                     option => configuration.Drop = option != null)
-				//don't create the database if it doesn't exist
-				.Add("dc|dnc|donotcreatedatabase",
-					"DontCreateDatabase - This instructs RH to not create a database if it does not exists. Defaults to false.",
-					option => configuration.DoNotCreateDatabase = option != null)
-				//output
+                //don't create the database if it doesn't exist
+                .Add("dc|dnc|donotcreatedatabase",
+                    "DontCreateDatabase - This instructs RH to not create a database if it does not exists. Defaults to false.",
+                    option => configuration.DoNotCreateDatabase = option != null)
+                //output
                 .Add("o=|output=|outputpath=",
                     string.Format("OutputPath - This is where everything related to the migration is stored. This includes any backups, all items that ran, permission dumps, logs, etc. Defaults to \"{0}\".",
                         ApplicationParameters.default_output_path),
@@ -263,7 +267,7 @@
                     "/u[pfoldername] VALUE /do[wnfoldername] VALUE " +
                     "/r[un]f[irstafterupdatefoldername] VALUE /fu[nctionsfoldername] VALUE /v[ie]w[sfoldername] VALUE " +
                     "/sp[rocsfoldername] VALUE /p[ermissionsfoldername] VALUE " +
-                    "/sc[hemaname] VALUE /v[ersion]t[ablename] VALUE /s[cripts]r[un]t[ablename] VALUE " +
+                    "/sc[hemaname] VALUE /v[ersion]t[ablename] VALUE /s[cripts]r[un]t[ablename] VALUE /s[cripts]r[un]e[rrors]t[ablename] VALUE " +
                     "/env[ironmentname] VALUE " +
                     "/restore /r[estore]f[rom]p[ath] VALUE /r[estore]c[ustom]o[ptions] VALUE /r[estore]t[imeout] VALUE" +
                     "/c[reate]d[atabasecustom]s[cript] VALUE " +
@@ -273,7 +277,7 @@
                     "/n[on]i[nteractive] " +
                     "/d[atabase]t[ype] VALUE " +
                     "/drop " +
-					"/d[onot]c[reatedatabase] " +
+                    "/d[onot]c[reatedatabase] " +
                     "/t[ransaction] " +
                     "]";
                 show_help(usage_message, option_set);

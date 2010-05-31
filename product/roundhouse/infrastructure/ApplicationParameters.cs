@@ -15,11 +15,12 @@ namespace roundhouse.infrastructure
         public static string default_roundhouse_schema_name = "RoundhousE";
         public static string default_version_table_name = "Version";
         public static string default_scripts_run_table_name = "ScriptsRun";
+        public static string default_scripts_run_errors_table_name = "ScriptsRunErrors";
         public static string default_version_file = @"_BuildInfo.xml";
         public static string default_version_x_path = @"//buildInfo/version";
         public static string default_server_name = "(local)";
         public static string default_output_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData) + @"\" + name;
-        public static string default_database_type = "roundhouse.databases.sqlserver2008.SqlServerDatabase, roundhouse.databases.sqlserver2008";
+        public static string default_database_type = "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
         public static string logging_file = @"C:\Temp\RoundhousE\roundhouse.changes.log";
         public static string log4net_configuration_assembly = @"roundhouse";
         public static string log4net_configuration_resource = @"roundhouse.infrastructure.app.logging.log4net.config.xml";

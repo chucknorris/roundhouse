@@ -104,14 +104,31 @@ namespace roundhouse.migrators
 
         public void verify_or_create_roundhouse_tables()
         {
-            Log.bound_to(this).log_an_info_event_containing("Creating {0} schema if it doesn't exist.", database.roundhouse_schema_name);
+            if (running_in_a_transaction)
+            {
+                database.close_connection();
+                database.open_connection(false);
+                transfer_to_database_for_changes();
+            }
+
+            Log.bound_to(this).log_an_info_event_containing(" Creating {0} schema if it doesn't exist.", database.roundhouse_schema_name);
             database.create_roundhouse_schema_if_it_doesnt_exist();
-            Log.bound_to(this).log_an_info_event_containing("Creating [{0}].[{1}] table if it doesn't exist.", database.roundhouse_schema_name,
+            Log.bound_to(this).log_an_info_event_containing(" Creating [{0}].[{1}] table if it doesn't exist.", database.roundhouse_schema_name,
                                                             database.version_table_name);
             database.create_roundhouse_version_table_if_it_doesnt_exist();
-            Log.bound_to(this).log_an_info_event_containing("Creating [{0}].[{1}] table if it doesn't exist.", database.roundhouse_schema_name,
+            Log.bound_to(this).log_an_info_event_containing(" Creating [{0}].[{1}] table if it doesn't exist.", database.roundhouse_schema_name,
                                                             database.scripts_run_table_name);
             database.create_roundhouse_scripts_run_table_if_it_doesnt_exist();
+            Log.bound_to(this).log_an_info_event_containing(" Creating [{0}].[{1}] table if it doesn't exist.", database.roundhouse_schema_name,
+                                                            database.scripts_run_errors_table_name);
+            database.create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist();
+
+            if (running_in_a_transaction)
+            {
+                database.close_connection();
+                database.open_connection(true);
+                transfer_to_database_for_changes();
+            }          
         }
 
         public string get_current_version(string repository_path)
@@ -147,7 +164,7 @@ namespace roundhouse.migrators
 
         public long version_the_database(string repository_path, string repository_version)
         {
-            Log.bound_to(this).log_an_info_event_containing("Versioning {0} database with version {1} based on {2}.",
+            Log.bound_to(this).log_an_info_event_containing(" Versioning {0} database with version {1} based on {2}.",
                                                             database.database_name,
                                                             repository_version, repository_path);
             return database.insert_version_and_get_version_id(repository_path, repository_version);
@@ -169,18 +186,28 @@ namespace roundhouse.migrators
             if (if_this_is_an_environment_file_its_in_the_right_environment(script_name, environment)
                 && this_script_should_run(script_name, sql_to_run, run_this_script_once, run_this_script_every_time))
             {
-                Log.bound_to(this).log_an_info_event_containing("Running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
+                Log.bound_to(this).log_an_info_event_containing(" Running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
 
                 foreach (var sql_statement in get_statements_to_run(sql_to_run))
                 {
-                    database.run_sql(sql_statement);
+                    try
+                    {
+                        database.run_sql(sql_statement);
+                    }
+                    catch (Exception ex)
+                    {
+                        database.rollback();
+                        record_script_in_scripts_run_errors_table(script_name, sql_to_run, sql_statement, ex.Message, version_id);
+                        database.close_connection();
+                        throw;
+                    }
                 }
                 record_script_in_scripts_run_table(script_name, sql_to_run, run_this_script_once, version_id);
                 this_sql_ran = true;
             }
             else
             {
-                Log.bound_to(this).log_an_info_event_containing("Skipped {0} - {1}.", script_name, run_this_script_once ? "One time script" : "No changes were found to run");
+                Log.bound_to(this).log_an_info_event_containing(" Skipped {0} - {1}.", script_name, run_this_script_once ? "One time script" : "No changes were found to run");
             }
 
             return this_sql_ran;
@@ -196,7 +223,8 @@ namespace roundhouse.migrators
                 {
                     sql_statements.Add(sql_statement);
                 }
-            } else
+            }
+            else
             {
                 sql_statements.Add(sql_to_run);
             }
@@ -208,6 +236,12 @@ namespace roundhouse.migrators
         {
             Log.bound_to(this).log_a_debug_event_containing("Recording {0} script ran on {1} - {2}.", script_name, database.server_name, database.database_name);
             database.insert_script_run(script_name, sql_to_run, create_hash(sql_to_run), run_this_script_once, version_id);
+        }
+
+        public void record_script_in_scripts_run_errors_table(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, long version_id)
+        {
+            Log.bound_to(this).log_a_debug_event_containing("Recording {0} script ran with error on {1} - {2}.", script_name, database.server_name, database.database_name);
+            database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, version_id);
         }
 
         private string create_hash(string sql_to_run)
@@ -268,7 +302,7 @@ namespace roundhouse.migrators
 
         private bool if_this_is_an_environment_file_its_in_the_right_environment(string script_name, Environment environment)
         {
-            //Log.bound_to(this).log_an_info_event_containing("Checking to see if {0} is an environment file. We are in the {1} environment.", script_name, environment.name);
+            Log.bound_to(this).log_a_debug_event_containing("Checking to see if {0} is an environment file. We are in the {1} environment.", script_name, environment.name);
             if (!script_name.to_lower().Contains(".env."))
             {
                 return true;
@@ -281,7 +315,7 @@ namespace roundhouse.migrators
                 environment_file_is_in_the_right_environment = true;
             }
 
-            Log.bound_to(this).log_an_info_event_containing("{0} is an environment file. We are in the {1} environment. This will{2} run based on this check.",
+            Log.bound_to(this).log_an_info_event_containing(" {0} is an environment file. We are in the {1} environment. This will{2} run based on this check.",
                                                             script_name, environment.name, environment_file_is_in_the_right_environment ? string.Empty : " NOT");
 
             return environment_file_is_in_the_right_environment;

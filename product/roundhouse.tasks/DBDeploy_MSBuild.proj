@@ -42,6 +42,7 @@
         SchemaName="RoundhousE"
         VersionTableName="Version"
         ScriptsRunTableName="ScriptsRun"
+        ScriptsRunErrorsTableName="ScriptsRunErrors"
         EnvironmentName="$(Environment)"
         Restore="$(DBRestore)"
         RestoreFromPath="$(DBRestorePath)"

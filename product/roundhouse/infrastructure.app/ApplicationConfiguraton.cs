@@ -15,8 +15,8 @@ namespace roundhouse.infrastructure.app
     using migrators;
     using resolvers;
     using StructureMap;
-    using Container=roundhouse.infrastructure.containers.Container;
-    using Environment=roundhouse.environments.Environment;
+    using Container = roundhouse.infrastructure.containers.Container;
+    using Environment = roundhouse.environments.Environment;
 
     public static class ApplicationConfiguraton
     {
@@ -61,6 +61,10 @@ namespace roundhouse.infrastructure.app
             if (string.IsNullOrEmpty(configuration_property_holder.ScriptsRunTableName))
             {
                 configuration_property_holder.ScriptsRunTableName = ApplicationParameters.default_scripts_run_table_name;
+            }
+            if (string.IsNullOrEmpty(configuration_property_holder.ScriptsRunErrorsTableName))
+            {
+                configuration_property_holder.ScriptsRunErrorsTableName = ApplicationParameters.default_scripts_run_errors_table_name;
             }
             if (string.IsNullOrEmpty(configuration_property_holder.VersionTableName))
             {
@@ -115,7 +119,7 @@ namespace roundhouse.infrastructure.app
                                             cfg.For<Database>().Use(
                                                 context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<CryptographicService>().Use<MD5CryptographicService>();
-                                            cfg.For<DatabaseMigrator>().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(),context.GetInstance<CryptographicService>(),configuration_property_holder));
+                                            cfg.For<DatabaseMigrator>().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
                                             cfg.For<VersionResolver>().Use(
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<Environment>().Use(new DefaultEnvironment(configuration_property_holder));
@@ -147,8 +151,6 @@ namespace roundhouse.infrastructure.app
                 case "sqlserver2000":
                     database_type_full_name =
                         "roundhouse.databases.sqlserver2000.SqlServerDatabase, roundhouse.databases.sqlserver2000";
-                    throw new NotSupportedException(
-                        "Microsoft SQL Server 2000? Really? Like SNL's \"really.\" Really?! Nice try though.");
                     break;
                 case "sql":
                 case "sql.net":

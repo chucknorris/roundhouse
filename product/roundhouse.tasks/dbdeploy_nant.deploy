@@ -45,6 +45,7 @@
       schemaName="RoundhousE"
       versionTableName="Version"
       scriptsRunTableName="ScriptsRun"
+      scriptsRunErrorsTableName="ScriptsRunErrors"
       environmentName="${environment}"
       restore="${restore}"
       restoreFromPath="${restore.from.path.full}"
