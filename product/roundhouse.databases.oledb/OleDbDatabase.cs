@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Data.OleDb;
+using System.Text.RegularExpressions;
 using roundhouse.infrastructure.extensions;
 using roundhouse.infrastructure.logging;
 using roundhouse.sql;
@@ -61,9 +62,26 @@ namespace roundhouse.databases.oledb
                 connection_string = build_connection_string(server_name, master_database_name, connect_options);
             }
 
-            server_connection = new AdoNetConnection(new OleDbConnection(connection_string));
+            admin_connection_string = Regex.Replace(connection_string, "Database=.*?;", "Database=Master;");            
 
             set_provider_and_sql_scripts();
+        }
+
+        public override void open_connection(bool with_transaction)
+        {
+            server_connection = new AdoNetConnection(new OleDbConnection(connection_string));
+            server_connection.open();
+
+            if (with_transaction)
+            {
+                transaction = server_connection.underlying_type().BeginTransaction();
+            }
+        }
+
+        public override void open_admin_connection()
+        {
+            server_connection = new AdoNetConnection(new OleDbConnection(admin_connection_string));
+            server_connection.open();
         }
 
         public override void set_provider_and_sql_scripts()

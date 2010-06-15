@@ -19,13 +19,13 @@ namespace roundhouse.databases
         protected IDbTransaction transaction;
 
         private DbProviderFactory provider_factory;
-
-        protected void create_connection()
+        
+        private AdoNetConnection GetAdoNetConnection(string conn_string)
         {
             provider_factory = DbProviderFactories.GetFactory(provider);
             IDbConnection connection = provider_factory.CreateConnection();
-            connection.ConnectionString = connection_string;
-            server_connection = new AdoNetConnection(connection);
+            connection.ConnectionString = conn_string;
+            return new AdoNetConnection(connection);
         }
 
         public override void set_provider_and_sql_scripts()
@@ -40,6 +40,7 @@ namespace roundhouse.databases
 
         public override void open_connection(bool with_transaction)
         {
+            server_connection = GetAdoNetConnection(connection_string);
             server_connection.open();
 
             if (with_transaction)
@@ -56,6 +57,17 @@ namespace roundhouse.databases
                 transaction = null;
             }
 
+            server_connection.close();
+        }
+
+        public override void open_admin_connection()
+        {
+            server_connection = GetAdoNetConnection(admin_connection_string);
+            server_connection.open();
+        }
+
+        public override void close_admin_connection()
+        {
             server_connection.close();
         }
 
@@ -157,5 +169,6 @@ namespace roundhouse.databases
             return new AdoNetParameter(parameter);
         }
 
+        
     }
 }

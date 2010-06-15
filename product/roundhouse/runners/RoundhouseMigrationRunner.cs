@@ -81,9 +81,7 @@ namespace roundhouse.runners
             Log.bound_to(this).log_a_debug_event_containing("The change_drop (output) folder is: {0}", known_folders.change_drop.folder_full_path);
 
             try
-            {
-                database_migrator.connect(run_in_a_transaction);
-
+            {                
                 Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                 Log.bound_to(this).log_an_info_event_containing("Setup, Backup, Create/Restore/Drop");
                 Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
@@ -92,13 +90,13 @@ namespace roundhouse.runners
                 remove_share_from_change_drop_folder();
 
                 if (!dropping_the_database)
-                {
-
+                {                    
                     if (!dont_create_the_database)
                     {
                         database_migrator.create_or_restore_database();
                         database_migrator.set_recovery_mode(use_simple_recovery);
                     }
+                    database_migrator.connect(run_in_a_transaction);
                     database_migrator.transfer_to_database_for_changes();
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     Log.bound_to(this).log_an_info_event_containing("RoundhousE Structure");
@@ -151,6 +149,7 @@ namespace roundhouse.runners
                                                 database_migrator.database.database_name,
                                                 new_version,
                                                 known_folders.change_drop.folder_full_path);
+                    database_migrator.disconnect();
                 }
                 else
                 {
@@ -160,9 +159,7 @@ namespace roundhouse.runners
                                                 ApplicationParameters.name,
                                                 database_migrator.database.database_name,
                                                 known_folders.change_drop.folder_full_path);
-                }
-
-                database_migrator.disconnect();
+                }                
             }
             catch (Exception ex)
             {

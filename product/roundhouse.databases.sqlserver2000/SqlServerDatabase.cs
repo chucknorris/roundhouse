@@ -1,4 +1,6 @@
 
+using System.Text.RegularExpressions;
+
 namespace roundhouse.databases.sqlserver2000
 {
     using infrastructure.extensions;
@@ -52,7 +54,8 @@ namespace roundhouse.databases.sqlserver2000
             }
 
             set_provider_and_sql_scripts();
-            create_connection();
+
+            admin_connection_string = Regex.Replace(connection_string, "initial catalog=.*?;", "initial catalog=Master;");                        
         }
 
         public override void set_provider_and_sql_scripts()
