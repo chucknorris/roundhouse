@@ -13,70 +13,8 @@
     <NAntPath value="" />
   </NAntValidationSettings>
   <RecentFiles>
-    <RecentFiles>
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure/d:logging/f:Log.cs" caret="324" fromTop="5" />
-      <File id="0726928C-FDAC-4C79-B423-841C7E0DF5B8/d:infrastructure/d:logging/d:custom/f:Log4NetLoggerSpecs.cs" caret="1195" fromTop="5" />
-      <File id="0726928C-FDAC-4C79-B423-841C7E0DF5B8/d:infrastructure/d:logging/f:LogSpecs.cs" caret="1590" fromTop="5" />
-      <File id="0726928C-FDAC-4C79-B423-841C7E0DF5B8/d:infrastructure/d:logging/d:custom/f:Log4NetLogFactorySpecs.cs" caret="934" fromTop="5" />
-      <File id="0726928C-FDAC-4C79-B423-841C7E0DF5B8/d:infrastructure/d:containers/d:custom/f:StructureMapContainerSpecs.cs" caret="3243" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:logging/f:Log4NetAppender.cs" caret="281" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:KnownFoldersBuilder.cs" caret="206" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:DatabaseBuilder.cs" caret="288" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:VersionResolverBuilder.cs" caret="202" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:LogBuilder.cs" caret="268" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/f:ConfigurationPropertyHolder.cs" caret="0" fromTop="5" />
-      <File id="80C7598F-C413-43FB-A589-A6726A1B8438/f:BuildViaNHibernate.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure/d:logging/d:custom/f:Log4NetLogger.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure/d:logging/d:custom/f:MSBuildLogger.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure/d:logging/d:custom/f:NAntLogger.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:consoles/f:ConsoleConfiguration.cs" caret="0" fromTop="5" />
-      <File id="7CC86537-E4F4-42F0-973F-39F38E43E347/f:Roundhouse.cs" caret="0" fromTop="5" />
-      <File id="97CA60FD-D550-4098-8B59-E6CD1F1A3AF2/f:Program.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:cryptography/f:MD5CryptographicService.cs" caret="148" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:environments/f:DefaultEnvironment.cs" caret="284" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:environments/f:Environment.cs" caret="59" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/f:ApplicationConfiguraton.cs" caret="5274" fromTop="5" />
-      <File id="0726928C-FDAC-4C79-B423-841C7E0DF5B8/d:sqlsplitters/f:StatementSplitterSpecs.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure/d:filesystem/f:FileSystemAccess.cs" caret="2683" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure/d:filesystem/f:WindowsFileSystemAccess.cs" caret="2251" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:databases/f:AdoNetDatabase.cs" caret="1451" fromTop="9" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:databases/f:Database.cs" caret="4550" fromTop="7" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:runners/f:RoundhouseMigrationRunner.cs" caret="12930" fromTop="15" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:migrators/f:DatabaseMigrator.cs" caret="696" fromTop="7" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:migrators/f:DefaultDatabaseMigrator.cs" caret="7965" fromTop="20" />
-    </RecentFiles>
-    <RecentEdits>
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:DatabaseBuilder.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:DatabaseBuilder.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:KnownFoldersBuilder.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:DatabaseBuilder.cs" caret="768" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:DatabaseBuilder.cs" caret="2456" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:DatabaseBuilder.cs" caret="448" fromTop="5" />
-      <File id="97CA60FD-D550-4098-8B59-E6CD1F1A3AF2/f:Program.cs" caret="675" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:logging/f:Log4NetAppender.cs" caret="281" fromTop="5" />
-      <File id="80C7598F-C413-43FB-A589-A6726A1B8438/f:BuildViaNHibernate.cs" caret="488" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:VersionResolverBuilder.cs" caret="252" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:DatabaseBuilder.cs" caret="288" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:KnownFoldersBuilder.cs" caret="206" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:LogBuilder.cs" caret="268" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/f:ApplicationConfiguraton.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/f:ApplicationConfiguraton.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/f:ApplicationConfiguraton.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/d:builders/f:VersionResolverBuilder.cs" caret="201" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/f:ApplicationConfiguraton.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/f:ConfigurationPropertyHolder.cs" caret="0" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:environments/f:DefaultEnvironment.cs" caret="284" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure.app/f:ApplicationConfiguraton.cs" caret="6949" fromTop="5" />
-      <File id="0726928C-FDAC-4C79-B423-841C7E0DF5B8/d:sqlsplitters/f:StatementSplitterSpecs.cs" caret="7343" fromTop="5" />
-      <File id="0726928C-FDAC-4C79-B423-841C7E0DF5B8/d:sqlsplitters/f:StatementSplitterSpecs.cs" caret="3481" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure/d:filesystem/f:WindowsFileSystemAccess.cs" caret="2328" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure/d:filesystem/f:WindowsFileSystemAccess.cs" caret="3486" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:infrastructure/d:filesystem/f:FileSystemAccess.cs" caret="2683" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:runners/f:RoundhouseMigrationRunner.cs" caret="10404" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:runners/f:RoundhouseMigrationRunner.cs" caret="10677" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:runners/f:RoundhouseMigrationRunner.cs" caret="11620" fromTop="5" />
-      <File id="A95DE649-D5BA-4402-9D9C-3D8D67E2FF44/d:migrators/f:DefaultDatabaseMigrator.cs" caret="7194" fromTop="7" />
-    </RecentEdits>
+    <RecentFiles />
+    <RecentEdits />
   </RecentFiles>
   <UnitTestRunner>
     <Providers />
