@@ -1,8 +1,8 @@
+using System.Text.RegularExpressions;
 
 namespace roundhouse.databases.sqlserver
 {
     using infrastructure.extensions;
-    using sql;
 
     public class SqlServerDatabase : AdoNetDatabase
     {
@@ -52,9 +52,9 @@ namespace roundhouse.databases.sqlserver
             }
 
             set_provider_and_sql_scripts();
-            create_connection();
+            admin_connection_string = Regex.Replace(connection_string, "initial catalog=.*?;", "initial catalog=Master;");                        
         }
-       
+
         private static string build_connection_string(string server_name, string database_name, string connection_options)
         {
             return string.Format("Server={0};initial catalog={1};{2}", server_name, database_name, connection_options);

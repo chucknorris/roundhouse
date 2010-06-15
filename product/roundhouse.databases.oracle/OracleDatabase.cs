@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text.RegularExpressions;
 using roundhouse.infrastructure.extensions;
 using roundhouse.parameters;
 using roundhouse.sql;
@@ -10,10 +11,10 @@ namespace roundhouse.databases.oracle
     public sealed class OracleDatabase : AdoNetDatabase
     {
         private string connect_options = "Integrated Security";
-        
+
         public override bool supports_ddl_transactions
         {
-            get { return false; }            
+            get { return false; }
         }
 
         public override void initialize_connection()
@@ -49,17 +50,9 @@ namespace roundhouse.databases.oracle
             }
 
             
-            if (string.IsNullOrEmpty(connection_string))
-            {
-				if (connect_options == "Integrated Security")
-				{
-					connect_options = "Integrated Security=SSPI;";
-				}
-				connection_string = build_connection_string(server_name, connect_options);
-            }
-
             set_provider_and_sql_scripts();
-            create_connection();
+
+            configure_admin_connection_string();            
         }
 
         public override void set_provider_and_sql_scripts()
@@ -72,9 +65,11 @@ namespace roundhouse.databases.oracle
             }
         }
 
-        private static string build_connection_string(string server_name, string connection_options)
+        private void configure_admin_connection_string()
         {
-            return string.Format("Data Source={0};{1}", server_name, connection_options);
+            string admin_string = Regex.Replace(connection_string, "User Id=.*?;", "User Id=System;");
+            admin_string = Regex.Replace(admin_string, "Password=.*?;", "Password=QAORACLE;");
+            admin_connection_string = admin_string;
         }
 
         public override long insert_version_and_get_version_id(string repository_path, string repository_version)

@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace roundhouse.databases.sqlserver2008
 {
     using System;
@@ -14,6 +16,7 @@ namespace roundhouse.databases.sqlserver2008
     {
         private string connect_options = "Integrated Security";
         private Server sql_server;
+        private Server sql_server_admin;
         private bool running_a_transaction;
 
         public override void initialize_connection()
@@ -61,6 +64,9 @@ namespace roundhouse.databases.sqlserver2008
 
             sql_server = new Server(new ServerConnection(new SqlConnection(connection_string)));
 
+            admin_connection_string = admin_connection_string = Regex.Replace(connection_string, "initial catalog=.*?;", "initial catalog=Master;");
+            sql_server_admin = new Server(new ServerConnection(new SqlConnection(admin_connection_string)));
+
             set_provider_and_sql_scripts();
         }
 
@@ -97,6 +103,16 @@ namespace roundhouse.databases.sqlserver2008
             }
 
             sql_server.ConnectionContext.Disconnect();
+        }
+
+        public override void open_admin_connection()
+        {
+            sql_server_admin.ConnectionContext.Connect(); 
+        }
+
+        public override void close_admin_connection()
+        {
+            sql_server_admin.ConnectionContext.Disconnect();
         }
 
         public override void rollback()

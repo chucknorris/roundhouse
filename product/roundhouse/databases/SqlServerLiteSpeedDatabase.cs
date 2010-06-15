@@ -1,5 +1,3 @@
-using System;
-
 namespace roundhouse.databases
 {
     public sealed class SqlServerLiteSpeedDatabase : Database
@@ -15,6 +13,12 @@ namespace roundhouse.databases
         {
             get { return database.connection_string; }
             set { database.connection_string = value; }
+        }
+
+        public string admin_connection_string
+        {
+            get { return database.admin_connection_string; }
+            set { database.admin_connection_string = value; }
         }
 
         public string server_name
@@ -111,6 +115,16 @@ namespace roundhouse.databases
         }
 
         public void close_connection()
+        {
+            database.close_connection();
+        }
+
+        public void open_admin_connection()
+        {
+            database.open_connection(false);
+        }
+
+        public void close_admin_connection()
         {
             database.close_connection();
         }

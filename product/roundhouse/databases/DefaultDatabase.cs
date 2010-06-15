@@ -15,6 +15,7 @@ namespace roundhouse.databases
         public string database_name { get; set; }
         public string provider { get; set; }
         public string connection_string { get; set; }
+        public string admin_connection_string { get; set; }
         public string roundhouse_schema_name { get; set; }
         public string version_table_name { get; set; }
         public string scripts_run_table_name { get; set; }
@@ -42,7 +43,7 @@ namespace roundhouse.databases
             get { return true; }
         }
 
-        protected IConnection<DBCONNECTION> server_connection;
+        protected IConnection<DBCONNECTION> server_connection;        
 
         private bool disposing;
         protected SqlScript sql_scripts;
@@ -52,6 +53,9 @@ namespace roundhouse.databases
         public abstract void set_provider_and_sql_scripts();
         public abstract void open_connection(bool with_transaction);
         public abstract void close_connection();
+        public abstract void open_admin_connection();
+        public abstract void close_admin_connection();
+        
         public abstract void rollback();
 
         public virtual void create_database_if_it_doesnt_exist()
@@ -119,9 +123,7 @@ namespace roundhouse.databases
         }
 
         public virtual void delete_database_if_it_exists()
-        {
-            if (sql_scripts.has_master_database) use_database(master_database_name);
-
+        {                        
             try
             {
                 run_sql(sql_scripts.delete_database(database_name));

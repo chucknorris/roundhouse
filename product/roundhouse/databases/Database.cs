@@ -70,6 +70,7 @@ namespace roundhouse.databases
         string database_name { get; set; }
         string provider { get; set; }
         string connection_string { get; set; }
+        string admin_connection_string { get; set; }
         string roundhouse_schema_name { get; set; }
         string version_table_name { get; set; }
         string scripts_run_table_name { get; set; }
@@ -85,6 +86,8 @@ namespace roundhouse.databases
         void initialize_connection();
         void open_connection(bool with_transaction);
         void close_connection();
+        void open_admin_connection();
+        void close_admin_connection();
         void rollback();
 
         void create_database_if_it_doesnt_exist();
