@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="CUSTOM REPLACE COMPILE" default="go">
+  <!-- Project UppercuT - http://projectuppercut.org -->
+  <property name="build.config.settings" value="__NONE__" overwrite="false" />
+  <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
+  <property name="file.current.no_extension" value="compile" />
+  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />
+  <property name="path.to.toplevel" value=".." />
+  <property name="folder.build_scripts" value="build" overwrite="false" />
+  <property name="folder.build_scripts_custom" value="build.custom" overwrite="false" />
+  <property name="dirs.build_scripts_custom" value="${dirs.current}\${path.to.toplevel}\${folder.build_scripts_custom}" />
+  <property name="folder.code_build" value="build_output" overwrite="false" />
+  <property name="dirs.build" value="${dirs.current}\${path.to.toplevel}\${folder.code_build}" />
+  <property name="folder.documentation" value="docs" overwrite="false" />
+  <property name="dirs.docs" value="${dirs.current}\${path.to.toplevel}\${folder.documentation}" />
+  <property name="folder.database" value="__DATABASE_FOLDER_NAME__" overwrite="false" />
+  <property name="dirs.db" value="${dirs.current}\${path.to.toplevel}\${folder.database}" />
+  <property name="project.name" value="__SOLUTION_NAME_WITHOUT_SLN_EXTENSION__" overwrite="false" />
+  <property name="folder.app.drop" value="${project.name}" overwrite="false" />
+  <property name="path_to_solution" value="." overwrite="false" />
+  <property name="microsoft.framework" value="net-3.5" overwrite="false" />
+  <property name="msbuild.configuration" value="Release" overwrite="false" />
+  <property name="msbuild.platform" value="Any CPU" overwrite="false" />
+  <property name="solution.path" value="${dirs.current}\${path.to.toplevel}\${path_to_solution}\${project.name}.sln" />
+  <property name="solution.path" value="${dirs.current}\${path.to.toplevel}\${path_to_solution}\${project.name}.vbp" if="${microsoft.framework =='vb6'}" />
+  <property name="nant.settings.currentframework" value="${microsoft.framework}" if="${microsoft.framework !='vb6'}" />
+
+  <target name="go" depends="error_check,build_code, copy_documentation, copy_db" />
+  
+    <target name="error_check">
+    <fail message="You must fill out the project.name, repository.path, and company.name settings in the settings\UppercuT.config file. Please do that and retry the build."
+      if="${project.name=='__SOLUTION_NAME_WITHOUT_SLN_EXTENSION__'}" />
+  </target>
+
+  <target name="build_code" >
+    <echo message="Compiling ${solution.path}."/>
+    <msbuild project="${solution.path}" verbosity="quiet">
+      <property name="Configuration" value="${msbuild.configuration}" />
+      <property name="Platform" value="${msbuild.platform}" />
+    </msbuild>
+  </target>
+
+  <target name="copy_documentation">
+    <echo message="Building documentation files to ${dirs.build}\${folder.documentation}."/>
+    <copy todir="${dirs.build}\${folder.documentation}">
+      <fileset basedir="${dirs.docs}">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="copy_db">
+    <echo message="Building database files to ${dirs.build}\${folder.database}."/>
+    <copy todir="${dirs.build}\${folder.database}">
+      <fileset basedir="${dirs.db}">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+  </target>
+  
+</project>

@@ -15,8 +15,9 @@
   <property name="dirs.lib" value="${dirs.current}\..\lib" overwrite="false" />  
   <property name="dirs.deployment" value="${dirs.drop}\${folder.deployment}" />
   <property name="path.file.test_databases" value="${dirs.current}\..\product\testdatabase" />
+  <property name="folder.sample" value="sample" overwrite="false" />
 
-  <target name="go" depends="copy_nant_to_deploy, cleanup_roundhouse_drop, restructure_roundhouse_drop_folder, copy_roundhouse_files_to_deploy_nant, copy_roundhouse_files_to_deploy_console, copy_test_databases_to_deploy, create_copy_of_environment_file_for_sample, copy_notices" description="Packaging" />
+  <target name="go" depends="copy_nant_to_deploy, cleanup_roundhouse_drop, restructure_roundhouse_drop_folder, copy_roundhouse_files_to_deploy_nant, copy_roundhouse_files_to_deploy_console, copy_test_databases_to_deploy, create_copy_of_environment_file_for_sample, move_sample_to_drop, copy_notices" description="Packaging" />
 
   <target name="copy_nant_to_deploy">
     <echo message="Copying NAnt folder items to ${dirs.deployment}\NAnt."/>
@@ -26,7 +27,7 @@
       </fileset>
     </copy>
   </target>
-
+  
   <target name="cleanup_roundhouse_drop">
     <echo message="Cleaning up ${dirs.drop}\${folder.app.drop} to remove unused items." />
     <delete> 
@@ -116,6 +117,26 @@
       file="${dirs.drop}\db\TestRoundhousE\permissions\LOCAL.GrantRobDataReaderDataWriterPermissions.ENV.sql"
       tofile="${dirs.drop}\db\TestRoundhousE\permissions\TEST.GrantRobDataReaderDataWriterPermissions.ENV.sql" 
       />
+  </target>
+  
+  <target name="move_sample_to_drop">
+    <copy todir="${dirs.drop}\${folder.sample}\sampleproject">
+      <fileset basedir="${dirs.build}\${folder.sample}">
+        <include name="**" />
+      </fileset>
+    </copy>
+  
+    <copy todir="${dirs.drop}\${folder.sample}">
+      <fileset basedir="${dirs.drop}">
+        <include name="${folder.database}\**" />
+        <include name="${folder.deployment}\**" />
+        <include name="${folder.settings}\**" />
+      </fileset>
+    </copy>
+
+    <delete dir="${dirs.drop}\${folder.database}" />
+    <delete dir="${dirs.drop}\${folder.deployment}" />
+    <delete dir="${dirs.drop}\${folder.settings}" />
   </target>
   
   <target name ="copy_notices">
