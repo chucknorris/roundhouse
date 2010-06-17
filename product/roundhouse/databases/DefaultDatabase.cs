@@ -43,7 +43,7 @@ namespace roundhouse.databases
             get { return true; }
         }
 
-        protected IConnection<DBCONNECTION> server_connection;        
+        protected IConnection<DBCONNECTION> server_connection;
 
         private bool disposing;
         protected SqlScript sql_scripts;
@@ -55,7 +55,7 @@ namespace roundhouse.databases
         public abstract void close_connection();
         public abstract void open_admin_connection();
         public abstract void close_admin_connection();
-        
+
         public abstract void rollback();
 
         public virtual void create_database_if_it_doesnt_exist()
@@ -90,7 +90,7 @@ namespace roundhouse.databases
             {
                 Log.bound_to(this).log_a_warning_event_containing(
                     "{0} with provider {1} does not provide a facility for setting recovery mode to simple at this time.{2}{3}",
-                    GetType(), provider,Environment.NewLine,ex.Message);
+                    GetType(), provider, Environment.NewLine, ex.Message);
             }
         }
 
@@ -123,7 +123,7 @@ namespace roundhouse.databases
         }
 
         public virtual void delete_database_if_it_exists()
-        {                        
+        {
             try
             {
                 run_sql(sql_scripts.delete_database(database_name));
@@ -222,7 +222,7 @@ namespace roundhouse.databases
                                      create_parameter("sql_to_run", DbType.AnsiString, sql_to_run, null), 
                                      create_parameter("sql_to_run_hash", DbType.AnsiString, sql_to_run_hash, 512), 
                                      create_parameter("run_this_script_once", DbType.Boolean, run_this_script_once, null), 
-                                     create_parameter("user_name", DbType.AnsiString, user_name, 50)
+                                     create_parameter("user_name", DbType.AnsiString, user_name ?? string.Empty, 50)
                                  };
             try
             {
@@ -262,7 +262,7 @@ namespace roundhouse.databases
 
         public virtual string get_version(string repository_path)
         {
-            var parameters = new List<IParameter<IDbDataParameter>> { create_parameter("repository_path", DbType.AnsiString, repository_path, 255) };
+            var parameters = new List<IParameter<IDbDataParameter>> { create_parameter("repository_path", DbType.AnsiString, repository_path ?? string.Empty, 255) };
 
             try
             {
@@ -281,9 +281,9 @@ namespace roundhouse.databases
         {
             var insert_parameters = new List<IParameter<IDbDataParameter>>
                                  {
-                                     create_parameter("repository_path", DbType.AnsiString, repository_path, 255), 
-                                     create_parameter("repository_version", DbType.AnsiString, repository_version, 35), 
-                                     create_parameter("user_name", DbType.AnsiString, user_name, 50)
+                                     create_parameter("repository_path", DbType.AnsiString, repository_path ?? string.Empty, 255), 
+                                     create_parameter("repository_version", DbType.AnsiString, repository_version ?? string.Empty, 35), 
+                                     create_parameter("user_name", DbType.AnsiString, user_name ?? string.Empty, 50)
                                  };
 
             long version_id = 0;
@@ -291,7 +291,7 @@ namespace roundhouse.databases
             {
                 run_sql(sql_scripts.insert_version_parameterized(roundhouse_schema_name, version_table_name), insert_parameters);
 
-                var select_parameters = new List<IParameter<IDbDataParameter>> { create_parameter("repository_path", DbType.AnsiString, repository_path, 255) };
+                var select_parameters = new List<IParameter<IDbDataParameter>> { create_parameter("repository_path", DbType.AnsiString, repository_path ?? string.Empty, 255) };
                 string version_id_temp = run_sql_scalar(sql_scripts.get_version_id_parameterized(roundhouse_schema_name, version_table_name), select_parameters).ToString();
 
                 long.TryParse(version_id_temp, out version_id);

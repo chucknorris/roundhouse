@@ -228,8 +228,8 @@
                 .Add("w|warnononetimescriptchanges",
                     "WarnOnOneTimeScriptChanges - If you do not want RH to error when you change scripts that should not change, you must set this flag. One time scripts are DDL/DML (anything in the upFolder). Defaults to false.",
                     option => configuration.WarnOnOneTimeScriptChanges = option != null)
-                //interactive?
-                .Add("ni|noninteractive",
+                //silent?
+                .Add("ni|noninteractive|silent",
                     "NonInteractive - tells RH not to ask for any input when it runs. Defaults to false.",
                     option => configuration.NonInteractive = option != null)
                 //transaction
@@ -274,7 +274,7 @@
                     "/env[ironmentname] VALUE " +
                     "/o[utputpath] VALUE " +
                     "/w[arnononetimescriptchanges] " +
-                    "/n[on]i[nteractive] " +
+                    "/silent " +
                     "/d[atabase]t[ype] VALUE " +
                     "/drop " +
                     "/d[onot]c[reatedatabase] " +
