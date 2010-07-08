@@ -4,5 +4,6 @@
     create table dbo.SampleItems (
         Id BIGINT IDENTITY NOT NULL,
        name BIGINT null,
+       lastname BIGINT null,
        primary key (Id)
     )

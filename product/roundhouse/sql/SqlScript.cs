@@ -4,6 +4,7 @@ namespace roundhouse.sql
     {
         string separator_characters_regex { get; }
         bool can_support_parameters { get; }
+        bool can_support_ddl_transactions { get; }
         bool has_master_database { get; }
         string create_database(string database_name);
         string set_recovery_mode(string database_name, bool simple);
@@ -29,7 +30,7 @@ namespace roundhouse.sql
         string has_script_run_parameterized(string roundhouse_schema_name, string scripts_run_table_name);
         string insert_script_run(string roundhouse_schema_name, string scripts_run_table_name, long version_id, string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, string user_name);
         string insert_script_run_parameterized(string roundhouse_schema_name, string scripts_run_table_name);
-        string insert_script_run_error(string roundhouse_schema_name, string scripts_run_errors_table_name, long version_id, string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string user_name);
+        string insert_script_run_error(string roundhouse_schema_name, string scripts_run_errors_table_name, string repository_version, string repository_path, string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string user_name);
         string insert_script_run_error_parameterized(string roundhouse_schema_name, string scripts_run_errors_table_name);
     }
 }

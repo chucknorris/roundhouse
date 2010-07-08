@@ -17,10 +17,10 @@ namespace roundhouse.runners
         private readonly Environment environment;
         private readonly KnownFolders known_folders;
         private readonly FileSystemAccess file_system;
-        private readonly DatabaseMigrator database_migrator;
+        public DatabaseMigrator database_migrator { get; private set; }
         private readonly VersionResolver version_resolver;
-        private readonly bool interactive;
-        private readonly bool dropping_the_database;
+        public bool silent {get;set;}
+        public bool dropping_the_database{get;set;}
         private readonly bool dont_create_the_database;
         private bool run_in_a_transaction;
         private readonly bool use_simple_recovery;
@@ -33,7 +33,7 @@ namespace roundhouse.runners
                 FileSystemAccess file_system,
                 DatabaseMigrator database_migrator,
                 VersionResolver version_resolver,
-                bool interactive,
+                bool silent,
                 bool dropping_the_database,
                 bool dont_create_the_database,
                 bool run_in_a_transaction,
@@ -45,7 +45,7 @@ namespace roundhouse.runners
             this.file_system = file_system;
             this.database_migrator = database_migrator;
             this.version_resolver = version_resolver;
-            this.interactive = interactive;
+            this.silent = silent;
             this.dropping_the_database = dropping_the_database;
             this.dont_create_the_database = dont_create_the_database;
             this.run_in_a_transaction = run_in_a_transaction;
@@ -60,16 +60,18 @@ namespace roundhouse.runners
                     database_migrator.database.server_name,
                     database_migrator.database.database_name,
                     known_folders.up.folder_path);
-            if (interactive)
+            if (!silent)
             {
                 Log.bound_to(this).log_an_info_event_containing("Please press enter when ready to kick...");
                 Console.ReadLine();                
             }
+            
+            database_migrator.database.initialize_connection();
 
             if (run_in_a_transaction && !database_migrator.database.supports_ddl_transactions)
             {
                 Log.bound_to(this).log_a_warning_event_containing("You asked to run in a transaction, but this dabasetype doesn't support DDL transactions.");
-                if (interactive)
+                if (!silent)
                 {
                     Log.bound_to(this).log_an_info_event_containing("Please press enter to continue without transaction support...");
                     Console.ReadLine();
@@ -116,7 +118,7 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These should be one time only scripts.", "Update", known_folders.up.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.up.folder_full_path, version_id, known_folders.up, environment);
+                    traverse_files_and_run_sql(known_folders.up.folder_full_path, version_id, known_folders.up, environment, new_version);
 
                     //todo: remember when looking through all files below here, change CREATE to ALTER
                     // we are going to create the create if not exists script
@@ -124,23 +126,23 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run First After Update", known_folders.run_first_after_up.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50,'-'));
-                    traverse_files_and_run_sql(known_folders.run_first_after_up.folder_full_path, version_id, known_folders.run_first_after_up, environment);
+                    traverse_files_and_run_sql(known_folders.run_first_after_up.folder_full_path, version_id, known_folders.run_first_after_up, environment, new_version);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Function", known_folders.functions.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.functions.folder_full_path, version_id, known_folders.functions, environment);
+                    traverse_files_and_run_sql(known_folders.functions.folder_full_path, version_id, known_folders.functions, environment, new_version);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "View", known_folders.views.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.views.folder_full_path, version_id, known_folders.views, environment);
+                    traverse_files_and_run_sql(known_folders.views.folder_full_path, version_id, known_folders.views, environment, new_version);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Stored Procedure", known_folders.sprocs.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.sprocs.folder_full_path, version_id, known_folders.sprocs, environment);
+                    traverse_files_and_run_sql(known_folders.sprocs.folder_full_path, version_id, known_folders.sprocs, environment, new_version);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Permission", known_folders.permissions.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.permissions.folder_full_path, version_id, known_folders.permissions, environment);
+                    traverse_files_and_run_sql(known_folders.permissions.folder_full_path, version_id, known_folders.permissions, environment, new_version);
 
                     Log.bound_to(this).log_an_info_event_containing("{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",
                                                 System.Environment.NewLine,
@@ -195,7 +197,7 @@ namespace roundhouse.runners
         //todo: understand what environment you are deploying to so you can decide what to run - it was suggested there be a specific tag in the file name. Like vw_something.ENV.sql and that be a static "ENV". Then to key off of the actual environment name on the front of the file (ex. TEST.vw_something.ENV.sql)
         //todo:down story
 
-        public void traverse_files_and_run_sql(string directory, long version_id, MigrationsFolder migration_folder, Environment migrating_environment)
+        public void traverse_files_and_run_sql(string directory, long version_id, MigrationsFolder migration_folder, Environment migrating_environment, string repository_version)
         {
             if (!file_system.directory_exists(directory)) return;
 
@@ -203,7 +205,10 @@ namespace roundhouse.runners
             {
                 string sql_file_text = File.ReadAllText(sql_file);
                 Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
-                bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file), migration_folder.should_run_items_in_folder_once, migration_folder.should_run_items_in_folder_every_time, version_id, migrating_environment);
+                bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file),
+                                                             migration_folder.should_run_items_in_folder_once,
+                                                             migration_folder.should_run_items_in_folder_every_time,
+                                                             version_id, migrating_environment, repository_version, repository_path);
                 if (the_sql_ran)
                 {
                     try
@@ -219,7 +224,7 @@ namespace roundhouse.runners
 
             foreach (string child_directory in file_system.get_all_directory_name_strings_in(directory))
             {
-                traverse_files_and_run_sql(child_directory, version_id, migration_folder, migrating_environment);
+                traverse_files_and_run_sql(child_directory, version_id, migration_folder, migrating_environment, repository_version);
             }
         }
 

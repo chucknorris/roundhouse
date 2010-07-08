@@ -36,12 +36,15 @@ namespace roundhouse.infrastructure.app
         string CreateDatabaseCustomScript { get; set; }
         string OutputPath { get; set; }
         bool WarnOnOneTimeScriptChanges { get; set; }
-        bool NonInteractive { get; set; }
+        bool Silent { get; set; }
         string DatabaseType { get; set; }
         bool Drop { get; set; }
         bool DoNotCreateDatabase { get; set; }
         bool WithTransaction { get; set; }
         bool RecoveryModeSimple { get; set; }
         bool Debug { get; set; }
+        bool DryRun { get; set; }
+        bool Baseline { get; set; }
+        bool RunAllAnyTimeScripts { get; set; }
     }
 }

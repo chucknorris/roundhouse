@@ -12,11 +12,6 @@ namespace roundhouse.databases.oracle
     {
         private string connect_options = "Integrated Security";
 
-        public override bool supports_ddl_transactions
-        {
-            get { return false; }
-        }
-
         public override void initialize_connection()
         {
             if (!string.IsNullOrEmpty(connection_string))

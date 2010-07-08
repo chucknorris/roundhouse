@@ -56,10 +56,11 @@
       doNotCreateDatabase="false"
       outputPath="C:\RoundhousE_runs"
       warnOnOneTimeScriptChanges="false"
-      nonInteractive="false"
+      silent="false"
       databaseType="roundhouse.databases.sqlserver2008.SqlServerDatabase, roundhouse.databases.sqlserver2008"
       withTransaction="false"
       recoveryModeSimple="false"
+      runAllAnyTimeScripts="false"
       />
   </target>
 

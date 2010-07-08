@@ -10,6 +10,7 @@ _ReSharper*
 *.csproj.user
 *.resharper.user
 *.resharper
+*.ReSharper.user
 *.cache
 *~
 *.swp

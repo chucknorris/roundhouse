@@ -23,13 +23,10 @@
     internal class Program
     {
         private static readonly ILog the_logger = LogManager.GetLogger(typeof(Program));
-        private static readonly FileSystemAccess file_system = new WindowsFileSystemAccess();
-        private static KnownFolders known_folders;
 
         private static void Main(string[] args)
         {
             Log4NetAppender.configure();
-            //todo: determine if this a call to the diff or the migrator
             IList argument_list = new List<string>();
             foreach (string arg in args)
             {
@@ -50,7 +47,16 @@
             {
                 try
                 {
-                    run_migrator(args);
+                    // determine if this a call to the diff or the migrator
+                    if (string.Join("|", args).to_lower().Contains("rh.redgate.diff"))
+                    {
+                        run_diff_utility(set_up_configuration_and_build_the_container(args));
+                    }
+                    else
+                    {
+                        run_migrator(set_up_configuration_and_build_the_container(args));
+                    }
+
                     Environment.Exit(0);
                 }
                 catch (Exception ex)
@@ -69,10 +75,10 @@
 
         }
 
-        public static void run_migrator(string[] args)
+        public static ConfigurationPropertyHolder set_up_configuration_and_build_the_container(string[] args)
         {
             ConfigurationPropertyHolder configuration = new ConsoleConfiguration(the_logger);
-            parse_arguments_and_set_up_migrator_configuration(configuration, args);
+            parse_arguments_and_set_up_configuration(configuration, args);
             if (configuration.Debug)
             {
                 change_log_to_debug_level();
@@ -81,31 +87,10 @@
             ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
             ApplicationConfiguraton.build_the_container(configuration);
 
-            known_folders = Container.get_an_instance_of<KnownFolders>();
-
-            IRunner roundhouse_runner = new RoundhouseMigrationRunner(
-                configuration.RepositoryPath,
-                Container.get_an_instance_of<environments.Environment>(),
-                known_folders,
-                Container.get_an_instance_of<FileSystemAccess>(),
-                Container.get_an_instance_of<DatabaseMigrator>(),
-                Container.get_an_instance_of<VersionResolver>(),
-                !configuration.NonInteractive,
-                configuration.Drop,
-                configuration.DoNotCreateDatabase,
-                configuration.WithTransaction,
-                configuration.RecoveryModeSimple);
-
-            roundhouse_runner.run();
-
-            if (!configuration.NonInteractive)
-            {
-                Console.WriteLine("{0}Please press enter to continue...", Environment.NewLine);
-                Console.Read();
-            }
+            return configuration;
         }
 
-        private static void parse_arguments_and_set_up_migrator_configuration(ConfigurationPropertyHolder configuration, string[] args)
+        private static void parse_arguments_and_set_up_configuration(ConfigurationPropertyHolder configuration, string[] args)
         {
             bool help = false;
 
@@ -217,7 +202,7 @@
                     option => configuration.Drop = option != null)
                 //don't create the database if it doesn't exist
                 .Add("dc|dnc|donotcreatedatabase",
-                    "DontCreateDatabase - This instructs RH to not create a database if it does not exists. Defaults to false.",
+                    "DoNotCreateDatabase - This instructs RH to not create a database if it does not exists. Defaults to false.",
                     option => configuration.DoNotCreateDatabase = option != null)
                 //output
                 .Add("o=|output=|outputpath=",
@@ -229,9 +214,9 @@
                     "WarnOnOneTimeScriptChanges - If you do not want RH to error when you change scripts that should not change, you must set this flag. One time scripts are DDL/DML (anything in the upFolder). Defaults to false.",
                     option => configuration.WarnOnOneTimeScriptChanges = option != null)
                 //silent?
-                .Add("ni|noninteractive|silent",
-                    "NonInteractive - tells RH not to ask for any input when it runs. Defaults to false.",
-                    option => configuration.NonInteractive = option != null)
+                .Add("silent|ni|noninteractive",
+                    "Silent - tells RH not to ask for any input when it runs. Defaults to false.",
+                    option => configuration.Silent = option != null)
                 //transaction
                 .Add("t|trx|transaction|wt|withtransaction",
                     "WithTransaction - This instructs RH to run inside of a transaction. Defaults to false.",
@@ -244,6 +229,17 @@
                 .Add("debug",
                     "Debug - This instructs RH to write out all messages.",
                     option => configuration.Debug = option != null)
+                //force all anytime scripts
+                .Add("runallanytimescripts|forceanytimescripts",
+                    "RunAllAnyTimeScripts - This instructs RH to run any time scripts every time it is run.",
+                    option => configuration.RunAllAnyTimeScripts = option != null)
+                //recorders
+                .Add("baseline",
+                    "Baseline - This instructs RH to create an insert for its recording tables, but not to actually run anything against the database. Use this option if you already have scripts that have been run through other means (and BEFORE you start the new ones).",
+                    option => configuration.Baseline = option != null)
+                .Add("dryrun",
+                    "DryRun - This instructs RH to log what would have run, but not to actually run anything against the database. Use this option if you are trying to figure out what RH is going to do.",
+                    option => configuration.DryRun = option != null)
                ;
 
             try
@@ -279,6 +275,11 @@
                     "/drop " +
                     "/d[onot]c[reatedatabase] " +
                     "/t[ransaction] " +
+                    "/simple " +
+                    "/debug " +
+                    "/runallanytimescripts " +
+                    "/baseline " +
+                    "/dryrun " +
                     "]";
                 show_help(usage_message, option_set);
             }
@@ -306,6 +307,56 @@
         {
             ILoggerRepository log_repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
             log_repository.Threshold = Level.Debug;
+        }
+
+        public static void run_migrator(ConfigurationPropertyHolder configuration)
+        {
+            RoundhouseMigrationRunner migration_runner = get_migration_runner(configuration);
+            migration_runner.run();
+
+            if (!configuration.Silent)
+            {
+                Console.WriteLine("{0}Please press enter to continue...", Environment.NewLine);
+                Console.Read();
+            }
+        }
+
+        private static void run_diff_utility(ConfigurationPropertyHolder configuration)
+        {
+            bool silent = configuration.Silent;
+
+            RoundhouseRedGateCompareRunner diff_runner = get_diff_runner(configuration, get_migration_runner(configuration));
+            diff_runner.run();
+
+            if (!silent)
+            {
+                Console.WriteLine("{0}Please press enter to continue...", Environment.NewLine);
+                Console.Read();
+            }
+        }
+
+        private static RoundhouseMigrationRunner get_migration_runner(ConfigurationPropertyHolder configuration)
+        {
+            return new RoundhouseMigrationRunner(
+                 configuration.RepositoryPath,
+                 Container.get_an_instance_of<environments.Environment>(),
+                 Container.get_an_instance_of<KnownFolders>(),
+                 Container.get_an_instance_of<FileSystemAccess>(),
+                 Container.get_an_instance_of<DatabaseMigrator>(),
+                 Container.get_an_instance_of<VersionResolver>(),
+                 configuration.Silent,
+                 configuration.Drop,
+                 configuration.DoNotCreateDatabase,
+                 configuration.WithTransaction,
+                 configuration.RecoveryModeSimple);
+        }
+
+        private static RoundhouseRedGateCompareRunner get_diff_runner(ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner)
+        {
+            return new RoundhouseRedGateCompareRunner(
+                  Container.get_an_instance_of<KnownFolders>(),
+                  Container.get_an_instance_of<FileSystemAccess>(),
+                  configuration, migration_runner);
         }
 
     }

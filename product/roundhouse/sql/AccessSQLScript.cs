@@ -14,6 +14,11 @@ namespace roundhouse.sql
             get { return false; }
         }
 
+        public bool can_support_ddl_transactions
+        {
+            get { return false; }
+        }
+
         public bool has_master_database
         {
             get { return false; }
@@ -87,7 +92,8 @@ namespace roundhouse.sql
                         CREATE TABLE [{0}_{1}]
                         (
                             id                          AUTOINCREMENT
-                            ,version_id                 LONG
+                            ,repository_path            TEXT(255)
+                            ,version		            TEXT(255)
                             ,script_name                TEXT(255)
 							,error_message				TEXT(255)
                             ,entry_date					DATETIME
@@ -244,13 +250,14 @@ namespace roundhouse.sql
             throw new NotSupportedException("Access has not been tested to support parameters.");
         }
 
-        public string insert_script_run_error(string roundhouse_schema_name, string scripts_run_errors_table_name, long version_id, string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string user_name)
+        public string insert_script_run_error(string roundhouse_schema_name, string scripts_run_errors_table_name, string repository_version, string repository_path, string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string user_name)
         {
             return string.Format(
                 @"
                     INSERT INTO [{0}_{1}] 
                     (
-                        version_id
+                        version
+                        ,repository_path
                         ,script_name
                         ,error_message
                         ,entered_by
@@ -259,16 +266,17 @@ namespace roundhouse.sql
                     )
                     VALUES
                     (
-                        {2}
+                        '{2}'
                         ,'{3}'
                         ,'{4}'
                         ,'{5}'
                         ,'{6}'
                         ,'{7}'
+                        ,'{8}'
                     );
                 ",
                 roundhouse_schema_name, scripts_run_errors_table_name, 
-                version_id,
+                repository_version, repository_path,
                 script_name.Substring(0, 255),
                 error_message.Substring(0,255),
                 user_name.Replace(@"'", @"''"),
