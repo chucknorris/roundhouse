@@ -187,9 +187,9 @@ namespace roundhouse.tasks
         [StringValidator(AllowEmpty = false)]
         public bool WarnOnOneTimeScriptChanges { get; set; }
 
-        [TaskAttribute("nonInteractive", Required = false)]
+        [TaskAttribute("silent", Required = false)]
         [StringValidator(AllowEmpty = false)]
-        public bool NonInteractive { get; set; }
+        public bool Silent { get; set; }
 
         [TaskAttribute("databaseType", Required = false)]
         [StringValidator(AllowEmpty = false)]
@@ -206,6 +206,18 @@ namespace roundhouse.tasks
         [TaskAttribute("debug", Required = false)]
         [StringValidator(AllowEmpty = false)]
         public bool Debug { get; set; }
+        
+        [TaskAttribute("dryRun", Required = false)]
+        [StringValidator(AllowEmpty = false)]
+        public bool DryRun { get; set; }  
+        
+        [TaskAttribute("baseline", Required = false)]
+        [StringValidator(AllowEmpty = false)]
+        public bool Baseline { get; set; }
+        
+        [TaskAttribute("runAllAnyTimeScripts", Required = false)]
+        [StringValidator(AllowEmpty = false)]
+        public bool RunAllAnyTimeScripts { get; set; }
 
         #endregion
 
@@ -219,6 +231,7 @@ namespace roundhouse.tasks
                 throw new Exception(
                     "If you set Restore to true, you must specify a location for the database to be restored from. That property is RestoreFromPath in MSBuild and restoreFromPath in NAnt.");
             }
+
             ApplicationConfiguraton.build_the_container(this);
 
             IRunner roundhouse_runner = new RoundhouseMigrationRunner(
@@ -228,7 +241,7 @@ namespace roundhouse.tasks
                 Container.get_an_instance_of<FileSystemAccess>(),
                 Container.get_an_instance_of<DatabaseMigrator>(),
                 Container.get_an_instance_of<VersionResolver>(),
-                !NonInteractive,
+                Silent,
                 Drop,
                 DoNotCreateDatabase,
                 WithTransaction,

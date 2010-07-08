@@ -1,10 +1,16 @@
 namespace roundhouse.databases
 {
-    public sealed class SqlServerLiteSpeedDatabase : Database
+    using System;
+    using infrastructure.logging;
+    using sql;
+
+    public class MockDatabase : Database
     {
+
+        private bool database_exists = false;
         private readonly Database database;
 
-        public SqlServerLiteSpeedDatabase(Database database)
+        public MockDatabase(Database database)
         {
             this.database = database;
         }
@@ -100,7 +106,7 @@ namespace roundhouse.databases
 
         public bool supports_ddl_transactions
         {
-            get { return database.supports_ddl_transactions; }            
+            get { return database.supports_ddl_transactions; }
         }
 
         public void initialize_connection()
@@ -110,12 +116,18 @@ namespace roundhouse.databases
 
         public void open_connection(bool with_transaction)
         {
-            database.open_connection(with_transaction);
+            if (database_exists)
+            {
+                database.open_connection(with_transaction);
+            }
         }
 
         public void close_connection()
         {
-            database.close_connection();
+            if (database_exists)
+            {
+                database.close_connection();
+            }
         }
 
         public void open_admin_connection()
@@ -135,110 +147,127 @@ namespace roundhouse.databases
 
         public void create_database_if_it_doesnt_exist()
         {
-            database.create_database_if_it_doesnt_exist();
+            //TODO: Don't allow creation of the database - record everything from here on out as something that would run
+            //database_exists = database.database_exists
         }
 
         public void set_recovery_mode(bool simple)
         {
-            database.set_recovery_mode(simple);
+            Log.bound_to(this).log_an_info_event_containing("Changing the database recovery mode if it has one to {0}", simple ? "simple" : "full");
         }
 
         public void backup_database(string output_path_minus_database)
         {
-            database.backup_database(output_path_minus_database);
+            Log.bound_to(this).log_an_info_event_containing("Backing up the database to \"{0}\".", output_path_minus_database);
         }
 
         public void restore_database(string restore_from_path, string custom_restore_options)
         {
-            int current_timeout = command_timeout;
-            command_timeout = restore_timeout;
-            run_sql(string.Format(
-                                 @"USE master 
-                        ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-                        ALTER DATABASE [{0}] SET MULTI_USER;
-
-                        exec master.dbo.xp_restore_database @database = N'{0}',
-                            @filename = N'{1}',
-                            @filenumber = 1, 
-                            @with = N'RECOVERY', 
-                            @with = N'NOUNLOAD',
-                            @with = N'REPLACE',
-                            @with = N'STATS = 10'
-                            {2};
-
-                        ALTER DATABASE [{0}] SET MULTI_USER;
-                        ALTER DATABASE [{0}] SET RECOVERY SIMPLE;
-                        --DBCC SHRINKDATABASE ([{0}]);
-                        ",
-                         database_name, restore_from_path,
-                         string.IsNullOrEmpty(custom_restore_options) ? string.Empty : ", @with = N'" + custom_restore_options.Replace("'", "''") + "'"
-                       ));
-            command_timeout = current_timeout;
+            string message = "Mocking mode does NOT support what would happen under a restore circumstance, because it would have to actually restore the database to do so.";
+            Log.bound_to(this).log_a_warning_event_containing(message);
+            throw new ApplicationException(message);
         }
 
         public void delete_database_if_it_exists()
         {
-            database.delete_database_if_it_exists();
+            //TODO: Determine whether the database exists
+            //database.delete_database_if_it_exists();
         }
 
         public void use_database(string database_name)
         {
-            database.use_database(database_name);
+            if (database_exists)
+            {
+                Log.bound_to(this).log_an_info_event_containing("Changing the database to {0}", database_name);
+                database.use_database(database_name);
+            }
         }
 
         public void create_roundhouse_schema_if_it_doesnt_exist()
         {
-            database.create_roundhouse_schema_if_it_doesnt_exist();
+            if (database_exists)
+            {
+                //TODO : Implement a question for if the table exists
+                // database.create_roundhouse_schema_if_it_doesnt_exist();
+            }
         }
 
         public void create_roundhouse_version_table_if_it_doesnt_exist()
         {
-            database.create_roundhouse_version_table_if_it_doesnt_exist();
+            if (database_exists)
+            {
+                //TODO: Implment a question for if the table exists
+                //database.create_roundhouse_version_table_if_it_doesnt_exist();
+            }
         }
 
         public void create_roundhouse_scripts_run_table_if_it_doesnt_exist()
         {
-            database.create_roundhouse_scripts_run_table_if_it_doesnt_exist();
+            if (database_exists)
+            {
+                //TODO: Implment a question for if the table exists
+                //database.create_roundhouse_scripts_run_table_if_it_doesnt_exist();
+            }
         }
 
         public void create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist()
         {
-            database.create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist();
+            if (database_exists)
+            {
+                //TODO: Implment a question for if the table exists
+                //database.create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist();
+            }
         }
 
         public void run_sql(string sql_to_run)
         {
-            database.run_sql(sql_to_run);
+            Log.bound_to(this).log_an_info_event_containing("Running statemtent: {0}{1}", Environment.NewLine, sql_to_run);
+            //database.run_sql(sql_to_run);
         }
 
         public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)
         {
-            database.insert_script_run(script_name, sql_to_run, sql_to_run_hash, run_this_script_once, version_id);
+            // database.insert_script_run(script_name, sql_to_run, sql_to_run_hash, run_this_script_once, version_id);
         }
 
         public void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
         {
-            database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, repository_version, repository_path);
+            // database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, repository_version, repository_path);
         }
 
         public string get_version(string repository_path)
         {
-            return database.get_version(repository_path);
+            if (database_exists)
+            {
+                return database.get_version(repository_path);
+            }
+
+            return string.Empty;
         }
 
         public long insert_version_and_get_version_id(string repository_path, string repository_version)
         {
-            return database.insert_version_and_get_version_id(repository_path, repository_version);
+            return 0;
         }
 
         public bool has_run_script_already(string script_name)
         {
-            return database.has_run_script_already(script_name);
+            if (database_exists)
+            {
+                return database.has_run_script_already(script_name);
+            }
+
+            return false;
         }
 
         public string get_current_script_hash(string script_name)
         {
-            return database.get_current_script_hash(script_name);
+            if (database_exists)
+            {
+                return database.get_current_script_hash(script_name);
+            }
+
+            return string.Empty;
         }
 
         public object run_sql_scalar(string sql_to_run)

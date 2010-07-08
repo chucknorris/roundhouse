@@ -42,7 +42,7 @@ namespace roundhouse.databases.sqlserver2000
                 }
             }
 
-            master_database_name = "Master";
+            master_database_name = "master";
             if (connect_options == "Integrated Security")
             {
                 connect_options = "Integrated Security=SSPI;";
@@ -55,7 +55,7 @@ namespace roundhouse.databases.sqlserver2000
 
             set_provider_and_sql_scripts();
 
-            admin_connection_string = Regex.Replace(connection_string, "initial catalog=.*?;", "initial catalog=Master;");                        
+            admin_connection_string = Regex.Replace(connection_string, "initial catalog=.*?;", "initial catalog=master;");                        
         }
 
         public override void set_provider_and_sql_scripts()

@@ -27,14 +27,9 @@ namespace BuildDatabase
                 )
                 .Mappings(m =>
                               {
-                                  m.FluentMappings.AddFromAssemblyOf<SampleItemMapping>();
-                                  m.HbmMappings.AddFromAssemblyOf<PrimaryKeyConvention>();
+                                  m.FluentMappings.AddFromAssemblyOf<SampleItemMapping>()
+                                      .Conventions.AddFromAssemblyOf<PrimaryKeyConvention>();
                               })
-                .ExposeConfiguration(cfg =>
-                                         {
-                                             //cfg.SetListener(ListenerType.PreInsert, new AuditEventListener());
-                                             //cfg.SetListener(ListenerType.PreUpdate, new AuditEventListener());
-                                         })
                 .ExposeConfiguration(additional_function)
                 .BuildSessionFactory();
            

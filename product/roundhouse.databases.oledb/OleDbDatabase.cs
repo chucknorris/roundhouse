@@ -46,7 +46,7 @@ namespace roundhouse.databases.oledb
                 }
             }
 
-            master_database_name = "Master";
+            master_database_name = "master";
             if (connect_options == "Trusted_Connection")
             {
                 connect_options = "Trusted_Connection=yes;";
@@ -62,7 +62,7 @@ namespace roundhouse.databases.oledb
                 connection_string = build_connection_string(server_name, master_database_name, connect_options);
             }
 
-            admin_connection_string = Regex.Replace(connection_string, "Database=.*?;", "Database=Master;");            
+            admin_connection_string = Regex.Replace(connection_string, "Database=.*?;", "Database=master;");            
 
             set_provider_and_sql_scripts();
         }
@@ -149,11 +149,11 @@ namespace roundhouse.databases.oledb
             }
         }
 
-        public override void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, long version_id)
+        public override void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
         {
             try
             {
-                run_sql(sql_scripts.insert_script_run_error(roundhouse_schema_name, scripts_run_errors_table_name, version_id,
+                run_sql(sql_scripts.insert_script_run_error(roundhouse_schema_name, scripts_run_errors_table_name, repository_version, repository_path,
                                                       script_name,
                                                       sql_to_run, sql_erroneous_part, error_message, user_name));
             }

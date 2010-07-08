@@ -38,9 +38,9 @@ namespace roundhouse.databases
             set { split_batches = value; }
         }
 
-        public virtual bool supports_ddl_transactions
+        public bool supports_ddl_transactions
         {
-            get { return true; }
+            get { return sql_scripts.can_support_ddl_transactions; }
         }
 
         protected IConnection<DBCONNECTION> server_connection;
@@ -130,9 +130,10 @@ namespace roundhouse.databases
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_a_warning_event_containing(
+                Log.bound_to(this).log_an_error_event_containing(
                     "{0} with provider {1} does not provide a facility for deleting a database at this time.{2}{3}",
                     GetType(), provider, Environment.NewLine, ex.Message);
+                throw;
             }
         }
 
@@ -230,17 +231,19 @@ namespace roundhouse.databases
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_a_warning_event_containing(
+                Log.bound_to(this).log_an_error_event_containing(
                     "{0} with provider {1} does not provide a facility for recording scripts run at this time.{2}{3}",
                     GetType(), provider, Environment.NewLine, ex.Message);
+                throw; 
             }
         }
 
-        public virtual void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, long version_id)
+        public virtual void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
         {
             var parameters = new List<IParameter<IDbDataParameter>>
                                  {
-                                     create_parameter("version_id", DbType.Int64, version_id, null), 
+                                     create_parameter("repository_path", DbType.AnsiString, repository_path ?? string.Empty, 255), 
+                                     create_parameter("repository_version", DbType.AnsiString, repository_version ?? string.Empty, 35), 
                                      create_parameter("script_name", DbType.AnsiString, script_name, 255), 
                                      create_parameter("sql_to_run", DbType.AnsiString, sql_to_run, null), 
                                      create_parameter("sql_erroneous_part", DbType.AnsiString, sql_erroneous_part, null), 
@@ -254,9 +257,10 @@ namespace roundhouse.databases
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_a_warning_event_containing(
+                Log.bound_to(this).log_an_error_event_containing(
                     "{0} with provider {1} does not provide a facility for recording scripts run errors at this time.{2}{3}",
                     GetType(), provider, Environment.NewLine, ex.Message);
+                throw;
             }
         }
 
@@ -298,9 +302,10 @@ namespace roundhouse.databases
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_a_warning_event_containing(
+                Log.bound_to(this).log_an_error_event_containing(
                     "{0} with provider {1} does not provide a facility for inserting versions at this time.{2}{3}",
                     GetType(), provider, Environment.NewLine, ex.Message);
+                throw;
             }
 
             return version_id;
@@ -315,10 +320,10 @@ namespace roundhouse.databases
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_a_warning_event_containing(
+                Log.bound_to(this).log_an_error_event_containing(
                     "{0} with provider {1} does not provide a facility for hashing (through recording scripts run) at this time.{2}{3}",
                     GetType(), provider, Environment.NewLine, ex.Message);
-                return string.Empty;
+                throw;
             }
         }
 
@@ -343,10 +348,10 @@ namespace roundhouse.databases
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_a_warning_event_containing(
+                Log.bound_to(this).log_an_error_event_containing(
                     "{0} with provider {1} does not provide a facility for determining if a script has run at this time.{2}{3}",
                     GetType(), provider, Environment.NewLine, ex.Message);
-                return false;
+                throw;
             }
         }
 

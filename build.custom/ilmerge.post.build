@@ -14,22 +14,21 @@
   <property name="folder.app.drop" value="${project.name}" overwrite="false" />
   <property name="folder.deployment" value="deployment" overwrite="false" />
   <property name="dirs.deployment" value="${dirs.drop}\${folder.deployment}" />
-  <property name="dirs.merge.from" value="${dirs.drop}\${folder.app.drop}" overwrite="false" />
-  <property name="dirs.merge.to" value="${dirs.drop}\merge" overwrite="false" />
+  <property name="dirs.app.drop" value="${dirs.drop}\${folder.app.drop}" overwrite="false" />
 
   <target name="go" depends="copy_roundhouse_files_to_deploy_console" />
  
   <target name="copy_roundhouse_files_to_deploy_console">
   <echo message="Removing original roundhouse assemblies from ${dirs.deployment}\Console."/>
     <delete>
-      <fileset basedir="${dirs.deployment}\Console" >
+      <fileset basedir="${dirs.drop}\sample\${folder.deployment}\Console" >
         <include name="*.*" />
       </fileset>
     </delete>
   
-    <echo message="Copying roundhouse assemblies to ${dirs.deployment}\Console."/>
-    <copy todir="${dirs.deployment}\Console">
-      <fileset basedir="${dirs.merge.from}">
+    <echo message="Copying roundhouse assemblies from '${dirs.app.drop}\ConsoleApp' to '${dirs.deployment}\Console'."/>
+    <copy todir="${dirs.drop}\sample\${folder.deployment}\Console">
+      <fileset basedir="${dirs.app.drop}\ConsoleApp">
         <include name="*.*" />
       </fileset>
     </copy>

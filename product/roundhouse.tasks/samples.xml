@@ -67,10 +67,11 @@
       doNotCreateDatabase="false"
       outputPath="C:\RoundhousE_runs"
       warnOnOneTimeScriptChanges="false"
-      nonInteractive="false"
+      silent="false"
       databaseType="roundhouse.databases.sqlserver2008.SqlServerDatabase, roundhouse.databases.sqlserver2008"
       withTransaction="false"
       recoveryModeSimple="false"
+      runAllAnyTimeScripts="false"
       />
 
   </nant>
@@ -145,10 +146,11 @@
       DoNotCreateDatabase="false"
       OutputPath="C:\RoundhousE_runs"
       WarnOnOneTimeScriptChanges="false"
-      NonInteractive="false"
+      Silent="false"
       DatabaseType="roundhouse.databases.sqlserver2008.SqlServerDatabase, roundhouse.databases.sqlserver2008"
       WithTransaction="false"
       RecoveryModeSimple="false"
+      RunAllAnyTimeScripts="false"
       />
 
   </msbuild>

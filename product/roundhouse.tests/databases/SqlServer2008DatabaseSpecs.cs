@@ -29,7 +29,7 @@ namespace roundhouse.tests.databases
             [Observation]
             public void should_have_master_as_the_database_to_connect_to()
             {
-                sut.connection_string.should_contain("Master");
+                sut.connection_string.should_contain("master");
             }
 
             [Observation]
@@ -59,7 +59,7 @@ namespace roundhouse.tests.databases
             [Observation]
             public void should_have_master_as_the_database_to_connect_to()
             {
-                sut.connection_string.should_contain("Master");
+                sut.connection_string.should_contain("master");
             }
 
             [Observation]
@@ -91,7 +91,7 @@ namespace roundhouse.tests.databases
             [Observation]
             public void should_have_master_as_the_database_to_connect_to()
             {
-                sut.connection_string.should_contain("Master");
+                sut.connection_string.should_contain("master");
             }
         }
     }
