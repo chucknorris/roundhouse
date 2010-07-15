@@ -1,5 +1,7 @@
 
+using System;
 using System.Text.RegularExpressions;
+using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.sqlserver2000
 {
@@ -9,6 +11,22 @@ namespace roundhouse.databases.sqlserver2000
     public class SqlServerDatabase : AdoNetDatabase
     {
         private string connect_options = "Integrated Security";
+
+        public override void create_roundhouse_schema_if_it_doesnt_exist()
+        {
+            try
+            {
+                //schema = user on SQL 2000
+                run_sql(sql_scripts.create_roundhouse_schema(roundhouse_schema_name));
+            }
+            catch (Exception ex)
+            {
+                Log.bound_to(this).log_an_error_event_containing(
+                    "User {0} is missing. You need to create this user manually and run RoundhousE with this user.{1}This is only needed on SQL Server 2000 to garantee a smooth upgrade of this DB to later SQL Server versions(2005 or higher). This user will be the name of the schema in later versions, where the user is no longer needed.{1}{2}",
+                    roundhouse_schema_name, Environment.NewLine, ex.Message);
+                throw;
+            }
+        }
 
         public override void initialize_connection()
         {

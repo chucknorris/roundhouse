@@ -151,7 +151,7 @@ namespace roundhouse.databases
             }
         }
 
-        public void create_roundhouse_schema_if_it_doesnt_exist()
+        public virtual void create_roundhouse_schema_if_it_doesnt_exist()
         {
             try
             {
