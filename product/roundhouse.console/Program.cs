@@ -27,44 +27,31 @@
         private static void Main(string[] args)
         {
             Log4NetAppender.configure();
-            IList argument_list = new List<string>();
-            foreach (string arg in args)
+            
+            try
             {
-                argument_list.Add(arg);
+                // determine if this a call to the diff or the migrator
+                if (string.Join("|", args).to_lower().Contains("version") && args.Length == 1)
+                {
+                    report_version();
+                }
+                else if (string.Join("|", args).to_lower().Contains("rh.redgate.diff"))
+                {
+                    run_diff_utility(set_up_configuration_and_build_the_container(args));
+                }
+                else
+                {
+                    run_migrator(set_up_configuration_and_build_the_container(args));
+                }
+
+                Environment.Exit(0);
+            }
+            catch (Exception ex)
+            {
+                the_logger.Info(ex.Message);
+                Environment.Exit(1);
             }
 
-            if (argument_list.Count == 1)
-            {
-                foreach (string argument in argument_list)
-                {
-                    if (argument.to_lower().Contains("version"))
-                    {
-                        report_version();
-                    }
-                }
-            }
-            else
-            {
-                try
-                {
-                    // determine if this a call to the diff or the migrator
-                    if (string.Join("|", args).to_lower().Contains("rh.redgate.diff"))
-                    {
-                        run_diff_utility(set_up_configuration_and_build_the_container(args));
-                    }
-                    else
-                    {
-                        run_migrator(set_up_configuration_and_build_the_container(args));
-                    }
-
-                    Environment.Exit(0);
-                }
-                catch (Exception ex)
-                {
-                    the_logger.Info(ex.Message);
-                    Environment.Exit(1);
-                }
-            }
 
         }
 
@@ -284,14 +271,9 @@
                 show_help(usage_message, option_set);
             }
 
-            if (configuration.DatabaseName == null)
+            if (string.IsNullOrEmpty(configuration.DatabaseName) || string.IsNullOrEmpty(configuration.SqlFilesDirectory))
             {
-                show_help("Error: You must specify Database Name (/d).", option_set);
-            }
-
-            if (configuration.SqlFilesDirectory == null)
-            {
-                show_help("Error: You must specify the Sql Files Directory (/f).", option_set);
+                show_help("Error: You must specify Database Name (/d) AND Sql Files Directory (/f) at a minimum to use RoundhousE.", option_set);
             }
         }
 
