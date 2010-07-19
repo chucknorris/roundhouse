@@ -15,8 +15,20 @@
   
   <property name="dirs.merge.from" value="${dirs.drop}\${folder.app.drop}" overwrite="false" />
   <property name="dirs.merge.to" value="${dirs.drop}\merge" overwrite="false" />
+  <property name="file.merge.name" value="__REPLACE__" overwrite="false" />
+  <!-- exe winexe dll -->
+  <property name="merge.target.type" value="__REPLACE__" overwrite="false" />
 
-  <target name="go" depends="clean_out_sql_dlls" />
+  <target name="go" depends="set_environment_variables, clean_out_sql_dlls" />
+ 
+   <target name="set_environment_variables">
+     <property name="dirs.merge.from" value="${dirs.drop}\${folder.app.drop}\ConsoleApp" />
+    <property name="file.merge.name" value="rh.exe" />
+  <property name="merge.target.type" value="exe" />
+    <setenv name="uc.dirs.merge.from" value="${dirs.drop}\${folder.app.drop}\ConsoleApp"/>
+    <setenv name="uc.file.merge.name" value="rh.exe"/>
+    <setenv name="uc.merge.target.type" value="exe"/>
+  </target>
  
   <target name="clean_out_sql_dlls">
     <echo message="Before merging - removing the Microsoft.SqlServer dlls from ${dirs.merge.from}."/>
@@ -27,5 +39,7 @@
       </fileset>
     </delete>
   </target>
+  
+
 
 </project>
