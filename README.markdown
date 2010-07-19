@@ -19,7 +19,13 @@ It seeks to solve both maintenance concerns and ease of deployment. We follow so
  You can download RoundhousE from [http://code.google.com/p/roundhouse/downloads/list](http://code.google.com/p/roundhouse/downloads/list)  
 
  You can also obtain a copy from the build server at [http://teamcity.codebetter.com](http://teamcity.codebetter.com).  
-
+  
+### Gems  
+If you have Ruby 1.8.6+ (and Gems 1.3.7+) installed, you can get the current release of RoundhousE to your machine the fastest!  
+  
+1. Type 'gem install roundhouse'  
+2. Then from anywhere you can type 'rh <options>'  
+  
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
 
