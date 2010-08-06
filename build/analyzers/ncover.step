@@ -34,7 +34,8 @@
   <property name="tests.excluded_categories.comma_separated" value="Database,Integration,Slow,NotWorking" overwrite="false" />
   <property name="test.args" value="" />
   <property name="test.args" value="/rt:Text /rnf:mbUnit /rf:&quot;${dirs.ncover_results}&quot; /ec:${tests.excluded_categories.comma_separated}" if="${test.framework=='mbunit2'}" />
-  <property name="test.args" value="/xml:&quot;${dirs.ncover_results}\nunit-results.xml&quot; /nologo /framework=${microsoft.framework} /exclude:${tests.excluded_categories.comma_separated}" if="${test.framework=='nunit'}" />
+  <property name="test.args" value="/xml:&quot;${dirs.ncover_results}\nunit-results.xml&quot; /nologo /exclude:${tests.excluded_categories.comma_separated}" if="${test.framework=='nunit'}" />
+  <!--property name="test.args" value="/xml:&quot;${dirs.ncover_results}\nunit-results.xml&quot; /nologo /framework=${microsoft.framework} /exclude:${tests.excluded_categories.comma_separated}" if="${test.framework=='nunit'}" /-->
   <property name="file.custom.step.before" value="${dirs.build_scripts_custom}\${file.current.no_extension}.pre.step" />
   <property name="file.custom.step.after" value="${dirs.build_scripts_custom}\${file.current.no_extension}.post.step" />
   <property name="file.custom.step.replace" value="${dirs.build_scripts_custom}\${file.current.no_extension}.replace.step" />
@@ -94,15 +95,16 @@
     <foreach item="File" property="dll.filename">
       <in>
         <items>
-          <exclude name="${dirs.build.code}\*Database*dll" />
-          <exclude name="${dirs.build.code}\*.Integration*dll" />
-          <exclude name="${dirs.build.code}\TestFu.dll" />
-          <include name="${dirs.build.code}\*Test*dll" />
-          <include name="${dirs.build.code}\*Spec*dll" />
+          <exclude name="${dirs.build.code}\lib\**" />
+          <exclude name="${dirs.build.code}\**\*Database*dll" />
+          <exclude name="${dirs.build.code}\**\*.Integration*dll" />
+          <exclude name="${dirs.build.code}\**\TestFu.dll" />
+          <include name="${dirs.build.code}\**\*Test*dll" />
+          <include name="${dirs.build.code}\**\*Spec*dll" />
         </items>
       </in>
       <do>
-        <property name="dll.names" value="${dll.names + ' ' + path::get-file-name(dll.filename)}" />
+        <property name="dll.names" value="${dll.names + ' ' + string::replace(dll.filename,path::get-full-path(dirs.build.code) + '\','') + ''}" />
       </do>
     </foreach>
 
@@ -125,10 +127,10 @@
         failonerror="false"
         verbose="true">
       <assemblies basedir="${dirs.build.code}">
-        <exclude name="${dirs.build.code}\TestFu.dll" />
-        <exclude name="${dirs.build.code}\*Test*dll" />
-        <exclude name="${dirs.build.code}\*Spec*dll" />
-        <include name="${dirs.build.code}\${project.name}*.dll" />
+        <exclude name="${dirs.build.code}\**\TestFu.dll" />
+        <exclude name="${dirs.build.code}\**\*Test*dll" />
+        <exclude name="${dirs.build.code}\**\*Spec*dll" />
+        <include name="${dirs.build.code}\**\${project.name}*.dll" />
       </assemblies>
     </ncover>
   </target>

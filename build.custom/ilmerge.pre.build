@@ -24,7 +24,7 @@
    <target name="set_environment_variables">
      <property name="dirs.merge.from" value="${dirs.drop}\${folder.app.drop}\ConsoleApp" />
     <property name="file.merge.name" value="rh.exe" />
-  <property name="merge.target.type" value="exe" />
+    <property name="merge.target.type" value="exe" />
     <setenv name="uc.dirs.merge.from" value="${dirs.drop}\${folder.app.drop}\ConsoleApp"/>
     <setenv name="uc.file.merge.name" value="rh.exe"/>
     <setenv name="uc.merge.target.type" value="exe"/>

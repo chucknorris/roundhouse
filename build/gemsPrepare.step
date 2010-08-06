@@ -32,6 +32,7 @@
   <property name="version.build" value="0" overwrite="false" />
   <property name="version.revision" value="0" overwrite="false" />
   <property name="assembly.version.full" value="${version.major}.${version.minor}.${version.build}.${version.revision}" />
+  <property name="gem.build.date" value="20100801" overwrite="false" />
   <property name="file.gems.version" value="${dirs.drop.gems}\VERSION" />
   
   
@@ -52,7 +53,7 @@
   </target>
 
   <target name="run_normal_tasks"
-          depends="prepare, copy_gems_folder, copy_app_drop_to_lib_folder, copy_docs_to_doc_folder, copy_notices_to_doc_folder, generate_version_file"
+          depends="prepare, copy_gems_folder, copy_app_drop_to_lib_folder, copy_docs_to_doc_folder, copy_notices_to_doc_folder, update_gem_build_date, generate_version_file"
           description="Packaging gems." />
 
   <target name="prepare">
@@ -125,9 +126,21 @@
     </copy>
   </target>
 
+  <target name="update_gem_build_date">
+    <property name="gem.current.date" value="${datetime::now()}" />
+    <property name="gem.current.date.year" value="${datetime::get-year(gem.current.date)}" />
+    <property name="gem.current.date.month" value="${datetime::get-month(gem.current.date)}" />
+    <property name="gem.current.date.month" value="${'0' + gem.current.date.month}" if="${string::get-length(gem.current.date.month) == 1}" />
+    <property name="gem.current.date.month" value="${'0' + gem.current.date.month}" if="${string::get-length(gem.current.date.month) == 1}" />
+    <property name="gem.current.date.day" value="${datetime::get-day(gem.current.date)}" />
+    <property name="gem.current.date.day" value="${'0' + gem.current.date.day}" if="${string::get-length(gem.current.date.day) == 1}" />
+    <property name="gem.build.date" value="${'' + gem.current.date.year + gem.current.date.month + gem.current.date.day}" />
+  </target>
+  
   <target name="generate_version_file">
-  <echo message="Generating ${file.gems.version} with ${assembly.version.full} for the version" />
-  <echo file="${file.gems.version}" append="false" failonerror="false">${assembly.version.full}</echo>
+  
+  <echo message="Generating ${file.gems.version} with ${assembly.version.full} and ${gem.build.date} for the version" />
+  <echo file="${file.gems.version}" append="false" failonerror="false">${assembly.version.full}.${gem.build.date}</echo>
   </target>
   
   <target name="custom_tasks_after">

@@ -25,17 +25,19 @@
   <property name="fail.build.on.error" value="true" />
 
   <assemblyfileset id="assemblies.assemblyfileset.testing" basedir="${dirs.build.code}\" >
-    <exclude name="*Database*dll" />
-    <exclude name="*.Integration*dll" />
-    <exclude name="TestFu.dll" />
-    <include name="*Test*dll" />
-    <include name="*.Spec*dll" />
+    <exclude name="lib\**" />
+    <exclude name="**\*Database*dll" />
+    <exclude name="**\*.Integration*dll" />
+    <exclude name="**\TestFu.dll" />
+    <include name="**\*Test*dll" />
+    <include name="**\*.Spec*dll" />
   </assemblyfileset>
 
   <assemblyfileset id="assemblies.assemblyfileset.testing.all" basedir="${dirs.build.code}\" >
-    <exclude name="TestFu.dll" />
-    <include name="*Test*dll" />
-    <include name="*.Spec*dll" />
+    <exclude name="lib\**" />
+    <exclude name="**\TestFu.dll" />
+    <include name="**\*Test*dll" />
+    <include name="**\*.Spec*dll" />
   </assemblyfileset>
 
   <target name="go" depends="run_tasks" />

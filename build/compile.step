@@ -40,7 +40,7 @@
   <target name="run_tasks">
     <echo message="Running ${project::get-name()} tasks." />
     <call target="prepare" if="${target::exists('prepare')}" />
-    <call target="check_for_multitargeting_and_set_nant_framework_to_last" if="${target::exists('check_for_multitargeting_and_set_nant_framework_to_last')}" />
+    <call target="check_for_multitargeting" if="${target::exists('check_for_multitargeting')}" />
     <call target="custom_tasks_before" if="${target::exists('custom_tasks_before')}"  />
     <call target="custom_tasks_replace" if="${target::exists('custom_tasks_replace')}"  />
     <call target="run_normal_tasks" if="${not is.replaced}" />
@@ -81,22 +81,16 @@
       if="${project.name=='__SOLUTION_NAME_WITHOUT_SLN_EXTENSION__'}" />
   </target>
 
-  <target name="check_for_multitargeting_and_set_nant_framework_to_last">
+  <target name="check_for_multitargeting">
     <if test="${string::contains(microsoft.framework,',')}">
       <echo message="You want to multi target, eh? You passed a comma into the framework: ${microsoft.framework}" />
       <property name="framework.multitargeting" value="true" />
       <property name="framework.multitargeting.delimiter" value="," />
-      <foreach item="String" in="${microsoft.framework}" delim="," property="framework.to.use">
-        <property name="nant.settings.currentframework" value="${string::trim(framework.to.use)}" />
-      </foreach>
     </if>
     <if test="${string::contains(microsoft.framework,';')}">
       <echo message="You want to multi target, eh? You passed a semicolon into the framework: ${microsoft.framework}" />
       <property name="framework.multitargeting" value="true" />
       <property name="framework.multitargeting.delimiter" value=";" />
-      <foreach item="String" in="${microsoft.framework}" delim=";" property="framework.to.use">
-        <property name="nant.settings.currentframework" value="${string::trim(framework.to.use)}" />
-      </foreach>
     </if>
   </target>
   
@@ -122,23 +116,43 @@
   
   <target name="build_dotNet_code_framework">
     <echo message="Building on ${framework::get-version(microsoft.framework.specific)}" />
+    <property name="nant.settings.currentframework" value="${string::trim(microsoft.framework.specific)}" />
     <!-- nant is retarded - I had to have two of these instead of throwing an if on the outputpath -->
     <if test="${msbuild.override_output_path}">
-      <msbuild project="${solution.path}" verbosity="minimal">
-        <property name="Configuration" value="${msbuild.configuration}" />
-        <property name="OutputPath" value="${msbuild.outputpath}" />
-        <property name="Platform" value="${msbuild.platform}" />
-        <property name="TargetFrameworkVersion" value="v${framework::get-version(microsoft.framework.specific)}" />
-        <property name="ToolsVersion" value="${framework::get-version(microsoft.framework.specific)}" />
-      </msbuild>
+      <if test="${framework.multitargeting}">
+        <msbuild project="${solution.path}" verbosity="minimal">
+          <property name="Configuration" value="${msbuild.configuration}" />
+          <property name="OutputPath" value="${msbuild.outputpath}" />
+          <property name="Platform" value="${msbuild.platform}" />
+          <property name="TargetFrameworkVersion" value="v${framework::get-version(microsoft.framework.specific)}" />
+          <property name="ToolsVersion" value="${framework::get-version(microsoft.framework.specific)}" />
+        </msbuild>
+      </if>
+      <if test="${not framework.multitargeting}">
+        <msbuild project="${solution.path}" verbosity="minimal">
+          <property name="Configuration" value="${msbuild.configuration}" />
+          <property name="OutputPath" value="${msbuild.outputpath}" />
+          <property name="Platform" value="${msbuild.platform}" />
+          <property name="TargetFrameworkVersion" value="v${framework::get-version(microsoft.framework.specific)}" />
+        </msbuild>
+      </if>
     </if>
     <if test="${not msbuild.override_output_path}">
-      <msbuild project="${solution.path}" verbosity="minimal">
-        <property name="Configuration" value="${msbuild.configuration}" />
-        <property name="Platform" value="${msbuild.platform}" />
-        <property name="TargetFrameworkVersion" value="v${framework::get-version(microsoft.framework.specific)}" />
-        <property name="ToolsVersion" value="${framework::get-version(microsoft.framework.specific)}" />
-      </msbuild>
+      <if test="${framework.multitargeting}">
+        <msbuild project="${solution.path}" verbosity="minimal">
+          <property name="Configuration" value="${msbuild.configuration}" />
+          <property name="Platform" value="${msbuild.platform}" />
+          <property name="TargetFrameworkVersion" value="v${framework::get-version(microsoft.framework.specific)}" />
+          <property name="ToolsVersion" value="${framework::get-version(microsoft.framework.specific)}" />
+        </msbuild>
+      </if>
+      <if test="${not framework.multitargeting}">
+        <msbuild project="${solution.path}" verbosity="minimal">
+          <property name="Configuration" value="${msbuild.configuration}" />
+          <property name="Platform" value="${msbuild.platform}" />
+          <property name="TargetFrameworkVersion" value="v${framework::get-version(microsoft.framework.specific)}" />
+        </msbuild>
+      </if>
     </if>
   </target>
 
