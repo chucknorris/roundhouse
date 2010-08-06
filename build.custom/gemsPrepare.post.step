@@ -42,17 +42,11 @@
     </copy>
     
     <copy todir="${dirs.drop}\${folder.gems}\lib">
-      <fileset basedir="${dirs.drop}\${folder.gems}\lib\MSBuild">
+      <fileset basedir="${dirs.drop}\${folder.gems}\lib\ConsoleApp">
         <include name="**/*.*" />
       </fileset>
     </copy>
-    
-    <copy todir="${dirs.drop}\${folder.gems}\lib">
-      <fileset basedir="${dirs.drop}\${folder.gems}\lib\NAnt">
-        <include name="**/*.*" />
-      </fileset>
-    </copy>
-    
+   
     <delete>
       <fileset basedir="${dirs.drop}\${folder.gems}\lib" >
         <include name="ConsoleApp/**" />
