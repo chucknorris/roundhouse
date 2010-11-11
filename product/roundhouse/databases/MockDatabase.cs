@@ -1,8 +1,9 @@
 namespace roundhouse.databases
 {
     using System;
+    using infrastructure.app;
     using infrastructure.logging;
-    using sql;
+    using infrastructure.persistence;
 
     public class MockDatabase : Database
     {
@@ -13,6 +14,12 @@ namespace roundhouse.databases
         public MockDatabase(Database database)
         {
             this.database = database;
+        }
+
+        public ConfigurationPropertyHolder configuration
+        {
+            get { return database.configuration; }
+            set { database.configuration = value; }
         }
 
         public string connection_string
@@ -109,9 +116,15 @@ namespace roundhouse.databases
             get { return database.supports_ddl_transactions; }
         }
 
-        public void initialize_connection()
+        //public IRepository repository
+        //{
+        //    get { return database.repository; }
+        //    set { database.repository = value; }
+        //}
+
+        public void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
         {
-            database.initialize_connection();
+            database.initialize_connections(configuration_property_holder);
         }
 
         public void open_connection(bool with_transaction)
@@ -174,49 +187,18 @@ namespace roundhouse.databases
             //database.delete_database_if_it_exists();
         }
 
-        public void use_database(string database_name)
+        public void run_database_specific_tasks()
         {
-            if (database_exists)
+            if (!database_exists)
             {
-                Log.bound_to(this).log_an_info_event_containing("Changing the database to {0}", database_name);
-                database.use_database(database_name);
+                //TODO: figure out whether we do this or not
+                //database.run_database_specific_tasks();
             }
         }
 
-        public void create_roundhouse_schema_if_it_doesnt_exist()
+        public void create_or_update_roundhouse_tables()
         {
-            if (database_exists)
-            {
-                //TODO : Implement a question for if the table exists
-                // database.create_roundhouse_schema_if_it_doesnt_exist();
-            }
-        }
-
-        public void create_roundhouse_version_table_if_it_doesnt_exist()
-        {
-            if (database_exists)
-            {
-                //TODO: Implment a question for if the table exists
-                //database.create_roundhouse_version_table_if_it_doesnt_exist();
-            }
-        }
-
-        public void create_roundhouse_scripts_run_table_if_it_doesnt_exist()
-        {
-            if (database_exists)
-            {
-                //TODO: Implment a question for if the table exists
-                //database.create_roundhouse_scripts_run_table_if_it_doesnt_exist();
-            }
-        }
-
-        public void create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist()
-        {
-            if (database_exists)
-            {
-                //TODO: Implment a question for if the table exists
-                //database.create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist();
-            }
+            database.create_or_update_roundhouse_tables();
         }
 
         public void run_sql(string sql_to_run)
@@ -268,11 +250,6 @@ namespace roundhouse.databases
             }
 
             return string.Empty;
-        }
-
-        public object run_sql_scalar(string sql_to_run)
-        {
-            return database.run_sql_scalar(sql_to_run);
         }
 
         private bool disposing = false;

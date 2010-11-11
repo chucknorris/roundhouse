@@ -40,9 +40,29 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.9.0, Culture=neutral, PublicKeyToken=b32731d11ce58905">
+    <Reference Include="Antlr3.Runtime, Version=3.1.0.39271, Culture=neutral, PublicKeyToken=3a9cab8f8d22bfb7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\NHibernate\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate, Version=1.0.0.593, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\NHibernate\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\NHibernate\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\references\log4net\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Magnum, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\Magnum\Magnum.dll</HintPath>
+    </Reference>
+    <Reference Include="Magnum.Infrastructure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\Magnum\Magnum.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Framework">
       <Private>True</Private>
@@ -50,6 +70,22 @@
     <Reference Include="NAnt.Core, Version=0.86.3412.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\references\NAnt\NAnt.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.Castle, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\NHibernate\NHibernate.ByteCode.Castle.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.JetDriver, Version=2.0.0.1001, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\NHibernate\NHibernate.JetDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Linq, Version=1.0.0.4000, Culture=neutral, PublicKeyToken=444cf6a87fdab271, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\NHibernate\NHibernate.Linq.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=2.5.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -79,14 +115,23 @@
     <Compile Include="databases\MockDatabase.cs" />
     <Compile Include="infrastructure.app\builders\LogBuilder.cs" />
     <Compile Include="infrastructure.app\builders\VersionResolverBuilder.cs" />
+    <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
+    <Compile Include="infrastructure\persistence\AuditEventListener.cs" />
+    <Compile Include="infrastructure\persistence\IRepository.cs" />
+    <Compile Include="infrastructure\persistence\NHibernateSessionFactoryBuilder.cs" />
+    <Compile Include="infrastructure\persistence\Repository.cs" />
+    <Compile Include="model\Auditable.cs" />
+    <Compile Include="model\ScriptsRun.cs" />
+    <Compile Include="model\ScriptsRunError.cs" />
+    <Compile Include="model\Version.cs" />
     <Compile Include="parameters\AdoNetParameter.cs" />
     <Compile Include="parameters\IParameter.cs" />
+    <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
     <Compile Include="sqlsplitters\StatementSplitter.cs" />
     <Compile Include="consoles\ConsoleConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />
     <Compile Include="cryptography\MD5CryptographicService.cs" />
-    <Compile Include="databases\DatabaseExtension.cs" />
     <Compile Include="databases\AdoNetDatabase.cs" />
     <Compile Include="environments\DefaultEnvironment.cs" />
     <Compile Include="environments\Environment.cs" />
@@ -126,7 +171,7 @@
     <Compile Include="infrastructure\logging\Logger.cs" />
     <Compile Include="infrastructure\logging\LogFactory.cs" />
     <Compile Include="infrastructure\logging\Log.cs" />
-    <Compile Include="infrastructure\Version.cs" />
+    <Compile Include="infrastructure\VersionInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="resolvers\ComplexVersionResolver.cs" />
     <Compile Include="resolvers\DllFileVersionResolver.cs" />
@@ -138,12 +183,6 @@
     <Compile Include="migrators\DatabaseMigrator.cs" />
     <Compile Include="migrators\DefaultDatabaseMigrator.cs" />
     <Compile Include="databases\SqlServerLiteSpeedDatabase.cs" />
-    <Compile Include="sql\AccessSQLScript.cs" />
-    <Compile Include="sql\PLSQLScript.cs" />
-    <Compile Include="sql\SqlScript.cs" />
-    <Compile Include="sql\SqlScripts.cs" />
-    <Compile Include="sql\TSQL2000Script.cs" />
-    <Compile Include="sql\TSQLScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="infrastructure.app\logging\log4net.config.xml" />

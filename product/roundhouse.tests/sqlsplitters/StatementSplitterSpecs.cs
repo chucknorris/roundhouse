@@ -7,7 +7,10 @@ namespace roundhouse.tests.sqlsplitters
     using developwithpassion.bdd.mbunit.standard;
     using developwithpassion.bdd.mbunit.standard.observations;
     using MbUnit.Framework;
-    using sql;
+    using roundhouse.databases;
+    using roundhouse.databases.access;
+    using roundhouse.databases.oracle;
+    using roundhouse.databases.sqlserver;
     using roundhouse.sqlsplitters;
 
     public class StatementSplitterSpecs
@@ -20,12 +23,12 @@ namespace roundhouse.tests.sqlsplitters
 
             private context c = () =>
                                     {
-                                        SqlScript script = new TSQLScript();
-                                        tsql_separator_regex_string = script.separator_characters_regex;
-                                        script = new AccessSQLScript();
-                                        access_sql_separator_regex_string = script.separator_characters_regex;
-                                    	script = new PLSQLScript();
-                                    	plsql_separator_regex_string = script.separator_characters_regex;
+                                        Database database = new SqlServerDatabase();
+                                        tsql_separator_regex_string = database.sql_statement_separator_regex_pattern;
+                                        database = new AccessDatabase();
+                                        access_sql_separator_regex_string = database.sql_statement_separator_regex_pattern;
+                                        database = new OracleDatabase();
+                                        plsql_separator_regex_string = database.sql_statement_separator_regex_pattern;
                                     };
         }
 

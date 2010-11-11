@@ -26,6 +26,7 @@ namespace roundhouse.consoles
         public string ServerName { get; set; }
         public string DatabaseName { get; set; }
         public string ConnectionString { get; set; }
+        public string ConnectionStringAdmin { get; set; }
         public string SqlFilesDirectory { get; set; }
         public string RepositoryPath { get; set; }
         public string VersionFile { get; set; }

@@ -1,3 +1,5 @@
-roundhouse.sql.Database
+roundhouse.databases.Database
 roundhouse.*
+FluentNHibernate.*
+NHibernate.*
 StructureMap.InstanceBuilder

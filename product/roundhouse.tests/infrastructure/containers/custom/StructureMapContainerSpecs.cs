@@ -16,9 +16,9 @@ namespace roundhouse.tests.infrastructure.containers.custom
 
     public class StructureMapContainerSpecs
     {
-        public abstract class concern_for_structuremap_container :
-            observations_for_a_sut_with_a_contract<InversionContainer, StructureMapContainer>
+        public abstract class concern_for_structuremap_container : observations_for_a_sut_with_a_contract<InversionContainer, StructureMapContainer>
         {
+            [CLSCompliant(false)] 
             protected static IContainer the_container;
 
             private after_each_observation a = () => Container.initialize_with(null);

@@ -85,6 +85,10 @@ namespace roundhouse.tasks
         [TaskAttribute("connectionString", Required = false)]
         [StringValidator(AllowEmpty = false)]
         public string ConnectionString { get; set; }
+        
+        [TaskAttribute("connectionStringAdmin", Required = false)]
+        [StringValidator(AllowEmpty = false)]
+        public string ConnectionStringAdmin { get; set; }
 
         [Required]
         [TaskAttribute("sqlFilesDirectory", Required = true)]

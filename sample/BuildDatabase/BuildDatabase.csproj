@@ -57,7 +57,7 @@
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\references\log4net\v1.2.10\log4net.dll</HintPath>
+      <HintPath>..\..\lib\references\log4net\log4net.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -88,17 +88,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\product\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj">
-      <Project>{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}</Project>
-      <Name>roundhouse.databases.sqlserver</Name>
-    </ProjectReference>
+    <None Include="App.config" />
+    <None Include="rh.redgate.diff.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SampleProject\SampleProject.csproj">
       <Project>{D1C278C6-301B-4EEE-BD47-F15847DDECAF}</Project>
       <Name>SampleProject</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

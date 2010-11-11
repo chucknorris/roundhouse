@@ -2,8 +2,12 @@
 
 SET DIR=%~d0%~p0%
 
-SET deploy.settings="%DIR%..\settings\${environment}.settings"
+SET database.name="${database.name}"
+SET sql.files.directory="%DIR%${dirs.db}\SQLServer\${database.name}"
+SET server.database="${server.database}"
+SET repository.path="${repository.path}"
+SET version.file="${file.version}"
+SET version.xpath="//buildInfo/version"
+SET environment=${environment}
 
-"%DIR%NAnt\nant.exe" /f:"%DIR%scripts\database.deploy" -D:deploy.settings=%deploy.settings% -D:transaction="true"
-
-pause
+"%DIR%Console\rh.exe" /d=%database.name% /f=%sql.files.directory% /s=%server.database% /vf=%version.file% /vx=%version.xpath% /r=%repository.path% /env=%environment% /t /simple

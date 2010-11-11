@@ -63,9 +63,12 @@
 namespace roundhouse.databases
 {
     using System;
+    using infrastructure.app;
+    using infrastructure.persistence;
 
     public interface Database : IDisposable
     {
+        ConfigurationPropertyHolder configuration { get; set; }
         string server_name { get; set; }
         string database_name { get; set; }
         string provider { get; set; }
@@ -83,7 +86,7 @@ namespace roundhouse.databases
         bool split_batch_statements { get; set; }
         bool supports_ddl_transactions { get; }
 
-        void initialize_connection();
+        void initialize_connections(ConfigurationPropertyHolder configuration_property_holder);
         void open_connection(bool with_transaction);
         void close_connection();
         void open_admin_connection();
@@ -95,11 +98,11 @@ namespace roundhouse.databases
         void backup_database(string output_path_minus_database);
         void restore_database(string restore_from_path, string custom_restore_options);
         void delete_database_if_it_exists();
-        void use_database(string database_name);
-        void create_roundhouse_schema_if_it_doesnt_exist();
-        void create_roundhouse_version_table_if_it_doesnt_exist();
-        void create_roundhouse_scripts_run_table_if_it_doesnt_exist();
-        void create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist();
+        void run_database_specific_tasks();
+        void create_or_update_roundhouse_tables();
+        //void create_roundhouse_version_table_if_it_doesnt_exist();
+        //void create_roundhouse_scripts_run_table_if_it_doesnt_exist();
+        //void create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist();
         void run_sql(string sql_to_run);
         void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id);
         void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path);
@@ -108,6 +111,6 @@ namespace roundhouse.databases
         long insert_version_and_get_version_id(string repository_path, string repository_version);
         bool has_run_script_already(string script_name);
         string get_current_script_hash(string script_name);
-        object run_sql_scalar(string sql_to_run);
+        //object run_sql_scalar(string sql_to_run);
     }
 }

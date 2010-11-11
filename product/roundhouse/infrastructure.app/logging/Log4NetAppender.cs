@@ -11,6 +11,7 @@ namespace roundhouse.infrastructure.app.logging
     public class Log4NetAppender
     {
         private static readonly ILog the_logger = LogManager.GetLogger(typeof (Log4NetAppender));
+        private static bool used_merged = true;
       
         private static IAppender set_up_console_appender()
         {
@@ -53,22 +54,25 @@ namespace roundhouse.infrastructure.app.logging
             //BasicConfigurator.Configure(log_repository, set_up_console_appender());
             //BasicConfigurator.Configure(log_repository,set_up_rolling_file_appender());
 
+            //todo: merge assembly is the default now.
+
             string assembly_name = ApplicationParameters.log4net_configuration_assembly;
             Stream xml_config_stream;
             
             try
             {
-                xml_config_stream = Assembly.Load(assembly_name).GetManifestResourceStream(ApplicationParameters.log4net_configuration_resource);
+                xml_config_stream = Assembly.Load(ApplicationParameters.get_merged_assembly_name()).GetManifestResourceStream(ApplicationParameters.log4net_configuration_resource);
+                
             }
             catch (Exception)
             {
-                assembly_name = "rh";
+                used_merged = false;
                 xml_config_stream = Assembly.Load(assembly_name).GetManifestResourceStream(ApplicationParameters.log4net_configuration_resource);
             }
 
             XmlConfigurator.Configure(xml_config_stream);
 
-            the_logger.DebugFormat("Configured {0} from assembly {1}", assembly_name, ApplicationParameters.log4net_configuration_resource);
+            the_logger.DebugFormat("Configured {0} from assembly {1}", ApplicationParameters.log4net_configuration_resource, used_merged ? ApplicationParameters.get_merged_assembly_name() : assembly_name);
         }
 
         public static void configure_without_console()
@@ -84,17 +88,18 @@ namespace roundhouse.infrastructure.app.logging
 
             try
             {
-                xml_config_stream = Assembly.Load(assembly_name).GetManifestResourceStream(ApplicationParameters.log4net_configuration_resource_no_console);
+                xml_config_stream = Assembly.Load(ApplicationParameters.get_merged_assembly_name()).GetManifestResourceStream(ApplicationParameters.log4net_configuration_resource_no_console);
+                
             }
             catch (Exception)
             {
-                assembly_name = "rh";
+                used_merged = false;
                 xml_config_stream = Assembly.Load(assembly_name).GetManifestResourceStream(ApplicationParameters.log4net_configuration_resource_no_console);
             }
 
             XmlConfigurator.Configure(xml_config_stream);
 
-            the_logger.DebugFormat("Configured {0} from assembly {1}", ApplicationParameters.log4net_configuration_resource_no_console, assembly_name);
+            the_logger.DebugFormat("Configured {0} from assembly {1}", ApplicationParameters.log4net_configuration_resource_no_console, used_merged ? ApplicationParameters.get_merged_assembly_name() : assembly_name);
         }
 
     }

@@ -1,0 +1,2 @@
+Data Source=Oracle;User Id=Bob;Password=bob;Integrated Security=no;
+Data Source=Oracle;User Id=TestRoundhousE;Password=TestRoundhousE;Integrated Security=no;

@@ -21,4 +21,13 @@
     <appender-ref ref="RollingLogFileAppender"/>
   </root>
 
+  <!--Standard NHibernate Logging Settings-->
+  <logger name="NHibernate">
+    <level value="ERROR"/>
+  </logger>
+
+  <logger name="NHibernate.SQL">
+    <level value="ERROR"/>
+  </logger>
+  
 </log4net>
