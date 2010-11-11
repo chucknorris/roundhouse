@@ -1,5 +1,9 @@
 namespace roundhouse.databases
 {
+    using System;
+    using infrastructure.app;
+    using infrastructure.persistence;
+
     public sealed class SqlServerLiteSpeedDatabase : Database
     {
         private readonly Database database;
@@ -7,6 +11,12 @@ namespace roundhouse.databases
         public SqlServerLiteSpeedDatabase(Database database)
         {
             this.database = database;
+        }
+
+        public ConfigurationPropertyHolder configuration
+        {
+            get { return database.configuration; }
+            set { database.configuration = value; }
         }
 
         public string connection_string
@@ -100,30 +110,35 @@ namespace roundhouse.databases
 
         public bool supports_ddl_transactions
         {
-            get { return database.supports_ddl_transactions; }            
+            get { return database.supports_ddl_transactions; }
         }
 
-        public void initialize_connection()
+        //public IRepository repository
+        //{
+        //    get { return database.repository; }
+        //    set { database.repository = value; }
+        //}
+
+        public void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
         {
-            database.initialize_connection();
+            database.initialize_connections(configuration_property_holder);
         }
 
+        public void open_admin_connection()
+        {
+            database.open_admin_connection();
+        }
+
+        public void close_admin_connection()
+        {
+            database.close_admin_connection();
+        }
         public void open_connection(bool with_transaction)
         {
             database.open_connection(with_transaction);
         }
 
         public void close_connection()
-        {
-            database.close_connection();
-        }
-
-        public void open_admin_connection()
-        {
-            database.open_connection(false);
-        }
-
-        public void close_admin_connection()
         {
             database.close_connection();
         }
@@ -181,29 +196,14 @@ namespace roundhouse.databases
             database.delete_database_if_it_exists();
         }
 
-        public void use_database(string database_name)
+        public void run_database_specific_tasks()
         {
-            database.use_database(database_name);
+            database.run_database_specific_tasks();
         }
 
-        public void create_roundhouse_schema_if_it_doesnt_exist()
+        public void create_or_update_roundhouse_tables()
         {
-            database.create_roundhouse_schema_if_it_doesnt_exist();
-        }
-
-        public void create_roundhouse_version_table_if_it_doesnt_exist()
-        {
-            database.create_roundhouse_version_table_if_it_doesnt_exist();
-        }
-
-        public void create_roundhouse_scripts_run_table_if_it_doesnt_exist()
-        {
-            database.create_roundhouse_scripts_run_table_if_it_doesnt_exist();
-        }
-
-        public void create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist()
-        {
-            database.create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist();
+            database.create_or_update_roundhouse_tables();
         }
 
         public void run_sql(string sql_to_run)
@@ -239,11 +239,6 @@ namespace roundhouse.databases
         public string get_current_script_hash(string script_name)
         {
             return database.get_current_script_hash(script_name);
-        }
-
-        public object run_sql_scalar(string sql_to_run)
-        {
-            return database.run_sql_scalar(sql_to_run);
         }
 
         private bool disposing = false;

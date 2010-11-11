@@ -54,19 +54,20 @@ namespace roundhouse.runners
 
         public void run()
         {
-            Log.bound_to(this).log_an_info_event_containing("Running {0} v{1} against {2} - {3}. Looking in {4} for scripts to run.",
+            Log.bound_to(this).log_an_info_event_containing("Running {0} v{1} against {2} - {3}.",
                     ApplicationParameters.name,
-                    infrastructure.Version.get_current_assembly_version(),
+                    infrastructure.VersionInformation.get_current_assembly_version(),
                     database_migrator.database.server_name,
-                    database_migrator.database.database_name,
-                    known_folders.up.folder_path);
+                    database_migrator.database.database_name);
+            
+            Log.bound_to(this).log_an_info_event_containing("Looking in {0} for scripts to run.",known_folders.up.folder_path);
             if (!silent)
             {
                 Log.bound_to(this).log_an_info_event_containing("Please press enter when ready to kick...");
                 Console.ReadLine();                
             }
             
-            database_migrator.database.initialize_connection();
+            database_migrator.initialize_connections();
 
             if (run_in_a_transaction && !database_migrator.database.supports_ddl_transactions)
             {
@@ -95,15 +96,16 @@ namespace roundhouse.runners
                 {                    
                     if (!dont_create_the_database)
                     {
+                        database_migrator.open_admin_connection();
                         database_migrator.create_or_restore_database();
                         database_migrator.set_recovery_mode(use_simple_recovery);
+                        database_migrator.close_admin_connection();
                     }
-                    database_migrator.connect(run_in_a_transaction);
-                    database_migrator.transfer_to_database_for_changes();
+                    database_migrator.open_connection(run_in_a_transaction);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     Log.bound_to(this).log_an_info_event_containing("RoundhousE Structure");
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
-                    database_migrator.verify_or_create_roundhouse_tables();
+                    database_migrator.run_roundhouse_support_tasks();
 
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     Log.bound_to(this).log_an_info_event_containing("Versioning");
@@ -140,22 +142,24 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.sprocs.folder_full_path, version_id, known_folders.sprocs, environment, new_version);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Permission", known_folders.permissions.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These scripts will run every time.", "Permission", known_folders.permissions.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.permissions.folder_full_path, version_id, known_folders.permissions, environment, new_version);
 
                     Log.bound_to(this).log_an_info_event_containing("{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",
                                                 System.Environment.NewLine,
                                                 ApplicationParameters.name,
-                                                infrastructure.Version.get_current_assembly_version(),
+                                                infrastructure.VersionInformation.get_current_assembly_version(),
                                                 database_migrator.database.database_name,
                                                 new_version,
                                                 known_folders.change_drop.folder_full_path);
-                    database_migrator.disconnect();
+                    database_migrator.close_connection();
                 }
                 else
                 {
+                    database_migrator.open_admin_connection();
                     database_migrator.delete_database();
+                    database_migrator.close_admin_connection();
                     Log.bound_to(this).log_an_info_event_containing("{0}{0}{1} has removed database ({2}). All changes and backups can be found at \"{3}\".",
                                                 System.Environment.NewLine,
                                                 ApplicationParameters.name,

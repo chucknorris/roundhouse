@@ -30,12 +30,12 @@ namespace roundhouse.runners
         {
             string database_name = migration_runner.database_migrator.database.database_name;
 
-            // run rh to drop a database + base
+            // run roundhouse to drop a database + base
             migration_runner.database_migrator.database.database_name += "_BASE";
             migration_runner.silent = true;
             migration_runner.dropping_the_database = true;
             migration_runner.run();
-            // run rh to create a database + base
+            // run roundhouse to create a database + base
             migration_runner.silent = true;
             migration_runner.dropping_the_database = false;
             migration_runner.run();
@@ -46,7 +46,7 @@ namespace roundhouse.runners
             string redgate_args = string.Format(@"/database1:""{0}"" /database2:""{0}_BASE"" /include:table /exclude:table:\[{1}\]^|\[{2}\]^|\[{3}\] /exclude:view /options:Default,IgnoreConstraintNames,IgnorePermissions /ignoreparsererrors /f /scriptfile:""{4}\{5}_Changes.sql""", database_name, configuration.VersionTableName, configuration.ScriptsRunTableName, configuration.ScriptsRunErrorsTableName, file_system.get_full_path(known_folders.up.folder_full_path), next_change_number);
             // run redgate
             CommandExecutor.execute(file_system.combine_paths(redgate_install_location, redgate_compare_tool), redgate_args, true);
-            // run rh to drop a database + base
+            // run rouhdhouse to drop a database + base
             migration_runner.silent = true;
             migration_runner.dropping_the_database = true;
             migration_runner.run();
@@ -61,9 +61,9 @@ namespace roundhouse.runners
             decimal highest_number = 0;
             foreach (string file_number in file_numbers)
             {
-                decimal test_number;
-                decimal.TryParse(file_number,out test_number);
-                if (test_number !=null)
+                decimal test_number = 0;
+                decimal.TryParse(file_number, out test_number);
+                if (test_number != 0)
                 {
                     if (test_number > highest_number)
                     {

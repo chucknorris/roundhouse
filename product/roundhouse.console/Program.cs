@@ -57,7 +57,7 @@
 
         public static void report_version()
         {
-            string version = infrastructure.Version.get_current_assembly_version();
+            string version = infrastructure.VersionInformation.get_current_assembly_version();
             the_logger.InfoFormat("{0} - version {1} from http://projectroundhouse.org.", ApplicationParameters.name, version);
 
         }
@@ -88,16 +88,20 @@
                 .Add("d=|db=|database=|databasename=",
                     "REQUIRED: DatabaseName - The database you want to create/migrate.",
                     option => configuration.DatabaseName = option)
+                .Add("c=|cs=|connstring=|connectionstring=",
+                    string.Format("REQUIRED: ConnectionString - As an alternative to ServerName and Database - You can provide an entire connection string instead."),
+                    option => configuration.ConnectionString = option)
                 .Add("f=|files=|sqlfilesdirectory=",
-                    "REQUIRED: SqlFilesDirectory - The directory where your SQL scripts are.",
+                    string.Format("SqlFilesDirectory - The directory where your SQL scripts are. Defaults to \"{0}\".",
+                        ApplicationParameters.default_files_directory),
                     option => configuration.SqlFilesDirectory = option)
                 .Add("s=|server=|servername=|instance=|instancename=",
                     string.Format("ServerName - The server and instance you would like to run on. (local) and (local)\\SQL2008 are both valid values. Defaults to \"{0}\".",
                         ApplicationParameters.default_server_name),
                     option => configuration.ServerName = option)
-                .Add("c=|cs=|connstring=|connectionstring=",
-                    string.Format("As an alternative to ServerName and Database - You can provide an entire connection string instead."),
-                    option => configuration.ConnectionString = option)
+                .Add("csa=|connstringadmin=|connectionstringadministration=",
+                    string.Format("ConnectionStringAdministration - This is used for connecting to master when you may have a different uid and password than normal."),
+                    option => configuration.ConnectionStringAdmin = option)
                 //database type
                 .Add("dt=|dbt=|databasetype=",
                     string.Format("DatabaseType - Tells RH what type of database it is running on. This is a plugin model. This is the fully qualified name of a class that implements the interface roundhouse.sql.Database, roundhouse. If you have your own assembly, just set it next to rh.exe and set this value appropriately. Defaults to \"{0}\" which can also run against SQL Server 2005.",
@@ -146,15 +150,15 @@
                     option => configuration.PermissionsFolderName = option)
                 // roundhouse items
                 .Add("sc=|schema=|schemaname=",
-                    string.Format("SchemaName - This is the schema where RH stores it's two tables. Once you set this a certain way, do not change this. This is definitelly running with scissors and very sharp. I am allowing you to have flexibility, but because this is a knife you can still get cut if you use it wrong. I'm just saying. You've been warned. Defaults to \"{0}\".",
+                    string.Format("SchemaName - This is the schema where RH stores it's tables. Once you set this a certain way, do not change this. This is definitely running with scissors and very sharp. I am allowing you to have flexibility, but because this is a knife you can still get cut if you use it wrong. I'm just saying. You've been warned. Defaults to \"{0}\".",
                         ApplicationParameters.default_roundhouse_schema_name),
                     option => configuration.SchemaName = option)
                 .Add("vt=|versiontable=|versiontablename=",
-                    string.Format("VersionTableName - This is the table where RH stores versioning information. Once you set this, do not change this. This is definitelly running with scissors and very sharp. Defaults to \"{0}\".",
+                    string.Format("VersionTableName - This is the table where RH stores versioning information. Once you set this, do not change this. This is definitely running with scissors and very sharp. Defaults to \"{0}\".",
                         ApplicationParameters.default_version_table_name),
                     option => configuration.VersionTableName = option)
                 .Add("srt=|scriptsruntable=|scriptsruntablename=",
-                    string.Format("ScriptsRunTableName - This is the table where RH stores information about scripts that have been run. Once you set this a certain way, do not change this. This is definitelly running with scissors and very sharp. Defaults to \"{0}\".",
+                    string.Format("ScriptsRunTableName - This is the table where RH stores information about scripts that have been run. Once you set this a certain way, do not change this. This is definitely running with scissors and very sharp. Defaults to \"{0}\".",
                         ApplicationParameters.default_scripts_run_table_name),
                     option => configuration.ScriptsRunTableName = option)
                 .Add("sret=|scriptsrunerrorstable=|scriptsrunerrorstablename=",
@@ -241,11 +245,13 @@
             if (help)
             {
                 the_logger.Info("Usage of RoundhousE (RH)");
-                const string usage_message =
-                    "rh.exe /d[atabase] VALUE /[sql]f[ilesdirectory] VALUE " +
+                string usage_message =
+                    string.Format(
+                    "rh.exe /d[atabase] VALUE OR rh.exe /c[onnection]s[tring] VALUE followed by all the optional parameters {0}" +
                     "[" +
+                    "/[sql]f[ilesdirectory] VALUE " +
                     "/s[ervername] VALUE " +
-                    "/c[onnection]s[tring] VALUE " +
+                    "/c[onnection]s[tring]a[dministration] VALUE " +
                     "/r[epositorypath] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
                     "/u[pfoldername] VALUE /do[wnfoldername] VALUE " +
                     "/r[un]f[irstafterupdatefoldername] VALUE /fu[nctionsfoldername] VALUE /v[ie]w[sfoldername] VALUE " +
@@ -267,13 +273,13 @@
                     "/runallanytimescripts " +
                     "/baseline " +
                     "/dryrun " +
-                    "]";
+                    "]", Environment.NewLine);
                 show_help(usage_message, option_set);
             }
 
-            if (string.IsNullOrEmpty(configuration.DatabaseName) || string.IsNullOrEmpty(configuration.SqlFilesDirectory))
+            if (string.IsNullOrEmpty(configuration.DatabaseName) && string.IsNullOrEmpty(configuration.ConnectionString))
             {
-                show_help("Error: You must specify Database Name (/d) AND Sql Files Directory (/f) at a minimum to use RoundhousE.", option_set);
+                show_help("Error: You must specify Database Name (/d) OR Connection String (/cs) at a minimum to use RoundhousE.", option_set);
             }
         }
 

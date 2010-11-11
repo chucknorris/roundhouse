@@ -1,6 +1,7 @@
 namespace roundhouse.infrastructure.app
 {
     using System;
+    using System.IO;
     using builders;
     using containers;
     using containers.custom;
@@ -22,6 +23,10 @@ namespace roundhouse.infrastructure.app
     {
         public static void set_defaults_if_properties_are_not_set(ConfigurationPropertyHolder configuration_property_holder)
         {
+            if (string.IsNullOrEmpty(configuration_property_holder.SqlFilesDirectory))
+            {
+                configuration_property_holder.SqlFilesDirectory = ApplicationParameters.default_files_directory;
+            }
             if (string.IsNullOrEmpty(configuration_property_holder.ServerName))
             {
                 configuration_property_holder.ServerName = ApplicationParameters.default_server_name;
@@ -94,6 +99,19 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.RestoreTimeout = ApplicationParameters.default_restore_timeout;
             }
+
+            if (!string.IsNullOrEmpty(configuration_property_holder.RestoreFromPath)) {
+                configuration_property_holder.RestoreFromPath = Path.GetFullPath(configuration_property_holder.RestoreFromPath);    
+            }
+        }
+
+        private static void set_up_current_mappings(ConfigurationPropertyHolder configuration_property_holder)
+        {
+            ApplicationParameters.CurrentMappings.roundhouse_schema_name = configuration_property_holder.SchemaName;
+            ApplicationParameters.CurrentMappings.version_table_name = configuration_property_holder.VersionTableName;
+            ApplicationParameters.CurrentMappings.scripts_run_table_name = configuration_property_holder.ScriptsRunTableName;
+            ApplicationParameters.CurrentMappings.scripts_run_errors_table_name = configuration_property_holder.ScriptsRunErrorsTableName;
+            ApplicationParameters.CurrentMappings.database_type = configuration_property_holder.DatabaseType;
         }
 
         public static void build_the_container(ConfigurationPropertyHolder configuration_property_holder)
@@ -106,6 +124,8 @@ namespace roundhouse.infrastructure.app
         {
             //this becomes a scan
             configuration_property_holder.DatabaseType = convert_database_type_synonyms(configuration_property_holder.DatabaseType);
+
+            set_up_current_mappings(configuration_property_holder);
 
             ObjectFactory.Configure(cfg =>
                                         {
@@ -124,7 +144,7 @@ namespace roundhouse.infrastructure.app
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<Environment>().Use(new DefaultEnvironment(configuration_property_holder));
                                         });
-
+            
             return new StructureMapContainer(ObjectFactory.Container);
         }
 
@@ -137,27 +157,21 @@ namespace roundhouse.infrastructure.app
                 case "2008":
                 case "sql2008":
                 case "sqlserver2008":
-                    database_type_full_name =
-                        "roundhouse.databases.sqlserver2008.SqlServerDatabase, roundhouse.databases.sqlserver2008";
-                    break;
                 case "2005":
                 case "sql2005":
                 case "sqlserver2005":
-                    database_type_full_name =
-                        "roundhouse.databases.sqlserver2005.SqlServerDatabase, roundhouse.databases.sqlserver2005";
-                    break;
-                case "2000":
-                case "sql2000":
-                case "sqlserver2000":
-                    database_type_full_name =
-                        "roundhouse.databases.sqlserver2000.SqlServerDatabase, roundhouse.databases.sqlserver2000";
-                    break;
                 case "sql":
                 case "sql.net":
                 case "sqlserver":
                 case "sqlado.net":
                     database_type_full_name =
                         "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
+                    break;
+                case "2000":
+                case "sql2000":
+                case "sqlserver2000":
+                    database_type_full_name =
+                        "roundhouse.databases.sqlserver2000.SqlServerDatabase, roundhouse.databases.sqlserver2000";
                     break;
                 case "mysql":
                     database_type_full_name =
@@ -167,10 +181,13 @@ namespace roundhouse.infrastructure.app
                     database_type_full_name =
                         "roundhouse.databases.oracle.OracleDatabase, roundhouse.databases.oracle";
                     break;
-                case "oledb":
-                    database_type_full_name =
-                        "roundhouse.databases.oledb.OleDbDatabase, roundhouse.databases.oledb";
+                case "access" :
+                    database_type_full_name = "roundhouse.databases.access.AccessDatabase, roundhouse.databases.access";
                     break;
+                //case "oledb":
+                //    database_type_full_name =
+                //        "roundhouse.databases.oledb.OleDbDatabase, roundhouse.databases.oledb";
+                //    break;
             }
 
             return database_type_full_name;

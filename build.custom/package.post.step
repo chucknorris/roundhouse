@@ -17,17 +17,8 @@
   <property name="path.file.test_databases" value="${dirs.current}\..\product\testdatabase" />
   <property name="folder.sample" value="sample" overwrite="false" />
 
-  <target name="go" depends="copy_nant_to_deploy, cleanup_roundhouse_drop, restructure_roundhouse_drop_folder, copy_roundhouse_files_to_deploy_nant, copy_roundhouse_files_to_deploy_console, copy_test_databases_to_deploy, create_copy_of_environment_file_for_sample, move_sample_to_drop, copy_notices" description="Packaging" />
+  <target name="go" depends="cleanup_roundhouse_drop, restructure_roundhouse_drop_folder, copy_roundhouse_files_to_deploy_console, copy_test_databases_to_deploy, create_copy_of_environment_file_for_sample, move_sample_to_drop, copy_notices" description="Packaging" />
 
-  <target name="copy_nant_to_deploy">
-    <echo message="Copying NAnt folder items to ${dirs.deployment}\NAnt."/>
-    <copy todir="${dirs.deployment}">
-      <fileset basedir="${dirs.lib}">
-        <include name="NAnt/**" />
-      </fileset>
-    </copy>
-  </target>
-  
   <target name="cleanup_roundhouse_drop">
     <echo message="Cleaning up ${dirs.drop}\${folder.app.drop} to remove unused items." />
     <delete> 
@@ -45,29 +36,17 @@
   </target>
 
   <target name="restructure_roundhouse_drop_folder">
-    <echo message="Moving NAnt specific items to ${dirs.drop}\${folder.app.drop}\NAnt." />
-    <copy todir="${dirs.drop}\${folder.app.drop}\NAnt">
+    <echo message="Moving DLL specific items to ${dirs.drop}\${folder.app.drop}\lib." />
+    <copy todir="${dirs.drop}\${folder.app.drop}\lib">
       <fileset basedir="${dirs.drop}\${folder.app.drop}">
         <exclude name="rh.exe" />
         <exclude name="rh.exe.config" />
-        <exclude name="DBDeploy_MSBuild.proj" />
-        <exclude name="Microsoft.Build.Framework.dll" />
         <include name="*.*" />
       </fileset>
     </copy>
     
-    <echo message="Moving MSBuild specific items to ${dirs.drop}\${folder.app.drop}\MSBuild." />
-    <copy todir="${dirs.drop}\${folder.app.drop}\MSBuild">
-      <fileset basedir="${dirs.drop}\${folder.app.drop}">
-        <exclude name="rh.exe" />
-        <exclude name="rh.exe.config" />
-        <exclude name="dbdeploy_nant.deploy" />
-        <include name="*.*" />
-      </fileset>
-    </copy>
-    
-    <echo message="Moving Console specific items to ${dirs.drop}\${folder.app.drop}\ConsoleApp." />
-    <copy todir="${dirs.drop}\${folder.app.drop}\ConsoleApp">
+    <echo message="Moving Console specific items to ${dirs.drop}\${folder.app.drop}\console." />
+    <copy todir="${dirs.drop}\${folder.app.drop}\console">
       <fileset basedir="${dirs.drop}\${folder.app.drop}">
         <exclude name="DBDeploy_MSBuild.proj" />
         <exclude name="Microsoft.Build.Framework.dll" />
@@ -85,19 +64,10 @@
     </delete>
   </target>
   
-  <target name="copy_roundhouse_files_to_deploy_nant">
-    <echo message="Copying roundhouse assemblies to ${dirs.deployment}\NAnt."/>
-    <copy todir="${dirs.deployment}\NAnt">
-      <fileset basedir="${dirs.drop}\${folder.app.drop}\NAnt">
-        <include name="*.*" />
-      </fileset>
-    </copy>
-  </target>
-  
   <target name="copy_roundhouse_files_to_deploy_console">
-    <echo message="Copying roundhouse assemblies to ${dirs.deployment}\Console."/>
+    <echo message="Copying roundhouse assemblies to ${dirs.deployment}\console."/>
     <copy todir="${dirs.deployment}\Console">
-      <fileset basedir="${dirs.drop}\${folder.app.drop}\ConsoleApp">
+      <fileset basedir="${dirs.drop}\${folder.app.drop}\console">
         <include name="*.*" />
       </fileset>
     </copy>
@@ -114,8 +84,9 @@
 
   <target name="create_copy_of_environment_file_for_sample">
     <copy 
-      file="${dirs.drop}\db\TestRoundhousE\permissions\LOCAL.GrantRobDataReaderDataWriterPermissions.ENV.sql"
-      tofile="${dirs.drop}\db\TestRoundhousE\permissions\TEST.GrantRobDataReaderDataWriterPermissions.ENV.sql" 
+      file="${dirs.drop}\db\SQLServer\TestRoundhousE\permissions\LOCAL.GrantRobDataReaderDataWriterPermissions.ENV.sql"
+      tofile="${dirs.drop}\db\SQLServer\TestRoundhousE\permissions\TEST.GrantRobDataReaderDataWriterPermissions.ENV.sql" 
+      failonerror="false"
       />
   </target>
   

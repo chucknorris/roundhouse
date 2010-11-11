@@ -32,28 +32,45 @@
   <property name="dirs.lib" value="${dirs.current}\${path.to.toplevel}\${folder.references}" overwrite="false" />
   <property name="folders.gems" value="gems" overwrite="false" />
   
-  <target name="go" depends="run_tasks" />
+  <target name="go" depends="run_tasks, copy_notices_to_lib_folder" />
   
   <target name="run_tasks">
     <copy todir="${dirs.drop}\${folder.gems}\bin">
-      <fileset basedir="${dirs.drop}\${folder.app.drop}\ConsoleApp">
+      <fileset basedir="${dirs.drop}\${folder.app.drop}\console">
         <include name="**/*.*" />
       </fileset>
     </copy>
     
     <copy todir="${dirs.drop}\${folder.gems}\lib">
-      <fileset basedir="${dirs.drop}\${folder.gems}\lib\ConsoleApp">
+      <fileset basedir="${dirs.drop}\${folder.gems}\lib\console">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+    
+    <copy todir="${dirs.drop}\${folder.gems}\lib">
+      <fileset basedir="${dirs.drop}\${folder.gems}\lib\lib">
         <include name="**/*.*" />
       </fileset>
     </copy>
    
     <delete>
       <fileset basedir="${dirs.drop}\${folder.gems}\lib" >
-        <include name="ConsoleApp/**" />
-        <include name="MSBuild/**" />
-        <include name="NAnt/**" />
+        <include name="console/**" />
+        <include name="lib/**" />
       </fileset>
     </delete>
+  </target>
+  
+  <target name="copy_notices_to_lib_folder">
+    <echo message="Packaging readme file to ${dirs.drop.gems}\lib."/>
+    <copy file="${dirs.current}\..\README.markdown" tofile="${dirs.drop.gems}\docs\README" failonerror="false" />
+    
+    <echo message="Packaging other legal stuff to ${dirs.drop.gems}\lib."/>
+    <copy todir="${dirs.drop.gems}\lib" failonerror="false">
+      <fileset basedir="${dirs.drop}\LEGAL">
+        <include name="**/*" />
+      </fileset>
+    </copy>
   </target>
 
 </project>

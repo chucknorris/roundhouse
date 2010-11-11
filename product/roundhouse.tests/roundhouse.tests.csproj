@@ -85,7 +85,7 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="databases\SqlServer2008DatabaseSpecs.cs" />
+    <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="cryptography\CryptographicServiceSpecs.cs" />
     <Compile Include="infrastructure\containers\ContainerSpecs.cs" />
@@ -102,9 +102,17 @@
     <Compile Include="sqlsplitters\StatementSplitterSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\roundhouse.databases.sqlserver2008\roundhouse.databases.sqlserver2008.csproj">
-      <Project>{8613D56F-B226-49BC-AC7A-19B70C827668}</Project>
-      <Name>roundhouse.databases.sqlserver2008</Name>
+    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj">
+      <Project>{35E058E3-8FEE-4107-AEDC-37A452C588EC}</Project>
+      <Name>roundhouse.databases.access</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj">
+      <Project>{3828D379-C96A-49C8-8BC9-0182CC8C55B1}</Project>
+      <Name>roundhouse.databases.oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj">
+      <Project>{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}</Project>
+      <Name>roundhouse.databases.sqlserver</Name>
     </ProjectReference>
     <ProjectReference Include="..\roundhouse\roundhouse.csproj">
       <Project>{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}</Project>

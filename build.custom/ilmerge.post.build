@@ -16,22 +16,26 @@
   <property name="dirs.deployment" value="${dirs.drop}\${folder.deployment}" />
   <property name="dirs.app.drop" value="${dirs.drop}\${folder.app.drop}" overwrite="false" />
 
-  <target name="go" depends="copy_roundhouse_files_to_deploy_console" />
+  <target name="go" depends="copy_roundhouse_files_to_deploy_console, merge_the_dll" />
  
   <target name="copy_roundhouse_files_to_deploy_console">
-  <echo message="Removing original roundhouse assemblies from ${dirs.deployment}\Console."/>
+  <echo message="Removing original roundhouse assemblies from ${dirs.deployment}\console."/>
     <delete>
-      <fileset basedir="${dirs.drop}\sample\${folder.deployment}\Console" >
+      <fileset basedir="${dirs.drop}\sample\${folder.deployment}\console" >
         <include name="*.*" />
       </fileset>
     </delete>
   
-    <echo message="Copying roundhouse assemblies from '${dirs.app.drop}\ConsoleApp' to '${dirs.deployment}\Console'."/>
-    <copy todir="${dirs.drop}\sample\${folder.deployment}\Console">
-      <fileset basedir="${dirs.app.drop}\ConsoleApp">
+    <echo message="Copying roundhouse assemblies from '${dirs.app.drop}\console' to '${dirs.deployment}\console'."/>
+    <copy todir="${dirs.drop}\sample\${folder.deployment}\console">
+      <fileset basedir="${dirs.app.drop}\console">
         <include name="*.*" />
       </fileset>
     </copy>
+  </target>
+  
+  <target name="merge_the_dll">
+    <nant buildfile="${dirs.current}\ilmergeDLL.build" inheritall="true" />
   </target>
   
 </project>

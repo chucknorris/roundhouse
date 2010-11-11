@@ -18,22 +18,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.tests.integratio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "databases", "databases", "{BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserver2008", "product\roundhouse.databases.sqlserver2008\roundhouse.databases.sqlserver2008.csproj", "{8613D56F-B226-49BC-AC7A-19B70C827668}"
-	ProjectSection(ProjectDependencies) = postProject
-		{587F4BDF-FF76-4266-9D68-349FA4E6335D} = {587F4BDF-FF76-4266-9D68-349FA4E6335D}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserver2005", "product\roundhouse.databases.sqlserver2005\roundhouse.databases.sqlserver2005.csproj", "{587F4BDF-FF76-4266-9D68-349FA4E6335D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.oracle", "product\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj", "{3828D379-C96A-49C8-8BC9-0182CC8C55B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.mysql", "product\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj", "{71419DBB-4809-4102-A002-D484242FCFC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.oledb", "product\roundhouse.databases.oledb\roundhouse.databases.oledb.csproj", "{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserver", "product\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj", "{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.nhibernate", "product\roundhouse.nhibernate\roundhouse.nhibernate.csproj", "{80C7598F-C413-43FB-A589-A6726A1B8438}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserver2000", "product\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj", "{4CF5718B-9C74-4590-9848-A81360AE1D22}"
 EndProject
@@ -42,6 +31,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildDatabase", "sample\BuildDatabase\BuildDatabase.csproj", "{C1305F24-71DB-4A49-849F-6D173E34CE43}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleProject", "sample\SampleProject\SampleProject.csproj", "{D1C278C6-301B-4EEE-BD47-F15847DDECAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.access", "product\roundhouse.databases.access\roundhouse.databases.access.csproj", "{35E058E3-8FEE-4107-AEDC-37A452C588EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,18 +71,6 @@ Global
 		{705033B8-10BA-4E7F-854E-08A7C5590DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{705033B8-10BA-4E7F-854E-08A7C5590DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{705033B8-10BA-4E7F-854E-08A7C5590DC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8613D56F-B226-49BC-AC7A-19B70C827668}.Build|Any CPU.ActiveCfg = Build|Any CPU
-		{8613D56F-B226-49BC-AC7A-19B70C827668}.Build|Any CPU.Build.0 = Build|Any CPU
-		{8613D56F-B226-49BC-AC7A-19B70C827668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8613D56F-B226-49BC-AC7A-19B70C827668}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8613D56F-B226-49BC-AC7A-19B70C827668}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8613D56F-B226-49BC-AC7A-19B70C827668}.Release|Any CPU.Build.0 = Release|Any CPU
-		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Build|Any CPU.ActiveCfg = Build|Any CPU
-		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Build|Any CPU.Build.0 = Build|Any CPU
-		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{587F4BDF-FF76-4266-9D68-349FA4E6335D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3828D379-C96A-49C8-8BC9-0182CC8C55B1}.Build|Any CPU.ActiveCfg = Build|Any CPU
 		{3828D379-C96A-49C8-8BC9-0182CC8C55B1}.Build|Any CPU.Build.0 = Build|Any CPU
 		{3828D379-C96A-49C8-8BC9-0182CC8C55B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -104,24 +83,12 @@ Global
 		{71419DBB-4809-4102-A002-D484242FCFC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71419DBB-4809-4102-A002-D484242FCFC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71419DBB-4809-4102-A002-D484242FCFC9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Build|Any CPU.ActiveCfg = Build|Any CPU
-		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Build|Any CPU.Build.0 = Build|Any CPU
-		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Build|Any CPU.ActiveCfg = Build|Any CPU
 		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Build|Any CPU.Build.0 = Build|Any CPU
 		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80C7598F-C413-43FB-A589-A6726A1B8438}.Build|Any CPU.ActiveCfg = Build|Any CPU
-		{80C7598F-C413-43FB-A589-A6726A1B8438}.Build|Any CPU.Build.0 = Build|Any CPU
-		{80C7598F-C413-43FB-A589-A6726A1B8438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80C7598F-C413-43FB-A589-A6726A1B8438}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80C7598F-C413-43FB-A589-A6726A1B8438}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80C7598F-C413-43FB-A589-A6726A1B8438}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4CF5718B-9C74-4590-9848-A81360AE1D22}.Build|Any CPU.ActiveCfg = Build|Any CPU
 		{4CF5718B-9C74-4590-9848-A81360AE1D22}.Build|Any CPU.Build.0 = Build|Any CPU
 		{4CF5718B-9C74-4590-9848-A81360AE1D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -140,6 +107,12 @@ Global
 		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35E058E3-8FEE-4107-AEDC-37A452C588EC}.Build|Any CPU.ActiveCfg = Release|Any CPU
+		{35E058E3-8FEE-4107-AEDC-37A452C588EC}.Build|Any CPU.Build.0 = Release|Any CPU
+		{35E058E3-8FEE-4107-AEDC-37A452C588EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35E058E3-8FEE-4107-AEDC-37A452C588EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35E058E3-8FEE-4107-AEDC-37A452C588EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35E058E3-8FEE-4107-AEDC-37A452C588EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,13 +120,11 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0726928C-FDAC-4C79-B423-841C7E0DF5B8} = {807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}
 		{705033B8-10BA-4E7F-854E-08A7C5590DC5} = {807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}
-		{8613D56F-B226-49BC-AC7A-19B70C827668} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
-		{587F4BDF-FF76-4266-9D68-349FA4E6335D} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{3828D379-C96A-49C8-8BC9-0182CC8C55B1} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{71419DBB-4809-4102-A002-D484242FCFC9} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
-		{F4FF2D8A-FF8D-46F7-B69E-F417DF201418} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{4CF5718B-9C74-4590-9848-A81360AE1D22} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
+		{35E058E3-8FEE-4107-AEDC-37A452C588EC} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{C1305F24-71DB-4A49-849F-6D173E34CE43} = {A9323A52-0538-4CED-8DEE-7CC0853EA4FC}
 		{D1C278C6-301B-4EEE-BD47-F15847DDECAF} = {A9323A52-0538-4CED-8DEE-7CC0853EA4FC}
 	EndGlobalSection
