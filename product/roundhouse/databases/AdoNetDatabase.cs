@@ -44,12 +44,13 @@
             server_connection = GetAdoNetConnection(connection_string);
             server_connection.open();
 
+            set_repository();
+
             if (with_transaction)
             {
                 transaction = server_connection.underlying_type().BeginTransaction();
+                repository.start(true);
             }
-
-            set_repository();
         }
 
         public override void close_connection()
@@ -60,11 +61,14 @@
                 transaction = null;
             }
 
+            repository.finish();
+
             server_connection.close();
         }
 
-        public override void rollback()
-        {
+        public override void rollback() {
+            repository.rollback();
+ 
             if (transaction != null)
             {
                 //rollback previous transaction
@@ -75,6 +79,7 @@
                 server_connection.open();
                 //use_database(database_name);
                 transaction = server_connection.underlying_type().BeginTransaction();
+                repository.start(true);
             }
         }
 

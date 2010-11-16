@@ -16,7 +16,7 @@
             HibernateMapping.DefaultAccess.Property();
             HibernateMapping.DefaultCascade.SaveUpdate();
 
-            Id(x => x.id).Column("Id").GeneratedBy.Identity().UnsavedValue(0);
+            Id(x => x.id).Column("id").GeneratedBy.Identity().UnsavedValue(0);
             Map(x => x.repository_path);
             Map(x => x.version).Length(50);
             Map(x => x.script_name);

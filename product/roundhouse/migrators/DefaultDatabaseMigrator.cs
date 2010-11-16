@@ -152,8 +152,8 @@ namespace roundhouse.migrators
 
             if (this_is_a_one_time_script_that_has_changes_but_has_already_been_run(script_name, sql_to_run, run_this_script_once))
             {
-                if (error_on_one_time_script_changes)
-                {
+                if (error_on_one_time_script_changes) {
+                    database.rollback();
                     string error_message = string.Format("{0} has changed since the last time it was run. By default this is not allowed - scripts that run once should never change. To change this behavior to a warning, please set warnOnOneTimeScriptChanges to true and run again. Stopping execution.", script_name);
                     record_script_in_scripts_run_errors_table(script_name, sql_to_run, sql_to_run, error_message, repository_version, repository_path);
                     throw new Exception(error_message);
