@@ -16,7 +16,7 @@ namespace roundhouse.databases.sqlserver2000.orm
             HibernateMapping.DefaultAccess.Property();
             HibernateMapping.DefaultCascade.SaveUpdate();
 
-            Id(x => x.id).Column("Id").GeneratedBy.Identity().UnsavedValue(0);
+            Id(x => x.id).Column("id").GeneratedBy.Identity().UnsavedValue(0);
             Map(x => x.version_id);
             Map(x => x.script_name);
             Map(x => x.text_of_script).CustomSqlType("text");

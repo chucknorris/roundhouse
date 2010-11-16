@@ -79,9 +79,12 @@ namespace roundhouse.databases.access
             server_connection = new AdoNetConnection(new OleDbConnection(connection_string));
             server_connection.open();
 
+            set_repository();
+
             if (with_transaction)
             {
                 transaction = server_connection.underlying_type().BeginTransaction();
+                repository.start(true);
             }
         }
 

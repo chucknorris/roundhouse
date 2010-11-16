@@ -7,6 +7,10 @@ namespace roundhouse.infrastructure.persistence
 
     public interface IRepository
     {
+        void start(bool using_transaction);
+        void rollback();
+        void finish();
+
         IList<T> get_all<T>();
         IList<T> get_with_criteria<T>(DetachedCriteria detachedCriteria);
         IList<T> get_transformation_with_criteria<T>(DetachedCriteria detachedCriteria);
@@ -14,6 +18,7 @@ namespace roundhouse.infrastructure.persistence
         void save_or_update<T>(T item);
         void delete<T>(IList<T> list);
 
+        ITransaction transaction { get;}
         ISessionFactory session_factory { get; }
         Configuration nhibernate_configuration { get; }
         //string connection_string { get; }

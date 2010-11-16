@@ -10,6 +10,13 @@ namespace roundhouse.infrastructure.persistence
 
     public sealed class Repository : IRepository
     {
+        private bool running_in_a_transaction;
+
+        public ISessionFactory session_factory { get; private set; }
+        public Configuration nhibernate_configuration { get; private set; }
+        public ITransaction transaction { get; private set; }
+        private ISession session { get; set; }
+
         public Repository(ISessionFactory session_factory, Configuration cfg)
         {
             this.session_factory = session_factory;
@@ -20,19 +27,53 @@ namespace roundhouse.infrastructure.persistence
             }
         }
 
+        public void start(bool using_transaction)
+        {
+            running_in_a_transaction = using_transaction;
+            session = session_factory.OpenSession();
+            if (using_transaction)
+            {
+                transaction = session.BeginTransaction();
+            }
+        }
+
+        public void rollback()
+        {
+            if (running_in_a_transaction)
+            {
+                transaction.Rollback();
+            }
+            running_in_a_transaction = false;
+
+            finish();
+        }
+
+        public void finish()
+        {
+            if (running_in_a_transaction)
+            {
+                transaction.Commit();
+            }
+
+            session.Close();
+            session.Dispose();
+            session = null;
+        }
+
         public IList<T> get_all<T>()
         {
             IList<T> list;
-            Type persistentClass = typeof (T);
+            Type persistentClass = typeof(T);
 
-            using (ISession session = session_factory.OpenSession())
-            {
-                ICriteria criteria = session.CreateCriteria(persistentClass);
-                list = criteria.List<T>();
-                session.Close();
-            }
+            bool running_long_session = session == null;
+            if (!running_long_session) start(false);
 
-            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1}.", list.Count, typeof (T).Name);
+            ICriteria criteria = session.CreateCriteria(persistentClass);
+            list = criteria.List<T>();
+
+            if (!running_long_session) finish();
+
+            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1}.", list.Count, typeof(T).Name);
 
             return list;
         }
@@ -46,14 +87,16 @@ namespace roundhouse.infrastructure.persistence
             }
 
             IList<T> list;
-            using (ISession session = session_factory.OpenSession())
-            {
-                ICriteria criteria = detachedCriteria.GetExecutableCriteria(session);
-                list = criteria.List<T>();
-                session.Close();
-            }
 
-            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof (T).Name,detachedCriteria.ToString());
+            bool running_long_session = session == null;
+            if (!running_long_session) start(false);
+
+            ICriteria criteria = detachedCriteria.GetExecutableCriteria(session);
+            list = criteria.List<T>();
+
+            if (!running_long_session) finish();
+
+            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof(T).Name, detachedCriteria.ToString());
 
             return list;
         }
@@ -67,16 +110,18 @@ namespace roundhouse.infrastructure.persistence
             }
 
             IList<T> list;
-            using (ISession session = session_factory.OpenSession())
-            {
-                ICriteria criteria = detachedCriteria.GetExecutableCriteria(session);
-                list = criteria
-                    .SetResultTransformer(new AliasToBeanResultTransformer(typeof (T)))
-                    .List<T>();
-                session.Close();
-            }
 
-            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof (T).Name,detachedCriteria.ToString());
+            bool running_long_session = session == null;
+            if (!running_long_session) start(false);
+
+            ICriteria criteria = detachedCriteria.GetExecutableCriteria(session);
+            list = criteria
+                .SetResultTransformer(new AliasToBeanResultTransformer(typeof(T)))
+                .List<T>();
+
+            if (!running_long_session) finish();
+
+            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof(T).Name, detachedCriteria.ToString());
 
             return list;
         }
@@ -88,21 +133,19 @@ namespace roundhouse.infrastructure.persistence
                 Log.bound_to(this).log_a_warning_event_containing("Please ensure you send a non null list of records to save.");
                 return;
             }
-            Log.bound_to(this).log_a_debug_event_containing("Received {0} records of type {1} marked for save/update.", list.Count, typeof (T).Name);
-            using (ISession session = session_factory.OpenSession())
+            Log.bound_to(this).log_a_debug_event_containing("Received {0} records of type {1} marked for save/update.", list.Count, typeof(T).Name);
+
+            bool running_long_session = session == null;
+            if (!running_long_session) start(true);
+
+            foreach (T item in list)
             {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    foreach (T item in list)
-                    {
-                        session.SaveOrUpdate(item);
-                    }
-                    transaction.Commit();
-                }
-                session.Close();
+                save_or_update(item);
             }
 
-            Log.bound_to(this).log_a_debug_event_containing("Saved {0} records of type {1} successfully.", list.Count, typeof (T).Name);
+            if (!running_long_session) finish();
+
+            Log.bound_to(this).log_a_debug_event_containing("Saved {0} records of type {1} successfully.", list.Count, typeof(T).Name);
         }
 
         public void save_or_update<T>(T item)
@@ -113,17 +156,15 @@ namespace roundhouse.infrastructure.persistence
                 return;
             }
 
-            using (ISession session = session_factory.OpenSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    session.SaveOrUpdate(item);
-                    transaction.Commit();
-                }
-                session.Close();
-            }
+            bool running_long_session = session == null;
+            if (!running_long_session) start(false);
 
-            Log.bound_to(this).log_a_debug_event_containing("Saved item of type {0} successfully.", typeof (T).Name);
+            session.SaveOrUpdate(item);
+            session.Flush();
+
+            if (!running_long_session) finish();
+
+            Log.bound_to(this).log_a_debug_event_containing("Saved item of type {0} successfully.", typeof(T).Name);
         }
 
         public void delete<T>(IList<T> list)
@@ -134,26 +175,22 @@ namespace roundhouse.infrastructure.persistence
                 return;
             }
 
-            Log.bound_to(this).log_an_info_event_containing("Received {0} records of type {1} marked for deletion.", list.Count, typeof (T).Name);
-            using (ISession session = session_factory.OpenSession())
+            Log.bound_to(this).log_an_info_event_containing("Received {0} records of type {1} marked for deletion.", list.Count, typeof(T).Name);
+
+            bool running_long_session = session == null;
+            if (!running_long_session) start(true);
+
+
+            foreach (T item in list)
             {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    foreach (T item in list)
-                    {
-                        session.Delete(item);
-                        //session.Flush();
-                    }
-                    transaction.Commit();
-                }
-                session.Close();
+                session.Delete(item);
+                session.Flush();
             }
 
-            Log.bound_to(this).log_an_info_event_containing("Removed {0} records of type {1} successfully.", list.Count, typeof (T).Name);
+            if (!running_long_session) finish();
+
+            Log.bound_to(this).log_an_info_event_containing("Removed {0} records of type {1} successfully.", list.Count, typeof(T).Name);
         }
 
-        public ISessionFactory session_factory { get; private set; }
-
-        public Configuration nhibernate_configuration { get; private set; }
     }
 }
