@@ -144,6 +144,11 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These scripts will run every time.", "Permission", known_folders.permissions.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
+                    if (run_in_a_transaction) {
+                        database_migrator.close_connection();
+                        database_migrator.open_connection(false);    
+                    }
+                   
                     traverse_files_and_run_sql(known_folders.permissions.folder_full_path, version_id, known_folders.permissions, environment, new_version);
 
                     Log.bound_to(this).log_an_info_event_containing("{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",
