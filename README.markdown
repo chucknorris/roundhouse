@@ -48,6 +48,24 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+=0.7.0.276=  
+* Fixed a collation issue with RoundhousE id columns in its tracking tables. See [issue 46] (http://code.google.com/p/roundhouse/issues/detail?id=46) for details. (r274)  
+* RestoreFromPath can take a relative path. (r269)  
+* RH can now upgrade it's internals without user interaction. See [issue 40] (http://code.google.com/p/roundhouse/issues/detail?id=40) for details. (r268)  
+* MSBuild / NAnt tasks are deprecated and no longer hooked up. Please use the console and call it from your tasks. (r268)  
+* RH has differencing support with NHibernate Schema Generation/Updates (r267 - branch, r268)  
+* FluentNhibernate and NHibernate are now being used for the internals (r267 - branch, r268)  
+* SMO is deprecated and removed (r203 - branch, r268)  
+* Gems and build upgrades, oh my! (r259)  
+* SQL2000 to 2005 is now a smooth transition. (r221)  
+* Fix: SQL2000 - ScriptsRun now correctly references Version for the foreign key. (r220)  
+* Fix: Connection should be initialized before asking the database if it supports ddl transactions. (r215)  
+* Fix: Uppercase User names when running with Oracle. (r200)  
+* RH has differencing support with RedGate. See sample project for details. (r197)  
+* Fix: Scrips run errors now updates version number and path w/out a dependency on scripts run. Allows for it to finish during transactional runs and still capture errors. (r196)  
+* Fix: Capture errortastic changes to DDL/DML (up) files in the script run errors table. (r191)  
+* Added admin connection string to do administrative tasks. (r190)  
+  
 =0.5.0.188=  
 * RH handles nonsupported DDL transactions. RH will also stop and inform the user when DDL transactions are not supported, so user can choose to continue - see [issue 28](http://code.google.com/p/roundhouse/issues/detail?id=28) for details. (r172 - branch, r185)  
 * RH logs when errors occur in the RoundhousE.ScriptRunErrors table - see [issue 28](http://code.google.com/p/roundhouse/issues/detail?id=28) for details. (r167 - branch, r185)  

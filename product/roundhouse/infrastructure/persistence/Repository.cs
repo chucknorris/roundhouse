@@ -15,7 +15,10 @@ namespace roundhouse.infrastructure.persistence
         public ISessionFactory session_factory { get; private set; }
         public Configuration nhibernate_configuration { get; private set; }
         public ITransaction transaction { get; private set; }
-        private ISession session { get; set; }
+        private ISession session {
+            get; 
+            set;
+        }
 
         public Repository(ISessionFactory session_factory, Configuration cfg)
         {
@@ -55,6 +58,8 @@ namespace roundhouse.infrastructure.persistence
                 transaction.Commit();
             }
 
+            if (session == null) return;
+
             session.Close();
             session.Dispose();
             session = null;
@@ -65,13 +70,13 @@ namespace roundhouse.infrastructure.persistence
             IList<T> list;
             Type persistentClass = typeof(T);
 
-            bool running_long_session = session == null;
-            if (!running_long_session) start(false);
+            bool not_running_outside_session = session == null;
+            if (not_running_outside_session) start(false);
 
             ICriteria criteria = session.CreateCriteria(persistentClass);
             list = criteria.List<T>();
 
-            if (!running_long_session) finish();
+            if (not_running_outside_session) finish();
 
             Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1}.", list.Count, typeof(T).Name);
 
@@ -88,13 +93,13 @@ namespace roundhouse.infrastructure.persistence
 
             IList<T> list;
 
-            bool running_long_session = session == null;
-            if (!running_long_session) start(false);
+            bool not_running_outside_session = session == null;
+            if (not_running_outside_session) start(false);
 
             ICriteria criteria = detachedCriteria.GetExecutableCriteria(session);
             list = criteria.List<T>();
 
-            if (!running_long_session) finish();
+            if (not_running_outside_session) finish();
 
             Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof(T).Name, detachedCriteria.ToString());
 
@@ -135,15 +140,15 @@ namespace roundhouse.infrastructure.persistence
             }
             Log.bound_to(this).log_a_debug_event_containing("Received {0} records of type {1} marked for save/update.", list.Count, typeof(T).Name);
 
-            bool running_long_session = session == null;
-            if (!running_long_session) start(true);
+            bool not_running_outside_session = session == null;
+            if (not_running_outside_session) start(true);
 
             foreach (T item in list)
             {
                 save_or_update(item);
             }
 
-            if (!running_long_session) finish();
+            if (not_running_outside_session) finish();
 
             Log.bound_to(this).log_a_debug_event_containing("Saved {0} records of type {1} successfully.", list.Count, typeof(T).Name);
         }
@@ -156,13 +161,13 @@ namespace roundhouse.infrastructure.persistence
                 return;
             }
 
-            bool running_long_session = session == null;
-            if (!running_long_session) start(false);
+            bool not_running_outside_session = session == null;
+            if (not_running_outside_session) start(false);
 
             session.SaveOrUpdate(item);
             session.Flush();
 
-            if (!running_long_session) finish();
+            if (not_running_outside_session) finish();
 
             Log.bound_to(this).log_a_debug_event_containing("Saved item of type {0} successfully.", typeof(T).Name);
         }
@@ -177,9 +182,8 @@ namespace roundhouse.infrastructure.persistence
 
             Log.bound_to(this).log_an_info_event_containing("Received {0} records of type {1} marked for deletion.", list.Count, typeof(T).Name);
 
-            bool running_long_session = session == null;
-            if (!running_long_session) start(true);
-
+            bool not_running_outside_session = session == null;
+            if (not_running_outside_session) start(true);
 
             foreach (T item in list)
             {
@@ -187,7 +191,7 @@ namespace roundhouse.infrastructure.persistence
                 session.Flush();
             }
 
-            if (!running_long_session) finish();
+            if (not_running_outside_session) finish();
 
             Log.bound_to(this).log_an_info_event_containing("Removed {0} records of type {1} successfully.", list.Count, typeof(T).Name);
         }
