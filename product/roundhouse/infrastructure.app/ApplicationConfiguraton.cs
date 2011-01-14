@@ -27,7 +27,7 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.SqlFilesDirectory = ApplicationParameters.default_files_directory;
             }
-            if (string.IsNullOrEmpty(configuration_property_holder.ServerName))
+            if (string.IsNullOrEmpty(configuration_property_holder.ServerName) && string.IsNullOrEmpty(configuration_property_holder.ConnectionString))
             {
                 configuration_property_holder.ServerName = ApplicationParameters.default_server_name;
             }
@@ -131,13 +131,13 @@ namespace roundhouse.infrastructure.app
                                         {
                                             cfg.For<ConfigurationPropertyHolder>().Use(configuration_property_holder);
                                             cfg.For<FileSystemAccess>().Use<WindowsFileSystemAccess>();
+                                            cfg.For<Database>().Use(
+                                                context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<KnownFolders>().Use(
-                                                context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                               context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<LogFactory>().Use<MultipleLoggerLogFactory>();
                                             cfg.For<Logger>().Use(
                                                 context => LogBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<Database>().Use(
-                                                context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<CryptographicService>().Use<MD5CryptographicService>();
                                             cfg.For<DatabaseMigrator>().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
                                             cfg.For<VersionResolver>().Use(
@@ -145,6 +145,14 @@ namespace roundhouse.infrastructure.app
                                             cfg.For<Environment>().Use(new DefaultEnvironment(configuration_property_holder));
                                         });
             
+            // forcing a build of database to initialize connections so we can be sure server/database have values
+            Database database = ObjectFactory.GetInstance<Database>();
+            database.initialize_connections(configuration_property_holder);
+            configuration_property_holder.ServerName = database.server_name;
+            configuration_property_holder.DatabaseName = database.database_name;
+            configuration_property_holder.ConnectionString = database.connection_string;
+
+
             return new StructureMapContainer(ObjectFactory.Container);
         }
 

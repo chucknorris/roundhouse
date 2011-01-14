@@ -15,6 +15,7 @@
   <property name="dirs.build" value="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}${folder.code_build}" />
   <property name="folder.code_drop" value="code_drop" overwrite="false" />
   <property name="dirs.drop" value="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}${folder.code_drop}" overwrite="false" />
+  <property name="log.build" value="${dirs.build}${path.separator}build.log" />
   <property name="project.name" value="__SOLUTION_NAME_WITHOUT_SLN_EXTENSION__" overwrite="false" />
   <property name="repository.path" value="__REPOSITORY_PATH__" overwrite="false" />
   <property name="company.name" value="__COMPANY_NAME__" overwrite="false" />
@@ -36,11 +37,25 @@
   <property name="is.replaced" value="false" />
   <property name="fail.build.on.error" value="true" />
 
-  <target name="go" depends="load_uppercut_assemblies, allow_powershell_unrestricted, report_uppercut_version, run_tasks, report_finish_time" />
+  <target name="go" depends="prepare, start_recorder, report_start_time, load_uppercut_assemblies, allow_powershell_unrestricted, report_uppercut_version, run_tasks, report_finish_time, stop_recorder" />
 
+  <target name="start_recorder">
+    <record name="${log.build}" autoflush="true" level="Info" action="Start" failonerror="false" />
+  </target>
+  
+  <target name="report_start_time">
+    <echo message="Build for ${project.name} started at ${datetime::now()} with UppercuT." />
+  </target>
+  
+  <target name="stop_recorder">
+    <record name="${log.build}" action="Flush" failonerror="false" />
+    <record name="${log.build}" action="Stop" failonerror="false" />
+    <record name="${log.build}" action="Close" failonerror="false" />
+  </target>
+  
   <target name="run_tasks">
     <echo message="Running ${project::get-name()} tasks." />
-    <call target="prepare" if="${target::exists('prepare')}" />
+    <!--call target="prepare" if="${target::exists('prepare')}" /-->
     <call target="custom_tasks_before" if="${target::exists('custom_tasks_before')}"  />
     <call target="custom_tasks_replace" if="${target::exists('custom_tasks_replace')}"  />
     <call target="run_normal_tasks" if="${not is.replaced}" />
@@ -142,7 +157,7 @@
   </target>
 
   <target name="report_finish_time">
-    <echo message="Build finished at ${datetime::now()} with UppercuT version ${version.uppercut}." />
+    <echo message="Build for ${project.name} finished at ${datetime::now()} with UppercuT version ${version.uppercut}." />
   </target>
 
   <target name="report_uppercut_version">

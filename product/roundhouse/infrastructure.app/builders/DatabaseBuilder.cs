@@ -25,7 +25,7 @@ namespace roundhouse.infrastructure.app.builders
                 string database_type = configuration_property_holder.DatabaseType;
                 database_type = database_type.Substring(0, database_type.IndexOf(','));
                 database_to_migrate = DefaultInstanceCreator.create_object_from_string_type<Database>(database_type + ", " + merge_assembly_name);
-                
+
             }
             catch (NullReferenceException)
             {
@@ -37,8 +37,8 @@ namespace roundhouse.infrastructure.app.builders
                 database_to_migrate = new SqlServerLiteSpeedDatabase(database_to_migrate);
             }
             database_to_migrate.configuration = configuration_property_holder;
-            database_to_migrate.server_name = configuration_property_holder.ServerName;
-            database_to_migrate.database_name = configuration_property_holder.DatabaseName;
+            database_to_migrate.server_name = configuration_property_holder.ServerName ?? string.Empty;
+            database_to_migrate.database_name = configuration_property_holder.DatabaseName ?? string.Empty;
             database_to_migrate.connection_string = configuration_property_holder.ConnectionString;
             database_to_migrate.admin_connection_string = configuration_property_holder.ConnectionStringAdmin;
             database_to_migrate.roundhouse_schema_name = configuration_property_holder.SchemaName;

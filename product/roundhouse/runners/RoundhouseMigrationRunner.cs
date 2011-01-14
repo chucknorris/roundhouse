@@ -19,8 +19,8 @@ namespace roundhouse.runners
         private readonly FileSystemAccess file_system;
         public DatabaseMigrator database_migrator { get; private set; }
         private readonly VersionResolver version_resolver;
-        public bool silent {get;set;}
-        public bool dropping_the_database{get;set;}
+        public bool silent { get; set; }
+        public bool dropping_the_database { get; set; }
         private readonly bool dont_create_the_database;
         private bool run_in_a_transaction;
         private readonly bool use_simple_recovery;
@@ -54,20 +54,20 @@ namespace roundhouse.runners
 
         public void run()
         {
+            database_migrator.initialize_connections();
+
             Log.bound_to(this).log_an_info_event_containing("Running {0} v{1} against {2} - {3}.",
                     ApplicationParameters.name,
                     infrastructure.VersionInformation.get_current_assembly_version(),
                     database_migrator.database.server_name,
                     database_migrator.database.database_name);
-            
-            Log.bound_to(this).log_an_info_event_containing("Looking in {0} for scripts to run.",known_folders.up.folder_path);
+
+            Log.bound_to(this).log_an_info_event_containing("Looking in {0} for scripts to run.", known_folders.up.folder_path);
             if (!silent)
             {
                 Log.bound_to(this).log_an_info_event_containing("Please press enter when ready to kick...");
-                Console.ReadLine();                
+                Console.ReadLine();
             }
-            
-            database_migrator.initialize_connections();
 
             if (run_in_a_transaction && !database_migrator.database.supports_ddl_transactions)
             {
@@ -84,7 +84,7 @@ namespace roundhouse.runners
             Log.bound_to(this).log_a_debug_event_containing("The change_drop (output) folder is: {0}", known_folders.change_drop.folder_full_path);
 
             try
-            {                
+            {
                 Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                 Log.bound_to(this).log_an_info_event_containing("Setup, Backup, Create/Restore/Drop");
                 Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
@@ -93,7 +93,7 @@ namespace roundhouse.runners
                 remove_share_from_change_drop_folder();
 
                 if (!dropping_the_database)
-                {                    
+                {
                     if (!dont_create_the_database)
                     {
                         database_migrator.open_admin_connection();
@@ -127,7 +127,7 @@ namespace roundhouse.runners
 
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run First After Update", known_folders.run_first_after_up.folder_full_path);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50,'-'));
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.run_first_after_up.folder_full_path, version_id, known_folders.run_first_after_up, environment, new_version);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Function", known_folders.functions.folder_full_path);
@@ -144,11 +144,12 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These scripts will run every time.", "Permission", known_folders.permissions.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    if (run_in_a_transaction) {
+                    if (run_in_a_transaction)
+                    {
                         database_migrator.close_connection();
-                        database_migrator.open_connection(false);    
+                        database_migrator.open_connection(false);
                     }
-                   
+
                     traverse_files_and_run_sql(known_folders.permissions.folder_full_path, version_id, known_folders.permissions, environment, new_version);
 
                     Log.bound_to(this).log_an_info_event_containing("{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",
@@ -170,7 +171,7 @@ namespace roundhouse.runners
                                                 ApplicationParameters.name,
                                                 database_migrator.database.database_name,
                                                 known_folders.change_drop.folder_full_path);
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -226,7 +227,7 @@ namespace roundhouse.runners
                     }
                     catch (Exception ex)
                     {
-                        Log.bound_to(this).log_a_warning_event_containing("Unable to copy {0} to {1}. {2}{3}", sql_file,migration_folder.folder_full_path, System.Environment.NewLine, ex.ToString());
+                        Log.bound_to(this).log_a_warning_event_containing("Unable to copy {0} to {1}. {2}{3}", sql_file, migration_folder.folder_full_path, System.Environment.NewLine, ex.ToString());
                     }
                 }
             }

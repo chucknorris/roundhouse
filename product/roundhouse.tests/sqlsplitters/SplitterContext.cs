@@ -74,7 +74,23 @@ ALTER TABLE Inv.something ADD
 	uhasdf varchar(15) NULL,
     daf_asdfasdf DECIMAL(20,6) NULL;
 GO
-";
+
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Daily job', 
+		@step_id=1, 
+		@cmdexec_success_code=0, 
+		@on_success_action=3, 
+		@on_success_step_id=0, 
+		@on_fail_action=3, 
+		@on_fail_step_id=0, 
+		@retry_attempts=0, 
+		@retry_interval=0, 
+		@os_run_priority=0, @subsystem=N'TSQL', 
+		@command=N'
+dml statements
+GO  
+dml statements '
+
+GO";
 
 			public static string tsql_statement_scrubbed = @"
 BOB1
@@ -143,7 +159,23 @@ ALTER TABLE Inv.something ADD
 	uhasdf varchar(15) NULL,
     daf_asdfasdf DECIMAL(20,6) NULL;
 " + StatementSplitter.batch_terminator_replacement_string + @"
-";
+
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Daily job', 
+		@step_id=1, 
+		@cmdexec_success_code=0, 
+		@on_success_action=3, 
+		@on_success_step_id=0, 
+		@on_fail_action=3, 
+		@on_fail_step_id=0, 
+		@retry_attempts=0, 
+		@retry_interval=0, 
+		@os_run_priority=0, @subsystem=N'TSQL', 
+		@command=N'
+dml statements
+GO  
+dml statements '
+
+" + StatementSplitter.batch_terminator_replacement_string + @"";
 
         	public static string plsql_statement =
 				@"
