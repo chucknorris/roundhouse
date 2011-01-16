@@ -48,6 +48,9 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+=0.7.0.281=  
+* Fixed a few issues with using the connection string. You should now be able to only supply the connection string and not server/database as well.  
+  
 =0.7.0.276=  
 * Fixed a collation issue with RoundhousE id columns in its tracking tables. See [issue 46] (http://code.google.com/p/roundhouse/issues/detail?id=46) for details. (r274)  
 * RestoreFromPath can take a relative path. (r269)  
