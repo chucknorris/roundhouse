@@ -2,12 +2,10 @@ namespace roundhouse.infrastructure.app
 {
     using log4net;
     using Microsoft.Build.Framework;
-    using NAnt.Core;
 
     public interface ConfigurationPropertyHolder
     {
         ITask MSBuildTask { get; }
-        Task NAntTask { get; }
         ILog Log4NetLogger { get; }
 
         string ServerName { get; set; }

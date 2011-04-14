@@ -10,8 +10,6 @@ namespace roundhouse.infrastructure.app.builders
         public static Logger build(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
         {
             IList<Logger> loggers = new List<Logger>();
-            Logger nant_logger = new NAntLogger(configuration_property_holder);
-            loggers.Add(nant_logger);
 
             if (configuration_property_holder.MSBuildTask != null)
             {

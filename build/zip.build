@@ -92,6 +92,7 @@
     <zip zipfile="${zip.file}">
       <fileset basedir="${dirs.drop}">
         <exclude name="gems/**" />
+        <exclude name="nuget/**" />
         <include name="**/*" />
       </fileset>
     </zip>

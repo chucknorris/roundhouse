@@ -99,7 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionVersion.cs">
-      <Link>SolutionVersion.cs</Link>
+      <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="infrastructure\persistence\NHibernateSessionFactorySpecs.cs" />

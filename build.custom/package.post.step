@@ -45,6 +45,16 @@
       </fileset>
     </copy>
     
+    <echo message="Moving MSBuild specific items to ${dirs.drop}\${folder.app.drop}\MSBuild." />
+    <copy todir="${dirs.drop}\${folder.app.drop}\MSBuild">
+      <fileset basedir="${dirs.drop}\${folder.app.drop}">
+        <exclude name="rh.exe" />
+        <exclude name="rh.exe.config" />
+        <exclude name="dbdeploy_nant.deploy" />
+        <include name="*.*" />
+      </fileset>
+    </copy>
+    
     <echo message="Moving Console specific items to ${dirs.drop}\${folder.app.drop}\console." />
     <copy todir="${dirs.drop}\${folder.app.drop}\console">
       <fileset basedir="${dirs.drop}\${folder.app.drop}">

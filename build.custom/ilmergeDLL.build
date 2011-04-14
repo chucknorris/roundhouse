@@ -62,6 +62,7 @@
       <in>
         <items>
           <exclude name="${dirs.merge.from}\${file.merge.name}" />
+          <exclude name="${dirs.merge.from}\log4net.dll" />
           <include name="${dirs.merge.from}\*.dll" />
           <include name="${dirs.merge.from}\*.exe" />
         </items>

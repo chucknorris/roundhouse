@@ -67,10 +67,6 @@
     <Reference Include="Microsoft.Build.Framework">
       <Private>True</Private>
     </Reference>
-    <Reference Include="NAnt.Core, Version=0.86.3412.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\references\NAnt\NAnt.Core.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\references\NHibernate\NHibernate.dll</HintPath>
@@ -106,7 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionVersion.cs">
-      <Link>SolutionVersion.cs</Link>
+      <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
     <Compile Include="connections\AdoNetConnection.cs" />
     <Compile Include="connections\IConnection.cs" />
@@ -167,7 +163,6 @@
     <Compile Include="infrastructure\logging\custom\MultipleLogger.cs" />
     <Compile Include="infrastructure\logging\custom\Log4NetLogFactory.cs" />
     <Compile Include="infrastructure\logging\custom\Log4NetLogger.cs" />
-    <Compile Include="infrastructure\logging\custom\NAntLogger.cs" />
     <Compile Include="infrastructure\logging\Logger.cs" />
     <Compile Include="infrastructure\logging\LogFactory.cs" />
     <Compile Include="infrastructure\logging\Log.cs" />

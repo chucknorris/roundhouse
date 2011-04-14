@@ -30,13 +30,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Build|AnyCPU' ">
     <OutputPath>..\..\build_output\RoundhousE\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
@@ -45,10 +45,6 @@
       <HintPath>..\..\lib\references\log4net\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="NAnt.Core, Version=0.86.3412.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\references\NAnt\NAnt.Core.dll</HintPath>
-    </Reference>
     <Reference Include="StructureMap, Version=2.5.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\references\StructureMap\StructureMap.dll</HintPath>
@@ -68,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionVersion.cs">
-      <Link>SolutionVersion.cs</Link>
+      <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roundhouse.cs" />
@@ -86,9 +82,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DBDeploy_MSBuild.proj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dbdeploy_nant.deploy">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

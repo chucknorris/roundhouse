@@ -3,7 +3,6 @@ namespace roundhouse.consoles
     using infrastructure.app;
     using log4net;
     using Microsoft.Build.Framework;
-    using NAnt.Core;
 
     public sealed class ConsoleConfiguration : ConfigurationPropertyHolder
     {
@@ -13,11 +12,6 @@ namespace roundhouse.consoles
         }
 
         public ITask MSBuildTask
-        {
-            get { return null; }
-        }
-
-        public Task NAntTask
         {
             get { return null; }
         }
