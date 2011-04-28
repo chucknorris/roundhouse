@@ -141,6 +141,12 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Stored Procedure", known_folders.sprocs.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.sprocs.folder_full_path, version_id, known_folders.sprocs, environment, new_version);
+
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
+                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run after Other Anytime Scripts", known_folders.runAfterOtherAnyTimeScripts.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
+                    traverse_files_and_run_sql(known_folders.runAfterOtherAnyTimeScripts.folder_full_path, version_id, known_folders.runAfterOtherAnyTimeScripts, environment, new_version);
+                    
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These scripts will run every time.", "Permission", known_folders.permissions.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));

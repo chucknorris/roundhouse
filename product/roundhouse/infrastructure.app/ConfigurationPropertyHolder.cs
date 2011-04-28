@@ -22,6 +22,7 @@ namespace roundhouse.infrastructure.app
         string FunctionsFolderName { get; set; }
         string ViewsFolderName { get; set; }
         string SprocsFolderName { get; set; }
+        string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
         string PermissionsFolderName { get; set; }
         string SchemaName { get; set; }
         string VersionTableName { get; set; }

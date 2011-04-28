@@ -55,6 +55,10 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.SprocsFolderName = ApplicationParameters.default_sprocs_folder_name;
             }
+            if (string.IsNullOrEmpty(configuration_property_holder.RunAfterOtherAnyTimeScriptsFolderName))
+            {
+                configuration_property_holder.RunAfterOtherAnyTimeScriptsFolderName = ApplicationParameters.default_runAfterOtherAnyTime_folder_name;
+            }
             if (string.IsNullOrEmpty(configuration_property_holder.PermissionsFolderName))
             {
                 configuration_property_holder.PermissionsFolderName = ApplicationParameters.default_permissions_folder_name;

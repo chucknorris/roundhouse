@@ -75,6 +75,8 @@ namespace roundhouse.tasks
 
         public string SprocsFolderName { get; set; }
 
+        public string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
+
         public string PermissionsFolderName { get; set; }
 
         public string SchemaName { get; set; }
