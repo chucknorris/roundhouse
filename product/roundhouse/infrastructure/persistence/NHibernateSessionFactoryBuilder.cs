@@ -93,6 +93,9 @@ namespace roundhouse.infrastructure.persistence
                             }
                         }
 
+						// FIXME: Quick workaround for MySQL's defect with reserved words auto-quoting http://216.121.112.228/browse/NH-1906
+                    	cfg.Properties["hbm2ddl.keywords"] = "none";
+
                         cfg.SetListener(ListenerType.PreInsert, new AuditEventListener());
                         cfg.SetListener(ListenerType.PreUpdate, new AuditEventListener());
                     })

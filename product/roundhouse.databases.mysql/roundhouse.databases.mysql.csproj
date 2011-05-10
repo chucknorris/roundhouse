@@ -59,16 +59,19 @@
       <HintPath>..\..\lib\references\NHibernate\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="MySqlAdoNetProviderResolver.cs" />
     <Compile Include="MySqlDatabase.cs" />
     <Compile Include="orm\ScriptsRunErrorMapping.cs" />
     <Compile Include="orm\ScriptsRunMapping.cs" />

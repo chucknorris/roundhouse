@@ -22,9 +22,9 @@ namespace roundhouse.databases.mysql.orm
 			Map(x => x.repository_path);
 			Map(x => x.version).Length(50);
 			Map(x => x.script_name);
-			Map(x => x.text_of_script).CustomSqlType("longtext");
-			Map(x => x.erroneous_part_of_script).CustomSqlType("longtext");
-			Map(x => x.error_message).CustomSqlType("longtext");
+			Map(x => x.text_of_script).CustomSqlType("mediumtext");
+			Map(x => x.erroneous_part_of_script).CustomSqlType("mediumtext");
+			Map(x => x.error_message).CustomSqlType("mediumtext");
 
 			//audit
 			Map(x => x.entry_date);
