@@ -84,6 +84,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\references\NHibernate\NHibernate.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="rhino.mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\developwithpassion.bdd\rhino.mocks.dll</HintPath>
@@ -107,9 +110,18 @@
     </Compile>
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="infrastructure\persistence\NHibernateSessionFactorySpecs.cs" />
+    <Compile Include="MySQLDatabaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\roundhouse.console\roundhouse.console.csproj">
+      <Project>{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}</Project>
+      <Name>roundhouse.console</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj">
+      <Project>{71419DBB-4809-4102-A002-D484242FCFC9}</Project>
+      <Name>roundhouse.databases.mysql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj">
       <Project>{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}</Project>
       <Name>roundhouse.databases.sqlserver</Name>
@@ -118,6 +130,9 @@
       <Project>{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}</Project>
       <Name>roundhouse</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
