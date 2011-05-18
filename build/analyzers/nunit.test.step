@@ -28,8 +28,8 @@
   <property name="nunit.separator" value="/" if="${platform::is-windows()}" />
   <property name="test.args.framework" value="" if="${platform::is-unix()}" />
   <property name="test.args.framework" value="${nunit.separator}framework=${microsoft.framework}" if="${platform::is-windows()}" />
-  <property name="test.args" value="${nunit.separator}xml=&quot;${dirs.test_results}${path.separator}nunit-results.xml&quot; ${nunit.separator}nologo " />
-  <!--property name="test.args" value="${nunit.separator}xml=&quot;${dirs.test_results}${path.separator}nunit-results.xml&quot; ${nunit.separator}nologo ${test.args.framework}" /-->
+  <!--property name="test.args" value="${nunit.separator}xml=&quot;${dirs.test_results}${path.separator}nunit-results.xml&quot; ${nunit.separator}nologo " /-->
+  <property name="test.args" value="${nunit.separator}xml=&quot;${dirs.test_results}${path.separator}nunit-results.xml&quot; ${nunit.separator}nologo ${test.args.framework}" />
   <property name="test.args.exclude" value="${nunit.separator}exclude=&quot;${tests.excluded_categories.comma_separated}&quot;" />
   <property name="app.nunit.console" value="${path::get-full-path(dirs.lib)}${path.separator}NUnit${path.separator}nunit-console.exe" overwrite="false" if="${platform::is-windows()}" />
   <property name="app.nunit.console" value="nunit-console" overwrite="false" if="${platform::is-unix()}"/>

@@ -144,7 +144,7 @@
     <foreach item="File" property="spec.file">
       <in>
         <items>
-          <include name="${dirs.drop.nuget}${path.separator}*.nuspec" />
+          <include name="${dirs.drop.nuget}${path.separator}**${path.separator}*.nuspec" />
         </items>
       </in>
       <do>

@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using log4net;
+using Microsoft.Build.Framework;
+
 namespace roundhouse.infrastructure.app
 {
     using System;
@@ -122,27 +126,26 @@ namespace roundhouse.infrastructure.app
 
         private static InversionContainer build_items_for_container(ConfigurationPropertyHolder configuration_property_holder)
         {
-            //this becomes a scan
             configuration_property_holder.DatabaseType = convert_database_type_synonyms(configuration_property_holder.DatabaseType);
 
             set_up_current_mappings(configuration_property_holder);
 
+            Logger multiLogger = GetMultiLogger(configuration_property_holder);
+
             ObjectFactory.Configure(cfg =>
                                         {
-                                            cfg.For<ConfigurationPropertyHolder>().Use(configuration_property_holder);
-                                            cfg.For<FileSystemAccess>().Use<WindowsFileSystemAccess>();
-                                            cfg.For<Database>().Use(
-                                                context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<KnownFolders>().Use(
-                                               context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<LogFactory>().Use<MultipleLoggerLogFactory>();
-                                            cfg.For<Logger>().Use(
-                                                context => LogBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<CryptographicService>().Use<MD5CryptographicService>();
-                                            cfg.For<DatabaseMigrator>().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
-                                            cfg.For<VersionResolver>().Use(
+                                            cfg.For<ConfigurationPropertyHolder>().AsSingletons().Use(configuration_property_holder);
+                                            cfg.For<FileSystemAccess>().AsSingletons().Use<WindowsFileSystemAccess>();
+                                            cfg.For<Database>().AsSingletons().Use(context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<KnownFolders>().AsSingletons().Use(context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<LogFactory>().AsSingletons().Use<MultipleLoggerLogFactory>();
+                                            //cfg.For<Logger>().AsSingletons().Use(context => LogBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<Logger>().Use(multiLogger);
+                                            cfg.For<CryptographicService>().AsSingletons().Use<MD5CryptographicService>();
+                                            cfg.For<DatabaseMigrator>().AsSingletons().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
+                                            cfg.For<VersionResolver>().AsSingletons().Use(
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<Environment>().Use(new DefaultEnvironment(configuration_property_holder));
+                                            cfg.For<Environment>().AsSingletons().Use(new DefaultEnvironment(configuration_property_holder));
                                         });
             
             // forcing a build of database to initialize connections so we can be sure server/database have values
@@ -152,8 +155,29 @@ namespace roundhouse.infrastructure.app
             configuration_property_holder.DatabaseName = database.database_name;
             configuration_property_holder.ConnectionString = database.connection_string;
 
-
             return new StructureMapContainer(ObjectFactory.Container);
+        }
+
+        private static Logger GetMultiLogger(ConfigurationPropertyHolder configuration_property_holder)
+        {
+            IList<Logger> loggers = new List<Logger>();
+
+            var task = configuration_property_holder as ITask;
+            if (task != null)
+            {
+                Logger msbuild_logger = new MSBuildLogger(configuration_property_holder);
+                loggers.Add(msbuild_logger);
+            }
+
+            Logger log4net_logger = new Log4NetLogger(LogManager.GetLogger("roundhouse"));
+            loggers.Add(log4net_logger);
+
+            if (configuration_property_holder.Logger != null)
+            {
+                loggers.Add(configuration_property_holder.Logger);
+            }
+
+            return new MultipleLogger(loggers);
         }
 
         private static string convert_database_type_synonyms(string database_type)

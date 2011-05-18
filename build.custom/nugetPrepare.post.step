@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="CUSTOM POST NUGETPREPARE" default="go">
+  <!-- Project UppercuT - http://projectuppercut.org -->
+  <property name="build.config.settings" value="__NONE__" overwrite="false" />
+  <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
+  <property name="path.separator" value="${string::trim(path::combine(' ', ' '))}" />
+  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />
+  <property name="path.to.toplevel" value=".." />
+  <property name="folder.code_drop" value="code_drop" overwrite="false" />
+  <property name="dirs.drop" value="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}${folder.code_drop}" overwrite="false" />
+  <property name="dirs.drop" value="${path::get-full-path(dirs.drop)}" />
+  <property name="folder.nuget" value="nuget" overwrite="false" />
+  <property name="dirs.drop.nuget" value="${dirs.drop}${path.separator}${folder.nuget}" overwrite="false" />
+  
+  <target name="go" depends="prep_nuget,remove_docs" />
+  
+  <target name="prep_nuget">
+    <echo message="Deleting ${dirs.drop.nuget}\lib\MSBuild." />
+    <delete dir="${dirs.drop.nuget}\lib\MSBuild" />
+    
+    <echo message="Moving ${dirs.drop.nuget}\lib\console to ${dirs.drop.nuget}\bin." />
+    <move todir="${dirs.drop.nuget}\bin" overwrite="true">
+      <fileset basedir="${dirs.drop.nuget}\lib\console">
+        <include name="**/*.*" />
+      </fileset>
+    </move>
+    <delete dir="${dirs.drop.nuget}\lib\console" />
+  
+    <echo message="Moving ${dirs.drop.nuget}\lib\lib to ${dirs.drop.nuget}\lib." />
+    <move todir="${dirs.drop.nuget}\lib" overwrite="true">
+      <fileset basedir="${dirs.drop.nuget}\lib\lib">
+        <include name="*.*" />
+      </fileset>
+    </move>
+    <delete dir="${dirs.drop.nuget}\lib\lib" />
+    
+    <echo message="Removing log4net from '${dirs.drop.nuget}\lib'" />
+    <delete>
+      <fileset basedir="${dirs.drop.nuget}\lib" >
+        <include name="log4net.*" />
+      </fileset>
+    </delete>
+  </target>
+  
+  <target name="remove_docs">
+   <echo message="Removing unnecesary documents from '${dirs.drop.nuget}\docs'" />
+    <delete>
+      <fileset basedir="${dirs.drop.nuget}\docs" >
+        <include name="buildCustomization/**" />
+        <include name="logo/**" />
+        <include name="*.dot" />
+        <include name="*.pptx" />
+      </fileset>
+    </delete>
+  </target>
+  
+</project>

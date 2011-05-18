@@ -25,6 +25,7 @@
   <property name="folder.settings" value="settings" overwrite="false" />
   <property name="folder.documentation" value="docs" overwrite="false" />
   <property name="file.build_info" value="${dirs.build}${path.separator}_BuildInfo.xml" />
+  <property name="file.build_log" value="${dirs.build}${path.separator}build.log" />
   <property name="file.custom.step.before" value="${dirs.build_scripts_custom}${path.separator}${file.current.no_extension}.pre.step" />
   <property name="file.custom.step.after" value="${dirs.build_scripts_custom}${path.separator}${file.current.no_extension}.post.step" />
   <property name="file.custom.step.replace" value="${dirs.build_scripts_custom}${path.separator}${file.current.no_extension}.replace.step" />
@@ -42,7 +43,7 @@
   </target>
 
   <target name="run_normal_tasks"
-          depends="prepare, build_artifacts, app, web, db, reports, file_server, environment_files, deployment_scripts, settings_files, build_deployment_files, build_info_file, documentation"
+          depends="prepare, build_artifacts, app, app_published, web, db, reports, file_server, environment_files, deployment_scripts, settings_files, build_deployment_files, build_info_file, documentation"
           description="Packaging project." />
 
   <target name="prepare">
@@ -114,6 +115,16 @@
     </copy>
   </target>
 
+  <target name="app_published">
+    <echo message="Packaging published applications to ${dirs.drop}${path.separator}_PublishedApplications."/>
+    <copy todir="${dirs.drop}${path.separator}_PublishedApplications">
+      <fileset basedir="${dirs.build}${path.separator}${folder.app.drop}${path.separator}_PublishedApplications">
+        <exclude name="**${path.separator}*.template" />
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+  </target>
+  
   <target name="web">
     <echo message="Packaging website to ${dirs.drop}${path.separator}_PublishedWebSites."/>
     <copy todir="${dirs.drop}${path.separator}_PublishedWebSites">
@@ -200,6 +211,11 @@
 
     <copy
      file="${file.build_info}"
+     todir="${dirs.drop}${path.separator}${folder.build_artifacts}"
+      />
+      
+    <copy
+     file="${file.build_log}"
      todir="${dirs.drop}${path.separator}${folder.build_artifacts}"
       />
 

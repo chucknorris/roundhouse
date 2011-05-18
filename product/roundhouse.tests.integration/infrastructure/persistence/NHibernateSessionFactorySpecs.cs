@@ -26,7 +26,7 @@ namespace roundhouse.tests.integration.infrastructure.persistence
 
             context c = () =>
                             {
-                                config = new ConsoleConfiguration(null);
+                                config = new ConsoleConfiguration();
                                 config.DatabaseType = "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
                                 config.ConnectionString = "Server=(local);initial catalog=TestRoundhousE;Integrated Security=SSPI;";
                                 provide_a_basic_sut_constructor_argument(config);

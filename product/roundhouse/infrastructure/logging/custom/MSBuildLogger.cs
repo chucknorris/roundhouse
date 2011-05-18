@@ -1,3 +1,5 @@
+using System;
+
 namespace roundhouse.infrastructure.logging.custom
 {
     using app;
@@ -10,11 +12,12 @@ namespace roundhouse.infrastructure.logging.custom
 
         public MSBuildLogger(ConfigurationPropertyHolder configuration)
         {
-            if (configuration.MSBuildTask != null)
+            var task = configuration as ITask;
+            if (task != null)
             {
-                build_engine = configuration.MSBuildTask.BuildEngine;
+                build_engine = task.BuildEngine;
             }
-            
+
             calling_task = configuration;
         }
 
@@ -72,6 +75,11 @@ namespace roundhouse.infrastructure.logging.custom
         public void log_a_fatal_event_containing(string message, params object[] args)
         {
             log_an_error_event_containing(message, args);
+        }
+
+        public object underlying_type
+        {
+            get { return build_engine; }
         }
     }
 }

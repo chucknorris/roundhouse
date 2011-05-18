@@ -1,22 +1,12 @@
+using roundhouse.infrastructure.logging;
+
 namespace roundhouse.consoles
 {
     using infrastructure.app;
-    using log4net;
-    using Microsoft.Build.Framework;
 
     public sealed class ConsoleConfiguration : ConfigurationPropertyHolder
     {
-        public ConsoleConfiguration(ILog log4net_logger)
-        {
-            Log4NetLogger = log4net_logger;
-        }
-
-        public ITask MSBuildTask
-        {
-            get { return null; }
-        }
-
-        public ILog Log4NetLogger { get; private set; }
+        public Logger Logger { get; set; }
         public string ServerName { get; set; }
         public string DatabaseName { get; set; }
         public string ConnectionString { get; set; }

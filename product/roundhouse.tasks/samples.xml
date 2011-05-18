@@ -71,7 +71,7 @@
       OutputPath="C:\RoundhousE_runs"
       WarnOnOneTimeScriptChanges="false"
       Silent="false"
-      DatabaseType="roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver"
+      DatabaseType="roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse"
       WithTransaction="false"
       RecoveryModeSimple="false"
       RunAllAnyTimeScripts="false"

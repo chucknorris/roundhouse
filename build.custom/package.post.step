@@ -20,58 +20,47 @@
   <target name="go" depends="cleanup_roundhouse_drop, restructure_roundhouse_drop_folder, copy_roundhouse_files_to_deploy_console, copy_test_databases_to_deploy, create_copy_of_environment_file_for_sample, move_sample_to_drop, copy_notices" description="Packaging" />
 
   <target name="cleanup_roundhouse_drop">
-    <echo message="Cleaning up ${dirs.drop}\${folder.app.drop} to remove unused items." />
-    <delete> 
+    <echo message="Removing ${dirs.drop}\${folder.app.drop}." />
+    <delete>
       <fileset basedir="${dirs.drop}\${folder.app.drop}">
-        <include name="_BuildInfo.xml" />
-        <include name="developwithpassion.commons.core.infrastructure*" />
-        <include name="NAnt*.xml" />
-        <include name="*.pdb" />
-        <include name="*SqlServer.BatchParser*.dll" />
-        <include name="*SqlServer.Replication.dll" />
-        <include name="*SqlServer.Rmo.dll" />
-        <include name="*SqlServer.*Enum.dll" />
+        <include name="**/*.*" />
       </fileset>
     </delete>
+    
+    <echo message="Renaming ${dirs.drop}\_PublishedApplications to ${dirs.drop}\${folder.app.drop}." />
+    <move todir="${dirs.drop}\${folder.app.drop}" overwrite="true">
+      <fileset basedir="${dirs.drop}\_PublishedApplications">
+        <include name="**/*.*" />
+      </fileset>
+    </move>
+    
+    <delete dir="${dirs.drop}\_PublishedApplications" />
   </target>
 
   <target name="restructure_roundhouse_drop_folder">
-    <echo message="Moving DLL specific items to ${dirs.drop}\${folder.app.drop}\lib." />
-    <copy todir="${dirs.drop}\${folder.app.drop}\lib">
-      <fileset basedir="${dirs.drop}\${folder.app.drop}">
-        <exclude name="rh.exe" />
-        <exclude name="rh.exe.config" />
-        <include name="*.*" />
+    <echo message="Renaming ${dirs.drop}\${folder.app.drop}\roundhouse to ${dirs.drop}\${folder.app.drop}\lib." />
+    <move todir="${dirs.drop}\${folder.app.drop}\lib" overwrite="true">
+      <fileset basedir="${dirs.drop}\${folder.app.drop}\roundhouse">
+        <include name="**/*.*" />
       </fileset>
-    </copy>
+    </move>
+    <delete dir="${dirs.drop}\${folder.app.drop}\roundhouse" />
     
-    <echo message="Moving MSBuild specific items to ${dirs.drop}\${folder.app.drop}\MSBuild." />
-    <copy todir="${dirs.drop}\${folder.app.drop}\MSBuild">
-      <fileset basedir="${dirs.drop}\${folder.app.drop}">
-        <exclude name="rh.exe" />
-        <exclude name="rh.exe.config" />
-        <exclude name="dbdeploy_nant.deploy" />
-        <include name="*.*" />
+    <echo message="Renaming ${dirs.drop}\${folder.app.drop}\roundhouse.tasks to ${dirs.drop}\${folder.app.drop}\MSBuild." />
+    <move todir="${dirs.drop}\${folder.app.drop}\MSBuild" overwrite="true">
+      <fileset basedir="${dirs.drop}\${folder.app.drop}\roundhouse.tasks">
+        <include name="**/*.*" />
       </fileset>
-    </copy>
+    </move>
+    <delete dir="${dirs.drop}\${folder.app.drop}\roundhouse.tasks" />
     
-    <echo message="Moving Console specific items to ${dirs.drop}\${folder.app.drop}\console." />
-    <copy todir="${dirs.drop}\${folder.app.drop}\console">
-      <fileset basedir="${dirs.drop}\${folder.app.drop}">
-        <exclude name="DBDeploy_MSBuild.proj" />
-        <exclude name="Microsoft.Build.Framework.dll" />
-        <exclude name="dbdeploy_nant.deploy" />
-        <exclude name="samples.xml" />
-        <exclude name="roundhouse.tasks.dll" />
-        <include name="*.*" />
+    <echo message="Renaming ${dirs.drop}\${folder.app.drop}\roundhouse.console to ${dirs.drop}\${folder.app.drop}\console." />
+    <move todir="${dirs.drop}\${folder.app.drop}\console" overwrite="true">
+      <fileset basedir="${dirs.drop}\${folder.app.drop}\roundhouse.console">
+        <include name="**/*.*" />
       </fileset>
-    </copy>
-    
-    <delete>
-      <fileset basedir="${dirs.drop}\${folder.app.drop}">
-        <include name="*.*" />
-      </fileset>
-    </delete>
+    </move>
+    <delete dir="${dirs.drop}\${folder.app.drop}\roundhouse.console" />
   </target>
   
   <target name="copy_roundhouse_files_to_deploy_console">
@@ -102,8 +91,11 @@
   
   <target name="move_sample_to_drop">
     <copy todir="${dirs.drop}\${folder.sample}\sampleproject">
-      <fileset basedir="${dirs.build}\${folder.sample}">
-        <include name="**" />
+      <fileset basedir="${dirs.build}\..\${folder.sample}">
+        <exclude name="**/bin" />
+        <exclude name="**/_Resharper*" />
+        <exclude name="**/obj" />
+        <include name="**/**" />
       </fileset>
     </copy>
   

@@ -35,7 +35,7 @@
 
   <target name="go" depends="run_tasks" if="${file::exists(app.moma)}" />
 
-  <target name="run_tasks">
+  <target name="run_tasks" if="${file::exists(app.moma)}">
     <echo message="Running ${project::get-name()} tasks." />
     <call target="prepare" if="${target::exists('prepare')}" />
     <call target="custom_tasks_before" if="${target::exists('custom_tasks_before')}"  />

@@ -1,0 +1,4603 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MoMA Scan Results</title>
+<link rel="stylesheet" type="text/css" href="Media/moma.css" />
+<script type="text/ecmascript" src="Media/moma.js"></script>
+</head>
+<body>
+    <div class='header'>
+        <div class='headertext'>MoMA Scan Results</div>
+    </div>
+    <div class='wrapper'>
+    <div class='legend'>
+      <div>
+        Scan Date: 9/27/2010 12:10:54 PM<br/>
+        MoMA Definitions: Mono 2.8 (4.0 Profile)<br/><br/>
+        For descriptions of issues, see <a href='http://www.mono-project.com/MoMA_-_Issue_Descriptions'>MoMA Issue Descriptions</a>.
+      </div>
+    </div>
+    <table class='results-table'>
+      <thead>
+        <tr>
+          <th scope='col'></th>
+          <th scope='col'></th>
+          <th scope='col'>Assembly</th>
+          <th scope='col'>Version</th>
+          <th scope='col'>Missing</th>
+          <th scope='col'>Not Implemented</th>
+          <th scope='col'>Todo</th>
+          <th scope='col'>P/Invoke</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.AmazonMp3.Store.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.Audiobook.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.AudioCd.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el4", "img4")'>
+          <td style='width: 10px'><img id='img4' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Banshee.Core.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>11</td>
+        </tr>
+        <tr id='el4' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>string GetString (string, string)</td>
+              <td>IntPtr Catalog.dgettext (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>string GetString (string, string)</td>
+              <td>IntPtr Catalog.gettext (IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>string GetString (string, string, string, int)</td>
+              <td>IntPtr Catalog.dngettext (IntPtr, IntPtr, IntPtr, int)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>string GetString (string, string, string, int)</td>
+              <td>IntPtr Catalog.ngettext (IntPtr, IntPtr, int)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>void BindTextDomainCodeset (IntPtr)</td>
+              <td>IntPtr Catalog.bind_textdomain_codeset (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>void BindTextDomain (IntPtr, IntPtr)</td>
+              <td>IntPtr Catalog.bindtextdomain (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>void TrapMonoJitSegv ()</td>
+              <td>int PlatformHacks.sigaction (Signum, IntPtr, IntPtr)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void RestoreMonoJitSegv ()</td>
+              <td>int PlatformHacks.sigaction (Signum, IntPtr, IntPtr)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>string FilenameToUri (string)</td>
+              <td>IntPtr SafeUri.g_filename_to_uri_utf8 (IntPtr, IntPtr, IntPtr)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>string UriToFilename (string)</td>
+              <td>IntPtr SafeUri.g_filename_from_uri_utf8 (IntPtr, IntPtr, IntPtr)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>String[] GetLanguageNames ()</td>
+              <td>IntPtr Localization.g_get_language_names ()</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.CoverArt.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.Dap.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.Dap.Ipod.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.Dap.MassStorage.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.Dap.Mtp.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.Emusic.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.FileSystemQueue.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.InternetArchive.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.InternetRadio.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.LastFM.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.LastfmStreaming.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.MiniMode.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.MultimediaKeys.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el18", "img18")'>
+          <td style='width: 10px'><img id='img18' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Banshee.NotificationArea.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>30</td>
+        </tr>
+        <tr id='el18' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>uint SendMessage (uint, string)</td>
+              <td>void X11NotificationArea.gdk_error_trap_push ()</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>uint SendMessage (uint, string)</td>
+              <td>IntPtr X11NotificationArea.gdk_x11_display_get_xdisplay (IntPtr)</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>uint SendMessage (uint, string)</td>
+              <td>IntPtr X11NotificationArea.memcpy (X11NotificationArea/XClientMessageEvent/DataUnion&, IntPtr, IntPtr)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>uint SendMessage (uint, string)</td>
+              <td>int X11NotificationArea.XSendEvent (IntPtr, IntPtr, bool, IntPtr, X11NotificationArea/XClientMessageEvent&)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>uint SendMessage (uint, string)</td>
+              <td>int X11NotificationArea.XSync (IntPtr, bool)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>uint SendMessage (uint, string)</td>
+              <td>int X11NotificationArea.gdk_error_trap_pop ()</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void OnRealized ()</td>
+              <td>IntPtr X11NotificationArea.gdk_x11_display_get_xdisplay (IntPtr)</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void OnRealized ()</td>
+              <td>IntPtr X11NotificationArea.XInternAtom (IntPtr, string, bool)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void OnRealized ()</td>
+              <td>IntPtr X11NotificationArea.XInternAtom (IntPtr, string, bool)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void OnRealized ()</td>
+              <td>IntPtr X11NotificationArea.XInternAtom (IntPtr, string, bool)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void OnRealized ()</td>
+              <td>IntPtr X11NotificationArea.XInternAtom (IntPtr, string, bool)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void OnRealized ()</td>
+              <td>IntPtr X11NotificationArea.XInternAtom (IntPtr, string, bool)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void UpdateManagerWindow (bool)</td>
+              <td>IntPtr X11NotificationArea.gdk_x11_display_get_xdisplay (IntPtr)</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void UpdateManagerWindow (bool)</td>
+              <td>void X11NotificationArea.XGrabServer (IntPtr)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void UpdateManagerWindow (bool)</td>
+              <td>IntPtr X11NotificationArea.XGetSelectionOwner (IntPtr, IntPtr)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void UpdateManagerWindow (bool)</td>
+              <td>IntPtr X11NotificationArea.XSelectInput (IntPtr, IntPtr, IntPtr)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void UpdateManagerWindow (bool)</td>
+              <td>void X11NotificationArea.XUngrabServer (IntPtr)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void UpdateManagerWindow (bool)</td>
+              <td>int X11NotificationArea.XFlush (IntPtr)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void SendManagerMessage (X11NotificationArea/SystemTrayMessage, IntPtr, uint, uint, uint)</td>
+              <td>int X11NotificationArea.gdk_x11_get_server_time (IntPtr)</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void SendManagerMessage (X11NotificationArea/SystemTrayMessage, IntPtr, uint, uint, uint)</td>
+              <td>IntPtr X11NotificationArea.gdk_x11_display_get_xdisplay (IntPtr)</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void SendManagerMessage (X11NotificationArea/SystemTrayMessage, IntPtr, uint, uint, uint)</td>
+              <td>void X11NotificationArea.gdk_error_trap_push ()</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void SendManagerMessage (X11NotificationArea/SystemTrayMessage, IntPtr, uint, uint, uint)</td>
+              <td>int X11NotificationArea.XSendEvent (IntPtr, IntPtr, bool, IntPtr, X11NotificationArea/XClientMessageEvent&)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void SendManagerMessage (X11NotificationArea/SystemTrayMessage, IntPtr, uint, uint, uint)</td>
+              <td>int X11NotificationArea.XSync (IntPtr, bool)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void SendManagerMessage (X11NotificationArea/SystemTrayMessage, IntPtr, uint, uint, uint)</td>
+              <td>int X11NotificationArea.gdk_error_trap_pop ()</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void GetOrientationProperty ()</td>
+              <td>IntPtr X11NotificationArea.gdk_x11_display_get_xdisplay (IntPtr)</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void GetOrientationProperty ()</td>
+              <td>void X11NotificationArea.gdk_error_trap_push ()</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void GetOrientationProperty ()</td>
+              <td>int X11NotificationArea.XGetWindowProperty (IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, bool, IntPtr, IntPtr&, Int32&, IntPtr&, IntPtr&, IntPtr&)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void GetOrientationProperty ()</td>
+              <td>int X11NotificationArea.gdk_error_trap_pop ()</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+              <tr>
+              <td>void GetOrientationProperty ()</td>
+              <td>int X11NotificationArea.XFree (IntPtr)</td>
+              <td>libX11.so.6</td>
+              </tr>
+              <tr>
+              <td>void .ctor ()</td>
+              <td>int X11NotificationAreaBox.gdk_x11_get_default_screen ()</td>
+              <td>libgdk-x11-2.0.so.0</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.NowPlaying.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.PlayerMigration.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.PlayQueue.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.Podcasting.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el23", "img23")'>
+          <td style='width: 10px'><img id='img23' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Banshee.Services.dll</td>
+          <td>0.0.0.0</td>
+          <td>10</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr id='el23' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td colspan='2'>Method Missing from Mono</td>
+              </tr>
+              <tr>
+              <td>void OpenUri (SafeUri)</td>
+              <td colspan='2'>void MediaPlayer.Open (Uri)</td>
+              </tr>
+              <tr>
+              <td>UInt16 get_Volume ()</td>
+              <td colspan='2'>double MediaPlayer.get_Volume ()</td>
+              </tr>
+              <tr>
+              <td>void set_Volume (UInt16)</td>
+              <td colspan='2'>void MediaPlayer.set_Volume (double)</td>
+              </tr>
+              <tr>
+              <td>uint get_Position ()</td>
+              <td colspan='2'>TimeSpan MediaPlayer.get_Position ()</td>
+              </tr>
+              <tr>
+              <td>void set_Position (uint)</td>
+              <td colspan='2'>void MediaPlayer.set_Position (TimeSpan)</td>
+              </tr>
+              <tr>
+              <td>uint get_Length ()</td>
+              <td colspan='2'>Duration MediaPlayer.get_NaturalDuration ()</td>
+              </tr>
+              <tr>
+              <td>uint get_Length ()</td>
+              <td colspan='2'>bool Duration.get_HasTimeSpan ()</td>
+              </tr>
+              <tr>
+              <td>uint get_Length ()</td>
+              <td colspan='2'>Duration MediaPlayer.get_NaturalDuration ()</td>
+              </tr>
+              <tr>
+              <td>uint get_Length ()</td>
+              <td colspan='2'>TimeSpan Duration.get_TimeSpan ()</td>
+              </tr>
+              <tr>
+              <td>void .ctor ()</td>
+              <td colspan='2'>void MediaPlayer..ctor ()</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Banshee.ThickClient.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el25", "img25")'>
+          <td style='width: 10px'><img id='img25' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Banshee.WebBrowser.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>19</td>
+        </tr>
+        <tr id='el25' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void Initialize ()</td>
+              <td>IntPtr OssiferSession.ossifer_session_initialize (IntPtr, OssiferSession/CookieJarChangedCallback)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>void SetCookie (string, string, string, string, TimeSpan)</td>
+              <td>void OssiferSession.ossifer_session_set_cookie (IntPtr, IntPtr, IntPtr, IntPtr, int)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>OssiferCookie GetCookie (string, string, string)</td>
+              <td>IntPtr OssiferSession.ossifer_session_get_cookie (IntPtr, IntPtr, IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>OssiferCookie GetCookie (string, string, string)</td>
+              <td>void OssiferSession.ossifer_cookie_free (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>bool DeleteCookie (string, string, string)</td>
+              <td>bool OssiferSession.ossifer_session_delete_cookie (IntPtr, IntPtr, IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>GType get_GType ()</td>
+              <td>IntPtr OssiferWebView.ossifer_web_view_get_type ()</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>void LoadUri (string)</td>
+              <td>IntPtr OssiferWebView.ossifer_web_view_load_uri (IntPtr, IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>void LoadString (string, string, string, string)</td>
+              <td>void OssiferWebView.ossifer_web_view_load_string (IntPtr, IntPtr, IntPtr, IntPtr, IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>bool get_CanGoForward ()</td>
+              <td>bool OssiferWebView.ossifer_web_view_can_go_forward (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>bool get_CanGoBack ()</td>
+              <td>bool OssiferWebView.ossifer_web_view_can_go_back (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>void GoForward ()</td>
+              <td>void OssiferWebView.ossifer_web_view_go_forward (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>void GoBack ()</td>
+              <td>void OssiferWebView.ossifer_web_view_go_back (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>void Reload (bool)</td>
+              <td>void OssiferWebView.ossifer_web_view_reload_bypass_cache (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>void Reload (bool)</td>
+              <td>void OssiferWebView.ossifer_web_view_reload (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>void ExecuteScript (string)</td>
+              <td>void OssiferWebView.ossifer_web_view_execute_script (IntPtr, IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>string get_Uri ()</td>
+              <td>IntPtr OssiferWebView.ossifer_web_view_get_uri (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>string get_Title ()</td>
+              <td>IntPtr OssiferWebView.ossifer_web_view_get_title (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>OssiferLoadStatus get_LoadStatus ()</td>
+              <td>OssiferLoadStatus OssiferWebView.ossifer_web_view_get_load_status (IntPtr)</td>
+              <td>ossifer</td>
+              </tr>
+              <tr>
+              <td>void .ctor ()</td>
+              <td>void OssiferWebView.ossifer_web_view_set_callbacks (IntPtr, OssiferWebView/Callbacks)</td>
+              <td>ossifer</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el26", "img26")'>
+          <td style='width: 10px'><img id='img26' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Banshee.Widgets.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>4</td>
+        </tr>
+        <tr id='el26' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void OnWidgetEventAfter (Object, WidgetEventAfterArgs)</td>
+              <td>void VolumeButton.g_signal_stop_emission_by_name (IntPtr, string)</td>
+              <td>libgobject-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void OnWidgetEventAfter (Object, WidgetEventAfterArgs)</td>
+              <td>void VolumeButton.g_signal_stop_emission_by_name_fallback (IntPtr, string)</td>
+              <td>libgobject-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>int get_MinSliderSize ()</td>
+              <td>void VolumeButton/VolumeScale.g_type_query (IntPtr, IntPtr)</td>
+              <td>libgobject-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>int get_MinSliderSize ()</td>
+              <td>void VolumeButton/VolumeScale.g_type_query_fallback (IntPtr, IntPtr)</td>
+              <td>libgobject-2.0-0.dll</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el27", "img27")'>
+          <td style='width: 10px'><img id='img27' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Banshee.Windows.dll</td>
+          <td>1.0.0.0</td>
+          <td>15</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+        </tr>
+        <tr id='el27' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td colspan='2'>Method Missing from Mono</td>
+              </tr>
+              <tr>
+              <td>void Initialize ()</td>
+              <td colspan='2'>void MediaPlayer..ctor ()</td>
+              </tr>
+              <tr>
+              <td>void Initialize ()</td>
+              <td colspan='2'>void MediaPlayer.add_MediaEnded (EventHandler)</td>
+              </tr>
+              <tr>
+              <td>void OpenUri (SafeUri)</td>
+              <td colspan='2'>void MediaPlayer.Close ()</td>
+              </tr>
+              <tr>
+              <td>void OpenUri (SafeUri)</td>
+              <td colspan='2'>void MediaPlayer.Open (Uri)</td>
+              </tr>
+              <tr>
+              <td>void Pause ()</td>
+              <td colspan='2'>void MediaPlayer.Pause ()</td>
+              </tr>
+              <tr>
+              <td>UInt16 get_Volume ()</td>
+              <td colspan='2'>double MediaPlayer.get_Volume ()</td>
+              </tr>
+              <tr>
+              <td>void set_Volume (UInt16)</td>
+              <td colspan='2'>void MediaPlayer.set_Volume (double)</td>
+              </tr>
+              <tr>
+              <td>uint get_Position ()</td>
+              <td colspan='2'>TimeSpan MediaPlayer.get_Position ()</td>
+              </tr>
+              <tr>
+              <td>void set_Position (uint)</td>
+              <td colspan='2'>void MediaPlayer.set_Position (TimeSpan)</td>
+              </tr>
+              <tr>
+              <td>void <Initialize>b__0 ()</td>
+              <td colspan='2'>void MediaPlayer..ctor ()</td>
+              </tr>
+              <tr>
+              <td>void <Play>b__2 ()</td>
+              <td colspan='2'>void MediaPlayer.Play ()</td>
+              </tr>
+              <tr>
+              <td>void <get_Length>b__3 ()</td>
+              <td colspan='2'>Duration MediaPlayer.get_NaturalDuration ()</td>
+              </tr>
+              <tr>
+              <td>void <get_Length>b__3 ()</td>
+              <td colspan='2'>bool Duration.get_HasTimeSpan ()</td>
+              </tr>
+              <tr>
+              <td>void <get_Length>b__3 ()</td>
+              <td colspan='2'>Duration MediaPlayer.get_NaturalDuration ()</td>
+              </tr>
+              <tr>
+              <td>void <get_Length>b__3 ()</td>
+              <td colspan='2'>TimeSpan Duration.get_TimeSpan ()</td>
+              </tr>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>Method with [MonoTodo]</td>
+              <td>Reason</td>
+              </tr>
+              <tr>
+              <td>bool MoveNext ()</td>
+              <td>DriveInfo[] DriveInfo.GetDrives ()</td>
+              <td>Currently only implemented on Mono/Linux</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Hyena.Data.Sqlite.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el29", "img29")'>
+          <td style='width: 10px'><img id='img29' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Hyena.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2</td>
+          <td>4</td>
+        </tr>
+        <tr id='el29' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>Method with [MonoTodo]</td>
+              <td>Reason</td>
+              </tr>
+              <tr>
+              <td>int get_TerminalWidth ()</td>
+              <td>int Console.get_WindowWidth ()</td>
+              <td>Only works on windows</td>
+              </tr>
+              <tr>
+              <td>int get_TerminalWidth ()</td>
+              <td>int Console.get_WindowWidth ()</td>
+              <td>Only works on windows</td>
+              </tr>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void SetProcessName (string)</td>
+              <td>int ApplicationContext.prctl (int, Byte[], IntPtr, IntPtr, IntPtr)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void SetProcessName (string)</td>
+              <td>void ApplicationContext.setproctitle (Byte[], Byte[])</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>bool isatty (int)</td>
+              <td>int ConsoleCrayon._isatty (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int PlatformDetection.uname (IntPtr)</td>
+              <td>libc</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el30", "img30")'>
+          <td style='width: 10px'><img id='img30' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Hyena.Gui.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>16</td>
+        </tr>
+        <tr id='el30' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void SetDestroyFunc ()</td>
+              <td>Status PixbufImageSurface.cairo_surface_set_user_data (IntPtr, Int32&, IntPtr, PixbufImageSurface/cairo_destroy_func_t)</td>
+              <td>libcairo-2.dll</td>
+              </tr>
+              <tr>
+              <td>void ShowLayout (Context, Layout)</td>
+              <td>void PangoCairoHelper.pango_cairo_show_layout (IntPtr, IntPtr)</td>
+              <td>libpangocairo-1.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>Layout CreateLayout (Context)</td>
+              <td>IntPtr PangoCairoHelper.pango_cairo_create_layout (IntPtr)</td>
+              <td>libpangocairo-1.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void LayoutPath (Context, Layout, bool)</td>
+              <td>void PangoCairoHelper.pango_cairo_layout_path (IntPtr, IntPtr)</td>
+              <td>libpangocairo-1.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void ContextSetResolution (Context, double)</td>
+              <td>void PangoCairoHelper.pango_cairo_context_set_resolution (IntPtr, double)</td>
+              <td>libpangocairo-1.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>Context LayoutGetContext (Layout)</td>
+              <td>IntPtr PangoCairoHelper.pango_layout_get_context (IntPtr)</td>
+              <td>libpangocairo-1.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>Colormap GetRgbaColormap (Screen)</td>
+              <td>IntPtr CompositeUtils.gdk_screen_get_rgba_colormap (IntPtr)</td>
+              <td>libgdk-win32-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>Visual GetRgbaVisual (Screen)</td>
+              <td>IntPtr CompositeUtils.gdk_screen_get_rgba_visual (IntPtr)</td>
+              <td>libgdk-win32-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void ChangeProperty (Window, Atom, Atom, PropMode, UInt32[])</td>
+              <td>void CompositeUtils.gdk_property_change (IntPtr, IntPtr, IntPtr, int, int, UInt32[], int)</td>
+              <td>libgdk-win32-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void ChangeProperty (Window, Atom, Atom, PropMode, Byte[])</td>
+              <td>void CompositeUtils.gdk_property_change (IntPtr, IntPtr, IntPtr, int, int, Byte[], int)</td>
+              <td>libgdk-win32-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>bool SupportsHint (Screen, string)</td>
+              <td>bool CompositeUtils.gdk_x11_screen_supports_net_wm_hint (IntPtr, IntPtr)</td>
+              <td>libgdk-win32-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>bool IsComposited (Screen)</td>
+              <td>bool CompositeUtils.gdk_screen_is_composited (IntPtr)</td>
+              <td>libgdk-win32-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void InputShapeCombineMask (Widget, Pixmap, int, int)</td>
+              <td>void CompositeUtils.gtk_widget_input_shape_combine_mask (IntPtr, IntPtr, int, int)</td>
+              <td>libgtk-win32-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>bool ShowUri (Screen, string, uint)</td>
+              <td>bool GtkUtilities.gtk_show_uri (IntPtr, IntPtr, uint, IntPtr&)</td>
+              <td>libgtk-win32-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void PushGroup (Context)</td>
+              <td>void CairoExtensions.cairo_push_group (IntPtr)</td>
+              <td>libcairo-2.dll</td>
+              </tr>
+              <tr>
+              <td>void PopGroupToSource (Context)</td>
+              <td>void CairoExtensions.cairo_pop_group_to_source (IntPtr)</td>
+              <td>libcairo-2.dll</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>ICSharpCode.SharpZipLib.dll</td>
+          <td>2.84.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>ipod-sharp-ui.dll</td>
+          <td>0.0.1.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el33", "img33")'>
+          <td style='width: 10px'><img id='img33' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>ipod-sharp.dll</td>
+          <td>0.0.1.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+        </tr>
+        <tr id='el33' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void Save ()</td>
+              <td>int Syscall.sync ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Lastfm.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Lastfm.Gui.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el36", "img36")'>
+          <td style='width: 10px'><img id='img36' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>MediaFoundation.dll</td>
+          <td>1.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>7</td>
+        </tr>
+        <tr id='el36' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void Copy (PropVariant)</td>
+              <td>void PropVariant.PropVariantCopy (PropVariant, ConstPropVariant)</td>
+              <td>ole32.dll</td>
+              </tr>
+              <tr>
+              <td>void Clear ()</td>
+              <td>void PropVariant.PropVariantClear (PropVariant)</td>
+              <td>ole32.dll</td>
+              </tr>
+              <tr>
+              <td>void .ctor (ConstPropVariant)</td>
+              <td>void PropVariant.PropVariantCopy (PropVariant, ConstPropVariant)</td>
+              <td>ole32.dll</td>
+              </tr>
+              <tr>
+              <td>string GetErrorText (int)</td>
+              <td>int MFError.FormatMessage (MFError/FormatMessageFlags, IntPtr, int, int, IntPtr&, int, IntPtr)</td>
+              <td>kernel32.dll</td>
+              </tr>
+              <tr>
+              <td>string GetErrorText (int)</td>
+              <td>IntPtr MFError.LoadLibraryEx (string, IntPtr, MFError/LoadLibraryExFlags)</td>
+              <td>kernel32.dll</td>
+              </tr>
+              <tr>
+              <td>string GetErrorText (int)</td>
+              <td>int MFError.FormatMessage (MFError/FormatMessageFlags, IntPtr, int, int, IntPtr&, int, IntPtr)</td>
+              <td>kernel32.dll</td>
+              </tr>
+              <tr>
+              <td>string GetErrorText (int)</td>
+              <td>IntPtr MFError.LocalFree (IntPtr)</td>
+              <td>kernel32.dll</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Migo.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Mono.Addins.CecilReflector.dll</td>
+          <td>0.4.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el39", "img39")'>
+          <td style='width: 10px'><img id='img39' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Mono.Addins.dll</td>
+          <td>0.4.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>4</td>
+        </tr>
+        <tr id='el39' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void Init (string, string)</td>
+              <td>IntPtr GettextDomain.bindtextdomain (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>void Init (string, string)</td>
+              <td>IntPtr GettextDomain.bind_textdomain_codeset (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>string GetString (string)</td>
+              <td>IntPtr GettextDomain.dgettext (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>string GetPluralString (string, string, int)</td>
+              <td>IntPtr GettextDomain.dngettext (IntPtr, IntPtr, IntPtr, int)</td>
+              <td>intl</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Mono.Addins.Gui.dll</td>
+          <td>0.4.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Mono.Addins.Setup.dll</td>
+          <td>0.4.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el42", "img42")'>
+          <td style='width: 10px'><img id='img42' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Mono.Data.Sqlite.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>5</td>
+          <td>3</td>
+          <td>76</td>
+        </tr>
+        <tr id='el42' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td colspan='2'>Method that Throws NotImplementedException</td>
+              </tr>
+              <tr>
+              <td>DataTable GetSchemaTable (bool, bool)</td>
+              <td colspan='2'>DataTable DbConnection.GetSchema (string, String[])</td>
+              </tr>
+              <tr>
+              <td>DataTable GetSchemaTable (bool, bool)</td>
+              <td colspan='2'>DataTable DbConnection.GetSchema (string, String[])</td>
+              </tr>
+              <tr>
+              <td>DataTable GetSchema ()</td>
+              <td colspan='2'>DataTable DbConnection.GetSchema (string, String[])</td>
+              </tr>
+              <tr>
+              <td>DataTable GetSchema (string)</td>
+              <td colspan='2'>DataTable DbConnection.GetSchema (string, String[])</td>
+              </tr>
+              <tr>
+              <td>void Initialize (string)</td>
+              <td colspan='2'>void DbConnectionStringBuilder.GetProperties (Hashtable)</td>
+              </tr>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>Method with [MonoTodo]</td>
+              <td>Reason</td>
+              </tr>
+              <tr>
+              <td>void Prepare (PreparingEnlistment)</td>
+              <td colspan='2'>void PreparingEnlistment.Prepared ()</td>
+              </tr>
+              <tr>
+              <td>void .ctor (SqliteConnection, Transaction)</td>
+              <td>Enlistment Transaction.EnlistVolatile (IEnlistmentNotification, EnlistmentOptions)</td>
+              <td>EnlistmentOptions being ignored</td>
+              </tr>
+              <tr>
+              <td>void Initialize (string)</td>
+              <td colspan='2'>void DbConnectionStringBuilder.GetProperties (Hashtable)</td>
+              </tr>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void Close ()</td>
+              <td>int UnsafeNativeMethods.sqlite3_close (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Cancel ()</td>
+              <td>void UnsafeNativeMethods.sqlite3_interrupt (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string get_Version ()</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_libversion ()</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>int get_Changes ()</td>
+              <td>int UnsafeNativeMethods.sqlite3_changes (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Open (string)</td>
+              <td>int UnsafeNativeMethods.sqlite3_open (Byte[], IntPtr&)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void SetTimeout (int)</td>
+              <td>int UnsafeNativeMethods.sqlite3_busy_timeout (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>bool Step (SqliteStatement)</td>
+              <td>int UnsafeNativeMethods.sqlite3_step (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>bool Step (SqliteStatement)</td>
+              <td>void UnsafeNativeMethods.sqlite3_sleep (uint)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void FinalizeStatement (SqliteStatement)</td>
+              <td>int UnsafeNativeMethods.sqlite3_finalize (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>int Reset (SqliteStatement)</td>
+              <td>int UnsafeNativeMethods.sqlite3_reset (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string SqliteLastError ()</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_errmsg (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>SqliteStatement Prepare (string, SqliteStatement, String&)</td>
+              <td>int UnsafeNativeMethods.sqlite3_prepare_v2 (IntPtr, IntPtr, int, IntPtr&, IntPtr&)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>SqliteStatement Prepare (string, SqliteStatement, String&)</td>
+              <td>int UnsafeNativeMethods.sqlite3_prepare (IntPtr, IntPtr, int, IntPtr&, IntPtr&)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Bind_Double (SqliteStatement, int, double)</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_double (IntPtr, int, double)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Bind_Int32 (SqliteStatement, int, int)</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_int (IntPtr, int, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Bind_Int64 (SqliteStatement, int, Int64)</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_int64 (IntPtr, int, Int64)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Bind_Text (SqliteStatement, int, string)</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_text (IntPtr, int, Byte[], int, IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Bind_DateTime (SqliteStatement, int, DateTime)</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_text (IntPtr, int, Byte[], int, IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Bind_Blob (SqliteStatement, int, Byte[])</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_blob (IntPtr, int, Byte[], int, IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Bind_Null (SqliteStatement, int)</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_null (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>int Bind_ParamCount (SqliteStatement)</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_parameter_count (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string Bind_ParamName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_bind_parameter_name (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>int Bind_ParamIndex (SqliteStatement, string)</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_parameter_index (IntPtr, Byte[])</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>int ColumnCount (SqliteStatement)</td>
+              <td>int UnsafeNativeMethods.sqlite3_column_count (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string ColumnName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_name (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>TypeAffinity ColumnAffinity (SqliteStatement, int)</td>
+              <td>TypeAffinity UnsafeNativeMethods.sqlite3_column_type (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string ColumnType (SqliteStatement, int, TypeAffinity&)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_decltype (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string ColumnOriginalName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_origin_name (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string ColumnDatabaseName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_database_name (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string ColumnTableName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_table_name (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ColumnMetaData (string, string, string, String&, String&, Boolean&, Boolean&, Boolean&)</td>
+              <td>int UnsafeNativeMethods.sqlite3_table_column_metadata (IntPtr, Byte[], Byte[], Byte[], IntPtr&, IntPtr&, Int32&, Int32&, Int32&)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>double GetDouble (SqliteStatement, int)</td>
+              <td>double UnsafeNativeMethods.sqlite3_column_double (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>int GetInt32 (SqliteStatement, int)</td>
+              <td>int UnsafeNativeMethods.sqlite3_column_int (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>Int64 GetInt64 (SqliteStatement, int)</td>
+              <td>Int64 UnsafeNativeMethods.sqlite3_column_int64 (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string GetText (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_text (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>Int64 GetBytes (SqliteStatement, int, int, Byte[], int, int)</td>
+              <td>int UnsafeNativeMethods.sqlite3_column_bytes (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>Int64 GetBytes (SqliteStatement, int, int, Byte[], int, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_blob (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>int AggregateCount (IntPtr)</td>
+              <td>int UnsafeNativeMethods.sqlite3_aggregate_count (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void CreateFunction (string, int, SqliteCallback, SqliteCallback, SqliteFinalCallback)</td>
+              <td>int UnsafeNativeMethods.sqlite3_create_function (IntPtr, Byte[], int, int, IntPtr, SqliteCallback, SqliteCallback, SqliteFinalCallback)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void CreateCollation (string, SqliteCollation)</td>
+              <td>int UnsafeNativeMethods.sqlite3_create_collation (IntPtr, Byte[], int, IntPtr, SqliteCollation)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>Int64 GetParamValueBytes (IntPtr, int, Byte[], int, int)</td>
+              <td>int UnsafeNativeMethods.sqlite3_value_bytes (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>Int64 GetParamValueBytes (IntPtr, int, Byte[], int, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_value_blob (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>double GetParamValueDouble (IntPtr)</td>
+              <td>double UnsafeNativeMethods.sqlite3_value_double (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>int GetParamValueInt32 (IntPtr)</td>
+              <td>int UnsafeNativeMethods.sqlite3_value_int (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>Int64 GetParamValueInt64 (IntPtr)</td>
+              <td>Int64 UnsafeNativeMethods.sqlite3_value_int64 (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string GetParamValueText (IntPtr)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_value_text (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>TypeAffinity GetParamValueType (IntPtr)</td>
+              <td>TypeAffinity UnsafeNativeMethods.sqlite3_value_type (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ReturnBlob (IntPtr, Byte[])</td>
+              <td>void UnsafeNativeMethods.sqlite3_result_blob (IntPtr, Byte[], int, IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ReturnDouble (IntPtr, double)</td>
+              <td>void UnsafeNativeMethods.sqlite3_result_double (IntPtr, double)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ReturnError (IntPtr, string)</td>
+              <td>void UnsafeNativeMethods.sqlite3_result_error (IntPtr, Byte[], int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ReturnInt32 (IntPtr, int)</td>
+              <td>void UnsafeNativeMethods.sqlite3_result_int (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ReturnInt64 (IntPtr, Int64)</td>
+              <td>void UnsafeNativeMethods.sqlite3_result_int64 (IntPtr, Int64)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ReturnNull (IntPtr)</td>
+              <td>void UnsafeNativeMethods.sqlite3_result_null (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ReturnText (IntPtr, string)</td>
+              <td>void UnsafeNativeMethods.sqlite3_result_text (IntPtr, Byte[], int, IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>IntPtr AggregateContext (IntPtr)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_aggregate_context (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void SetUpdateHook (SqliteUpdateCallback)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_update_hook (IntPtr, SqliteUpdateCallback)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void SetCommitHook (SqliteCommitCallback)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_commit_hook (IntPtr, SqliteCommitCallback)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void SetRollbackHook (SqliteRollbackCallback)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_rollback_hook (IntPtr, SqliteRollbackCallback)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>Int64 GetLastInsertRowId ()</td>
+              <td>Int64 UnsafeNativeMethods.sqlite3_last_insert_rowid (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string get_Version ()</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_libversion ()</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Open (string)</td>
+              <td>int UnsafeNativeMethods.sqlite3_open16 (string, IntPtr&)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string SqliteLastError ()</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_errmsg16 (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string Bind_ParamName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_bind_parameter_name (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void Bind_Text (SqliteStatement, int, string)</td>
+              <td>int UnsafeNativeMethods.sqlite3_bind_text16 (IntPtr, int, string, int, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string ColumnName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_name16 (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string GetText (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_text16 (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string ColumnOriginalName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_origin_name16 (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string ColumnDatabaseName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_database_name16 (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string ColumnTableName (SqliteStatement, int)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_column_table_name16 (IntPtr, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void CreateFunction (string, int, SqliteCallback, SqliteCallback, SqliteFinalCallback)</td>
+              <td>int UnsafeNativeMethods.sqlite3_create_function16 (IntPtr, string, int, int, IntPtr, SqliteCallback, SqliteCallback, SqliteFinalCallback)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void CreateCollation (string, SqliteCollation)</td>
+              <td>int UnsafeNativeMethods.sqlite3_create_collation16 (IntPtr, string, int, IntPtr, SqliteCollation)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>string GetParamValueText (IntPtr)</td>
+              <td>IntPtr UnsafeNativeMethods.sqlite3_value_text16 (IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ReturnError (IntPtr, string)</td>
+              <td>void UnsafeNativeMethods.sqlite3_result_error16 (IntPtr, string, int)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void ReturnText (IntPtr, string)</td>
+              <td>void UnsafeNativeMethods.sqlite3_result_text16 (IntPtr, string, int, IntPtr)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void CompressFile (string)</td>
+              <td>int UnsafeNativeMethods.sqlite3_compressfile (string)</td>
+              <td>sqlite3</td>
+              </tr>
+              <tr>
+              <td>void DecompressFile (string)</td>
+              <td>int UnsafeNativeMethods.sqlite3_decompressfile (string)</td>
+              <td>sqlite3</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Mono.Media.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el44", "img44")'>
+          <td style='width: 10px'><img id='img44' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Mono.Posix.dll</td>
+          <td>2.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>396</td>
+        </tr>
+        <tr id='el44' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void Init (string, string)</td>
+              <td>IntPtr Catalog.bindtextdomain (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>void Init (string, string)</td>
+              <td>IntPtr Catalog.bind_textdomain_codeset (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>void Init (string, string)</td>
+              <td>IntPtr Catalog.textdomain (IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>string GetString (string)</td>
+              <td>IntPtr Catalog.gettext (IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>string GetPluralString (string, string, int)</td>
+              <td>IntPtr Catalog.ngettext (IntPtr, IntPtr, int)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>void AdviseFileAccessPattern (int, FileAccessPattern, Int64, Int64)</td>
+              <td>int Syscall.posix_fadvise (int, Int64, Int64, PosixFadviseAdvice)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void AdviseFileAccessPattern (FileStream, FileAccessPattern, Int64, Int64)</td>
+              <td>int Syscall.posix_fadvise (int, Int64, Int64, PosixFadviseAdvice)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void AdviseFileAccessPattern (UnixStream, FileAccessPattern, Int64, Int64)</td>
+              <td>int Syscall.posix_fadvise (int, Int64, Int64, PosixFadviseAdvice)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>IntPtr Fopen (string, string)</td>
+              <td>IntPtr Stdlib.fopen (string, string)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>void InitStream (IntPtr, bool)</td>
+              <td>UInt64 Stdlib.fread (IntPtr, UInt64, UInt64, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void InitStream (IntPtr, bool)</td>
+              <td>int Stdlib.ferror (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>void InitStream (IntPtr, bool)</td>
+              <td>UInt64 Stdlib.fwrite (IntPtr, UInt64, UInt64, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void InitStream (IntPtr, bool)</td>
+              <td>int Stdlib.ferror (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>void InitStream (IntPtr, bool)</td>
+              <td>int Stdlib.clearerr (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool FileExists (string)</td>
+              <td>IntPtr Stdlib.fopen (string, string)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>bool FileExists (string)</td>
+              <td>int Stdlib.fclose (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>Int64 get_Length ()</td>
+              <td>Int64 Stdlib.ftell (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 get_Length ()</td>
+              <td>Int64 Stdlib.ftell (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 get_Position ()</td>
+              <td>Int64 Stdlib.ftell (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void Flush ()</td>
+              <td>int Stdlib.fflush (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>int Read (Byte[], int, int)</td>
+              <td>int Stdlib.ferror (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>void Rewind ()</td>
+              <td>int Stdlib.rewind (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 Seek (Int64, SeekOrigin)</td>
+              <td>Int64 Stdlib.ftell (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void Close ()</td>
+              <td>int Stdlib.fclose (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>void Delete (bool)</td>
+              <td>int Syscall.rmdir (string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>Dirent[] GetEntries ()</td>
+              <td>IntPtr Syscall.opendir (string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>Dirent[] GetEntries ()</td>
+              <td>int Syscall.closedir (IntPtr)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>Dirent[] GetEntries (Regex)</td>
+              <td>IntPtr Syscall.opendir (string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>Dirent[] GetEntries (Regex)</td>
+              <td>int Syscall.closedir (IntPtr)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>string GetCurrentDirectory ()</td>
+              <td>IntPtr Syscall.getcwd (StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void SetCurrentDirectory (string)</td>
+              <td>int Syscall.chdir (string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>bool get_IsReady ()</td>
+              <td>int Syscall.statvfs (string, Statvfs&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool Refresh (bool)</td>
+              <td>int Syscall.statvfs (string, Statvfs&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 get_RealGroupId ()</td>
+              <td>uint Syscall.getgid ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>Int64 get_RealUserId ()</td>
+              <td>uint Syscall.getuid ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>Int64 get_EffectiveGroupId ()</td>
+              <td>uint Syscall.getegid ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void set_EffectiveGroupId (Int64)</td>
+              <td>int Syscall.setegid (uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>Int64 get_EffectiveUserId ()</td>
+              <td>uint Syscall.geteuid ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void set_EffectiveUserId (Int64)</td>
+              <td>int Syscall.seteuid (uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>string GetConfigurationString (ConfstrName)</td>
+              <td>UInt64 Syscall.confstr (ConfstrName, StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>string GetConfigurationString (ConfstrName)</td>
+              <td>UInt64 Syscall.confstr (ConfstrName, StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void SetNiceValue (int)</td>
+              <td>int Syscall.nice (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int CreateSession ()</td>
+              <td>int Syscall.setsid ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void SetProcessGroup ()</td>
+              <td>int Syscall.setpgrp ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int GetProcessGroup ()</td>
+              <td>int Syscall.getpgrp ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>UInt32[] _GetSupplementaryGroupIds ()</td>
+              <td>int Syscall.getgroups (int, UInt32[])</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int GetParentProcessId ()</td>
+              <td>int Syscall.getppid ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void Delete ()</td>
+              <td>int Syscall.unlink (string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>UnixStream Create (FilePermissions)</td>
+              <td>int Syscall.creat (string, FilePermissions)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UnixStream Open (OpenFlags)</td>
+              <td>int Syscall.open (string, OpenFlags)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UnixStream Open (OpenFlags, FilePermissions)</td>
+              <td>int Syscall.open (string, OpenFlags, FilePermissions)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UnixStream Open (FileMode, FileAccess, FilePermissions)</td>
+              <td>int Syscall.open (string, OpenFlags, FilePermissions)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UnixFileSystemInfo CreateLink (string)</td>
+              <td>int Syscall.link (string, string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>UnixSymbolicLinkInfo CreateSymbolicLink (string)</td>
+              <td>int Syscall.symlink (string, string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>bool GetFileStatus (string, Stat&)</td>
+              <td>int Syscall.stat (string, Stat&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void SetLength (Int64)</td>
+              <td>int Syscall.truncate (string, Int64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void SetOwner (Int64, Int64)</td>
+              <td>int Syscall.chown (string, uint, uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>UnixFileSystemInfo GetFileSystemEntry (string)</td>
+              <td>int Syscall.lstat (string, Stat&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>IntPtr AllocHeap (Int64)</td>
+              <td>IntPtr Stdlib.malloc (UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>IntPtr ReAllocHeap (IntPtr, Int64)</td>
+              <td>IntPtr Stdlib.realloc (IntPtr, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void FreeHeap (IntPtr)</td>
+              <td>void Stdlib.free (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>string PtrToStringUnix (IntPtr)</td>
+              <td>UInt64 Stdlib.strlen (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int GetStringByteLength (IntPtr, Encoding)</td>
+              <td>UInt64 Stdlib.strlen (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int GetRandomBufferLength (IntPtr, int)</td>
+              <td>UInt64 Stdlib.strlen (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UnixPipes CreatePipes ()</td>
+              <td>int Syscall.pipe (Int32&, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int get_ExitCode ()</td>
+              <td>int Syscall.WEXITSTATUS (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int get_ProcessGroupId ()</td>
+              <td>int Syscall.getpgid (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void set_ProcessGroupId (int)</td>
+              <td>int Syscall.setpgid (int, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int get_SessionId ()</td>
+              <td>int Syscall.getsid (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int GetCurrentProcessId ()</td>
+              <td>int Syscall.getpid ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void Dispose (bool)</td>
+              <td>int UnixSignal.uninstall (IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int WaitAny (UnixSignal[], int)</td>
+              <td>int UnixSignal.WaitAny (IntPtr[], int, int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .ctor (Signum)</td>
+              <td>IntPtr UnixSignal.install (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void RefreshStat ()</td>
+              <td>int Syscall.fstat (int, Stat&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void SetLength (Int64)</td>
+              <td>int Syscall.ftruncate (int, Int64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void SendTo (int, UInt64)</td>
+              <td>Int64 Syscall.sendfile (int, int, Int64&, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void SetOwner (Int64, Int64)</td>
+              <td>int Syscall.fchown (int, uint, uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void Close ()</td>
+              <td>int Syscall.close (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void .ctor (int, bool)</td>
+              <td>Int64 Syscall.read (int, IntPtr, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .ctor (int, bool)</td>
+              <td>Int64 Syscall.write (int, IntPtr, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void CreateSymbolicLinkTo (string)</td>
+              <td>int Syscall.symlink (string, string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void CreateSymbolicLinkTo (UnixFileSystemInfo)</td>
+              <td>int Syscall.symlink (string, string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void Delete ()</td>
+              <td>int Syscall.unlink (string)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void SetOwner (Int64, Int64)</td>
+              <td>int Syscall.lchown (string, uint, uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>bool GetFileStatus (string, Stat&)</td>
+              <td>int Syscall.lstat (string, Stat&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 GetRealUserId ()</td>
+              <td>uint Syscall.getuid ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>string GetLoginName ()</td>
+              <td>int Syscall.getlogin_r (StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (Statvfs&, IntPtr)</td>
+              <td>int NativeConvert.FromStatvfs (Statvfs&, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (IntPtr, Statvfs&)</td>
+              <td>int NativeConvert.ToStatvfs (IntPtr, Statvfs&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromAccessModes (AccessModes, Int32&)</td>
+              <td>int NativeConvert.FromAccessModes (AccessModes, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromAccessModes (AccessModes)</td>
+              <td>int NativeConvert.FromAccessModes (AccessModes, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToAccessModes (int, AccessModes&)</td>
+              <td>int NativeConvert.ToAccessModes (int, AccessModes&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>AccessModes ToAccessModes (int)</td>
+              <td>int NativeConvert.ToAccessModes (int, AccessModes&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromConfstrName (ConfstrName, Int32&)</td>
+              <td>int NativeConvert.FromConfstrName (ConfstrName, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromConfstrName (ConfstrName)</td>
+              <td>int NativeConvert.FromConfstrName (ConfstrName, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToConfstrName (int, ConfstrName&)</td>
+              <td>int NativeConvert.ToConfstrName (int, ConfstrName&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>ConfstrName ToConfstrName (int)</td>
+              <td>int NativeConvert.ToConfstrName (int, ConfstrName&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromDirectoryNotifyFlags (DirectoryNotifyFlags, Int32&)</td>
+              <td>int NativeConvert.FromDirectoryNotifyFlags (DirectoryNotifyFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromDirectoryNotifyFlags (DirectoryNotifyFlags)</td>
+              <td>int NativeConvert.FromDirectoryNotifyFlags (DirectoryNotifyFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToDirectoryNotifyFlags (int, DirectoryNotifyFlags&)</td>
+              <td>int NativeConvert.ToDirectoryNotifyFlags (int, DirectoryNotifyFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>DirectoryNotifyFlags ToDirectoryNotifyFlags (int)</td>
+              <td>int NativeConvert.ToDirectoryNotifyFlags (int, DirectoryNotifyFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromErrno (Errno, Int32&)</td>
+              <td>int NativeConvert.FromErrno (Errno, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromErrno (Errno)</td>
+              <td>int NativeConvert.FromErrno (Errno, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToErrno (int, Errno&)</td>
+              <td>int NativeConvert.ToErrno (int, Errno&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Errno ToErrno (int)</td>
+              <td>int NativeConvert.ToErrno (int, Errno&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromFcntlCommand (FcntlCommand, Int32&)</td>
+              <td>int NativeConvert.FromFcntlCommand (FcntlCommand, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromFcntlCommand (FcntlCommand)</td>
+              <td>int NativeConvert.FromFcntlCommand (FcntlCommand, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToFcntlCommand (int, FcntlCommand&)</td>
+              <td>int NativeConvert.ToFcntlCommand (int, FcntlCommand&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>FcntlCommand ToFcntlCommand (int)</td>
+              <td>int NativeConvert.ToFcntlCommand (int, FcntlCommand&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromFilePermissions (FilePermissions, UInt32&)</td>
+              <td>int NativeConvert.FromFilePermissions (FilePermissions, UInt32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>uint FromFilePermissions (FilePermissions)</td>
+              <td>int NativeConvert.FromFilePermissions (FilePermissions, UInt32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToFilePermissions (uint, FilePermissions&)</td>
+              <td>int NativeConvert.ToFilePermissions (uint, FilePermissions&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>FilePermissions ToFilePermissions (uint)</td>
+              <td>int NativeConvert.ToFilePermissions (uint, FilePermissions&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromLockType (LockType, Int16&)</td>
+              <td>int NativeConvert.FromLockType (LockType, Int16&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int16 FromLockType (LockType)</td>
+              <td>int NativeConvert.FromLockType (LockType, Int16&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToLockType (Int16, LockType&)</td>
+              <td>int NativeConvert.ToLockType (Int16, LockType&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>LockType ToLockType (Int16)</td>
+              <td>int NativeConvert.ToLockType (Int16, LockType&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromLockfCommand (LockfCommand, Int32&)</td>
+              <td>int NativeConvert.FromLockfCommand (LockfCommand, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromLockfCommand (LockfCommand)</td>
+              <td>int NativeConvert.FromLockfCommand (LockfCommand, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToLockfCommand (int, LockfCommand&)</td>
+              <td>int NativeConvert.ToLockfCommand (int, LockfCommand&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>LockfCommand ToLockfCommand (int)</td>
+              <td>int NativeConvert.ToLockfCommand (int, LockfCommand&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromMlockallFlags (MlockallFlags, Int32&)</td>
+              <td>int NativeConvert.FromMlockallFlags (MlockallFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromMlockallFlags (MlockallFlags)</td>
+              <td>int NativeConvert.FromMlockallFlags (MlockallFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToMlockallFlags (int, MlockallFlags&)</td>
+              <td>int NativeConvert.ToMlockallFlags (int, MlockallFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>MlockallFlags ToMlockallFlags (int)</td>
+              <td>int NativeConvert.ToMlockallFlags (int, MlockallFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromMmapFlags (MmapFlags, Int32&)</td>
+              <td>int NativeConvert.FromMmapFlags (MmapFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromMmapFlags (MmapFlags)</td>
+              <td>int NativeConvert.FromMmapFlags (MmapFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToMmapFlags (int, MmapFlags&)</td>
+              <td>int NativeConvert.ToMmapFlags (int, MmapFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>MmapFlags ToMmapFlags (int)</td>
+              <td>int NativeConvert.ToMmapFlags (int, MmapFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromMmapProts (MmapProts, Int32&)</td>
+              <td>int NativeConvert.FromMmapProts (MmapProts, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromMmapProts (MmapProts)</td>
+              <td>int NativeConvert.FromMmapProts (MmapProts, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToMmapProts (int, MmapProts&)</td>
+              <td>int NativeConvert.ToMmapProts (int, MmapProts&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>MmapProts ToMmapProts (int)</td>
+              <td>int NativeConvert.ToMmapProts (int, MmapProts&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromMountFlags (MountFlags, UInt64&)</td>
+              <td>int NativeConvert.FromMountFlags (MountFlags, UInt64&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UInt64 FromMountFlags (MountFlags)</td>
+              <td>int NativeConvert.FromMountFlags (MountFlags, UInt64&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToMountFlags (UInt64, MountFlags&)</td>
+              <td>int NativeConvert.ToMountFlags (UInt64, MountFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>MountFlags ToMountFlags (UInt64)</td>
+              <td>int NativeConvert.ToMountFlags (UInt64, MountFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromMremapFlags (MremapFlags, UInt64&)</td>
+              <td>int NativeConvert.FromMremapFlags (MremapFlags, UInt64&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UInt64 FromMremapFlags (MremapFlags)</td>
+              <td>int NativeConvert.FromMremapFlags (MremapFlags, UInt64&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToMremapFlags (UInt64, MremapFlags&)</td>
+              <td>int NativeConvert.ToMremapFlags (UInt64, MremapFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>MremapFlags ToMremapFlags (UInt64)</td>
+              <td>int NativeConvert.ToMremapFlags (UInt64, MremapFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromMsyncFlags (MsyncFlags, Int32&)</td>
+              <td>int NativeConvert.FromMsyncFlags (MsyncFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromMsyncFlags (MsyncFlags)</td>
+              <td>int NativeConvert.FromMsyncFlags (MsyncFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToMsyncFlags (int, MsyncFlags&)</td>
+              <td>int NativeConvert.ToMsyncFlags (int, MsyncFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>MsyncFlags ToMsyncFlags (int)</td>
+              <td>int NativeConvert.ToMsyncFlags (int, MsyncFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromOpenFlags (OpenFlags, Int32&)</td>
+              <td>int NativeConvert.FromOpenFlags (OpenFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromOpenFlags (OpenFlags)</td>
+              <td>int NativeConvert.FromOpenFlags (OpenFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToOpenFlags (int, OpenFlags&)</td>
+              <td>int NativeConvert.ToOpenFlags (int, OpenFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>OpenFlags ToOpenFlags (int)</td>
+              <td>int NativeConvert.ToOpenFlags (int, OpenFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromPathconfName (PathconfName, Int32&)</td>
+              <td>int NativeConvert.FromPathconfName (PathconfName, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromPathconfName (PathconfName)</td>
+              <td>int NativeConvert.FromPathconfName (PathconfName, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToPathconfName (int, PathconfName&)</td>
+              <td>int NativeConvert.ToPathconfName (int, PathconfName&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>PathconfName ToPathconfName (int)</td>
+              <td>int NativeConvert.ToPathconfName (int, PathconfName&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromPollEvents (PollEvents, Int16&)</td>
+              <td>int NativeConvert.FromPollEvents (PollEvents, Int16&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int16 FromPollEvents (PollEvents)</td>
+              <td>int NativeConvert.FromPollEvents (PollEvents, Int16&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToPollEvents (Int16, PollEvents&)</td>
+              <td>int NativeConvert.ToPollEvents (Int16, PollEvents&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>PollEvents ToPollEvents (Int16)</td>
+              <td>int NativeConvert.ToPollEvents (Int16, PollEvents&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (Pollfd&, IntPtr)</td>
+              <td>int NativeConvert.FromPollfd (Pollfd&, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (IntPtr, Pollfd&)</td>
+              <td>int NativeConvert.ToPollfd (IntPtr, Pollfd&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromPosixFadviseAdvice (PosixFadviseAdvice, Int32&)</td>
+              <td>int NativeConvert.FromPosixFadviseAdvice (PosixFadviseAdvice, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromPosixFadviseAdvice (PosixFadviseAdvice)</td>
+              <td>int NativeConvert.FromPosixFadviseAdvice (PosixFadviseAdvice, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToPosixFadviseAdvice (int, PosixFadviseAdvice&)</td>
+              <td>int NativeConvert.ToPosixFadviseAdvice (int, PosixFadviseAdvice&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>PosixFadviseAdvice ToPosixFadviseAdvice (int)</td>
+              <td>int NativeConvert.ToPosixFadviseAdvice (int, PosixFadviseAdvice&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromPosixMadviseAdvice (PosixMadviseAdvice, Int32&)</td>
+              <td>int NativeConvert.FromPosixMadviseAdvice (PosixMadviseAdvice, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromPosixMadviseAdvice (PosixMadviseAdvice)</td>
+              <td>int NativeConvert.FromPosixMadviseAdvice (PosixMadviseAdvice, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToPosixMadviseAdvice (int, PosixMadviseAdvice&)</td>
+              <td>int NativeConvert.ToPosixMadviseAdvice (int, PosixMadviseAdvice&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>PosixMadviseAdvice ToPosixMadviseAdvice (int)</td>
+              <td>int NativeConvert.ToPosixMadviseAdvice (int, PosixMadviseAdvice&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromSeekFlags (SeekFlags, Int16&)</td>
+              <td>int NativeConvert.FromSeekFlags (SeekFlags, Int16&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int16 FromSeekFlags (SeekFlags)</td>
+              <td>int NativeConvert.FromSeekFlags (SeekFlags, Int16&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToSeekFlags (Int16, SeekFlags&)</td>
+              <td>int NativeConvert.ToSeekFlags (Int16, SeekFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>SeekFlags ToSeekFlags (Int16)</td>
+              <td>int NativeConvert.ToSeekFlags (Int16, SeekFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromSignum (Signum, Int32&)</td>
+              <td>int NativeConvert.FromSignum (Signum, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromSignum (Signum)</td>
+              <td>int NativeConvert.FromSignum (Signum, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToSignum (int, Signum&)</td>
+              <td>int NativeConvert.ToSignum (int, Signum&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Signum ToSignum (int)</td>
+              <td>int NativeConvert.ToSignum (int, Signum&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (Stat&, IntPtr)</td>
+              <td>int NativeConvert.FromStat (Stat&, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (IntPtr, Stat&)</td>
+              <td>int NativeConvert.ToStat (IntPtr, Stat&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromSysconfName (SysconfName, Int32&)</td>
+              <td>int NativeConvert.FromSysconfName (SysconfName, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromSysconfName (SysconfName)</td>
+              <td>int NativeConvert.FromSysconfName (SysconfName, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToSysconfName (int, SysconfName&)</td>
+              <td>int NativeConvert.ToSysconfName (int, SysconfName&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>SysconfName ToSysconfName (int)</td>
+              <td>int NativeConvert.ToSysconfName (int, SysconfName&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromSyslogFacility (SyslogFacility, Int32&)</td>
+              <td>int NativeConvert.FromSyslogFacility (SyslogFacility, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromSyslogFacility (SyslogFacility)</td>
+              <td>int NativeConvert.FromSyslogFacility (SyslogFacility, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToSyslogFacility (int, SyslogFacility&)</td>
+              <td>int NativeConvert.ToSyslogFacility (int, SyslogFacility&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>SyslogFacility ToSyslogFacility (int)</td>
+              <td>int NativeConvert.ToSyslogFacility (int, SyslogFacility&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromSyslogLevel (SyslogLevel, Int32&)</td>
+              <td>int NativeConvert.FromSyslogLevel (SyslogLevel, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromSyslogLevel (SyslogLevel)</td>
+              <td>int NativeConvert.FromSyslogLevel (SyslogLevel, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToSyslogLevel (int, SyslogLevel&)</td>
+              <td>int NativeConvert.ToSyslogLevel (int, SyslogLevel&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>SyslogLevel ToSyslogLevel (int)</td>
+              <td>int NativeConvert.ToSyslogLevel (int, SyslogLevel&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromSyslogOptions (SyslogOptions, Int32&)</td>
+              <td>int NativeConvert.FromSyslogOptions (SyslogOptions, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromSyslogOptions (SyslogOptions)</td>
+              <td>int NativeConvert.FromSyslogOptions (SyslogOptions, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToSyslogOptions (int, SyslogOptions&)</td>
+              <td>int NativeConvert.ToSyslogOptions (int, SyslogOptions&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>SyslogOptions ToSyslogOptions (int)</td>
+              <td>int NativeConvert.ToSyslogOptions (int, SyslogOptions&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (Timeval&, IntPtr)</td>
+              <td>int NativeConvert.FromTimeval (Timeval&, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (IntPtr, Timeval&)</td>
+              <td>int NativeConvert.ToTimeval (IntPtr, Timeval&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (Timezone&, IntPtr)</td>
+              <td>int NativeConvert.FromTimezone (Timezone&, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (IntPtr, Timezone&)</td>
+              <td>int NativeConvert.ToTimezone (IntPtr, Timezone&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (Utimbuf&, IntPtr)</td>
+              <td>int NativeConvert.FromUtimbuf (Utimbuf&, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryCopy (IntPtr, Utimbuf&)</td>
+              <td>int NativeConvert.ToUtimbuf (IntPtr, Utimbuf&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromWaitOptions (WaitOptions, Int32&)</td>
+              <td>int NativeConvert.FromWaitOptions (WaitOptions, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromWaitOptions (WaitOptions)</td>
+              <td>int NativeConvert.FromWaitOptions (WaitOptions, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToWaitOptions (int, WaitOptions&)</td>
+              <td>int NativeConvert.ToWaitOptions (int, WaitOptions&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>WaitOptions ToWaitOptions (int)</td>
+              <td>int NativeConvert.ToWaitOptions (int, WaitOptions&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryFromXattrFlags (XattrFlags, Int32&)</td>
+              <td>int NativeConvert.FromXattrFlags (XattrFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int FromXattrFlags (XattrFlags)</td>
+              <td>int NativeConvert.FromXattrFlags (XattrFlags, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool TryToXattrFlags (int, XattrFlags&)</td>
+              <td>int NativeConvert.ToXattrFlags (int, XattrFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>XattrFlags ToXattrFlags (int)</td>
+              <td>int NativeConvert.ToXattrFlags (int, XattrFlags&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void Cleanup ()</td>
+              <td>void Stdlib.free (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>string GetDump ()</td>
+              <td>int Stdlib.DumpFilePosition (StringBuilder, HandleRef, int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .ctor ()</td>
+              <td>IntPtr Stdlib.CreateFilePosition ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.DumpFilePosition (StringBuilder, HandleRef, int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void SetLastError (Errno)</td>
+              <td>void Stdlib.SetLastError (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>SignalHandler signal (Signum, SignalHandler)</td>
+              <td>IntPtr Stdlib.sys_signal (int, IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>SignalHandler signal (Signum, SignalHandler)</td>
+              <td>IntPtr Stdlib.sys_signal (int, IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>SignalHandler signal (Signum, SignalHandler)</td>
+              <td>IntPtr Stdlib.sys_signal (int, IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>SignalHandler signal (Signum, SignalHandler)</td>
+              <td>IntPtr Stdlib.sys_signal (int, SignalHandler)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>int SetSignalAction (Signum, SignalAction)</td>
+              <td>IntPtr Stdlib.sys_signal (int, IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>int raise (Signum)</td>
+              <td>int Stdlib.sys_raise (int)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>string tmpnam (StringBuilder)</td>
+              <td>IntPtr Stdlib.sys_tmpnam (StringBuilder)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>string tmpnam ()</td>
+              <td>IntPtr Stdlib.sys_tmpnam (StringBuilder)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>int setbuf (IntPtr, Byte*)</td>
+              <td>int Stdlib.setbuf (IntPtr, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int setvbuf (IntPtr, Byte*, int, UInt64)</td>
+              <td>int Stdlib.setvbuf (IntPtr, IntPtr, int, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int fprintf (IntPtr, string)</td>
+              <td>int Stdlib.sys_fprintf (IntPtr, string, string)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>int printf (string)</td>
+              <td>int Stdlib.sys_printf (string, string)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>int snprintf (StringBuilder, UInt64, string)</td>
+              <td>int Stdlib.sys_snprintf (StringBuilder, UInt64, string, string)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int snprintf (StringBuilder, string)</td>
+              <td>int Stdlib.sys_snprintf (StringBuilder, UInt64, string, string)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>StringBuilder fgets (StringBuilder, int, IntPtr)</td>
+              <td>IntPtr Stdlib.sys_fgets (StringBuilder, int, IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>UInt64 fread (void*, UInt64, UInt64, IntPtr)</td>
+              <td>UInt64 Stdlib.fread (IntPtr, UInt64, UInt64, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UInt64 fread (Byte[], UInt64, UInt64, IntPtr)</td>
+              <td>UInt64 Stdlib.sys_fread (Byte[], UInt64, UInt64, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UInt64 fwrite (void*, UInt64, UInt64, IntPtr)</td>
+              <td>UInt64 Stdlib.fwrite (IntPtr, UInt64, UInt64, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>UInt64 fwrite (Byte[], UInt64, UInt64, IntPtr)</td>
+              <td>UInt64 Stdlib.sys_fwrite (Byte[], UInt64, UInt64, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int fgetpos (IntPtr, FilePosition)</td>
+              <td>int Stdlib.sys_fgetpos (IntPtr, HandleRef)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int fseek (IntPtr, Int64, SeekFlags)</td>
+              <td>int Stdlib.sys_fseek (IntPtr, Int64, int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int fsetpos (IntPtr, FilePosition)</td>
+              <td>int Stdlib.sys_fsetpos (IntPtr, HandleRef)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int perror (string)</td>
+              <td>int Stdlib.perror (string, int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>string getenv (string)</td>
+              <td>IntPtr Stdlib.sys_getenv (string)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>string strerror (Errno)</td>
+              <td>IntPtr Stdlib.sys_strerror (int)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>IntPtr Stdlib.GetDefaultSignal ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>IntPtr Stdlib.GetErrorSignal ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>IntPtr Stdlib.GetIgnoreSignal ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetFullyBuffered ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetLineBuffered ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetNonBuffered ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetBufferSize ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetEOF ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetFopenMax ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetFilenameMax ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetTmpnamLength ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>IntPtr Stdlib.GetStandardError ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>IntPtr Stdlib.GetStandardInput ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>IntPtr Stdlib.GetStandardOutput ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetTmpMax ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetExitFailure ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetExitSuccess ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetMbCurMax ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Stdlib.GetRandMax ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int setxattr (string, string, Byte[], UInt64)</td>
+              <td>int Syscall.setxattr (string, string, Byte[], UInt64, XattrFlags)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int setxattr (string, string, Byte[], XattrFlags)</td>
+              <td>int Syscall.setxattr (string, string, Byte[], UInt64, XattrFlags)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int lsetxattr (string, string, Byte[], UInt64)</td>
+              <td>int Syscall.lsetxattr (string, string, Byte[], UInt64, XattrFlags)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int lsetxattr (string, string, Byte[], XattrFlags)</td>
+              <td>int Syscall.lsetxattr (string, string, Byte[], UInt64, XattrFlags)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int fsetxattr (int, string, Byte[], UInt64)</td>
+              <td>int Syscall.fsetxattr (int, string, Byte[], UInt64, XattrFlags)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int fsetxattr (int, string, Byte[], XattrFlags)</td>
+              <td>int Syscall.fsetxattr (int, string, Byte[], UInt64, XattrFlags)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 getxattr (string, string, Byte[])</td>
+              <td>Int64 Syscall.getxattr (string, string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 getxattr (string, string, Byte[]&)</td>
+              <td>Int64 Syscall.getxattr (string, string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 getxattr (string, string, Byte[]&)</td>
+              <td>Int64 Syscall.getxattr (string, string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 lgetxattr (string, string, Byte[])</td>
+              <td>Int64 Syscall.lgetxattr (string, string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 lgetxattr (string, string, Byte[]&)</td>
+              <td>Int64 Syscall.lgetxattr (string, string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 lgetxattr (string, string, Byte[]&)</td>
+              <td>Int64 Syscall.lgetxattr (string, string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 fgetxattr (int, string, Byte[])</td>
+              <td>Int64 Syscall.fgetxattr (int, string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 fgetxattr (int, string, Byte[]&)</td>
+              <td>Int64 Syscall.fgetxattr (int, string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 fgetxattr (int, string, Byte[]&)</td>
+              <td>Int64 Syscall.fgetxattr (int, string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 listxattr (string, Encoding, String[]&)</td>
+              <td>Int64 Syscall.listxattr (string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 listxattr (string, Encoding, String[]&)</td>
+              <td>Int64 Syscall.listxattr (string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 llistxattr (string, Encoding, String[]&)</td>
+              <td>Int64 Syscall.llistxattr (string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 llistxattr (string, Encoding, String[]&)</td>
+              <td>Int64 Syscall.llistxattr (string, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 flistxattr (int, Encoding, String[]&)</td>
+              <td>Int64 Syscall.flistxattr (int, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 flistxattr (int, Encoding, String[]&)</td>
+              <td>Int64 Syscall.flistxattr (int, Byte[], UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void CopyDirent (Dirent, Syscall/_Dirent&)</td>
+              <td>void Stdlib.free (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>Dirent readdir (IntPtr)</td>
+              <td>int Syscall.sys_readdir (IntPtr, Syscall/_Dirent&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int readdir_r (IntPtr, Dirent, IntPtr&)</td>
+              <td>int Syscall.sys_readdir_r (IntPtr, Syscall/_Dirent&, IntPtr&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int fcntl (int, FcntlCommand, DirectoryNotifyFlags)</td>
+              <td>int Syscall.fcntl (int, FcntlCommand, Int64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void CopyFstab (Fstab, Syscall/_Fstab&)</td>
+              <td>void Stdlib.free (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>int endfsent ()</td>
+              <td>int Syscall.sys_endfsent ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Fstab getfsent ()</td>
+              <td>int Syscall.sys_getfsent (Syscall/_Fstab&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Fstab getfsfile (string)</td>
+              <td>int Syscall.sys_getfsfile (string, Syscall/_Fstab&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Fstab getfsspec (string)</td>
+              <td>int Syscall.sys_getfsspec (string, Syscall/_Fstab&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int setfsent ()</td>
+              <td>int Syscall.sys_setfsent ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int setgroups (UInt32[])</td>
+              <td>int Syscall.setgroups (UInt64, UInt32[])</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void CopyGroup (Group, Syscall/_Group&)</td>
+              <td>void Stdlib.free (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>void CopyGroup (Group, Syscall/_Group&)</td>
+              <td>void Stdlib.free (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>Group getgrnam (string)</td>
+              <td>int Syscall.sys_getgrnam (string, Syscall/_Group&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Group getgrgid (uint)</td>
+              <td>int Syscall.sys_getgrgid (uint, Syscall/_Group&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int getgrnam_r (string, Group, Group&)</td>
+              <td>int Syscall.sys_getgrnam_r (string, Syscall/_Group&, IntPtr&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int getgrgid_r (uint, Group, Group&)</td>
+              <td>int Syscall.sys_getgrgid_r (uint, Syscall/_Group&, IntPtr&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Group getgrent ()</td>
+              <td>int Syscall.sys_getgrent (Syscall/_Group&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int setgrent ()</td>
+              <td>int Syscall.sys_setgrent ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int endgrent ()</td>
+              <td>int Syscall.sys_endgrent ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Group fgetgrent (IntPtr)</td>
+              <td>int Syscall.sys_fgetgrent (IntPtr, Syscall/_Group&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void CopyPasswd (Passwd, Syscall/_Passwd&)</td>
+              <td>void Stdlib.free (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>Passwd getpwnam (string)</td>
+              <td>int Syscall.sys_getpwnam (string, Syscall/_Passwd&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Passwd getpwuid (uint)</td>
+              <td>int Syscall.sys_getpwuid (uint, Syscall/_Passwd&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int getpwnam_r (string, Passwd, Passwd&)</td>
+              <td>int Syscall.sys_getpwnam_r (string, Syscall/_Passwd&, IntPtr&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int getpwuid_r (uint, Passwd, Passwd&)</td>
+              <td>int Syscall.sys_getpwuid_r (uint, Syscall/_Passwd&, IntPtr&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Passwd getpwent ()</td>
+              <td>int Syscall.sys_getpwent (Syscall/_Passwd&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int setpwent ()</td>
+              <td>int Syscall.sys_setpwent ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int endpwent ()</td>
+              <td>int Syscall.sys_endpwent ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Passwd fgetpwent (IntPtr)</td>
+              <td>int Syscall.sys_fgetpwent (IntPtr, Syscall/_Passwd&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int psignal (Signum, string)</td>
+              <td>int Syscall.psignal (int, string)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int kill (int, Signum)</td>
+              <td>int Syscall.sys_kill (int, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>string strsignal (Signum)</td>
+              <td>IntPtr Syscall.sys_strsignal (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>string cuserid (StringBuilder)</td>
+              <td>IntPtr Syscall.sys_cuserid (StringBuilder)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int strerror_r (Errno, StringBuilder, UInt64)</td>
+              <td>int Syscall.sys_strerror_r (int, StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int mlockall (MlockallFlags)</td>
+              <td>int Syscall.sys_mlockall (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int poll (Pollfd[], uint, int)</td>
+              <td>int Syscall.sys_poll (Syscall/_pollfd[], uint, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int chmod (string, FilePermissions)</td>
+              <td>int Syscall.sys_chmod (string, uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int fchmod (int, FilePermissions)</td>
+              <td>int Syscall.sys_fchmod (int, uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>FilePermissions umask (FilePermissions)</td>
+              <td>uint Syscall.sys_umask (uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int mkdir (string, FilePermissions)</td>
+              <td>int Syscall.sys_mkdir (string, uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int mkfifo (string, FilePermissions)</td>
+              <td>int Syscall.sys_mkfifo (string, uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int gettimeofday (Timeval&)</td>
+              <td>int Syscall.gettimeofday (Timeval&, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int gettimeofday (Timezone&)</td>
+              <td>int Syscall.gettimeofday (IntPtr, Timezone&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int settimeofday (Timeval&)</td>
+              <td>int Syscall.settimeofday (Timeval&, IntPtr)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int utimes (string, Timeval[])</td>
+              <td>int Syscall.sys_utimes (string, Timeval[])</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int lutimes (string, Timeval[])</td>
+              <td>int Syscall.sys_lutimes (string, Timeval[])</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int futimes (int, Timeval[])</td>
+              <td>int Syscall.sys_futimes (int, Timeval[])</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void CopyUtsname (Utsname&, Syscall/_Utsname&)</td>
+              <td>void Stdlib.free (IntPtr)</td>
+              <td>msvcrt</td>
+              </tr>
+              <tr>
+              <td>int uname (Utsname&)</td>
+              <td>int Syscall.sys_uname (Syscall/_Utsname&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int waitpid (int, Int32&, WaitOptions)</td>
+              <td>int Syscall.waitpid (int, Int32&, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>bool WIFEXITED (int)</td>
+              <td>int Syscall._WIFEXITED (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool WIFSIGNALED (int)</td>
+              <td>int Syscall._WIFSIGNALED (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Signum WTERMSIG (int)</td>
+              <td>int Syscall._WTERMSIG (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool WIFSTOPPED (int)</td>
+              <td>int Syscall._WIFSTOPPED (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Signum WSTOPSIG (int)</td>
+              <td>int Syscall._WSTOPSIG (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int openlog (IntPtr, SyslogOptions, SyslogFacility)</td>
+              <td>int Syscall.sys_openlog (IntPtr, int, int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int syslog (SyslogFacility, SyslogLevel, string)</td>
+              <td>int Syscall.sys_syslog (int, string)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int syslog (SyslogLevel, string)</td>
+              <td>int Syscall.sys_syslog (int, string)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int setlogmask (SyslogLevel)</td>
+              <td>int Syscall.sys_setlogmask (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int access (string, AccessModes)</td>
+              <td>int Syscall.sys_access (string, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>Int64 lseek (int, Int64, SeekFlags)</td>
+              <td>Int64 Syscall.sys_lseek (int, Int64, int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 read (int, void*, UInt64)</td>
+              <td>Int64 Syscall.read (int, IntPtr, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 write (int, void*, UInt64)</td>
+              <td>Int64 Syscall.write (int, IntPtr, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 pread (int, void*, UInt64, Int64)</td>
+              <td>Int64 Syscall.pread (int, IntPtr, UInt64, Int64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 pwrite (int, void*, UInt64, Int64)</td>
+              <td>Int64 Syscall.pwrite (int, IntPtr, UInt64, Int64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int pipe (Int32[])</td>
+              <td>int Syscall.pipe (Int32&, Int32&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>StringBuilder getcwd (StringBuilder)</td>
+              <td>IntPtr Syscall.getcwd (StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 fpathconf (int, PathconfName)</td>
+              <td>Int64 Syscall.fpathconf (int, PathconfName, Errno)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 pathconf (string, PathconfName)</td>
+              <td>Int64 Syscall.pathconf (string, PathconfName, Errno)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>Int64 sysconf (SysconfName)</td>
+              <td>Int64 Syscall.sysconf (SysconfName, Errno)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int getgroups (UInt32[])</td>
+              <td>int Syscall.getgroups (int, UInt32[])</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>string ttyname (int)</td>
+              <td>IntPtr Syscall.sys_ttyname (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int ttyname_r (int, StringBuilder)</td>
+              <td>int Syscall.ttyname_r (int, StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>bool isatty (int)</td>
+              <td>int Syscall.sys_isatty (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int readlink (string, StringBuilder)</td>
+              <td>int Syscall.readlink (string, StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>string getlogin ()</td>
+              <td>IntPtr Syscall.sys_getlogin ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int getlogin_r (StringBuilder)</td>
+              <td>int Syscall.getlogin_r (StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int gethostname (StringBuilder)</td>
+              <td>int Syscall.gethostname (StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int sethostname (string)</td>
+              <td>int Syscall.sethostname (string, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int getdomainname (StringBuilder)</td>
+              <td>int Syscall.getdomainname (StringBuilder, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int setdomainname (string)</td>
+              <td>int Syscall.setdomainname (string, UInt64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>string getusershell ()</td>
+              <td>IntPtr Syscall.sys_getusershell ()</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int setusershell ()</td>
+              <td>int Syscall.sys_setusershell ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int endusershell ()</td>
+              <td>int Syscall.sys_endusershell ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void swab (void*, void*, Int64)</td>
+              <td>int Syscall.swab (IntPtr, IntPtr, Int64)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int utime (string, Utimbuf&)</td>
+              <td>int Syscall.sys_utime (string, Utimbuf&, int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int utime (string)</td>
+              <td>int Syscall.sys_utime (string, Utimbuf&, int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Syscall._L_ctermid ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>int Syscall._L_cuserid ()</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>void Init (string, string)</td>
+              <td>IntPtr Catalog.bindtextdomain (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>void Init (string, string)</td>
+              <td>IntPtr Catalog.bind_textdomain_codeset (IntPtr, IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>void Init (string, string)</td>
+              <td>IntPtr Catalog.textdomain (IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>string GetString (string)</td>
+              <td>IntPtr Catalog.gettext (IntPtr)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>string GetPluralString (string, string, int)</td>
+              <td>IntPtr Catalog.ngettext (IntPtr, IntPtr, int)</td>
+              <td>intl</td>
+              </tr>
+              <tr>
+              <td>int open (string, OpenFlags)</td>
+              <td>int Syscall.map_Mono_Posix_OpenFlags (OpenFlags)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int open (string, OpenFlags)</td>
+              <td>int Syscall.syscall_open (string, int, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int open (string, OpenFlags, FileMode)</td>
+              <td>int Syscall.map_Mono_Posix_OpenFlags (OpenFlags)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int open (string, OpenFlags, FileMode)</td>
+              <td>int Syscall.map_Mono_Posix_FileMode (FileMode)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int open (string, OpenFlags, FileMode)</td>
+              <td>int Syscall.syscall_open (string, int, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int waitpid (int, Int32&, WaitOptions)</td>
+              <td>int Syscall.map_Mono_Posix_WaitOptions (WaitOptions)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int waitpid (int, Int32&, WaitOptions)</td>
+              <td>int Syscall.syscall_waitpid (int, Int32*, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int waitpid (int, WaitOptions)</td>
+              <td>int Syscall.map_Mono_Posix_WaitOptions (WaitOptions)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int waitpid (int, WaitOptions)</td>
+              <td>int Syscall.syscall_waitpid (int, Int32*, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int creat (string, FileMode)</td>
+              <td>int Syscall.map_Mono_Posix_FileMode (FileMode)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int creat (string, FileMode)</td>
+              <td>int Syscall.syscall_creat (string, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int chmod (string, FileMode)</td>
+              <td>int Syscall.map_Mono_Posix_FileMode (FileMode)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int chmod (string, FileMode)</td>
+              <td>int Syscall.syscall_chmod (string, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int access (string, AccessMode)</td>
+              <td>int Syscall.map_Mono_Posix_AccessMode (AccessMode)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int access (string, AccessMode)</td>
+              <td>int Syscall.syscall_access (string, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int mkdir (string, FileMode)</td>
+              <td>int Syscall.map_Mono_Posix_FileMode (FileMode)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>int mkdir (string, FileMode)</td>
+              <td>int Syscall.syscall_mkdir (string, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>string getusername (int)</td>
+              <td>string Syscall.helper_Mono_Posix_GetUserName (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>string getgroupname (int)</td>
+              <td>string Syscall.helper_Mono_Posix_GetGroupName (int)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>string GetHostName ()</td>
+              <td>int Syscall.syscall_gethostname (Byte[], int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>bool isatty (int)</td>
+              <td>int Syscall.syscall_isatty (int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>int stat2 (string, bool, Stat&)</td>
+              <td>int Syscall.helper_Mono_Posix_Stat (string, bool, Int32&, Int32&, Int32&, Int32&, Int32&, Int32&, Int32&, Int64&, Int64&, Int64&, Int64&, Int64&, Int64&)</td>
+              <td>MonoPosixHelper</td>
+              </tr>
+              <tr>
+              <td>string readlink (string)</td>
+              <td>int Syscall.readlink (string, Byte[], int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>string strerror (int)</td>
+              <td>IntPtr Syscall._strerror (int)</td>
+              <td>libc</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el45", "img45")'>
+          <td style='width: 10px'><img id='img45' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Mono.Security.dll</td>
+          <td>2.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2</td>
+          <td>0</td>
+        </tr>
+        <tr id='el45' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>Method with [MonoTodo]</td>
+              <td>Reason</td>
+              </tr>
+              <tr>
+              <td>bool IsValid (X509Certificate)</td>
+              <td>bool ServicePointManager.get_CheckCertificateRevocationList ()</td>
+              <td>CRL checks not implemented</td>
+              </tr>
+              <tr>
+              <td>void .ctor (Stream, X509CertificateCollection, HttpWebRequest, Byte[])</td>
+              <td>bool ServicePointManager.get_CheckCertificateRevocationList ()</td>
+              <td>CRL checks not implemented</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Mono.Zeroconf.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el47", "img47")'>
+          <td style='width: 10px'><img id='img47' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Mtp.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>37</td>
+        </tr>
+        <tr id='el47' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void DestroyTrack (IntPtr)</td>
+              <td>void Track.LIBMTP_destroy_track_t (IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void GetTrack (MtpDeviceHandle, uint, string, ProgressFunction, IntPtr)</td>
+              <td>int Track.LIBMTP_Get_Track_To_File (MtpDeviceHandle, uint, string, ProgressFunction, IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>IntPtr GetTrackListing (MtpDeviceHandle, ProgressFunction, IntPtr)</td>
+              <td>IntPtr Track.LIBMTP_Get_Tracklisting_With_Callback (MtpDeviceHandle, ProgressFunction, IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void SendTrack (MtpDeviceHandle, string, TrackStruct&, ProgressFunction, IntPtr)</td>
+              <td>int Track.LIBMTP_Send_Track_From_File (MtpDeviceHandle, string, TrackStruct&, ProgressFunction, IntPtr, uint)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void UpdateTrackMetadata (MtpDeviceHandle, TrackStruct&)</td>
+              <td>int Track.LIBMTP_Update_Track_Metadata (MtpDeviceHandle, TrackStruct&)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>Playlist> GetPlaylists (MtpDevice)</td>
+              <td>IntPtr Playlist.LIBMTP_Get_Playlist_List (MtpDeviceHandle)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>Playlist> GetPlaylists (MtpDevice)</td>
+              <td>void Playlist.LIBMTP_destroy_playlist_t (IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>int Create ()</td>
+              <td>int Playlist.LIBMTP_Create_New_Playlist (MtpDeviceHandle, PlaylistStruct&, uint)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>int Update ()</td>
+              <td>int Playlist.LIBMTP_Update_Playlist (MtpDeviceHandle, PlaylistStruct&)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void Remove ()</td>
+              <td>int MtpDevice.LIBMTP_Delete_Object (MtpDeviceHandle, uint)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void ClearErrorStack (MtpDeviceHandle)</td>
+              <td>void MtpDevice.LIBMTP_Clear_Errorstack (MtpDeviceHandle)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void DeleteObject (MtpDeviceHandle, uint)</td>
+              <td>int MtpDevice.LIBMTP_Delete_Object (MtpDeviceHandle, uint)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void GetBatteryLevel (MtpDeviceHandle, UInt16&, UInt16&)</td>
+              <td>int MtpDevice.LIBMTP_Get_Batterylevel (MtpDeviceHandle, UInt16&, UInt16&)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void GetConnectedDevices (IntPtr&)</td>
+              <td>ErrorCode MtpDevice.LIBMTP_Get_Connected_Devices (IntPtr&)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>IntPtr GetErrorStack (MtpDeviceHandle)</td>
+              <td>IntPtr MtpDevice.LIBMTP_Get_Errorstack (MtpDeviceHandle)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>string GetDeviceversion (MtpDeviceHandle)</td>
+              <td>IntPtr MtpDevice.LIBMTP_Get_Deviceversion (MtpDeviceHandle)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>string GetFriendlyName (MtpDeviceHandle)</td>
+              <td>IntPtr MtpDevice.LIBMTP_Get_Friendlyname (MtpDeviceHandle)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>bool SetFriendlyName (MtpDeviceHandle, string)</td>
+              <td>int MtpDevice.LIBMTP_Set_Friendlyname (MtpDeviceHandle, string)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>string GetSerialnumber (MtpDeviceHandle)</td>
+              <td>IntPtr MtpDevice.LIBMTP_Get_Serialnumber (MtpDeviceHandle)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void GetStorage (MtpDeviceHandle, int)</td>
+              <td>int MtpDevice.LIBMTP_Get_Storage (MtpDeviceHandle, int)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>Int16[] GetFileTypes (MtpDeviceHandle)</td>
+              <td>int MtpDevice.LIBMTP_Get_Supported_Filetypes (MtpDeviceHandle, IntPtr&, UInt16&)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void ReleaseDevice (IntPtr)</td>
+              <td>void MtpDevice.LIBMTP_Release_Device (IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void .cctor ()</td>
+              <td>void MtpDevice.LIBMTP_Init ()</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>Folder> GetChildren ()</td>
+              <td>void Folder.LIBMTP_destroy_folder_t (IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>Folder> GetRootFolders (MtpDevice)</td>
+              <td>void Folder.LIBMTP_destroy_folder_t (IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>uint CreateFolder (MtpDeviceHandle, string, uint)</td>
+              <td>uint Folder.LIBMTP_Create_Folder (MtpDeviceHandle, string, uint)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void DestroyFolder (IntPtr)</td>
+              <td>void Folder.LIBMTP_destroy_folder_t (IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>IntPtr Find (IntPtr, uint)</td>
+              <td>IntPtr Folder.LIBMTP_Find_Folder (IntPtr, uint)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>IntPtr GetFolderList (MtpDeviceHandle)</td>
+              <td>IntPtr Folder.LIBMTP_Get_Folder_List (MtpDeviceHandle)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>Album> GetAlbums (MtpDevice)</td>
+              <td>IntPtr Album.LIBMTP_Get_Album_List (MtpDeviceHandle)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>Album> GetAlbums (MtpDevice)</td>
+              <td>void Album.LIBMTP_destroy_album_t (IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void Save (Byte[], uint, uint)</td>
+              <td>int FileSample.LIBMTP_Send_Representative_Sample (MtpDeviceHandle, uint, FileSampleData&)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>int Create ()</td>
+              <td>int Album.LIBMTP_Create_New_Album (MtpDeviceHandle, AlbumStruct&, uint)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>int Update ()</td>
+              <td>int Album.LIBMTP_Update_Album (MtpDeviceHandle, AlbumStruct&)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>void Remove ()</td>
+              <td>int MtpDevice.LIBMTP_Delete_Object (MtpDeviceHandle, uint)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>Album GetById (MtpDevice, uint)</td>
+              <td>IntPtr Album.LIBMTP_Get_Album (MtpDeviceHandle, uint)</td>
+              <td>libmtp.dll</td>
+              </tr>
+              <tr>
+              <td>Album GetById (MtpDevice, uint)</td>
+              <td>void Album.LIBMTP_destroy_album_t (IntPtr)</td>
+              <td>libmtp.dll</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el48", "img48")'>
+          <td style='width: 10px'><img id='img48' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>MusicBrainz.dll</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>4</td>
+          <td>7</td>
+        </tr>
+        <tr id='el48' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>Method with [MonoTodo]</td>
+              <td>Reason</td>
+              </tr>
+              <tr>
+              <td>void XmlProcessingClosure (string, XmlProcessingDelegate)</td>
+              <td>void WebRequest.set_CachePolicy (RequestCachePolicy)</td>
+              <td>Implement the caching system. Currently always returns a policy with the NoCacheNoStore level</td>
+              </tr>
+              <tr>
+              <td>void XmlProcessingClosure (string, XmlProcessingDelegate)</td>
+              <td>void WebRequest.set_CachePolicy (RequestCachePolicy)</td>
+              <td>Implement the caching system. Currently always returns a policy with the NoCacheNoStore level</td>
+              </tr>
+              <tr>
+              <td>void XmlProcessingClosure (string, XmlProcessingDelegate)</td>
+              <td colspan='2'>bool WebResponse.get_IsFromCache ()</td>
+              </tr>
+              <tr>
+              <td>void XmlProcessingClosure (string, XmlProcessingDelegate)</td>
+              <td colspan='2'>bool WebResponse.get_IsFromCache ()</td>
+              </tr>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>int read_toc_header (int, DiscLinux/cdrom_tochdr&)</td>
+              <td>int DiscLinux.read_toc_header (int, int, DiscLinux/cdrom_tochdr&)</td>
+              <td>libc.so.6</td>
+              </tr>
+              <tr>
+              <td>int read_multisession (int, DiscLinux/cdrom_multisession&)</td>
+              <td>int DiscLinux.read_multisession (int, int, DiscLinux/cdrom_multisession&)</td>
+              <td>libc.so.6</td>
+              </tr>
+              <tr>
+              <td>int read_toc_entry (int, DiscLinux/cdrom_tocentry&)</td>
+              <td>int DiscLinux.read_toc_entry (int, int, DiscLinux/cdrom_tocentry&)</td>
+              <td>libc.so.6</td>
+              </tr>
+              <tr>
+              <td>void .ctor (string)</td>
+              <td>int DiscLinux.open (string, int)</td>
+              <td>libc.so.6</td>
+              </tr>
+              <tr>
+              <td>void .ctor (string)</td>
+              <td>int DiscLinux.close (int)</td>
+              <td>libc.so.6</td>
+              </tr>
+              <tr>
+              <td>void MciClosure (string, string, DiscWin32/MciCall)</td>
+              <td>int DiscWin32.mciSendString (string, StringBuilder, int, IntPtr)</td>
+              <td>winmm</td>
+              </tr>
+              <tr>
+              <td>void MciClosure (string, string, DiscWin32/MciCall)</td>
+              <td>int DiscWin32.mciGetErrorString (int, StringBuilder, int)</td>
+              <td>winmm</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el49", "img49")'>
+          <td style='width: 10px'><img id='img49' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>NDesk.DBus.dll</td>
+          <td>1.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>6</td>
+        </tr>
+        <tr id='el49' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>void Connect (Byte[])</td>
+              <td>int UnixSocket.connect (int, Byte[], uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void Bind (Byte[])</td>
+              <td>int UnixSocket.bind (int, Byte[], uint)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void Listen (int)</td>
+              <td>int UnixSocket.listen (int, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>UnixSocket Accept ()</td>
+              <td>int UnixSocket.accept (int, Byte[], UInt32&)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void .ctor ()</td>
+              <td>int UnixSocket.socket (int, int, int)</td>
+              <td>libc</td>
+              </tr>
+              <tr>
+              <td>void WriteBsdCred ()</td>
+              <td>int UnixSocket.sendmsg (int, IntPtr, int)</td>
+              <td>libc</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el50", "img50")'>
+          <td style='width: 10px'><img id='img50' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>NDesk.DBus.GLib.dll</td>
+          <td>1.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>11</td>
+        </tr>
+        <tr id='el50' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>int get_UnixFd ()</td>
+              <td>int IOChannel.g_io_channel_unix_get_fd (IntPtr)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>uint get_BufferSize ()</td>
+              <td>uint IOChannel.g_io_channel_get_buffer_size (IntPtr)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void set_BufferSize (uint)</td>
+              <td>void IOChannel.g_io_channel_set_buffer_size (IntPtr, uint)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>IOCondition get_BufferCondition ()</td>
+              <td>IOCondition IOChannel.g_io_channel_get_buffer_condition (IntPtr)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>IOFlags get_Flags ()</td>
+              <td>IOFlags IOChannel.g_io_channel_get_flags (IntPtr)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void set_Flags (IOFlags)</td>
+              <td>Int16 IOChannel.g_io_channel_set_flags (IntPtr, IOFlags, IntPtr)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void .ctor (int)</td>
+              <td>IntPtr IOChannel.g_io_channel_unix_new (int)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>uint AddWatch (IOChannel, IOCondition, IOFunc)</td>
+              <td>uint IO.g_io_add_watch (IntPtr, IOCondition, IOFunc, IntPtr)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>uint AddWatch (IOChannel, int, IOCondition, IOFunc, DestroyNotify)</td>
+              <td>uint IO.g_io_add_watch_full (IntPtr, int, IOCondition, IOFunc, IntPtr, DestroyNotify)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>IntPtr MainContextDefault ()</td>
+              <td>IntPtr IO.g_main_context_default ()</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+              <tr>
+              <td>void MainContextWakeup (IntPtr)</td>
+              <td>void IO.g_main_context_wakeup (IntPtr)</td>
+              <td>libglib-2.0-0.dll</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>taglib-sharp.dll</td>
+          <td>2.0.3.6</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el52", "img52")'>
+          <td style='width: 10px'><img id='img52' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>webkit-sharp.dll</td>
+          <td>1.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>79</td>
+        </tr>
+        <tr id='el52' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>P/Invoke Method</td>
+              <td>P/Invoke Library</td>
+              </tr>
+              <tr>
+              <td>GType get_GType ()</td>
+              <td>IntPtr NetworkRequest.webkit_network_request_get_type ()</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>string get_Uri ()</td>
+              <td>IntPtr NetworkRequest.webkit_network_request_get_uri (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void set_Uri (string)</td>
+              <td>void NetworkRequest.webkit_network_request_set_uri (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void .ctor (string)</td>
+              <td>IntPtr NetworkRequest.webkit_network_request_new (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>int get_ForwardLength ()</td>
+              <td>int WebBackForwardList.webkit_web_back_forward_list_get_forward_length (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>int get_Limit ()</td>
+              <td>int WebBackForwardList.webkit_web_back_forward_list_get_limit (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void set_Limit (int)</td>
+              <td>void WebBackForwardList.webkit_web_back_forward_list_set_limit (IntPtr, int)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebHistoryItem get_ForwardItem ()</td>
+              <td>IntPtr WebBackForwardList.webkit_web_back_forward_list_get_forward_item (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void GoBack ()</td>
+              <td>void WebBackForwardList.webkit_web_back_forward_list_go_back (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool ContainsItem (WebHistoryItem)</td>
+              <td>bool WebBackForwardList.webkit_web_back_forward_list_contains_item (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebHistoryItem GetNthItem (int)</td>
+              <td>IntPtr WebBackForwardList.webkit_web_back_forward_list_get_nth_item (IntPtr, int)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>List GetBackListWithLimit (int)</td>
+              <td>IntPtr WebBackForwardList.webkit_web_back_forward_list_get_back_list_with_limit (IntPtr, int)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void GoForward ()</td>
+              <td>void WebBackForwardList.webkit_web_back_forward_list_go_forward (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebHistoryItem get_CurrentItem ()</td>
+              <td>IntPtr WebBackForwardList.webkit_web_back_forward_list_get_current_item (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void GoToItem (WebHistoryItem)</td>
+              <td>void WebBackForwardList.webkit_web_back_forward_list_go_to_item (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>int get_BackLength ()</td>
+              <td>int WebBackForwardList.webkit_web_back_forward_list_get_back_length (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>List GetForwardListWithLimit (int)</td>
+              <td>IntPtr WebBackForwardList.webkit_web_back_forward_list_get_forward_list_with_limit (IntPtr, int)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebHistoryItem get_BackItem ()</td>
+              <td>IntPtr WebBackForwardList.webkit_web_back_forward_list_get_back_item (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>GType get_GType ()</td>
+              <td>IntPtr WebBackForwardList.webkit_web_back_forward_list_get_type ()</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void .ctor (WebView)</td>
+              <td>IntPtr WebBackForwardList.webkit_web_back_forward_list_new_with_web_view (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void StopLoading ()</td>
+              <td>void WebFrame.webkit_web_frame_stop_loading (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>string get_Title ()</td>
+              <td>IntPtr WebFrame.webkit_web_frame_get_title (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void Reload ()</td>
+              <td>void WebFrame.webkit_web_frame_reload (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebView get_WebView ()</td>
+              <td>IntPtr WebFrame.webkit_web_frame_get_web_view (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebFrame FindFrame (string)</td>
+              <td>IntPtr WebFrame.webkit_web_frame_find_frame (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>string get_Uri ()</td>
+              <td>IntPtr WebFrame.webkit_web_frame_get_uri (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>string get_Name ()</td>
+              <td>IntPtr WebFrame.webkit_web_frame_get_name (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void LoadRequest (NetworkRequest)</td>
+              <td>void WebFrame.webkit_web_frame_load_request (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>GType get_GType ()</td>
+              <td>IntPtr WebFrame.webkit_web_frame_get_type ()</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebFrame get_Parent ()</td>
+              <td>IntPtr WebFrame.webkit_web_frame_get_parent (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void .ctor (WebView)</td>
+              <td>IntPtr WebFrame.webkit_web_frame_new (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>GType get_GType ()</td>
+              <td>IntPtr WebHistoryItem.webkit_web_history_item_get_type ()</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void set_AlternateTitle (string)</td>
+              <td>void WebHistoryItem.webkit_web_history_item_set_alternate_title (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>double get_LastVisitedTime ()</td>
+              <td>double WebHistoryItem.webkit_web_history_item_get_last_visited_time (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void .ctor ()</td>
+              <td>IntPtr WebHistoryItem.webkit_web_history_item_new ()</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void .ctor (string, string)</td>
+              <td>IntPtr WebHistoryItem.webkit_web_history_item_new_with_data (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebSettings Copy ()</td>
+              <td>IntPtr WebSettings.webkit_web_settings_copy (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>GType get_GType ()</td>
+              <td>IntPtr WebSettings.webkit_web_settings_get_type ()</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void .ctor ()</td>
+              <td>IntPtr WebSettings.webkit_web_settings_new ()</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void CutClipboard ()</td>
+              <td>void WebView.webkit_web_view_cut_clipboard (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>GType get_GType ()</td>
+              <td>IntPtr WebView.webkit_web_view_get_type ()</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void LoadString (string, string, string, string)</td>
+              <td>void WebView.webkit_web_view_load_string (IntPtr, IntPtr, IntPtr, IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void Reload ()</td>
+              <td>void WebView.webkit_web_view_reload (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebBackForwardList get_BackForwardList ()</td>
+              <td>IntPtr WebView.webkit_web_view_get_back_forward_list (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void GoBackOrForward (int)</td>
+              <td>void WebView.webkit_web_view_go_back_or_forward (IntPtr, int)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool CanGoForward ()</td>
+              <td>bool WebView.webkit_web_view_can_go_forward (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool CanGoBackOrForward (int)</td>
+              <td>bool WebView.webkit_web_view_can_go_back_or_forward (IntPtr, int)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool CanCutClipboard ()</td>
+              <td>bool WebView.webkit_web_view_can_cut_clipboard (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebFrame get_MainFrame ()</td>
+              <td>IntPtr WebView.webkit_web_view_get_main_frame (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void GoBack ()</td>
+              <td>void WebView.webkit_web_view_go_back (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>TargetList get_PasteTargetList ()</td>
+              <td>IntPtr WebView.webkit_web_view_get_paste_target_list (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool CanGoBack ()</td>
+              <td>bool WebView.webkit_web_view_can_go_back (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void set_MaintainsBackForwardList (bool)</td>
+              <td>void WebView.webkit_web_view_set_maintains_back_forward_list (IntPtr, bool)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool get_Editable ()</td>
+              <td>bool WebView.webkit_web_view_get_editable (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void set_Editable (bool)</td>
+              <td>void WebView.webkit_web_view_set_editable (IntPtr, bool)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool get_Transparent ()</td>
+              <td>bool WebView.webkit_web_view_get_transparent (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void set_Transparent (bool)</td>
+              <td>void WebView.webkit_web_view_set_transparent (IntPtr, bool)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void SelectAll ()</td>
+              <td>void WebView.webkit_web_view_select_all (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void UnmarkTextMatches ()</td>
+              <td>void WebView.webkit_web_view_unmark_text_matches (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool CanPasteClipboard ()</td>
+              <td>bool WebView.webkit_web_view_can_paste_clipboard (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebFrame get_FocusedFrame ()</td>
+              <td>IntPtr WebView.webkit_web_view_get_focused_frame (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool CanCopyClipboard ()</td>
+              <td>bool WebView.webkit_web_view_can_copy_clipboard (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>uint MarkTextMatches (string, bool, uint)</td>
+              <td>uint WebView.webkit_web_view_mark_text_matches (IntPtr, IntPtr, bool, uint)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>TargetList get_CopyTargetList ()</td>
+              <td>IntPtr WebView.webkit_web_view_get_copy_target_list (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool get_HasSelection ()</td>
+              <td>bool WebView.webkit_web_view_has_selection (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>WebSettings get_Settings ()</td>
+              <td>IntPtr WebView.webkit_web_view_get_settings (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void set_Settings (WebSettings)</td>
+              <td>void WebView.webkit_web_view_set_settings (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void StopLoading ()</td>
+              <td>void WebView.webkit_web_view_stop_loading (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool GoToBackForwardItem (WebHistoryItem)</td>
+              <td>bool WebView.webkit_web_view_go_to_back_forward_item (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void PasteClipboard ()</td>
+              <td>void WebView.webkit_web_view_paste_clipboard (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void set_HighlightTextMatches (bool)</td>
+              <td>void WebView.webkit_web_view_set_highlight_text_matches (IntPtr, bool)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void Open (string)</td>
+              <td>void WebView.webkit_web_view_open (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void ExecuteScript (string)</td>
+              <td>void WebView.webkit_web_view_execute_script (IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void LoadHtmlString (string, string)</td>
+              <td>void WebView.webkit_web_view_load_html_string (IntPtr, IntPtr, IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>bool SearchText (string, bool, bool, bool)</td>
+              <td>bool WebView.webkit_web_view_search_text (IntPtr, IntPtr, bool, bool, bool)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void GoForward ()</td>
+              <td>void WebView.webkit_web_view_go_forward (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void CopyClipboard ()</td>
+              <td>void WebView.webkit_web_view_copy_clipboard (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void DeleteSelection ()</td>
+              <td>void WebView.webkit_web_view_delete_selection (IntPtr)</td>
+              <td>webkit-1.0</td>
+              </tr>
+              <tr>
+              <td>void .ctor ()</td>
+              <td>IntPtr WebView.webkit_web_view_new ()</td>
+              <td>webkit-1.0</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class='errorrow' onclick='toggle("el53", "img53")'>
+          <td style='width: 10px'><img id='img53' src='Media/plus.png' /></td>
+          <td style='width: 16px'><img src='Media/fail.png' /></td>
+          <td>Banshee.AmazonMp3.exe</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+        </tr>
+        <tr id='el53' class='errorlist' style='display: none'>
+          <td></td>
+          <td colspan='7'>
+            <table cellpadding='2' cellspacing='0' width='100%' class='inner-results'>
+              <tr class='inner-header'>
+              <td>Calling Method</td>
+              <td>Method with [MonoTodo]</td>
+              <td>Reason</td>
+              </tr>
+              <tr>
+              <td>void <Main>b__3 (HttpDownloader)</td>
+              <td>int Console.get_WindowWidth ()</td>
+              <td>Only works on windows</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Muinshee.exe</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Muinshee.vshost.exe</td>
+          <td>9.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Nereid.exe</td>
+          <td>0.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td style='width: 10px'></td>
+          <td style='width: 16px'><img src='Media/pass.png' /></td>
+          <td>Nereid.vshost.exe</td>
+          <td>9.0.0.0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class='tabletotal'>
+          <td></td>
+          <td></td>
+          <td>Totals</td>
+          <td></td>
+          <td>25</td>
+          <td>5</td>
+          <td>13</td>
+          <td>708</td>
+        </tr>
+      </tfoot>
+    </table>
+</div>
+</body>
+</html>

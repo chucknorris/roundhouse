@@ -1,6 +1,10 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "databases", "databases", "{BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse", "product\roundhouse\roundhouse.csproj", "{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.tests", "product\roundhouse.tests\roundhouse.tests.csproj", "{0726928C-FDAC-4C79-B423-841C7E0DF5B8}"
@@ -10,13 +14,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.tasks", "product
 		{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2} = {97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.console", "product\roundhouse.console\roundhouse.console.csproj", "{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.tests.integration", "product\roundhouse.tests.integration\roundhouse.tests.integration.csproj", "{705033B8-10BA-4E7F-854E-08A7C5590DC5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "databases", "databases", "{BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.oracle", "product\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj", "{3828D379-C96A-49C8-8BC9-0182CC8C55B1}"
 EndProject
@@ -25,12 +25,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserver", "product\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj", "{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserver2000", "product\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj", "{4CF5718B-9C74-4590-9848-A81360AE1D22}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{A9323A52-0538-4CED-8DEE-7CC0853EA4FC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildDatabase", "sample\BuildDatabase\BuildDatabase.csproj", "{C1305F24-71DB-4A49-849F-6D173E34CE43}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleProject", "sample\SampleProject\SampleProject.csproj", "{D1C278C6-301B-4EEE-BD47-F15847DDECAF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.access", "product\roundhouse.databases.access\roundhouse.databases.access.csproj", "{35E058E3-8FEE-4107-AEDC-37A452C588EC}"
 EndProject
@@ -95,18 +89,6 @@ Global
 		{4CF5718B-9C74-4590-9848-A81360AE1D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CF5718B-9C74-4590-9848-A81360AE1D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CF5718B-9C74-4590-9848-A81360AE1D22}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Build|Any CPU.ActiveCfg = Build|Any CPU
-		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Build|Any CPU.Build.0 = Build|Any CPU
-		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Build|Any CPU.ActiveCfg = Build|Any CPU
-		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Build|Any CPU.Build.0 = Build|Any CPU
-		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35E058E3-8FEE-4107-AEDC-37A452C588EC}.Build|Any CPU.ActiveCfg = Release|Any CPU
 		{35E058E3-8FEE-4107-AEDC-37A452C588EC}.Build|Any CPU.Build.0 = Release|Any CPU
 		{35E058E3-8FEE-4107-AEDC-37A452C588EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -125,7 +107,5 @@ Global
 		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{4CF5718B-9C74-4590-9848-A81360AE1D22} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{35E058E3-8FEE-4107-AEDC-37A452C588EC} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
-		{C1305F24-71DB-4A49-849F-6D173E34CE43} = {A9323A52-0538-4CED-8DEE-7CC0853EA4FC}
-		{D1C278C6-301B-4EEE-BD47-F15847DDECAF} = {A9323A52-0538-4CED-8DEE-7CC0853EA4FC}
 	EndGlobalSection
 EndGlobal

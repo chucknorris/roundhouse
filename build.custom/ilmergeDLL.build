@@ -37,17 +37,6 @@
           depends="prepare, get_regular_dlls, run_ilmerge, copy_configs, remove_unneeded_assemblies, copy_from_merge, delete_merge_folder"
           description="Running ILMerge with UppercuT default.build." />
 
-  <target name="custom_tasks_before">
-    <echo message="Running custom tasks if ${file.custom.step.before} exists." />
-    <nant buildfile="${file.custom.step.before}" inheritall="true" if="${file::exists(file.custom.step.before)}" failonerror="${fail.build.on.error}" />
-    <exec program="powershell.exe" if="${file::exists(file.custom.step.before + '.ps1')}" failonerror="${fail.build.on.error}">
-      <arg value="${path::get-full-path(file.custom.step.before + '.ps1')}" />
-    </exec>
-    <exec program="ruby.exe" if="${file::exists(file.custom.step.before + '.rb')}" failonerror="${fail.build.on.error}">
-      <arg value="${path::get-full-path(file.custom.step.before + '.rb')}" />
-    </exec>
-  </target>
-
   <target name="prepare">
     <mkdir dir="${dirs.merge.log}" />
     <mkdir dir="${dirs.merge.from}" />
@@ -96,6 +85,7 @@
     <echo message="Removing unneeded assemblies before moving the merged assembly back into ${dirs.merge.from}."/>
     <delete>
       <fileset basedir="${dirs.merge.from}" >
+        <exclude name="log4net*" />
         <include name="*.*" />
       </fileset>
     </delete>

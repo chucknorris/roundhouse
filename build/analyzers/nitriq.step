@@ -34,7 +34,7 @@
 
   <target name="go" depends="precheck" if="${file::exists(app.nitriq)}" />
 
-  <target name="precheck">
+  <target name="precheck" if="${file::exists(app.nitriq)}">
     <echo message="Attempting to locate console edition of Nitriq." />
     <property name="app.nitriq" value="C:${path.separator}Program Files (x86)${path.separator}NimblePros${path.separator}Nitriq Console + Pro\Nitriq.Console.exe" if="${not file::exists(app.nitriq)}" />
     <property name="app.nitriq" value="C:${path.separator}Program Files${path.separator}NimblePros\Nitriq Console + Pro - Nitriq.Console.exe" if="${not file::exists(app.nitriq)}" />

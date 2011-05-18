@@ -47,5 +47,10 @@ namespace roundhouse.infrastructure.logging.custom
         {
             log_message("[FATAL]: " + string.Format(message, args));
         }
+
+        public object underlying_type
+        {
+            get { return file_system; }
+        }
     }
 }

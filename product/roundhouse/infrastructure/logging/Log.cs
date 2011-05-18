@@ -20,8 +20,6 @@ namespace roundhouse.infrastructure.logging
             {
                 if(!have_displayed_error_message)
                 {
-                    //Console.WriteLine(
-                    //    "Creating the default logger with log4Net. Please register an LoggerFactory in the container if you would like to use something else.");
                     have_displayed_error_message = true;
                 }
                 logger = new Log4NetLogger(LogManager.GetLogger(object_that_needs_logging.ToString()));
