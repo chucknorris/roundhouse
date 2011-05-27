@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata>
+    <id>roundhouse.lib</id>
+    <title>RoundhousE Library</title>
+    <version>0.7.0.282</version>
+    <authors>Rob Reynolds</authors>
+    <owners>Rob Reynolds</owners>
+    <summary>RoundhousE - Professional Database Change and Versioning Management</summary>
+    <description>RoundhousE is a Professional Database Change and Versioning Management tool. This is what you include in your projects when you want to integrate roundhouse. This is used with roundhouse.refreshdatabase.</description>
+    <projectUrl>http://projectroundhouse.org</projectUrl>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>roundhouse db migrations chucknorris</tags>
+    <iconUrl>http://roundhouse.googlecode.com/svn/trunk/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
+    <dependencies>
+      <dependency id="log4net" version="1.2.10" />
+    </dependencies>
+  </metadata>
+</package>
