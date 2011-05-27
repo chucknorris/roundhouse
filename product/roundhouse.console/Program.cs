@@ -145,6 +145,10 @@ namespace roundhouse.console
                     string.Format("SprocsFolderName - The name of the folder where you keep your stored procedures. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_sprocs_folder_name),
                     option => configuration.SprocsFolderName = option)
+                .Add("ra=|runAfterOtherAnyTimeScripts=|runAfterOtherAnyTimeScriptsfolder=|runAfterOtherAnyTimeScriptsfoldername=",
+                    string.Format("RunAfterOtherAnyTimeScriptsFolderName - The name of the folder where you keep scripts that will be run after all of the other any time scripts complete. Will recurse through subfolders. Defaults to \"{0}\".",
+                        ApplicationParameters.default_runAfterOtherAnyTime_folder_name),
+                    option => configuration.RunAfterOtherAnyTimeScriptsFolderName = option)
                 .Add("p=|permissions=|permissionsfolder=|permissionsfoldername=",
                     string.Format("PermissionsFolderName - The name of the folder where you keep your permissions scripts. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_permissions_folder_name),
