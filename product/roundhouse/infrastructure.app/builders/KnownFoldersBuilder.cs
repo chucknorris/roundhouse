@@ -20,6 +20,10 @@ namespace roundhouse.infrastructure.app.builders
                                                                         configuration_property_holder.ViewsFolderName, false, false);
             MigrationsFolder sprocs_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
                                                                          configuration_property_holder.SprocsFolderName, false, false);
+
+            MigrationsFolder runAfterOtherAnyTimeScripts_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
+                                                                         configuration_property_holder.RunAfterOtherAnyTimeScriptsFolderName, false, false);
+
             MigrationsFolder permissions_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
                                                                               configuration_property_holder.PermissionsFolderName, false, true);
             Folder change_drop_folder = new DefaultFolder(file_system, combine_items_into_one_path(file_system,
@@ -28,8 +32,8 @@ namespace roundhouse.infrastructure.app.builders
                                                                                                    configuration_property_holder.ServerName),
                                                           get_run_date_time_string());
 
-            return new DefaultKnownFolders(up_folder, down_folder, run_first_folder, functions_folder, views_folder, sprocs_folder,
-                                           permissions_folder, change_drop_folder);
+            return new DefaultKnownFolders(up_folder, down_folder, run_first_folder, functions_folder, views_folder, sprocs_folder, 
+                runAfterOtherAnyTimeScripts_folder, permissions_folder, change_drop_folder);
         }
 
         private static string combine_items_into_one_path(FileSystemAccess file_system, params string[] paths)
