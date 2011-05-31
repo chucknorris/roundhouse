@@ -55,7 +55,8 @@ namespace roundhouse
                configuration.Drop,
                configuration.DoNotCreateDatabase,
                configuration.WithTransaction,
-               configuration.RecoveryModeSimple);
+               configuration.RecoveryModeSimple, 
+               configuration);
 
             migrator.run();
         }

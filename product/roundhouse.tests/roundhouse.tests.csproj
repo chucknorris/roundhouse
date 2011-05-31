@@ -109,6 +109,7 @@
     <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="cryptography\CryptographicServiceSpecs.cs" />
+    <Compile Include="infrastructure.app\tokens\TokenReplacerSpecs.cs" />
     <Compile Include="infrastructure\containers\ContainerSpecs.cs" />
     <Compile Include="infrastructure\containers\custom\StructureMapContainerSpecs.cs" />
     <Compile Include="infrastructure\extensions\IterationSpecs.cs" />
@@ -118,9 +119,11 @@
     <Compile Include="infrastructure\logging\custom\Log4NetLogFactorySpecs.cs" />
     <Compile Include="infrastructure\logging\custom\Log4NetLoggerSpecs.cs" />
     <Compile Include="infrastructure\logging\LogSpecs.cs" />
+    <Compile Include="migrators\DefaultDatabaseMigratorSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sqlsplitters\SplitterContext.cs" />
     <Compile Include="sqlsplitters\StatementSplitterSpecs.cs" />
+    <Compile Include="TestExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj">

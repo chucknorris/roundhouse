@@ -48,6 +48,16 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+=0.8.0.300=  
+* RH now does token replacement in the sql files using '{{PropertyName}}'. See [issue 33] (http://code.google.com/p/roundhouse/issues/detail?id=33) for details. (r299)  
+* Always run files that have '.EVERYTIME.' in the name. See [issue 51] (http://code.google.com/p/roundhouse/issues/detail?id=51) for details. (r299)  
+* RoundhousE ships a DLL for embedding. See [issue 44] (http://code.google.com/p/roundhouse/issues/detail?id=44) for details. It has a semi-fluent interface - see (https://gist.github.com/977990) for details. (r299)  
+* FIXED: Environment Specific Files run other environments when other environments are part of the name (i.e. BOBTEST is run with TEST). See [issue 50] (http://code.google.com/p/roundhouse/issues/detail?id=50) for details. (r299)  
+* A folder that runs after the other anytime scripts folders have run has been added. See https://github.com/chucknorris/roundhouse/pull/1 for details. (r297)  
+* Fixing the script modified twice running each time bug. See https://github.com/chucknorris/roundhouse/pull/5 for details. (r296)  
+* Sample is now a project in the release folder. (r287)  
+* MSBuild is available again. (r288)  
+  
 =0.7.0.281=  
 * Fixed a few issues with using the connection string. You should now be able to only supply the connection string and not server/database as well.  
   

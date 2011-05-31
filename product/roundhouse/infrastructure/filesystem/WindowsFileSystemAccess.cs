@@ -111,7 +111,7 @@ namespace roundhouse.infrastructure.filesystem
                 DirectoryInfo directory_info = get_directory_info_from(file.DirectoryName);
                 is_system_file = ((directory_info.Attributes & FileAttributes.System) == FileAttributes.System);
                 Log.bound_to(this).log_a_debug_event_containing("Is directory \"{0}\" a system directory? {1}", file.DirectoryName,
-                                    is_system_file.ToString());
+                                    is_system_file.to_string());
             }
             else
             {
@@ -128,7 +128,7 @@ namespace roundhouse.infrastructure.filesystem
         public bool is_encrypted_file(FileInfo file)
         {
             bool is_encrypted = ((file.Attributes & FileAttributes.Encrypted) == FileAttributes.Encrypted);
-            Log.bound_to(this).log_a_debug_event_containing("Is file \"{0}\" an encrypted file? {1}", file.FullName, is_encrypted.ToString());
+            Log.bound_to(this).log_a_debug_event_containing("Is file \"{0}\" an encrypted file? {1}", file.FullName, is_encrypted.to_string());
             return is_encrypted;
         }
 
