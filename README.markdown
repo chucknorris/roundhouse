@@ -36,7 +36,7 @@ With NuGet you can get the current release of RoundhousE to your application qui
 Chocolatey like apt-get, but for Windows! This is an alternative method to get the current release of RoundhousE to your machine the fastest!  
   
 1. Type `cinst roundhouse`  
-2. Then from anywhere you can type `rh <options>`  
+2. Then from anywhere you can type `rh [options]`  
   
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
