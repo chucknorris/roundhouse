@@ -23,6 +23,7 @@ namespace roundhouse.migrators
         private readonly bool error_on_one_time_script_changes;
         private bool running_in_a_transaction;
         private readonly bool is_running_all_any_time_scripts;
+        private bool is_running_baseline;
 
         public DefaultDatabaseMigrator(Database database, CryptographicService crypto_provider, ConfigurationPropertyHolder configuration)
         {
@@ -35,6 +36,8 @@ namespace roundhouse.migrators
             output_path = configuration.OutputPath;
             error_on_one_time_script_changes = !configuration.WarnOnOneTimeScriptChanges;
             is_running_all_any_time_scripts = configuration.RunAllAnyTimeScripts;
+            is_running_baseline = configuration.Baseline;
+
         }
 
         public void initialize_connections()
@@ -171,7 +174,8 @@ namespace roundhouse.migrators
                 {
                     try
                     {
-                        database.run_sql(sql_statement);
+                        if (!is_running_baseline)
+                            database.run_sql(sql_statement);
                     }
                     catch (Exception ex)
                     {
