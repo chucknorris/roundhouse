@@ -347,7 +347,8 @@ namespace roundhouse.console
                  configuration.Drop,
                  configuration.DoNotCreateDatabase,
                  configuration.WithTransaction,
-                 configuration.RecoveryModeSimple);
+                 configuration.RecoveryModeSimple, 
+                 configuration);
         }
 
         private static RoundhouseRedGateCompareRunner get_diff_runner(ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner)

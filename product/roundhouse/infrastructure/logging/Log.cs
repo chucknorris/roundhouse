@@ -3,6 +3,7 @@ namespace roundhouse.infrastructure.logging
     using System;
     using containers;
     using custom;
+    using extensions;
     using log4net;
 
     public static class Log
@@ -22,7 +23,7 @@ namespace roundhouse.infrastructure.logging
                 {
                     have_displayed_error_message = true;
                 }
-                logger = new Log4NetLogger(LogManager.GetLogger(object_that_needs_logging.ToString()));
+                logger = new Log4NetLogger(LogManager.GetLogger(object_that_needs_logging.to_string()));
             }
 
             return logger;

@@ -6,6 +6,9 @@ namespace roundhouse.runners
     using System;
     using System.IO;
     using infrastructure;
+    using infrastructure.app;
+    using infrastructure.app.tokens;
+    using infrastructure.extensions;
     using infrastructure.filesystem;
     using infrastructure.logging;
     using migrators;
@@ -25,6 +28,7 @@ namespace roundhouse.runners
         private readonly bool dont_create_the_database;
         private bool run_in_a_transaction;
         private readonly bool use_simple_recovery;
+        private readonly ConfigurationPropertyHolder configuration;
 
         public RoundhouseMigrationRunner(
                 string repository_path,
@@ -37,7 +41,8 @@ namespace roundhouse.runners
                 bool dropping_the_database,
                 bool dont_create_the_database,
                 bool run_in_a_transaction,
-                bool use_simple_recovery)
+                bool use_simple_recovery,
+                ConfigurationPropertyHolder configuration)
         {
             this.known_folders = known_folders;
             this.repository_path = repository_path;
@@ -50,6 +55,7 @@ namespace roundhouse.runners
             this.dont_create_the_database = dont_create_the_database;
             this.run_in_a_transaction = run_in_a_transaction;
             this.use_simple_recovery = use_simple_recovery;
+            this.configuration = configuration;
         }
 
         public void run()
@@ -179,7 +185,7 @@ namespace roundhouse.runners
                         ApplicationParameters.name,
                         run_in_a_transaction ? " You were running in a transaction though, so the database should be in the state it was in prior to this piece running. This does not include a drop/create or any creation of a database, as those items can not run in a transaction." : string.Empty,
                         System.Environment.NewLine,
-                        ex.ToString());
+                        ex.to_string());
                 throw;
             }
             finally
@@ -211,6 +217,11 @@ namespace roundhouse.runners
         //todo: understand what environment you are deploying to so you can decide what to run - it was suggested there be a specific tag in the file name. Like vw_something.ENV.sql and that be a static "ENV". Then to key off of the actual environment name on the front of the file (ex. TEST.vw_something.ENV.sql)
         //todo:down story
 
+        private string replace_tokens(string sql_text)
+        {
+            return TokenReplacer.replace_tokens(configuration,sql_text);
+        }
+
         private void copy_to_change_drop_folder(string sql_file_ran, Folder migration_folder)
         {
             string destination_file = file_system.combine_paths(known_folders.change_drop.folder_full_path, "itemsRan", sql_file_ran.Replace(migration_folder.folder_path + "\\", string.Empty));
@@ -235,7 +246,7 @@ namespace roundhouse.runners
                     log_an_error_event_containing("{0} encountered an error:{1}{2}",
                                                   ApplicationParameters.name,
                                                   System.Environment.NewLine,
-                                                  exception.ToString()
+                                                  exception.to_string()
                                                   );
             }
 

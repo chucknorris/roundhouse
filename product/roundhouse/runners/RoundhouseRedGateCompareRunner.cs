@@ -5,6 +5,7 @@ namespace roundhouse.runners
     using consoles;
     using folders;
     using infrastructure.app;
+    using infrastructure.extensions;
     using infrastructure.filesystem;
     using Environment = environments.Environment;
 
@@ -72,7 +73,7 @@ namespace roundhouse.runners
                     length_of_number_format = file_number.Length;
                 }
             }
-            string next_change_number = (highest_number + 1).ToString().PadLeft(length_of_number_format, '0');
+            string next_change_number = (highest_number + 1).to_string().PadLeft(length_of_number_format, '0');
 
             return next_change_number;
         }

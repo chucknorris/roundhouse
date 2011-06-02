@@ -117,10 +117,12 @@
     <Compile Include="databases\MockDatabase.cs" />
     <Compile Include="infrastructure.app\builders\VersionResolverBuilder.cs" />
     <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
+    <Compile Include="infrastructure\extensions\ObjectExtensions.cs" />
     <Compile Include="infrastructure\persistence\AuditEventListener.cs" />
     <Compile Include="infrastructure\persistence\IRepository.cs" />
     <Compile Include="infrastructure\persistence\NHibernateSessionFactoryBuilder.cs" />
     <Compile Include="infrastructure\persistence\Repository.cs" />
+    <Compile Include="infrastructure.app\tokens\TokenReplacer.cs" />
     <Compile Include="model\Auditable.cs" />
     <Compile Include="model\ScriptsRun.cs" />
     <Compile Include="model\ScriptsRunError.cs" />
