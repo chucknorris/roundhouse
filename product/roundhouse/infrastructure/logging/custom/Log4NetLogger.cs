@@ -1,3 +1,5 @@
+using System;
+
 namespace roundhouse.infrastructure.logging.custom
 {
     using app;
@@ -13,7 +15,7 @@ namespace roundhouse.infrastructure.logging.custom
         }
         public Log4NetLogger(ConfigurationPropertyHolder configuration)
         {
-            this.logger = configuration.Log4NetLogger;
+            this.logger = (log4net.ILog)configuration.Logger.underlying_type;
             //logger.DebugFormat("Initializing {0}<{1}>", GetType().FullName, logger.Logger.Name);
         }
 
@@ -40,6 +42,11 @@ namespace roundhouse.infrastructure.logging.custom
         public void log_a_fatal_event_containing(string message, params object[] args)
         {
             logger.FatalFormat(message, args);
+        }
+
+        public object underlying_type
+        {
+            get { return logger; }
         }
     }
 }

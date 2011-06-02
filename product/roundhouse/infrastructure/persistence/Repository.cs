@@ -2,6 +2,7 @@ namespace roundhouse.infrastructure.persistence
 {
     using System;
     using System.Collections.Generic;
+    using extensions;
     using logging;
     using NHibernate;
     using NHibernate.Cfg;
@@ -101,7 +102,7 @@ namespace roundhouse.infrastructure.persistence
 
             if (not_running_outside_session) finish();
 
-            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof(T).Name, detachedCriteria.ToString());
+            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof(T).Name, detachedCriteria.to_string());
 
             return list;
         }
@@ -126,7 +127,7 @@ namespace roundhouse.infrastructure.persistence
 
             if (!running_long_session) finish();
 
-            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof(T).Name, detachedCriteria.ToString());
+            Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof(T).Name, detachedCriteria.to_string());
 
             return list;
         }

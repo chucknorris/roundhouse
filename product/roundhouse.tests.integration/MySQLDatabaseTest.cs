@@ -19,7 +19,8 @@ namespace roundhouse.tests.integration
 			{
 				@"/db=TestRoundhousE",
 				@"/f=..\..\db\MySQL\TestRoundhousE",
-				@"/cs=server=localhost;uid=username;Password=password;database=TestRoundhousE;",
+				//@"/cs=server=localhost;uid=username;Password=password;database=TestRoundhousE;",
+				@"/cs=server=tcdev02;uid=alexey.diyan;Password=03ambul19G;database=TestRoundhousE;",
 				@"/dt=roundhouse.databases.mysql.MySqlDatabase, roundhouse.databases.mysql",
 				@"/schemaname=TestRoundhousE"
 			};

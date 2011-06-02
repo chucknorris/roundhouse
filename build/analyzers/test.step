@@ -66,6 +66,7 @@
     <nant buildfile="${dirs.current}${path.separator}mbunit2.test.step" inheritall="true" if="${test.framework=='mbunit2'}" />
     <nant buildfile="${dirs.current}${path.separator}gallio.test.step" inheritall="true" if="${test.framework=='gallio'}" />
     <nant buildfile="${dirs.current}${path.separator}nunit.test.step" inheritall="true" if="${test.framework=='nunit'}" />
+    <nant buildfile="${dirs.current}${path.separator}xunit.test.step" inheritall="true" if="${test.framework=='xunit'}" />
     <call target="set_normal_failure_mode" />
   </target>
 
@@ -73,6 +74,7 @@
     <nant buildfile="${dirs.current}${path.separator}mbunit2.test.step" target="run_all_tests" inheritall="true" if="${test.framework=='mbunit2'}" />
     <nant buildfile="${dirs.current}${path.separator}gallio.test.step" target="run_all_tests" inheritall="true" if="${test.framework=='gallio'}" />
     <nant buildfile="${dirs.current}${path.separator}nunit.test.step" target="run_all_tests" inheritall="true" if="${test.framework=='nunit'}" />
+    <nant buildfile="${dirs.current}${path.separator}xunit.test.step" target="run_all_tests" inheritall="true" if="${test.framework=='xunit'}" />
     <call target="set_normal_failure_mode" />
   </target>
 
@@ -80,6 +82,7 @@
     <nant buildfile="${dirs.current}${path.separator}mbunit2.test.step" target="open_results" inheritall="true" if="${test.framework=='mbunit2'}" />
     <nant buildfile="${dirs.current}${path.separator}gallio.test.step" target="open_results" inheritall="true" if="${test.framework=='gallio'}" />
     <nant buildfile="${dirs.current}${path.separator}nunit.test.step" target="open_results" inheritall="true" if="${test.framework=='nunit'}" />
+    <nant buildfile="${dirs.current}${path.separator}xunit.test.step" target="open_results" inheritall="true" if="${test.framework=='xunit'}" />
   </target>
 
   <target name="set_normal_failure_mode">

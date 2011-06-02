@@ -24,6 +24,8 @@
   <!-- database deployment -->
   <property name="dirs.db" value="..\${folder.database}" overwrite="false"  />
   <property name="file.version" value="_BuildInfo.xml" overwrite="false" />
+  <!--property name="file.version" value="somefile.dll" overwrite="false" /-->
+  <property name="connection.string" value="Server=${server.database};Database=TestRoundhousE;Integrated Security=True;" overwrite="false" />
   <property name="restore.from.path" value="..\${database.name}.bak" overwrite="false" />
   
 </project>

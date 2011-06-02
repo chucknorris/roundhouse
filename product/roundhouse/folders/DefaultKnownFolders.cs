@@ -8,6 +8,7 @@ namespace roundhouse.folders
                                    MigrationsFolder functions,
                                    MigrationsFolder views,
                                    MigrationsFolder sprocs,
+                                   MigrationsFolder runAfterOtherAnyTimeScripts,        
                                    MigrationsFolder permissions,
                                    Folder change_drop
             )
@@ -18,6 +19,7 @@ namespace roundhouse.folders
             this.functions = functions;
             this.views = views;
             this.sprocs = sprocs;
+            this.runAfterOtherAnyTimeScripts = runAfterOtherAnyTimeScripts;
             this.permissions = permissions;
             this.change_drop = change_drop;
         }
@@ -28,6 +30,7 @@ namespace roundhouse.folders
         public MigrationsFolder functions { get; private set; }
         public MigrationsFolder views { get; private set; }
         public MigrationsFolder sprocs { get; private set; }
+        public MigrationsFolder runAfterOtherAnyTimeScripts { get; private set; }
         public MigrationsFolder permissions { get; private set; }
         public Folder change_drop{get; private set;}
        

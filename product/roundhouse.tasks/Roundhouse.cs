@@ -1,4 +1,6 @@
 ﻿using roundhouse.infrastructure.app.logging;
+using roundhouse.infrastructure.logging;
+using roundhouse.infrastructure.logging.custom;
 
 namespace roundhouse.tasks
 {
@@ -7,7 +9,6 @@ namespace roundhouse.tasks
     using infrastructure.app;
     using infrastructure.containers;
     using infrastructure.filesystem;
-    using log4net;
     using Microsoft.Build.Framework;
     using migrators;
     using resolvers;
@@ -16,7 +17,6 @@ namespace roundhouse.tasks
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
-        private readonly ILog the_logger = LogManager.GetLogger(typeof(Roundhouse));
 
         #region MSBuild
 
@@ -37,15 +37,7 @@ namespace roundhouse.tasks
 
         #region Properties
 
-        public ILog Log4NetLogger
-        {
-            get { return the_logger; }
-        }
-
-        public ITask MSBuildTask
-        {
-            get { return this; }
-        }
+        public Logger Logger { get; set; }
 
         public string ServerName { get; set; }
 
@@ -74,6 +66,8 @@ namespace roundhouse.tasks
         public string ViewsFolderName { get; set; }
 
         public string SprocsFolderName { get; set; }
+
+        public string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
 
         public string PermissionsFolderName { get; set; }
 
@@ -132,7 +126,7 @@ namespace roundhouse.tasks
             if (Restore && string.IsNullOrEmpty(RestoreFromPath))
             {
                 throw new Exception(
-                    "If you set Restore to true, you must specify a location for the database to be restored from. That property is RestoreFromPath in MSBuild and restoreFromPath in NAnt.");
+                    "If you set Restore to true, you must specify a location for the database to be restored from. That property is RestoreFromPath in MSBuild.");
             }
 
             ApplicationConfiguraton.build_the_container(this);
@@ -148,7 +142,8 @@ namespace roundhouse.tasks
                 Drop,
                 DoNotCreateDatabase,
                 WithTransaction,
-                RecoveryModeSimple);
+                RecoveryModeSimple,
+                this);
 
             roundhouse_runner.run();
         }

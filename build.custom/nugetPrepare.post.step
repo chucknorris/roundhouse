@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="CUSTOM POST NUGETPREPARE" default="go">
+  <!-- Project UppercuT - http://projectuppercut.org -->
+  <property name="build.config.settings" value="__NONE__" overwrite="false" />
+  <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
+  <property name="path.separator" value="${string::trim(path::combine(' ', ' '))}" />
+  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />
+  <property name="path.to.toplevel" value=".." />
+  <property name="folder.code_drop" value="code_drop" overwrite="false" />
+  <property name="dirs.drop" value="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}${folder.code_drop}" overwrite="false" />
+  <property name="dirs.drop" value="${path::get-full-path(dirs.drop)}" />
+  <property name="folder.nuget" value="nuget" overwrite="false" />
+  <property name="dirs.drop.nuget" value="${dirs.drop}${path.separator}${folder.nuget}" overwrite="false" />
+  
+  <property name="version.use_semanticversioning" value="false" overwrite="false" />
+  <property name="version.major" value="1" overwrite="false" />
+  <property name="version.minor" value="0" overwrite="false" />
+  <property name="version.patch" value="0" overwrite="false" />
+  <property name="version.build" value="0" overwrite="false" />
+  <property name="version.revision" value="0" overwrite="false" />
+  <property name="assembly.version.full" value="${version.major}.${version.minor}.${version.build}.${version.revision}" />
+  <property name="assembly.version.full" value="${version.major}.${version.minor}.${version.patch}.0"  if="${version.use_semanticversioning}" />
+  
+  <target name="go" depends="prep_nuget, remove_docs, update_roundhouse_dependencies_with_new_version" />
+  
+  <target name="prep_nuget">
+    
+    <echo message="Deleting ${dirs.drop.nuget}\lib\MSBuild." />
+    <echo message="Moving ${dirs.drop.nuget}\lib\MSBuild to ${dirs.drop.nuget}\roundhouse.msbuild\lib." />
+    <move todir="${dirs.drop.nuget}\roundhouse.msbuild\lib" overwrite="true">
+      <fileset basedir="${dirs.drop.nuget}\lib\MSBuild">
+        <exclude name="log4net*" />
+        <exclude name="Microsoft.Build.Framework.dll" />
+        <exclude name="*.proj" />
+        <exclude name="samples.xml" />
+        <include name="**/*.*" />
+      </fileset>
+    </move>
+    <move todir="${dirs.drop.nuget}\roundhouse.msbuild\content" overwrite="true">
+      <fileset basedir="${dirs.drop.nuget}\lib\MSBuild">
+        <include name="*.proj" />
+        <include name="samples.xml" />
+      </fileset>
+    </move>
+    <delete dir="${dirs.drop.nuget}\lib\MSBuild" />
+    
+    <echo message="Moving ${dirs.drop.nuget}\lib\console to ${dirs.drop.nuget}\roundhouse\bin." />
+    <move todir="${dirs.drop.nuget}\roundhouse\bin" overwrite="true">
+      <fileset basedir="${dirs.drop.nuget}\lib\console">
+        <include name="**/*.*" />
+      </fileset>
+    </move>
+    <delete dir="${dirs.drop.nuget}\lib\console" />
+  
+    <echo message="Moving ${dirs.drop.nuget}\lib\lib to ${dirs.drop.nuget}\roundhouse.lib\lib." />
+    <move todir="${dirs.drop.nuget}\roundhouse.lib\lib" overwrite="true">
+      <fileset basedir="${dirs.drop.nuget}\lib\lib">
+        <include name="roundhouse.*" />
+      </fileset>
+    </move>
+    <delete dir="${dirs.drop.nuget}\lib\lib" />
+   
+  </target>
+  
+  <target name="remove_docs">
+   <echo message="Removing unnecesary documents from '${dirs.drop.nuget}\docs'" />
+    <delete>
+      <fileset basedir="${dirs.drop.nuget}\docs" >
+        <include name="buildCustomization/**" />
+        <include name="logo/**" />
+        <include name="*.dot" />
+        <include name="*.pptx" />
+      </fileset>
+    </delete>
+    
+    <copy todir="${dirs.drop.nuget}\roundhouse\docs" overwrite="true">
+      <fileset basedir="${dirs.drop.nuget}\docs">
+        <include name="**" />
+      </fileset>
+    </copy>
+    
+    <copy todir="${dirs.drop.nuget}\roundhouse.msbuild\docs" overwrite="true">
+      <fileset basedir="${dirs.drop.nuget}\docs">
+        <include name="**" />
+      </fileset>
+    </copy>
+    
+    <copy todir="${dirs.drop.nuget}\roundhouse.lib\docs" overwrite="true">
+      <fileset basedir="${dirs.drop.nuget}\docs">
+        <include name="**" />
+      </fileset>
+    </copy>
+    <delete dir="${dirs.drop.nuget}\docs" />
+  </target>
+  
+    <target name="update_roundhouse_dependencies_with_new_version">
+    <echo message="Finding and updating roundhouse version dependencies in all nuspec files in ${dirs.drop.nuget}."/>
+    <foreach item="File" property="spec.file">
+      <in>
+        <items>
+          <include name="${dirs.drop.nuget}${path.separator}**${path.separator}*.nuspec" />
+        </items>
+      </in>
+      <do>
+        <echo message="Replacing version in '${spec.file}'" />
+        <xmlpoke
+          file="${spec.file}"
+          xpath="/package/metadata/dependencies/dependency[@id='roundhouse']/@version"
+          value="${assembly.version.full}" />
+        <xmlpoke
+          file="${spec.file}"
+          xpath="/package/metadata/dependencies/dependency[@id='roundhouse.lib']/@version"
+          value="${assembly.version.full}" />
+      </do>
+    </foreach>
+  </target>
+  
+  
+</project>

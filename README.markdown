@@ -12,7 +12,7 @@ NOTE: If you are looking at the source - please run build.bat before opening the
 ## Overview
 RoundhousE is an automated database deployment (change management) system that allows you to use your current idioms and gain much more. Currently it only supports Microsoft SQL Server, but there are future plans for other databases. 
 
-It seeks to solve both maintenance concerns and ease of deployment. We follow some of the same idioms as other database management systems (SQL scripts), but we are different in that we think about future maintenance concerns. We want to always apply certain scripts (anything stateless like functions, views, stored procedures, and permissions), so we don’t have to throw everything into our change scripts. This seeks to solves future source control concerns. How sweet is it when you can version the database according to your current source control version? 
+It seeks to solve both maintenance concerns and ease of deployment. We follow some of the same idioms as other database management systems (SQL scripts), but we are different in that we think about future maintenance concerns. We want to always apply certain scripts (anything stateless like functions, views, stored procedures, and permissions), so we don't have to throw everything into our change scripts. This seeks to solves future source control concerns. How sweet is it when you can version the database according to your current source control version? 
 
 ## Getting started with RoundhousE
 ### Downloads
@@ -21,10 +21,22 @@ It seeks to solve both maintenance concerns and ease of deployment. We follow so
  You can also obtain a copy from the build server at [http://teamcity.codebetter.com](http://teamcity.codebetter.com).  
   
 ### Gems  
-If you have Ruby 1.8.6+ (and Gems 1.3.7+) installed, you can get the current release of RoundhousE to your machine the fastest!  
+If you have Ruby 1.8.6+ (and Gems 1.3.7+) installed, you can get the current release of RoundhousE to your machine quickly!  
   
-1. Type 'gem install roundhouse'  
-2. Then from anywhere you can type 'rh <options>'  
+1. Type `gem install roundhouse`  
+2. Then from anywhere you can type `rh [options]`  
+  
+### NuGet  
+With NuGet you can get the current release of RoundhousE to your application quickly!  
+  
+1. In Visual Studio Package Manager Console type `install-package roundhouse`  
+2. There is also `roundhouse.lib`, `roundhouse.msbuild`, and `roundhouse.refreshdatabase`  
+  
+### Chocolatey  
+Chocolatey like apt-get, but for Windows! This is an alternative method to get the current release of RoundhousE to your machine quickly!  
+  
+1. Type `cinst roundhouse`  
+2. Then from anywhere you can type `rh [options]`  
   
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
@@ -39,7 +51,6 @@ This is the best way to get to the bleeding edge of what we are doing.
   
 # REQUIREMENTS
 * .NET Framework 3.5  
-* SQL Server 2005/2008 installed (or required DLLS in the GAC for SQL Server 2005/2008)  
 * SA access to the sql server (for creation or deletion)  
 * change access to the database (for everything else)  
 
@@ -48,6 +59,16 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+=0.8.0.300=  
+* RH now does token replacement in the sql files using '{{PropertyName}}'. See [issue 33] (http://code.google.com/p/roundhouse/issues/detail?id=33) for details. (r299)  
+* Always run files that have '.EVERYTIME.' in the name. See [issue 51] (http://code.google.com/p/roundhouse/issues/detail?id=51) for details. (r299)  
+* RoundhousE ships a DLL for embedding. See [issue 44] (http://code.google.com/p/roundhouse/issues/detail?id=44) for details. It has a semi-fluent interface - see (https://gist.github.com/977990) for details. (r299)  
+* FIXED: Environment Specific Files run other environments when other environments are part of the name (i.e. BOBTEST is run with TEST). See [issue 50] (http://code.google.com/p/roundhouse/issues/detail?id=50) for details. (r299)  
+* A folder that runs after the other anytime scripts folders have run has been added. See https://github.com/chucknorris/roundhouse/pull/1 for details. (r297)  
+* Fixing the script modified twice running each time bug. See https://github.com/chucknorris/roundhouse/pull/5 for details. (r296)  
+* Sample is now a project in the release folder. (r287)  
+* MSBuild is available again. (r288)  
+  
 =0.7.0.281=  
 * Fixed a few issues with using the connection string. You should now be able to only supply the connection string and not server/database as well.  
   

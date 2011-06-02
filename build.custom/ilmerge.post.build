@@ -16,7 +16,7 @@
   <property name="dirs.deployment" value="${dirs.drop}\${folder.deployment}" />
   <property name="dirs.app.drop" value="${dirs.drop}\${folder.app.drop}" overwrite="false" />
 
-  <target name="go" depends="copy_roundhouse_files_to_deploy_console, merge_the_dll" />
+  <target name="go" depends="copy_roundhouse_files_to_deploy_console, merge_the_dll, merge_the_msbuild" />
  
   <target name="copy_roundhouse_files_to_deploy_console">
   <echo message="Removing original roundhouse assemblies from ${dirs.deployment}\console."/>
@@ -36,6 +36,10 @@
   
   <target name="merge_the_dll">
     <nant buildfile="${dirs.current}\ilmergeDLL.build" inheritall="true" />
+  </target>
+  
+  <target name="merge_the_msbuild">
+    <nant buildfile="${dirs.current}\ilmergeMSBuild.build" inheritall="true" />
   </target>
   
 </project>

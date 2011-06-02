@@ -1,13 +1,10 @@
+using roundhouse.infrastructure.logging;
+
 namespace roundhouse.infrastructure.app
 {
-    using log4net;
-    using Microsoft.Build.Framework;
-
     public interface ConfigurationPropertyHolder
     {
-        ITask MSBuildTask { get; }
-        ILog Log4NetLogger { get; }
-
+        Logger Logger { get; set; }
         string ServerName { get; set; }
         string DatabaseName { get; set; }
         string ConnectionString { get; set; }
@@ -22,6 +19,7 @@ namespace roundhouse.infrastructure.app
         string FunctionsFolderName { get; set; }
         string ViewsFolderName { get; set; }
         string SprocsFolderName { get; set; }
+        string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
         string PermissionsFolderName { get; set; }
         string SchemaName { get; set; }
         string VersionTableName { get; set; }

@@ -279,7 +279,7 @@ namespace roundhouse.databases
 
             DetachedCriteria crit = DetachedCriteria.For<ScriptsRun>()
                 .Add(Restrictions.Eq("script_name", script_name))
-				.AddOrder(Order.Desc("entry_date"))
+                .AddOrder(Order.Desc("id"))
                 .SetMaxResults(1);
 
             try
@@ -307,7 +307,7 @@ namespace roundhouse.databases
 
             DetachedCriteria crit = DetachedCriteria.For<ScriptsRun>()
                 .Add(Restrictions.Eq("script_name", script_name))
-				.AddOrder(Order.Desc("entry_date"))
+				.AddOrder(Order.Desc("id"))
                 .SetMaxResults(1);
 
             try

@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildDatabase", "BuildDatabase\BuildDatabase.csproj", "{C1305F24-71DB-4A49-849F-6D173E34CE43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleProject", "SampleProject\SampleProject.csproj", "{D1C278C6-301B-4EEE-BD47-F15847DDECAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Build|Any CPU = Build|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Build|Any CPU.ActiveCfg = Build|Any CPU
+		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Build|Any CPU.Build.0 = Build|Any CPU
+		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1305F24-71DB-4A49-849F-6D173E34CE43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Build|Any CPU.ActiveCfg = Build|Any CPU
+		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Build|Any CPU.Build.0 = Build|Any CPU
+		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1C278C6-301B-4EEE-BD47-F15847DDECAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C1305F24-71DB-4A49-849F-6D173E34CE43} = {A9323A52-0538-4CED-8DEE-7CC0853EA4FC}
+		{D1C278C6-301B-4EEE-BD47-F15847DDECAF} = {A9323A52-0538-4CED-8DEE-7CC0853EA4FC}
+	EndGlobalSection
+EndGlobal

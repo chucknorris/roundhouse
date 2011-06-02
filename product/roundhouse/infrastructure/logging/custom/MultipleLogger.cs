@@ -1,3 +1,5 @@
+using System;
+
 namespace roundhouse.infrastructure.logging.custom
 {
     using System.Collections.Generic;
@@ -49,6 +51,11 @@ namespace roundhouse.infrastructure.logging.custom
             {
                 logger.log_a_fatal_event_containing(message, args);
             }
+        }
+
+        public object underlying_type
+        {
+            get { return the_loggers; }
         }
     }
 }

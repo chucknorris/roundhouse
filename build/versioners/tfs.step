@@ -63,7 +63,8 @@
   <target name="get_revision">
     <exec
        program="tf"
-       commandline="history ${dirs.current}${path.separator}${path.to.toplevel}${path.separator} /r /noprompt /stopafter:1 /version:W"
+       workingdir="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}"
+       commandline="history .\ /r /noprompt /stopafter:1 /version:W"
        output="_revision.xml"
        failonerror="false"/>
     <loadfile

@@ -60,13 +60,14 @@
   </target>
 
   <target name="get_revision">
-    <echo message="Getting revision number from working directory ${directory::get-parent-directory(dirs.current)} or remotely at ${repository.path}."/>
+    <echo message="Getting revision number from working directory '${dirs.current}${path.separator}${path.to.toplevel}${path.separator}' or remotely at ${repository.path}."/>
     <!-- try to update the revision -->
     <exec
       program="svn"
-      commandline="info ${dirs.current}${path.separator}${path.to.toplevel}${path.separator} --xml"
+      workingdir="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}"
+      commandline="info .\ --xml"
       output="_revision.xml"
-      failonerror="false"/>
+      failonerror="false" />
     <xmlpeek
       file="_revision.xml"
       xpath="/info/entry/commit/@revision"
@@ -74,7 +75,7 @@
       failonerror="false"/>
     <exec
       program="svn"
-      commandline="info ${repository.path} --xml"
+      commandline='info "${repository.path}" --xml'
       output="_revision.xml"
       failonerror="false"
       if="${version.revision == '0'}"

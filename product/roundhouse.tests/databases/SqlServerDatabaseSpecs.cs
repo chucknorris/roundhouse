@@ -1,3 +1,5 @@
+using roundhouse.infrastructure.logging.custom;
+
 namespace roundhouse.tests.databases
 {
     using bdddoc.core;
@@ -17,7 +19,13 @@ namespace roundhouse.tests.databases
         {
             protected static ConfigurationPropertyHolder configuration_property_holder;
 
-            private context c = () => { configuration_property_holder = new ConsoleConfiguration(LogManager.GetLogger(typeof(SqlServerDatabaseSpecs))); };
+            private context c = () =>
+            {
+                configuration_property_holder = new ConsoleConfiguration
+                {
+                    Logger = new Log4NetLogFactory().create_logger_bound_to(typeof (SqlServerDatabaseSpecs))
+                };
+            };
         }
 
         [Concern(typeof (SqlServerDatabase))]

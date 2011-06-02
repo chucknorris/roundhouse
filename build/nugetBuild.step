@@ -87,14 +87,14 @@
     <foreach item="File" property="spec.file">
       <in>
         <items>
-          <include name="${dirs.drop.nuget}${path.separator}*.nuspec" />
+          <include name="${dirs.drop.nuget}${path.separator}**${path.separator}*.nuspec" />
         </items>
       </in>
       <do>
         <echo message="executing '${app.nuget} pack ${spec.file}'" />
         <exec 
           program="cmd" 
-          workingdir="${dirs.drop.nuget}"
+          workingdir="${directory::get-parent-directory(spec.file)}"
           failonerror="false">
             <arg value="/c ${app.nuget} pack ${spec.file}" />
         </exec>
@@ -105,7 +105,7 @@
   <target name="remove_nuget_files">
     <delete>
       <fileset basedir="${dirs.drop.nuget}" >
-        <exclude name="*.nupkg" />
+        <exclude name="**/*.nupkg" />
         <include name="**/*" />
       </fileset>
     </delete>

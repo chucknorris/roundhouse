@@ -1,4 +1,6 @@
-﻿namespace roundhouse.console
+﻿using roundhouse.infrastructure.logging.custom;
+
+namespace roundhouse.console
 {
     using System;
     using consoles;
@@ -51,8 +53,6 @@
                 the_logger.Info(ex.Message);
                 Environment.Exit(1);
             }
-
-
         }
 
         public static void report_version()
@@ -64,7 +64,8 @@
 
         public static ConfigurationPropertyHolder set_up_configuration_and_build_the_container(string[] args)
         {
-            ConfigurationPropertyHolder configuration = new ConsoleConfiguration(the_logger);
+
+            ConfigurationPropertyHolder configuration = new ConsoleConfiguration();
             parse_arguments_and_set_up_configuration(configuration, args);
             if (configuration.Debug)
             {
@@ -144,6 +145,10 @@
                     string.Format("SprocsFolderName - The name of the folder where you keep your stored procedures. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_sprocs_folder_name),
                     option => configuration.SprocsFolderName = option)
+                .Add("ra=|runAfterOtherAnyTimeScripts=|runAfterOtherAnyTimeScriptsfolder=|runAfterOtherAnyTimeScriptsfoldername=",
+                    string.Format("RunAfterOtherAnyTimeScriptsFolderName - The name of the folder where you keep scripts that will be run after all of the other any time scripts complete. Will recurse through subfolders. Defaults to \"{0}\".",
+                        ApplicationParameters.default_runAfterOtherAnyTime_folder_name),
+                    option => configuration.RunAfterOtherAnyTimeScriptsFolderName = option)
                 .Add("p=|permissions=|permissionsfolder=|permissionsfoldername=",
                     string.Format("PermissionsFolderName - The name of the folder where you keep your permissions scripts. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_permissions_folder_name),
@@ -281,6 +286,12 @@
             {
                 show_help("Error: You must specify Database Name (/d) OR Connection String (/cs) at a minimum to use RoundhousE.", option_set);
             }
+
+            if (configuration.Restore && string.IsNullOrEmpty(configuration.RestoreFromPath))
+            {
+                show_help(
+                    "If you set Restore to true, you must specify a location for the database to be restored from (RestoreFromPath /restorefrompath).",option_set);
+            }
         }
 
         public static void show_help(string message, OptionSet option_set)
@@ -336,7 +347,8 @@
                  configuration.Drop,
                  configuration.DoNotCreateDatabase,
                  configuration.WithTransaction,
-                 configuration.RecoveryModeSimple);
+                 configuration.RecoveryModeSimple, 
+                 configuration);
         }
 
         private static RoundhouseRedGateCompareRunner get_diff_runner(ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner)

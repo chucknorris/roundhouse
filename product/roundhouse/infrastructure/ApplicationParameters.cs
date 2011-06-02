@@ -13,6 +13,7 @@ namespace roundhouse.infrastructure
         public readonly static string default_functions_folder_name = "functions";
         public readonly static string default_views_folder_name = "views";
         public readonly static string default_sprocs_folder_name = "sprocs";
+        public readonly static string default_runAfterOtherAnyTime_folder_name = "runAfterOtherAnyTimeScripts";
         public readonly static string default_permissions_folder_name = "permissions";
         public readonly static string default_environment_name = "LOCAL";
         public readonly static string default_roundhouse_schema_name = "RoundhousE";

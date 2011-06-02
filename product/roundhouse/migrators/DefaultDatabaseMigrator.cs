@@ -228,6 +228,28 @@ namespace roundhouse.migrators
             return crypto_provider.hash(sql_to_run.Replace(@"'", @"''"));
         }
 
+        public bool this_is_an_every_time_script(string script_name, bool run_this_script_every_time)
+        {
+            bool this_is_an_everytime_script = false;
+
+            if (run_this_script_every_time)
+            {
+                this_is_an_everytime_script =  true;
+            }
+
+            if (script_name.to_lower().StartsWith("everytime."))
+            {
+                this_is_an_everytime_script = true;
+            }
+
+            if (script_name.to_lower().Contains(".everytime."))
+            {
+                this_is_an_everytime_script = true;
+            }
+
+            return this_is_an_everytime_script;
+        }
+
         private bool this_script_has_run_already(string script_name)
         {
             return database.has_run_script_already(script_name);
@@ -266,7 +288,7 @@ namespace roundhouse.migrators
 
         private bool this_script_should_run(string script_name, string sql_to_run, bool run_this_script_once, bool run_this_script_every_time)
         {
-            if (run_this_script_every_time)
+            if (this_is_an_every_time_script(script_name, run_this_script_every_time))
             {
                 return true;
             }
@@ -284,17 +306,23 @@ namespace roundhouse.migrators
             return this_script_has_changed_since_last_run(script_name, sql_to_run);
         }
 
-        private bool this_is_an_environment_file_and_its_in_the_right_environment(string script_name, Environment environment)
+        public bool this_is_an_environment_file_and_its_in_the_right_environment(string script_name, Environment environment)
         {
             Log.bound_to(this).log_a_debug_event_containing("Checking to see if {0} is an environment file. We are in the {1} environment.", script_name, environment.name);
             if (!script_name.to_lower().Contains(".env."))
             {
+                // return true because this is NOT an environment file for the next check
                 return true;
             }
 
             bool environment_file_is_in_the_right_environment = false;
 
-            if (script_name.to_lower().Contains(environment.name.to_lower() + "."))
+            if (script_name.to_lower().StartsWith(environment.name.to_lower() + "."))
+            {
+                environment_file_is_in_the_right_environment = true;
+            }
+
+            if (script_name.to_lower().Contains("." + environment.name.to_lower() + "."))
             {
                 environment_file_is_in_the_right_environment = true;
             }
