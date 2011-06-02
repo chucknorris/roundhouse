@@ -1,4 +1,5 @@
 using roundhouse.folders;
+using roundhouse.traversal;
 
 namespace roundhouse.runners
 {
@@ -24,7 +25,6 @@ namespace roundhouse.runners
         private readonly bool dont_create_the_database;
         private bool run_in_a_transaction;
         private readonly bool use_simple_recovery;
-        private const string SQL_EXTENSION = "*.sql";
 
         public RoundhouseMigrationRunner(
                 string repository_path,
@@ -115,48 +115,42 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing(" Migrating {0} from version {1} to {2}.", database_migrator.database.database_name, current_version, new_version);
                     long version_id = database_migrator.version_the_database(repository_path, new_version);
 
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
-                    Log.bound_to(this).log_an_info_event_containing("Migration Scripts");
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These should be one time only scripts.", "Update", known_folders.up.folder_full_path);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.up.folder_full_path, version_id, known_folders.up, environment, new_version);
-
                     //todo: remember when looking through all files below here, change CREATE to ALTER
                     // we are going to create the create if not exists script
 
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run First After Update", known_folders.run_first_after_up.folder_full_path);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.run_first_after_up.folder_full_path, version_id, known_folders.run_first_after_up, environment, new_version);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Function", known_folders.functions.folder_full_path);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.functions.folder_full_path, version_id, known_folders.functions, environment, new_version);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "View", known_folders.views.folder_full_path);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.views.folder_full_path, version_id, known_folders.views, environment, new_version);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Stored Procedure", known_folders.sprocs.folder_full_path);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.sprocs.folder_full_path, version_id, known_folders.sprocs, environment, new_version);
+                    ITraversal traversal = new FileSystemTraversal(known_folders, file_system);
 
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run after Other Anytime Scripts", known_folders.runAfterOtherAnyTimeScripts.folder_full_path);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.runAfterOtherAnyTimeScripts.folder_full_path, version_id, known_folders.runAfterOtherAnyTimeScripts, environment, new_version);
-                    
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These scripts will run every time.", "Permission", known_folders.permissions.folder_full_path);
-                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    if (run_in_a_transaction)
-                    {
-                        database_migrator.close_connection();
-                        database_migrator.open_connection(false);
-                    }
+                    traversal.traverse(
+                        script =>
+                        {
+                            bool the_sql_ran = database_migrator.run_sql(script.script_contents, script.script_name,
+                                                                         script.folder.should_run_items_in_folder_once,
+                                                                         script.folder.should_run_items_in_folder_every_time,
+                                                                         version_id, environment, new_version, repository_path);
+                            if (the_sql_ran)
+                            {
+                                try
+                                {
+                                    copy_to_change_drop_folder(script.script_name, script.folder);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Log.bound_to(this).log_a_warning_event_containing("Unable to copy {0} to {1}. {2}{3}", script.script_name, script.folder.folder_full_path, System.Environment.NewLine, ex.ToString());
+                                }
+                            }
 
-                    traverse_files_and_run_sql(known_folders.permissions.folder_full_path, version_id, known_folders.permissions, environment, new_version);
+                        },
+                        folder =>
+                        {
+                            if (run_in_a_transaction && folder == known_folders.permissions)
+                            {
+                                database_migrator.close_connection();
+                                database_migrator.open_connection(false);
+                            }
+                            return true;
+                        }
+                    );
+
 
                     Log.bound_to(this).log_an_info_event_containing("{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",
                                                 System.Environment.NewLine,
@@ -194,6 +188,10 @@ namespace roundhouse.runners
             }
         }
 
+        private void run_sql(IScriptInfo script)
+        {
+        }
+
         private void create_change_drop_folder()
         {
             file_system.create_directory(known_folders.change_drop.folder_full_path);
@@ -212,37 +210,6 @@ namespace roundhouse.runners
 
         //todo: understand what environment you are deploying to so you can decide what to run - it was suggested there be a specific tag in the file name. Like vw_something.ENV.sql and that be a static "ENV". Then to key off of the actual environment name on the front of the file (ex. TEST.vw_something.ENV.sql)
         //todo:down story
-
-        public void traverse_files_and_run_sql(string directory, long version_id, MigrationsFolder migration_folder, Environment migrating_environment, string repository_version)
-        {
-            if (!file_system.directory_exists(directory)) return;
-
-            foreach (string sql_file in file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION))
-            {
-                string sql_file_text = File.ReadAllText(sql_file);
-                Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
-                bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file),
-                                                             migration_folder.should_run_items_in_folder_once,
-                                                             migration_folder.should_run_items_in_folder_every_time,
-                                                             version_id, migrating_environment, repository_version, repository_path);
-                if (the_sql_ran)
-                {
-                    try
-                    {
-                        copy_to_change_drop_folder(sql_file, migration_folder);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.bound_to(this).log_a_warning_event_containing("Unable to copy {0} to {1}. {2}{3}", sql_file, migration_folder.folder_full_path, System.Environment.NewLine, ex.ToString());
-                    }
-                }
-            }
-
-            foreach (string child_directory in file_system.get_all_directory_name_strings_in(directory))
-            {
-                traverse_files_and_run_sql(child_directory, version_id, migration_folder, migrating_environment, repository_version);
-            }
-        }
 
         private void copy_to_change_drop_folder(string sql_file_ran, Folder migration_folder)
         {

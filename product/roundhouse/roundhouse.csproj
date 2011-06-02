@@ -184,6 +184,8 @@
     <Compile Include="migrators\DatabaseMigrator.cs" />
     <Compile Include="migrators\DefaultDatabaseMigrator.cs" />
     <Compile Include="databases\SqlServerLiteSpeedDatabase.cs" />
+    <Compile Include="traversal\FileSystemTraversal.cs" />
+    <Compile Include="traversal\ITraversal.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="infrastructure.app\logging\log4net.config.xml" />
