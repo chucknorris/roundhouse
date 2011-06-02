@@ -129,7 +129,8 @@ namespace roundhouse.runners
                     traversal.traverse(
                         script =>
                         {
-                            bool the_sql_ran = database_migrator.run_sql(script.script_contents, script.script_name,
+                            string script_file_text = replace_tokens(File.ReadAllText(script.script_contents));
+                            bool the_sql_ran = database_migrator.run_sql(script_file_text, script.script_name,
                                                                          script.folder.should_run_items_in_folder_once,
                                                                          script.folder.should_run_items_in_folder_every_time,
                                                                          version_id, environment, new_version, repository_path);
