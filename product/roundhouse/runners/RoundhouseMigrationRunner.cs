@@ -64,7 +64,7 @@ namespace roundhouse.runners
 
             Log.bound_to(this).log_an_info_event_containing("Running {0} v{1} against {2} - {3}.",
                     ApplicationParameters.name,
-                    infrastructure.VersionInformation.get_current_assembly_version(),
+                    VersionInformation.get_current_assembly_version(),
                     database_migrator.database.server_name,
                     database_migrator.database.database_name);
 
@@ -126,43 +126,46 @@ namespace roundhouse.runners
 
                     ITraversal traversal = new FileSystemTraversal(known_folders, file_system);
 
-                    traversal.traverse(
-                        script =>
+                    traversal.traverse(cfg =>
                         {
-                            string script_file_text = replace_tokens(File.ReadAllText(script.script_contents));
-                            bool the_sql_ran = database_migrator.run_sql(script_file_text, script.script_name,
-                                                                         script.folder.should_run_items_in_folder_once,
-                                                                         script.folder.should_run_items_in_folder_every_time,
-                                                                         version_id, environment, new_version, repository_path);
-                            if (the_sql_ran)
-                            {
-                                try
+                            cfg.include_all_folders();
+                            cfg.for_folder_if(
+                                folder => run_in_a_transaction && folder == known_folders.permissions,
+                                folder =>
                                 {
-                                    copy_to_change_drop_folder(script.script_name, script.folder);
+                                    database_migrator.close_connection();
+                                    database_migrator.open_connection(false);
                                 }
-                                catch (Exception ex)
+                            );
+                            cfg.for_each_script(
+                                script =>
                                 {
-                                    Log.bound_to(this).log_a_warning_event_containing("Unable to copy {0} to {1}. {2}{3}", script.script_name, script.folder.folder_full_path, System.Environment.NewLine, ex.ToString());
-                                }
-                            }
+                                    string script_file_text = replace_tokens(script.script_contents);
+                                    bool the_sql_ran = database_migrator.run_sql(script_file_text, script.script_name,
+                                                                                    script.folder.should_run_items_in_folder_once,
+                                                                                    script.folder.should_run_items_in_folder_every_time,
+                                                                                    version_id, environment, new_version, repository_path);
+                                    if (the_sql_ran)
+                                    {
+                                        try
+                                        {
+                                            copy_to_change_drop_folder(script.script_name, script.folder);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.bound_to(this).log_a_warning_event_containing("Unable to copy {0} to {1}. {2}{3}", script.script_name, script.folder.folder_full_path, System.Environment.NewLine, ex.ToString());
+                                        }
+                                    }
 
-                        },
-                        folder =>
-                        {
-                            if (run_in_a_transaction && folder == known_folders.permissions)
-                            {
-                                database_migrator.close_connection();
-                                database_migrator.open_connection(false);
-                            }
-                            return true;
+                                }
+                            );
                         }
                     );
-
 
                     Log.bound_to(this).log_an_info_event_containing("{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",
                                                 System.Environment.NewLine,
                                                 ApplicationParameters.name,
-                                                infrastructure.VersionInformation.get_current_assembly_version(),
+                                                VersionInformation.get_current_assembly_version(),
                                                 database_migrator.database.database_name,
                                                 new_version,
                                                 known_folders.change_drop.folder_full_path);
@@ -195,10 +198,6 @@ namespace roundhouse.runners
             }
         }
 
-        private void run_sql(IScriptInfo script)
-        {
-        }
-
         private void create_change_drop_folder()
         {
             file_system.create_directory(known_folders.change_drop.folder_full_path);
@@ -220,7 +219,7 @@ namespace roundhouse.runners
 
         private string replace_tokens(string sql_text)
         {
-            return TokenReplacer.replace_tokens(configuration,sql_text);
+            return TokenReplacer.replace_tokens(configuration, sql_text);
         }
 
         private void copy_to_change_drop_folder(string sql_file_ran, Folder migration_folder)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using roundhouse.folders;
@@ -29,15 +30,19 @@ namespace roundhouse.traversal
                               };
         }
 
-        public void traverse(Action<IScriptInfo> script_action, Func<MigrationsFolder, bool> opt)
+        public void traverse(Action<TraversalConfiguration> configure_traversal)
         {
+            TraversalConfiguration configuration = new TraversalConfiguration();
+            configure_traversal(configuration);
+
             Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
             Log.bound_to(this).log_an_info_event_containing("Migration Scripts");
             Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
 
             foreach (MigrationsFolder folder in all_folders)
             {
-                if (!opt(folder))
+                MigrationsFolder temp_folder = folder;
+                if (!configuration.all_folder_predicates.Any(p => p(temp_folder)))
                     continue;
                 
                 Log.bound_to(this).log_an_info_event_containing(
@@ -46,11 +51,17 @@ namespace roundhouse.traversal
                     folder.should_run_items_in_folder_once ? "These should be one time only scripts." : string.Empty);
                 Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
 
-                traverse_folder(folder, folder.folder_full_path, script_action);
+                foreach (TraversalConfiguration.FolderPair folder_pair in configuration.all_folder_actions)
+                {
+                    if (folder_pair.should_run(folder))
+                        folder_pair.action(folder);
+                }
+
+                traverse_folder(folder, folder.folder_full_path, configuration);
             }
         }
 
-        private void traverse_folder(MigrationsFolder folder, string directory, Action<IScriptInfo> script_action)
+        private void traverse_folder(MigrationsFolder folder, string directory, TraversalConfiguration configuration)
         {
             if (!file_system.directory_exists(directory)) 
                 return;
@@ -58,18 +69,21 @@ namespace roundhouse.traversal
             foreach (string sql_file in file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION))
             {
                 Log.bound_to(this).log_a_debug_event_containing(" Found {0}.", sql_file);
-                script_action(
-                    new ScriptFileInfo()
-                        {
-                            folder = folder,
-                            script_name = file_system.get_file_name_from(sql_file),
-                            script_contents = File.ReadAllText(sql_file)
-                        }
-                    );
+                ScriptFileInfo info = new ScriptFileInfo
+                {
+                    folder = folder,
+                    script_name = file_system.get_file_name_from(sql_file),
+                    script_contents = File.ReadAllText(sql_file)
+                };
+                foreach (TraversalConfiguration.ScriptPair script_pair in configuration.all_script_actions)
+                {
+                    if (script_pair.should_run(info))
+                        script_pair.action(info);
+                }
             }
 
             foreach (string child_directory in file_system.get_all_directory_name_strings_in(directory))
-                traverse_folder(folder, child_directory, script_action);
+                traverse_folder(folder, child_directory, configuration);
         }
     }
 }

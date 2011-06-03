@@ -188,6 +188,7 @@
     <Compile Include="databases\SqlServerLiteSpeedDatabase.cs" />
     <Compile Include="traversal\FileSystemTraversal.cs" />
     <Compile Include="traversal\ITraversal.cs" />
+    <Compile Include="traversal\TraversalConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="infrastructure.app\logging\log4net.config.xml" />
