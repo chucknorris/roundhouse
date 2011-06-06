@@ -17,6 +17,7 @@ namespace roundhouse.infrastructure.persistence
         private readonly ConfigurationPropertyHolder configuration_holder;
         private readonly Dictionary<string, Func<IPersistenceConfigurer>> func_dictionary;
         private bool is_merged = true;
+        private const string proxy_factory = NHibernate.Cfg.Environment.ProxyFactoryFactoryClass;
         private const string proxy_factory_name = "NHibernate.ByteCode.Castle.ProxyFactoryFactory";
 
         public NHibernateSessionFactoryBuilder(ConfigurationPropertyHolder config)
@@ -51,7 +52,7 @@ namespace roundhouse.infrastructure.persistence
             string top_namespace = configuration_holder.DatabaseType.Substring(0, configuration_holder.DatabaseType.IndexOf(','));
             top_namespace = top_namespace.Substring(0, top_namespace.LastIndexOf('.'));
             string assembly_name = configuration_holder.DatabaseType.Substring(configuration_holder.DatabaseType.IndexOf(',') + 1);
-            
+
             try
             {
                 string key = configuration_holder.DatabaseType.Substring(0, configuration_holder.DatabaseType.IndexOf(',')) + ", " + ApplicationParameters.get_merged_assembly_name();
@@ -79,18 +80,17 @@ namespace roundhouse.infrastructure.persistence
                               })
                 .ExposeConfiguration(cfg =>
                     {
-                        if (is_merged)
+                        string proxy_factory_location = proxy_factory_name + ", " + ApplicationParameters.get_merged_assembly_name();
+
+                        if (!is_merged) proxy_factory_location = proxy_factory_name + ", NHibernate.ByteCode.Castle";
+
+                        if (cfg.Properties.ContainsKey(proxy_factory))
                         {
-                            const string proxy_factory = "proxyfactory.factory_class";
-                            string proxy_factory_merged_name = proxy_factory_name + ", " + ApplicationParameters.get_merged_assembly_name();
-                            if (cfg.Properties.ContainsKey(proxy_factory))
-                            {
-                                cfg.Properties[proxy_factory] = proxy_factory_merged_name;
-                            }
-                            else
-                            {
-                                cfg.Properties.Add(proxy_factory, proxy_factory_merged_name);
-                            }
+                            cfg.Properties[proxy_factory] = proxy_factory_location;
+                        }
+                        else
+                        {
+                            cfg.Properties.Add(proxy_factory, proxy_factory_location);
                         }
 
                         cfg.SetListener(ListenerType.PreInsert, new AuditEventListener());

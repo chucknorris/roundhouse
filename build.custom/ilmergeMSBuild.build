@@ -87,7 +87,7 @@
     <echo message="Removing unneeded assemblies before moving the merged assembly back into ${dirs.merge.from}."/>
     <delete>
       <fileset basedir="${dirs.merge.from}" >
-        <exclude name="log4net*" />
+        <exclude name="log4net.dll" />
         <exclude name="Microsoft.Build.Framework.dll" />
         <exclude name="roundhouse.tasks.dll" />
         <exclude name="*.proj" />

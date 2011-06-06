@@ -115,10 +115,12 @@
     <Compile Include="consoles\CommandExecutor.cs" />
     <Compile Include="databases\DefaultDatabase.cs" />
     <Compile Include="databases\MockDatabase.cs" />
+    <Compile Include="DifferenceWithFluentNHibernate.cs" />
     <Compile Include="infrastructure.app\builders\VersionResolverBuilder.cs" />
     <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
     <Compile Include="infrastructure\extensions\ObjectExtensions.cs" />
     <Compile Include="infrastructure\persistence\AuditEventListener.cs" />
+    <Compile Include="infrastructure\persistence\DifferencingNHibernateSessionFactory.cs" />
     <Compile Include="infrastructure\persistence\IRepository.cs" />
     <Compile Include="infrastructure\persistence\NHibernateSessionFactoryBuilder.cs" />
     <Compile Include="infrastructure\persistence\Repository.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="parameters\AdoNetParameter.cs" />
     <Compile Include="parameters\IParameter.cs" />
     <Compile Include="Migrate.cs" />
+    <Compile Include="RoundhousEFluentNHibernateDiffingType.cs" />
     <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
     <Compile Include="sqlsplitters\StatementSplitter.cs" />

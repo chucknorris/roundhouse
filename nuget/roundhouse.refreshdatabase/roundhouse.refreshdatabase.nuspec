@@ -7,11 +7,11 @@
     <authors>Rob Reynolds</authors>
     <owners>Rob Reynolds</owners>
     <summary>RoundhousE - Professional Database Change and Versioning Management</summary>
-    <description>RoundhousE is a Professional Database Change and Versioning Management tool. Please create a console application, and then run this.</description>
+    <description>RoundhousE is a Professional Database Change and Versioning Management tool. This brings diffing with FNH and migration with RH to your application to speed up development. Please add this to a x86 console application.</description>
     <projectUrl>http://projectroundhouse.org</projectUrl>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <tags>roundhouse db migrations chocolatey chucknorris</tags>
+    <tags>roundhouse db migrations chucknorris</tags>
     <iconUrl>http://roundhouse.googlecode.com/svn/trunk/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
     <dependencies>
       <dependency id="roundhouse.lib" version="0.7.0.282" />

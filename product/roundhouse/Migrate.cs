@@ -3,6 +3,7 @@ namespace roundhouse
     using System;
     using folders;
     using infrastructure.app;
+    using infrastructure.app.logging;
     using infrastructure.containers;
     using infrastructure.filesystem;
     using infrastructure.logging;
@@ -18,8 +19,14 @@ namespace roundhouse
         public Migrate()
         {
             configuration = new consoles.ConsoleConfiguration();
+            Log4NetAppender.configure();
         }
 
+        /// <summary>
+        /// This is an optional helper to give you the correct settings for a logger. You can still set this in the set by calling propConfig.Logger without having to call this method.
+        /// </summary>
+        /// <param name="logger">This is the logger you want RoundhousE to also use.</param>
+        /// <returns></returns>
         public Migrate SetCustomLogging(Logger logger)
         {
             return Set(c => c.Logger = logger);
@@ -28,16 +35,21 @@ namespace roundhouse
         /// <summary>
         /// Set your options for running rh here. It looks like Set(c => {c.DatabaseName = "bob"; c.ServerName = "(local)";}).Run();
         /// </summary>
-        /// <param name="propConfig">the</param>
+        /// <param name="propConfig">The configuration to set</param>
         /// <returns>Itself so you can chain each of these</returns>
         public Migrate Set(Action<ConfigurationPropertyHolder> propConfig)
         {
             propConfig.Invoke(configuration);
             return this;
         }
-        
+
+        internal ConfigurationPropertyHolder GetConfiguration()
+        {
+            return configuration;
+        }
+
         /// <summary>
-        /// Call this method to run the migrator after all of your other options are set.
+        /// Call this method to run the migrator after you have set the options.
         /// </summary>
         public void Run()
         {
@@ -60,7 +72,32 @@ namespace roundhouse
 
             migrator.run();
         }
-    
-    }
 
+        /// <summary>
+        /// Call this method to run a drop/create migration (instead of just a normal run) after you have set the options. This does not work in conjunction with the restore.
+        /// </summary>
+        /// <remarks>This is usually used during initial development</remarks>
+        public void RunDropCreate()
+        {
+            if (configuration.Restore) throw new ApplicationException("You cannot use Drop/Create with Restore set to true.");
+            configuration.Drop = true;
+            Run();
+            configuration.Drop = false;
+            Run();
+        }
+
+        /// <summary>
+        /// Call this method to run a restore migration (instead of just a normal run) after you have set the options. This is a helper method - you can also use the normal Run() with the restore set to true.
+        /// </summary>
+        /// <remarks>This is usually used during maintenance development (after production)</remarks>
+        public void RunRestore()
+        {
+            configuration.Restore = true;
+            if (string.IsNullOrEmpty(configuration.RestoreFromPath)) throw new ApplicationException("You must set RestoreFromPath in the configuration.");
+
+            Run();
+        }
+
+    }
+    
 }
