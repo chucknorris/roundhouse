@@ -172,7 +172,7 @@ namespace roundhouse.console
                     option => configuration.ScriptsRunErrorsTableName = option)
                 //environment
                 .Add("env=|environment=|environmentname=",
-                    string.Format("EnvironmentName - This allows RH to be environment aware and only run scripts that are in a particular environment based on the naming of the script. LOCAL.something.sql would only be run in the LOCAL environment. Defaults to \"{0}\".",
+                    string.Format("EnvironmentName - This allows RH to be environment aware and only run scripts that are in a particular environment based on the naming of the script. LOCAL.something.ENV.sql would only be run in the LOCAL environment. Defaults to \"{0}\".",
                         ApplicationParameters.default_environment_name),
                     option => configuration.EnvironmentName = option)
                 //restore
