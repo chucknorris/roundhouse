@@ -15,7 +15,7 @@
     <iconUrl>http://roundhouse.googlecode.com/svn/trunk/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
     <dependencies>
       <dependency id="log4net" version="1.2.10" />
-      <!--dependency id="FluentNHibernate" version="1.2.0.712" /-->
+      <dependency id="FluentNHibernate" version="1.2.0.712" />
     </dependencies>
   </metadata>
 </package>

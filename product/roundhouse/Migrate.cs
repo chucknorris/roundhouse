@@ -43,7 +43,7 @@ namespace roundhouse
             return this;
         }
 
-        internal ConfigurationPropertyHolder GetConfiguration()
+        public ConfigurationPropertyHolder GetConfiguration()
         {
             return configuration;
         }

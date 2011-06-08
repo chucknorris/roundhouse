@@ -53,10 +53,10 @@
           <exclude name="${dirs.merge.from}\${file.merge.name}" />
           <exclude name="${dirs.merge.from}\log4net.dll" />
           <include name="${dirs.merge.from}\*.exe" />
-          <include name="${dirs.merge.from}\*.dll" />
-          <!--include name="${dirs.merge.from}\roundhouse*.dll" />
+          <!--include name="${dirs.merge.from}\*.dll" /-->
+          <include name="${dirs.merge.from}\roundhouse*.dll" />
           <include name="${dirs.merge.from}\NHibernate.JetDriver.dll" />
-          <include name="${dirs.merge.from}\StructureMap.dll" /-->
+          <include name="${dirs.merge.from}\StructureMap.dll" />
         </items>
       </in>
       <do>
@@ -89,12 +89,12 @@
     <delete>
       <fileset basedir="${dirs.merge.from}" >
         <exclude name="log4net.dll" />
-        <include name="*.*" />
-        <!--include name="roundhouse*" />
+        <!--include name="*.*" /-->
+        <include name="roundhouse*" />
         <include name="*.exe" />
         <include name="NHibernate.JetDriver.dll" />
         <include name="StructureMap.dll" />
-        <include name="Microsoft.Build.Framework.*" /-->
+        <include name="Microsoft.Build.Framework.*" />
       </fileset>
     </delete>
   </target>
