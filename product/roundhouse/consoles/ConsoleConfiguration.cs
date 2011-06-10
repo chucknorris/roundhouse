@@ -1,8 +1,7 @@
-using roundhouse.infrastructure.logging;
-
 namespace roundhouse.consoles
 {
     using infrastructure.app;
+    using infrastructure.logging;
 
     public sealed class ConsoleConfiguration : ConfigurationPropertyHolder
     {

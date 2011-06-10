@@ -16,7 +16,7 @@ namespace SampleProject.orm
             Id(x => x.id).Column("Id").GeneratedBy.Identity().UnsavedValue(0);
             Map(x => x.name);
             Map(x => x.firstname);
-            Map(x => x.middlename);
+           // Map(x => x.middlename);
             Map(x => x.lastname);
         }
     }

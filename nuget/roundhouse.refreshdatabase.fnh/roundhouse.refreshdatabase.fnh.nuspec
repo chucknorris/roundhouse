@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata>
-    <id>roundhouse.refreshdatabase</id>
-    <title>RoundhousE RefreshDatabase</title>
+    <id>roundhouse.refreshdatabase.fnh</id>
+    <title>RoundhousE RefreshDatabase (FluentNHibernate)</title>
     <version>0.7.0.282</version>
     <authors>Rob Reynolds</authors>
     <owners>Rob Reynolds</owners>
     <summary>RoundhousE - Professional Database Change and Versioning Management</summary>
-    <description>RoundhousE is a Professional Database Change and Versioning Management tool. This brings diffing with FNH and migration with RH to your application to speed up development. Please add this to a x86 console application.</description>
+    <description>RoundhousE is a Professional Database Change and Versioning Management tool. This brings diffing with FNH and migration with RH to your application to speed up development. NOTE: Please add this to a x86 console application. Will not work unless the console is x86.</description>
     <projectUrl>http://projectroundhouse.org</projectUrl>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

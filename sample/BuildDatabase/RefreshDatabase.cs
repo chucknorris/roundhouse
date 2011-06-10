@@ -55,19 +55,17 @@ namespace BuildDatabase
 
         private static void RunRoundhouseNhibernate()
         {
-
             var mappingsAssembly = Assembly.LoadFrom(_mappingsAssemblyPath);
             var conventionsAssembly = Assembly.LoadFrom(_conventionsAssemblyPath);
 
-            var migrator = new Migrate().Set(c =>
-                    {
-                        c.DatabaseName = _databaseName;
-                        c.RepositoryPath = _repositoryPath;
-                        c.SqlFilesDirectory = _pathToSqlScripts;
-                        c.RestoreFromPath = _pathToRestore;
-                        c.Silent = true;
-                        c.RecoveryModeSimple = true;
-                    });
+            var migrator = new Migrate().Set(c => {
+                                                 c.DatabaseName = _databaseName;
+                                                 c.RepositoryPath = _repositoryPath;
+                                                 c.SqlFilesDirectory = _pathToSqlScripts;
+                                                 c.RestoreFromPath = _pathToRestore;
+                                                 c.Silent = true;
+                                                 c.RecoveryModeSimple = true;
+                                             });
 
 
             var diffType = _restoreDuringMaintenance ? RoundhousEFluentNHDiffingType.MaintenanceWithRestore : RoundhousEFluentNHDiffingType.Maintenance;
