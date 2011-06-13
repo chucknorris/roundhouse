@@ -8,7 +8,7 @@ namespace roundhouse.folders
                                    MigrationsFolder functions,
                                    MigrationsFolder views,
                                    MigrationsFolder sprocs,
-                                   MigrationsFolder runAfterOtherAnyTimeScripts,        
+                                   MigrationsFolder run_after_other_any_time_scripts,        
                                    MigrationsFolder permissions,
                                    Folder change_drop
             )
@@ -19,7 +19,7 @@ namespace roundhouse.folders
             this.functions = functions;
             this.views = views;
             this.sprocs = sprocs;
-            this.runAfterOtherAnyTimeScripts = runAfterOtherAnyTimeScripts;
+            this.runAfterOtherAnyTimeScripts = run_after_other_any_time_scripts;
             this.permissions = permissions;
             this.change_drop = change_drop;
         }
