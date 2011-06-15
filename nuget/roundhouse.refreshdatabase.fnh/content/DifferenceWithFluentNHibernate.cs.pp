@@ -53,10 +53,10 @@ namespace $rootnamespace$
                     run_initial_database_setup(databaseMigrator, configuration, mappingsAssembly, conventionsAssembly);
                     break;
                 case RoundhousEFluentNHDiffingType.Maintenance:
-                    run_maintenance_database_setup(false, databaseMigrator, configuration, mappingsAssembly, conventionsAssembly);
+                    run_maintenance_database_setup(false, databaseMigrator, configuration, mappingsAssembly, conventionsAssembly, name_of_script_to_create);
                     break;
                 case RoundhousEFluentNHDiffingType.MaintenanceWithRestore:
-                    run_maintenance_database_setup(true, databaseMigrator, configuration, mappingsAssembly, conventionsAssembly);
+                    run_maintenance_database_setup(true, databaseMigrator, configuration, mappingsAssembly, conventionsAssembly,name_of_script_to_create);
                     break;
             }
         }
@@ -92,8 +92,11 @@ namespace $rootnamespace$
 
         // maintenance database setup
 
-        private void run_maintenance_database_setup(bool restoring_the_database, Migrate migrator, ConfigurationPropertyHolder configuration, Assembly mappings_assembly, Assembly conventions_assembly)
+        private void run_maintenance_database_setup(bool restoring_the_database, Migrate migrator, ConfigurationPropertyHolder configuration, Assembly mappings_assembly, Assembly conventions_assembly,string name_of_script)
         {
+            var updateScriptFileName = Path.Combine(path_to_sql_scripts_up_folder, name_of_script);
+            if (File.Exists(updateScriptFileName)) { File.Delete(updateScriptFileName); }
+
             if (restoring_the_database)
             {
                 configuration.Restore = true;
