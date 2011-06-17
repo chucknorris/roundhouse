@@ -105,7 +105,7 @@ namespace roundhouse.console
                     option => configuration.ConnectionStringAdmin = option)
                 //database type
                 .Add("dt=|dbt=|databasetype=",
-                    string.Format("DatabaseType - Tells RH what type of database it is running on. This is a plugin model. This is the fully qualified name of a class that implements the interface roundhouse.sql.Database, roundhouse. If you have your own assembly, just set it next to rh.exe and set this value appropriately. Defaults to \"{0}\" which can also run against SQL Server 2005.",
+                    string.Format("DatabaseType - Tells RH what type of database it is running on. This is a plugin model. This is the fully qualified name of a class that implements the interface roundhouse.sql.Database, roundhouse. If you have your own assembly, just set it next to rh.exe and set this value appropriately. Defaults to 'sqlserver' which is a synonym for '{0}'.",
                         ApplicationParameters.default_database_type),
                     option => configuration.DatabaseType = option)
                 // versioning
@@ -223,11 +223,11 @@ namespace roundhouse.console
                     option => configuration.RecoveryModeSimple = option != null)
                 //debug
                 .Add("debug",
-                    "Debug - This instructs RH to write out all messages.",
+                    "Debug - This instructs RH to write out all messages. Defaults to false.",
                     option => configuration.Debug = option != null)
                 //force all anytime scripts
                 .Add("runallanytimescripts|forceanytimescripts",
-                    "RunAllAnyTimeScripts - This instructs RH to run any time scripts every time it is run.",
+                    "RunAllAnyTimeScripts - This instructs RH to run any time scripts every time it is run. Defaults to false.",
                     option => configuration.RunAllAnyTimeScripts = option != null)
                 //recorders
                 .Add("baseline",
