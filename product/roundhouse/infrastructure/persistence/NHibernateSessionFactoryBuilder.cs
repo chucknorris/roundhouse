@@ -97,8 +97,7 @@ namespace roundhouse.infrastructure.persistence
                 .ExposeConfiguration(cfg => {
                                          string proxy_factory_location = proxy_factory_name + ", " + ApplicationParameters.get_merged_assembly_name();
 
-                                         if (!ApplicationParameters.is_type_merged_in_this_assembly(proxy_factory_name))
-                                             proxy_factory_location = proxy_factory_name + ", NHibernate.ByteCode.Castle";
+                                         if (!ApplicationParameters.is_type_merged_in_this_assembly(proxy_factory_name)) proxy_factory_location = proxy_factory_name + ", NHibernate.ByteCode.Castle";
 
                                          if (cfg.Properties.ContainsKey(proxy_factory))
                                          {
@@ -108,6 +107,9 @@ namespace roundhouse.infrastructure.persistence
                                          {
                                              cfg.Properties.Add(proxy_factory, proxy_factory_location);
                                          }
+
+						// FIXME: Quick workaround for MySQL's defect with reserved words auto-quoting http://216.121.112.228/browse/NH-1906
+                    //please verify fixed Diyan	cfg.Properties["hbm2ddl.keywords"] = "none";
 
                                          cfg.SetListener(ListenerType.PreInsert, new AuditEventListener());
                                          cfg.SetListener(ListenerType.PreUpdate, new AuditEventListener());

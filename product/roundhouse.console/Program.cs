@@ -22,7 +22,7 @@ namespace roundhouse.console
     using infrastructure.app.logging;
     using infrastructure.extensions;
 
-    internal class Program
+    public class Program
     {
         private static readonly ILog the_logger = LogManager.GetLogger(typeof(Program));
 
