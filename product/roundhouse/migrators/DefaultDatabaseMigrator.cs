@@ -6,6 +6,7 @@ namespace roundhouse.migrators
     using cryptography;
     using databases;
     using infrastructure.app;
+    using infrastructure.app.tokens;
     using infrastructure.extensions;
     using infrastructure.logging;
     using sqlsplitters;
@@ -71,7 +72,7 @@ namespace roundhouse.migrators
 
             if (restoring_database)
             {
-                restore_database(restore_path, custom_restore_options);
+                restore_database(restore_path, TokenReplacer.replace_tokens(configuration,custom_restore_options));
             }
         }
 

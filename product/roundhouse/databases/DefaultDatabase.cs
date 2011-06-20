@@ -5,6 +5,7 @@ namespace roundhouse.databases
     using System.Data;
     using connections;
     using infrastructure.app;
+    using infrastructure.app.tokens;
     using infrastructure.logging;
     using infrastructure.persistence;
     using model;
@@ -88,7 +89,7 @@ namespace roundhouse.databases
                 string create_script = create_database_script();
                 if (!string.IsNullOrEmpty(custom_create_database_script))
                 {
-                    create_script = custom_create_database_script;
+                    create_script = TokenReplacer.replace_tokens(configuration,custom_create_database_script);
                 }
                 run_sql(create_script);
             }
