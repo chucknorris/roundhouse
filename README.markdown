@@ -14,6 +14,8 @@ RoundhousE is an automated database deployment (change management) system that a
 
 It seeks to solve both maintenance concerns and ease of deployment. We follow some of the same idioms as other database management systems (SQL scripts), but we are different in that we think about future maintenance concerns. We want to always apply certain scripts (anything stateless like functions, views, stored procedures, and permissions), so we don't have to throw everything into our change scripts. This seeks to solves future source control concerns. How sweet is it when you can version the database according to your current source control version? 
 
+##[WIKI](https://github.com/chucknorris/roundhouse/wiki)
+
 ## Getting started with RoundhousE
 ### Downloads
  You can download RoundhousE from [http://code.google.com/p/roundhouse/downloads/list](http://code.google.com/p/roundhouse/downloads/list)  
@@ -59,6 +61,9 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+=0.8.0.x=  
+* RH now works with MySQL. Thanks Diyan. See details https://github.com/chucknorris/roundhouse/pull/3 (r317)  
+  
 =0.8.0.300=  
 * RH now does token replacement in the sql files using '{{PropertyName}}'. See [issue 33] (http://code.google.com/p/roundhouse/issues/detail?id=33) for details. (r299)  
 * Always run files that have '.EVERYTIME.' in the name. See [issue 51] (http://code.google.com/p/roundhouse/issues/detail?id=51) for details. (r299)  
