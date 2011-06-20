@@ -117,6 +117,7 @@
     <Compile Include="databases\MockDatabase.cs" />
     <Compile Include="DifferenceWithFluentNHibernate.cs" />
     <Compile Include="infrastructure.app\builders\VersionResolverBuilder.cs" />
+    <Compile Include="infrastructure.app\DatabaseTypeSynonyms.cs" />
     <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
     <Compile Include="infrastructure\extensions\ObjectExtensions.cs" />
     <Compile Include="infrastructure\persistence\AuditEventListener.cs" />

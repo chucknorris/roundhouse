@@ -108,8 +108,9 @@ namespace roundhouse.infrastructure.app
                 configuration_property_holder.RestoreTimeout = ApplicationParameters.default_restore_timeout;
             }
 
-            if (!string.IsNullOrEmpty(configuration_property_holder.RestoreFromPath)) {
-                configuration_property_holder.RestoreFromPath = Path.GetFullPath(configuration_property_holder.RestoreFromPath);    
+            if (!string.IsNullOrEmpty(configuration_property_holder.RestoreFromPath))
+            {
+                configuration_property_holder.RestoreFromPath = Path.GetFullPath(configuration_property_holder.RestoreFromPath);
             }
         }
 
@@ -130,7 +131,7 @@ namespace roundhouse.infrastructure.app
 
         private static InversionContainer build_items_for_container(ConfigurationPropertyHolder configuration_property_holder)
         {
-            configuration_property_holder.DatabaseType = convert_database_type_synonyms(configuration_property_holder.DatabaseType);
+            configuration_property_holder.DatabaseType = DatabaseTypeSynonyms.convert_database_type_synonyms(configuration_property_holder.DatabaseType);
 
             set_up_current_mappings(configuration_property_holder);
 
@@ -151,7 +152,7 @@ namespace roundhouse.infrastructure.app
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<Environment>().AsSingletons().Use(new DefaultEnvironment(configuration_property_holder));
                                         });
-            
+
             // forcing a build of database to initialize connections so we can be sure server/database have values
             Database database = ObjectFactory.GetInstance<Database>();
             database.initialize_connections(configuration_property_holder);
@@ -182,51 +183,6 @@ namespace roundhouse.infrastructure.app
             }
 
             return new MultipleLogger(loggers);
-        }
-
-        private static string convert_database_type_synonyms(string database_type)
-        {
-            string database_type_full_name = database_type;
-
-            switch (database_type.to_lower())
-            {
-                case "2008":
-                case "sql2008":
-                case "sqlserver2008":
-                case "2005":
-                case "sql2005":
-                case "sqlserver2005":
-                case "sql":
-                case "sql.net":
-                case "sqlserver":
-                case "sqlado.net":
-                    database_type_full_name =
-                        "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
-                    break;
-                case "2000":
-                case "sql2000":
-                case "sqlserver2000":
-                    database_type_full_name =
-                        "roundhouse.databases.sqlserver2000.SqlServerDatabase, roundhouse.databases.sqlserver2000";
-                    break;
-                case "mysql":
-                    database_type_full_name =
-                        "roundhouse.databases.mysql.MySqlDatabase, roundhouse.databases.mysql";
-                    break;
-                case "oracle":
-                    database_type_full_name =
-                        "roundhouse.databases.oracle.OracleDatabase, roundhouse.databases.oracle";
-                    break;
-                case "access" :
-                    database_type_full_name = "roundhouse.databases.access.AccessDatabase, roundhouse.databases.access";
-                    break;
-                //case "oledb":
-                //    database_type_full_name =
-                //        "roundhouse.databases.oledb.OleDbDatabase, roundhouse.databases.oledb";
-                //    break;
-            }
-
-            return database_type_full_name;
         }
     }
 }

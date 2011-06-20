@@ -87,40 +87,42 @@ namespace roundhouse.infrastructure.persistence
             Log.bound_to(this).log_a_debug_event_containing("Building Session Factory");
             var config = Fluently.Configure()
                 .Database(db_configuration)
-                .Mappings(m => {
-                              m.FluentMappings.Add(assembly.GetType(top_namespace + ".orm.VersionMapping", true, true))
-                                  .Add(assembly.GetType(top_namespace + ".orm.ScriptsRunMapping", true, true))
-                                  .Add(assembly.GetType(top_namespace + ".orm.ScriptsRunErrorMapping", true, true));
-                              //.Conventions.AddAssembly(assembly);
-                              //m.HbmMappings.AddFromAssembly(assembly);
-                          })
-                .ExposeConfiguration(cfg => {
-                                         string proxy_factory_location = proxy_factory_name + ", " + ApplicationParameters.get_merged_assembly_name();
+                .Mappings(m =>
+                {
+                    m.FluentMappings.Add(assembly.GetType(top_namespace + ".orm.VersionMapping", true, true))
+                        .Add(assembly.GetType(top_namespace + ".orm.ScriptsRunMapping", true, true))
+                        .Add(assembly.GetType(top_namespace + ".orm.ScriptsRunErrorMapping", true, true));
+                    //.Conventions.AddAssembly(assembly);
+                    //m.HbmMappings.AddFromAssembly(assembly);
+                })
+                .ExposeConfiguration(cfg =>
+                {
+                    string proxy_factory_location = proxy_factory_name + ", " + ApplicationParameters.get_merged_assembly_name();
 
-                                         if (!ApplicationParameters.is_type_merged_in_this_assembly(proxy_factory_name)) proxy_factory_location = proxy_factory_name + ", NHibernate.ByteCode.Castle";
+                    if (!ApplicationParameters.is_type_merged_in_this_assembly(proxy_factory_name)) proxy_factory_location = proxy_factory_name + ", NHibernate.ByteCode.Castle";
 
-                                         if (cfg.Properties.ContainsKey(proxy_factory))
-                                         {
-                                             cfg.Properties[proxy_factory] = proxy_factory_location;
-                                         }
-                                         else
-                                         {
-                                             cfg.Properties.Add(proxy_factory, proxy_factory_location);
-                                         }
+                    if (cfg.Properties.ContainsKey(proxy_factory))
+                    {
+                        cfg.Properties[proxy_factory] = proxy_factory_location;
+                    }
+                    else
+                    {
+                        cfg.Properties.Add(proxy_factory, proxy_factory_location);
+                    }
 
-						// FIXME: Quick workaround for MySQL's defect with reserved words auto-quoting http://216.121.112.228/browse/NH-1906
-                    //please verify fixed Diyan	cfg.Properties["hbm2ddl.keywords"] = "none";
+                    // FIXME: Quick workaround for MySQL's defect with reserved words auto-quoting http://216.121.112.228/browse/NH-1906
+                    //TODO:please verify fixed Diyan	cfg.Properties["hbm2ddl.keywords"] = "none";
 
-                                         cfg.SetListener(ListenerType.PreInsert, new AuditEventListener());
-                                         cfg.SetListener(ListenerType.PreUpdate, new AuditEventListener());
-                                     })
+                    cfg.SetListener(ListenerType.PreInsert, new AuditEventListener());
+                    cfg.SetListener(ListenerType.PreUpdate, new AuditEventListener());
+                })
                 .ExposeConfiguration(additional_function);
 
             return config.BuildSessionFactory();
         }
 
-        public NHibernateSessionFactoryBuilder() {}
+        public NHibernateSessionFactoryBuilder() { }
 
-        private static void no_operation(Configuration cfg) {}
+        private static void no_operation(Configuration cfg) { }
     }
 }

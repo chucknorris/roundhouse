@@ -1,61 +1,57 @@
-﻿using System;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using roundhouse.infrastructure;
-// ReSharper disable InconsistentNaming
-
-namespace roundhouse.databases.mysql
+﻿namespace roundhouse.databases.mysql
 {
-	public class MySqlAdoNetProviderResolver
-	{
-		private readonly bool is_merged;
+    using System;
+    using System.Configuration;
+    using System.Data;
+    using System.Linq;
+    using System.Reflection;
+    using infrastructure;
 
-		public MySqlAdoNetProviderResolver()
-		{
-			is_merged = Assembly.GetExecutingAssembly().GetName().Name 
-				== ApplicationParameters.get_merged_assembly_name();
-		}
+    public class MySqlAdoNetProviderResolver
+    {
+        private readonly bool is_merged;
 
-		public void register_db_provider_factory()
-		{
-			var dataSet = (DataSet)ConfigurationManager.GetSection("system.data");
+        public MySqlAdoNetProviderResolver()
+        {
+            is_merged = Assembly.GetExecutingAssembly().GetName().Name == ApplicationParameters.get_merged_assembly_name();
+        }
 
-			var mySqlClientRow = dataSet.Tables[0]
-				.AsEnumerable()
-				.Where(x => x.Field<string>(2) == "MySql.Data.MySqlClient")
-				.SingleOrDefault();
+        public void register_db_provider_factory()
+        {
+            var dataSet = (DataSet) ConfigurationManager.GetSection("system.data");
 
-			if (mySqlClientRow != null)
-			{
-				dataSet.Tables[0].Rows.Remove(mySqlClientRow);
-			}
+            var my_sql_client_row = dataSet.Tables[0]
+                .AsEnumerable()
+                .Where(x => x.Field<string>(2) == "MySql.Data.MySqlClient")
+                .SingleOrDefault();
 
-			var clientFactoryType = is_merged
-				? "MySql.Data.MySqlClient.MySqlClientFactory, " + ApplicationParameters.get_merged_assembly_name()
-				: "MySql.Data.MySqlClient.MySqlClientFactory, MySql.Data";
+            if (my_sql_client_row != null)
+            {
+                dataSet.Tables[0].Rows.Remove(my_sql_client_row);
+            }
 
-			dataSet.Tables[0].Rows.Add(
-				"MySQL Data Provider",
-				".Net Framework Data Provider for MySQL",
-				"MySql.Data.MySqlClient",
-				clientFactoryType);
-		}
+            var factory_type = is_merged ? "MySql.Data.MySqlClient.MySqlClientFactory, " + ApplicationParameters.get_merged_assembly_name(): "MySql.Data.MySqlClient.MySqlClientFactory, MySql.Data";
 
-		public void enable_loading_from_merged_assembly()
-		{
-			AppDomain.CurrentDomain.AssemblyResolve += (sender, e) => load_MySqlData_assembly(e.Name);
-		}
+            dataSet.Tables[0].Rows.Add(
+                "MySQL Data Provider",
+                ".Net Framework Data Provider for MySQL",
+                "MySql.Data.MySqlClient",
+                factory_type);
+        }
 
-		private Assembly load_MySqlData_assembly(string assemblyName)
-		{
-			if (is_merged && assemblyName == "MySql.Data")
-			{
-				return Assembly.GetExecutingAssembly();
-			}
+        public void enable_loading_from_merged_assembly()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, e) => load_mysql_data_assembly(e.Name);
+        }
 
-			return null;
-		}
-	}
+        private Assembly load_mysql_data_assembly(string assembly_name)
+        {
+            if (is_merged && assembly_name == "MySql.Data")
+            {
+                return Assembly.GetExecutingAssembly();
+            }
+
+            return null;
+        }
+    }
 }

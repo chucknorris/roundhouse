@@ -103,13 +103,7 @@
     <Reference Include="NHibernate.JetDriver">
       <HintPath>..\..\lib\references\NHibernate.JetDriver\NHibernate.JetDriver.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-
-
-
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RhinoMocks.3.6\lib\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -130,9 +124,9 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="databases\MySqlDatabaseSpecs.cs" />
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="infrastructure\persistence\NHibernateSessionFactorySpecs.cs" />
-    <Compile Include="MySQLDatabaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
