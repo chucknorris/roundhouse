@@ -37,6 +37,7 @@ namespace roundhouse.tests.databases
                                         sut.database_name = "bob";
                                         sut.server_name = "(local)";
                                         sut.initialize_connections(configuration_property_holder);
+                                        sut.command_timeout = 999;
                                     };
 
             [Observation]
@@ -62,6 +63,13 @@ namespace roundhouse.tests.databases
             {
                 sut.connection_string.should_contain("Integrated Security=SSPI");
             }
+
+            [Observation]
+            public void should_have_new_command_timeout_value()
+            {
+                sut.command_timeout.should_be_equal_to(999);
+            }
+
         }
 
         [Concern(typeof (SqlServerDatabase))]
@@ -73,6 +81,7 @@ namespace roundhouse.tests.databases
                                         sut.database_name = "bob";
                                         sut.server_name = "(local)";
                                         sut.initialize_connections(configuration_property_holder);
+                                        sut.command_timeout = 888;
                                     };
 
             [Observation]
@@ -98,6 +107,13 @@ namespace roundhouse.tests.databases
             {
                 sut.connection_string.should_contain("uid=dude");
             }
+
+            [Observation]
+            public void should_have_new_command_timeout_value()
+            {
+                sut.command_timeout.should_be_equal_to(888);
+            }
+
         }
 
 
@@ -111,6 +127,7 @@ namespace roundhouse.tests.databases
                                         sut.database_name = "Bob";
                                         sut.server_name = "(local)";
                                         sut.initialize_connections(configuration_property_holder);
+                                        sut.command_timeout = 777;
                                     };
 
             [Observation]
@@ -130,6 +147,13 @@ namespace roundhouse.tests.databases
             {
                 sut.connection_string.should_contain("(local)");
             }
+
+            [Observation]
+            public void should_have_new_command_timeout_value()
+            {
+                sut.command_timeout.should_be_equal_to(777);
+            }
+
         }
     }
 }

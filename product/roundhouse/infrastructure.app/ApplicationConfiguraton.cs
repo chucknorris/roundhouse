@@ -107,6 +107,10 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.RestoreTimeout = ApplicationParameters.default_restore_timeout;
             }
+            if(configuration_property_holder.CommandTimeout == 0)
+            {
+                configuration_property_holder.CommandTimeout = ApplicationParameters.default_command_timeout;
+            }
 
             if (!string.IsNullOrEmpty(configuration_property_holder.RestoreFromPath))
             {
