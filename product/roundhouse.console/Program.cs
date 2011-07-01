@@ -103,7 +103,7 @@ namespace roundhouse.console
                 .Add("csa=|connstringadmin=|connectionstringadministration=",
                     string.Format("ConnectionStringAdministration - This is used for connecting to master when you may have a different uid and password than normal."),
                     option => configuration.ConnectionStringAdmin = option)
-                .Add("cto=|commandtimeout=","sets the command timeout.",option=> configuration.CommandTimeout=int.Parse(option))
+                .Add("cto=|commandtimeout=","sets the command timeout (in seconds).", option => configuration.CommandTimeout = int.Parse(option))
                 //database type
                 .Add("dt=|dbt=|databasetype=",
                     string.Format("DatabaseType - Tells RH what type of database it is running on. This is a plugin model. This is the fully qualified name of a class that implements the interface roundhouse.sql.Database, roundhouse. If you have your own assembly, just set it next to rh.exe and set this value appropriately. Defaults to 'sqlserver' which is a synonym for '{0}'.",
