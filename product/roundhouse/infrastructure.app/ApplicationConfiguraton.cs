@@ -35,6 +35,18 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.ServerName = ApplicationParameters.default_server_name;
             }
+            if (configuration_property_holder.CommandTimeout == 0)
+            {
+                configuration_property_holder.CommandTimeout = ApplicationParameters.default_command_timeout;
+            }
+            if (configuration_property_holder.CommandTimeoutAdmin == 0)
+            {
+                configuration_property_holder.CommandTimeoutAdmin = ApplicationParameters.default_admin_command_timeout;
+            }
+            if (string.IsNullOrEmpty(configuration_property_holder.AlterDatabaseFolderName))
+            {
+                configuration_property_holder.AlterDatabaseFolderName = ApplicationParameters.default_alter_database_folder_name;
+            } 
             if (string.IsNullOrEmpty(configuration_property_holder.UpFolderName))
             {
                 configuration_property_holder.UpFolderName = ApplicationParameters.default_up_folder_name;
@@ -58,6 +70,10 @@ namespace roundhouse.infrastructure.app
             if (string.IsNullOrEmpty(configuration_property_holder.SprocsFolderName))
             {
                 configuration_property_holder.SprocsFolderName = ApplicationParameters.default_sprocs_folder_name;
+            }
+            if (string.IsNullOrEmpty(configuration_property_holder.IndexesFolderName))
+            {
+                configuration_property_holder.IndexesFolderName = ApplicationParameters.default_indexes_folder_name;
             }
             if (string.IsNullOrEmpty(configuration_property_holder.RunAfterOtherAnyTimeScriptsFolderName))
             {

@@ -1,31 +1,24 @@
-namespace roundhouse.infrastructure.logging.custom
+﻿namespace roundhouse.infrastructure.logging.custom
 {
-    using System;
-    using System.IO;
-    using filesystem;
-
-    public class FileLogger : Logger
+    public class ConsoleLogger : Logger
     {
-        private readonly string log_file_path;
-        private readonly FileSystemAccess file_system;
+        private readonly bool debugging;
 
-        public FileLogger(string log_file_path, FileSystemAccess file_system)
+        public ConsoleLogger() : this(false) { }
+
+        public ConsoleLogger(bool debugging)
         {
-            this.log_file_path = log_file_path;
-            this.file_system = file_system;
+            this.debugging = debugging;
         }
 
         private void log_message(string message)
         {
-            string dateTime = string.Format("{0:MM/dd/yyyy HH:mm:ss;ffff} ", DateTime.Now);
-            file_system.verify_or_create_directory(file_system.get_directory_name_from(log_file_path));
-
-            File.AppendAllText(log_file_path, dateTime + message, System.Text.Encoding.UTF8);
+            System.Console.WriteLine(message);
         }
 
         public void log_a_debug_event_containing(string message, params object[] args)
         {
-            log_message("[DEBUG]: " + string.Format(message, args));
+            if (debugging) log_message("[DEBUG]: " + string.Format(message, args));
         }
 
         public void log_an_info_event_containing(string message, params object[] args)
@@ -50,7 +43,7 @@ namespace roundhouse.infrastructure.logging.custom
 
         public object underlying_type
         {
-            get { return file_system; }
+            get { return new object(); }
         }
     }
 }

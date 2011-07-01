@@ -8,6 +8,8 @@ namespace roundhouse.infrastructure.app.builders
     {
         public static KnownFolders build(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
         {
+            MigrationsFolder alter_database_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
+                                                                     configuration_property_holder.AlterDatabaseFolderName,false,false); 
             MigrationsFolder up_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
                                                                      configuration_property_holder.UpFolderName, true, false);
             MigrationsFolder down_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
@@ -20,6 +22,8 @@ namespace roundhouse.infrastructure.app.builders
                                                                         configuration_property_holder.ViewsFolderName, false, false);
             MigrationsFolder sprocs_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
                                                                          configuration_property_holder.SprocsFolderName, false, false);
+            MigrationsFolder indexes_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
+                                                                         configuration_property_holder.IndexesFolderName, false, false);
 
             MigrationsFolder runAfterOtherAnyTimeScripts_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
                                                                          configuration_property_holder.RunAfterOtherAnyTimeScriptsFolderName, false, false);
@@ -32,7 +36,7 @@ namespace roundhouse.infrastructure.app.builders
                                                                                                    configuration_property_holder.ServerName),
                                                           get_run_date_time_string());
 
-            return new DefaultKnownFolders(up_folder, down_folder, run_first_folder, functions_folder, views_folder, sprocs_folder, 
+            return new DefaultKnownFolders(alter_database_folder,up_folder, down_folder, run_first_folder, functions_folder, views_folder, sprocs_folder, indexes_folder,
                 runAfterOtherAnyTimeScripts_folder, permissions_folder, change_drop_folder);
         }
 

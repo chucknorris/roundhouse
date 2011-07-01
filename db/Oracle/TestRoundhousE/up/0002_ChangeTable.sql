@@ -1,1 +1,2 @@
-ALTER TABLE Timmy DROP COLUMN dude;
+ALTER TABLE Timmy DROP COLUMN dude
+;

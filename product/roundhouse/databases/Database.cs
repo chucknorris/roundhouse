@@ -64,8 +64,7 @@ namespace roundhouse.databases
 {
     using System;
     using infrastructure.app;
-    using infrastructure.persistence;
-
+    
     public interface Database : IDisposable
     {
         ConfigurationPropertyHolder configuration { get; set; }
@@ -82,6 +81,7 @@ namespace roundhouse.databases
         string sql_statement_separator_regex_pattern { get; }
         string custom_create_database_script { get; set; }
         int command_timeout { get; set; }
+        int admin_command_timeout { get; set; }
         int restore_timeout { get; set; }
         bool split_batch_statements { get; set; }
         bool supports_ddl_transactions { get; }
@@ -100,10 +100,7 @@ namespace roundhouse.databases
         void delete_database_if_it_exists();
         void run_database_specific_tasks();
         void create_or_update_roundhouse_tables();
-        //void create_roundhouse_version_table_if_it_doesnt_exist();
-        //void create_roundhouse_scripts_run_table_if_it_doesnt_exist();
-        //void create_roundhouse_scripts_run_errors_table_if_it_doesnt_exist();
-        void run_sql(string sql_to_run);
+        void run_sql(string sql_to_run,ConnectionType connection_type);
         void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id);
         void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path);
 

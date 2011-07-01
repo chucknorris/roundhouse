@@ -21,7 +21,7 @@ namespace roundhouse.tests.infrastructure.app.tokens
 
             context c = () =>
             {
-                configuration = new ConsoleConfiguration { DatabaseName = database_name };
+                configuration = new DefaultConfiguration { DatabaseName = database_name };
             };
         }
 

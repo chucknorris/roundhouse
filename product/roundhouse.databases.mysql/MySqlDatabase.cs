@@ -1,4 +1,6 @@
-﻿namespace roundhouse.databases.mysql
+﻿using roundhouse.infrastructure.logging;
+
+namespace roundhouse.databases.mysql
 {
     using System;
     using infrastructure.app;
@@ -54,6 +56,7 @@
                 builder.Database = "information_schema";
                 admin_connection_string = builder.ConnectionString;
             }
+            configuration_property_holder.ConnectionStringAdmin = admin_connection_string;
         }
 
         public override void set_provider()
@@ -78,16 +81,20 @@
 
         public override void run_database_specific_tasks()
         {
-            //nothing to see here. move along now.
+            Log.bound_to(this).log_a_debug_event_containing("MySQL has no database specific tasks. Moving along now...");
         }
 
         // http://bugs.mysql.com/bug.php?id=46429
-        public override void run_sql(string sql_to_run)
+        public override void run_sql(string sql_to_run,ConnectionType connection_type)
         {
             if (string.IsNullOrEmpty(sql_to_run)) return;
 
             //TODO Investigate how pass CommandTimeout into commands which will be during MySqlScript execution.
             var connection = server_connection.underlying_type().downcast_to<MySqlConnection>();
+            if (connection_type == ConnectionType.Admin)
+            {
+                connection = admin_connection.underlying_type().downcast_to<MySqlConnection>();
+            }
             var script = new MySqlScript(connection, sql_to_run);
             script.Execute();
         }

@@ -94,18 +94,12 @@ namespace roundhouse.migrators
             database.close_connection();
         }
 
-        //public void transfer_to_database_for_changes()
-        //{
-        //    database.use_database(database.database_name);
-        //}
-
         public void run_roundhouse_support_tasks()
         {
             if (running_in_a_transaction)
             {
                 database.close_connection();
                 database.open_connection(false);
-                //transfer_to_database_for_changes();
             }
 
             Log.bound_to(this).log_an_info_event_containing(" Running database type specific tasks.");
@@ -147,7 +141,7 @@ namespace roundhouse.migrators
             return database.insert_version_and_get_version_id(repository_path, repository_version);
         }
 
-        public bool run_sql(string sql_to_run, string script_name, bool run_this_script_once, bool run_this_script_every_time, long version_id, Environment environment, string repository_version, string repository_path)
+        public bool run_sql(string sql_to_run, string script_name, bool run_this_script_once, bool run_this_script_every_time, long version_id, Environment environment, string repository_version, string repository_path,ConnectionType connection_type)
         {
             bool this_sql_ran = false;
 
@@ -172,7 +166,7 @@ namespace roundhouse.migrators
                 {
                     try
                     {
-                        database.run_sql(sql_statement);
+                        database.run_sql(sql_statement,connection_type);
                     }
                     catch (Exception ex)
                     {

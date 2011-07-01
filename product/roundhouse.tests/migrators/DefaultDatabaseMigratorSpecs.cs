@@ -25,7 +25,7 @@ namespace roundhouse.tests.infrastructure.containers
             protected static DefaultEnvironment environment;
 
             context c = () => {
-                            environment = new DefaultEnvironment(new ConsoleConfiguration {EnvironmentName = "TEST"});
+                            environment = new DefaultEnvironment(new DefaultConfiguration {EnvironmentName = "TEST"});
                         };
         }
         

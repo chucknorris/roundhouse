@@ -47,6 +47,10 @@ namespace roundhouse.tasks
 
         public string ConnectionStringAdmin { get; set; }
 
+        public int CommandTimeout { get; set; }
+
+        public int CommandTimeoutAdmin { get; set; }
+
         public string SqlFilesDirectory { get; set; }
 
         public string RepositoryPath { get; set; }
@@ -54,6 +58,8 @@ namespace roundhouse.tasks
         public string VersionFile { get; set; }
 
         public string VersionXPath { get; set; }
+
+        public string AlterDatabaseFolderName { get; set; }
 
         public string UpFolderName { get; set; }
 
@@ -66,6 +72,8 @@ namespace roundhouse.tasks
         public string ViewsFolderName { get; set; }
 
         public string SprocsFolderName { get; set; }
+
+        public string IndexesFolderName { get; set; }
 
         public string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
 

@@ -124,6 +124,14 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     Log.bound_to(this).log_an_info_event_containing("Migration Scripts");
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
+
+                    database_migrator.open_admin_connection();
+                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "AlterDatabase", known_folders.alter_database.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
+                    traverse_files_and_run_sql(known_folders.alter_database.folder_full_path, version_id, known_folders.alter_database, environment, new_version,ConnectionType.Admin);
+                    database_migrator.close_admin_connection();
+
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These should be one time only scripts.", "Update", known_folders.up.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.up.folder_full_path, version_id, known_folders.up, environment, new_version);
@@ -147,6 +155,10 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Stored Procedure", known_folders.sprocs.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.sprocs.folder_full_path, version_id, known_folders.sprocs, environment, new_version);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
+                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Index", known_folders.indexes.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
+                    traverse_files_and_run_sql(known_folders.indexes.folder_full_path, version_id, known_folders.indexes, environment, new_version);
 
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run after Other Anytime Scripts", known_folders.runAfterOtherAnyTimeScripts.folder_full_path);
@@ -178,6 +190,7 @@ namespace roundhouse.runners
                     database_migrator.open_admin_connection();
                     database_migrator.delete_database();
                     database_migrator.close_admin_connection();
+                    database_migrator.close_connection();
                     Log.bound_to(this).log_an_info_event_containing("{0}{0}{1} has removed database ({2}). All changes and backups can be found at \"{3}\".",
                                                 System.Environment.NewLine,
                                                 ApplicationParameters.name,
@@ -192,10 +205,12 @@ namespace roundhouse.runners
                         run_in_a_transaction ? " You were running in a transaction though, so the database should be in the state it was in prior to this piece running. This does not include a drop/create or any creation of a database, as those items can not run in a transaction." : string.Empty,
                         System.Environment.NewLine,
                         ex.to_string());
+                
                 throw;
             }
             finally
             {
+                database_migrator.database.Dispose();
                 copy_log_file_to_change_drop_folder();
             }
         }
@@ -221,6 +236,11 @@ namespace roundhouse.runners
 
         public void traverse_files_and_run_sql(string directory, long version_id, MigrationsFolder migration_folder, Environment migrating_environment, string repository_version)
         {
+            traverse_files_and_run_sql(directory,version_id,migration_folder,migrating_environment,repository_version,ConnectionType.Default);
+        }
+
+        public void traverse_files_and_run_sql(string directory, long version_id, MigrationsFolder migration_folder, Environment migrating_environment, string repository_version,ConnectionType connection_type)
+        {
             if (!file_system.directory_exists(directory)) return;
 
             foreach (string sql_file in file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION))
@@ -230,7 +250,7 @@ namespace roundhouse.runners
                 bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file),
                                                              migration_folder.should_run_items_in_folder_once,
                                                              migration_folder.should_run_items_in_folder_every_time,
-                                                             version_id, migrating_environment, repository_version, repository_path);
+                                                             version_id, migrating_environment, repository_version, repository_path,connection_type);
                 if (the_sql_ran)
                 {
                     try
@@ -246,7 +266,7 @@ namespace roundhouse.runners
 
             foreach (string child_directory in file_system.get_all_directory_name_strings_in(directory))
             {
-                traverse_files_and_run_sql(child_directory, version_id, migration_folder, migrating_environment, repository_version);
+                traverse_files_and_run_sql(child_directory, version_id, migration_folder, migrating_environment, repository_version,connection_type);
             }
         }
 

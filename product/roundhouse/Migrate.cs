@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace roundhouse
 {
     using System;
@@ -11,15 +13,15 @@ namespace roundhouse
     using resolvers;
     using runners;
     using Environment = roundhouse.environments.Environment;
-    
+
     public class Migrate
     {
         private readonly ConfigurationPropertyHolder configuration;
 
         public Migrate()
         {
-            configuration = new consoles.ConsoleConfiguration();
-            Log4NetAppender.configure();
+            configuration = new consoles.DefaultConfiguration();
+            //Log4NetAppender.configure_without_console();
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace roundhouse
             ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
             ApplicationConfiguraton.build_the_container(configuration);
 
-           var migrator =  new RoundhouseMigrationRunner(
+            RoundhouseMigrationRunner migrator = new RoundhouseMigrationRunner(
                configuration.RepositoryPath,
                Container.get_an_instance_of<Environment>(),
                Container.get_an_instance_of<KnownFolders>(),
@@ -67,7 +69,7 @@ namespace roundhouse
                configuration.Drop,
                configuration.DoNotCreateDatabase,
                configuration.WithTransaction,
-               configuration.RecoveryModeSimple, 
+               configuration.RecoveryModeSimple,
                configuration);
 
             migrator.run();
@@ -99,5 +101,5 @@ namespace roundhouse
         }
 
     }
-    
+
 }

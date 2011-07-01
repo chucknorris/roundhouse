@@ -1,21 +1,22 @@
 Project RoundhousE - Database Change Management done right
 =======
-![RoundhousE](http://github.com/ferventcoder/roundhouse/raw/master/docs/logo/RoundhousE_Logo.jpg "RoundhousE - Professional Database Management.")  
-
+<img src="http://github.com/ferventcoder/roundhouse/raw/master/docs/logo/RoundhousE_Logo.jpg" height="200" alt="RoundhousE - Professional Database Management" />  
+  
 # LICENSE
-Apache 2.0 - see docs\legal (just LEGAL in the zip folder)
-
+Apache 2.0 - see docs\legal (just LEGAL in the zip folder)  
+  
+# Documentation
+[WIKI](https://github.com/chucknorris/roundhouse/wiki)  
+  
 # IMPORTANT
 NOTE: If you are looking at the source - please run build.bat before opening the solution. It creates the SolutionVersion.cs file that is necessary for a successful build.
 
 # INFO
 ## Overview
-RoundhousE is an automated database deployment (change management) system that allows you to use your current idioms and gain much more. Currently it only supports Microsoft SQL Server, but there are future plans for other databases. 
-
-It seeks to solve both maintenance concerns and ease of deployment. We follow some of the same idioms as other database management systems (SQL scripts), but we are different in that we think about future maintenance concerns. We want to always apply certain scripts (anything stateless like functions, views, stored procedures, and permissions), so we don't have to throw everything into our change scripts. This seeks to solves future source control concerns. How sweet is it when you can version the database according to your current source control version? 
-
-##[WIKI](https://github.com/chucknorris/roundhouse/wiki)
-
+RoundhousE is an automated database deployment (change management) system that allows you to use your current idioms and gain much more. Currently it only supports Microsoft SQL Server, but there are future plans for other databases.  
+  
+It seeks to solve both maintenance concerns and ease of deployment. We follow some of the same idioms as other database management systems (SQL scripts), but we are different in that we think about future maintenance concerns. We want to always apply certain scripts (anything stateless like functions, views, stored procedures, and permissions), so we don't have to throw everything into our change scripts. This seeks to solves future source control concerns. How sweet is it when you can version the database according to your current source control version?  
+  
 ## Getting started with RoundhousE
 ### Downloads
  You can download RoundhousE from [http://code.google.com/p/roundhouse/downloads/list](http://code.google.com/p/roundhouse/downloads/list)  
@@ -62,13 +63,19 @@ It helps keep to the product updated, pays for site hosting, etc. https://www.pa
 
 # RELEASE NOTES
 =0.8.0.x=  
+* FIX: Fixed a nasty bug with SQL Server where it tries to hold a connection (interferes with drop/create mode) and gives a transport error (r331)  
+* Custom Scripts also run token replacement (r321, r330)  
+* Two new switches available, CommandTimeout and CommandTimeoutAdmin! (r329)  
+* FIX: Migrate doesn't try to configure log4net now (causes issues w/libraries that do) (r326)  
+* Two new folders available: Indexes and AlterDatabase (r324)  
+* FIX: Included sample for Oracle doesn't work. See [issue 55] (http://code.google.com/p/roundhouse/issues/detail?id=55) for details. (r322)  
 * RH now works with MySQL. Thanks Diyan. See details https://github.com/chucknorris/roundhouse/pull/3 (r317)  
   
 =0.8.0.300=  
 * RH now does token replacement in the sql files using '{{PropertyName}}'. See [issue 33] (http://code.google.com/p/roundhouse/issues/detail?id=33) for details. (r299)  
 * Always run files that have '.EVERYTIME.' in the name. See [issue 51] (http://code.google.com/p/roundhouse/issues/detail?id=51) for details. (r299)  
 * RoundhousE ships a DLL for embedding. See [issue 44] (http://code.google.com/p/roundhouse/issues/detail?id=44) for details. It has a semi-fluent interface - see (https://gist.github.com/977990) for details. (r299)  
-* FIXED: Environment Specific Files run other environments when other environments are part of the name (i.e. BOBTEST is run with TEST). See [issue 50] (http://code.google.com/p/roundhouse/issues/detail?id=50) for details. (r299)  
+* FIX: Environment Specific Files run other environments when other environments are part of the name (i.e. BOBTEST is run with TEST). See [issue 50] (http://code.google.com/p/roundhouse/issues/detail?id=50) for details. (r299)  
 * A folder that runs after the other anytime scripts folders have run has been added. See https://github.com/chucknorris/roundhouse/pull/1 for details. (r297)  
 * Fixing the script modified twice running each time bug. See https://github.com/chucknorris/roundhouse/pull/5 for details. (r296)  
 * Sample is now a project in the release folder. (r287)  

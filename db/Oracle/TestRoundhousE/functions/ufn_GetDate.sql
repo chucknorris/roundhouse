@@ -6,4 +6,5 @@ IS
 BEGIN
   SELECT SYSDATE INTO v_Today FROM dual;
 RETURN v_Today;
-END;
+END
+;

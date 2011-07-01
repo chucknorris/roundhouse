@@ -16,8 +16,9 @@ namespace roundhouse.infrastructure.persistence
         public ISessionFactory session_factory { get; private set; }
         public Configuration nhibernate_configuration { get; private set; }
         public ITransaction transaction { get; private set; }
-        private ISession session {
-            get; 
+        private ISession session
+        {
+            get;
             set;
         }
 
@@ -54,15 +55,19 @@ namespace roundhouse.infrastructure.persistence
 
         public void finish()
         {
-            if (running_in_a_transaction)
+            if (session != null && session.IsOpen)
             {
-                transaction.Commit();
+                if (running_in_a_transaction)
+                {
+                    transaction.Commit();
+                }
+
+                if (session == null) return;
+
+                session.Close();
+                session.Dispose();
+                
             }
-
-            if (session == null) return;
-
-            session.Close();
-            session.Dispose();
             session = null;
         }
 

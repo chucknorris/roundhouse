@@ -2,16 +2,8 @@
 USE database name
 ;
 */
-SELECT SYSDATE FROM dual;
 SELECT SYSDATE FROM dual
 ;
-SELECT SYSDATE FROM dual
-;  
-SELECT SYSDATE FROM dual
-;	
-SELECT SYSDATE FROM dual;
-SELECT SYSDATE FROM dual;  
-SELECT SYSDATE FROM dual;	
 
 --;
 -- ;
@@ -20,14 +12,11 @@ SELECT SYSDATE FROM dual;
 G
 O
 */
-/* ;
-*/
 /*
-;
-*/
--- ='.>?<)-* ;
+-- ='.>?<)-*
 -- BOB) ;
 /*
 ; */
 /* ;
 alsdkjaslkkjf */
+SELECT SYSDATE FROM dual
