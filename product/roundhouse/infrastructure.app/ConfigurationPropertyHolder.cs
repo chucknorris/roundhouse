@@ -9,6 +9,7 @@ namespace roundhouse.infrastructure.app
         string DatabaseName { get; set; }
         string ConnectionString { get; set; }
         string ConnectionStringAdmin { get; set; }
+        int CommandTimeout { get; set; }
         string SqlFilesDirectory { get; set; }
         string RepositoryPath { get; set; }
         string VersionFile { get; set; }
