@@ -1,6 +1,9 @@
 namespace roundhouse.databases.sqlserver
 {
     using System;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Text;
     using System.Text.RegularExpressions;
     using infrastructure.app;
     using infrastructure.extensions;
@@ -124,6 +127,8 @@ namespace roundhouse.databases.sqlserver
                          END
                         ",
                 database_name);
+
+            //                            ALTER DATABASE [{0}] MODIFY FILE ( NAME = N'{0}', FILEGROWTH = 10240KB )
         }
 
         public override string set_recovery_mode_script(bool simple)
@@ -141,6 +146,10 @@ namespace roundhouse.databases.sqlserver
             if (!string.IsNullOrEmpty(custom_restore_options))
             {
                 restore_options = custom_restore_options.to_lower().StartsWith(",") ? custom_restore_options : ", " + custom_restore_options;
+            }
+            else
+            {
+                restore_options = get_default_restore_move_options();
             }
 
             return string.Format(
@@ -162,6 +171,21 @@ namespace roundhouse.databases.sqlserver
                 );
         }
 
+        public string get_default_restore_move_options()
+        {
+            StringBuilder restore_options = new StringBuilder();
+            DataTable dt = execute_datatable("select [name],[physical_name] from sys.database_files");
+            if (dt != null && dt.Rows.Count != 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    restore_options.AppendFormat(", MOVE '{0}' TO '{1}'", row["name"], row["physical_name"]);
+                }    
+            }
+
+            return restore_options.ToString();
+        }
+
         public override string delete_database_script()
         {
             return string.Format(
@@ -173,6 +197,30 @@ namespace roundhouse.databases.sqlserver
                             DROP DATABASE [{0}] 
                         END",
                 database_name);
+        }
+
+        /// <summary>
+        /// Low level hit to query the database for a restore
+        /// </summary>
+        private DataTable execute_datatable(string sql_to_run)
+        {
+            DataSet result = new DataSet();
+
+            using (IDbCommand command = setup_database_command(sql_to_run,ConnectionType.Default,null))
+            {
+                using (IDataReader data_reader = command.ExecuteReader())
+                {
+                    DataTable data_table = new DataTable();
+                    data_table.Load(data_reader);
+                    data_reader.Close();
+                    data_reader.Dispose();
+
+                    result.Tables.Add(data_table);
+                }
+                command.Dispose();
+            }
+
+            return result.Tables.Count == 0 ? null : result.Tables[0];
         }
 
     }

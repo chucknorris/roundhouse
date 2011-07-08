@@ -125,6 +125,7 @@
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
     <Compile Include="databases\MySqlDatabaseSpecs.cs" />
+    <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="infrastructure\persistence\NHibernateSessionFactorySpecs.cs" />
     <Compile Include="MigrateSpecs.cs" />
