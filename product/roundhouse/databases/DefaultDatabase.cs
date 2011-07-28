@@ -161,7 +161,7 @@ namespace roundhouse.databases
 
         public abstract void run_database_specific_tasks();
 
-        public void create_or_update_roundhouse_tables()
+        public virtual void create_or_update_roundhouse_tables()
         {
             SchemaUpdate s = new SchemaUpdate(repository.nhibernate_configuration);
             s.Execute(false, true);
