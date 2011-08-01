@@ -88,6 +88,7 @@ namespace roundhouse.runners
 
             create_change_drop_folder();
             Log.bound_to(this).log_a_debug_event_containing("The change_drop (output) folder is: {0}", known_folders.change_drop.folder_full_path);
+			Log.bound_to(this).log_an_info_event_containing("Using per master directory execution: {0}", configuration.PerMasterDirectoryExecution);
 
             try
             {
@@ -243,7 +244,10 @@ namespace roundhouse.runners
         {
             if (!file_system.directory_exists(directory)) return;
 
-            foreach (string sql_file in file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION))
+        	var fileNames = configuration.PerMasterDirectoryExecution
+        	                	? file_system.get_all_file_name_strings_recurevly_in(directory, SQL_EXTENSION)
+								: file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION);
+        	foreach (string sql_file in fileNames)
             {
                 string sql_file_text = replace_tokens(File.ReadAllText(sql_file));
                 Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
@@ -264,6 +268,7 @@ namespace roundhouse.runners
                 }
             }
 
+			if (configuration.PerMasterDirectoryExecution) return;
             foreach (string child_directory in file_system.get_all_directory_name_strings_in(directory))
             {
                 traverse_files_and_run_sql(child_directory, version_id, migration_folder, migrating_environment, repository_version,connection_type);

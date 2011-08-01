@@ -16,7 +16,7 @@ namespace roundhouse.console
     using infrastructure.commandline.options;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Reflection;
+    using System.Reflection; 
     using log4net.Core;
     using log4net.Repository;
     using infrastructure.app.logging;
@@ -169,6 +169,9 @@ namespace roundhouse.console
                     string.Format("PermissionsFolderName - The name of the folder where you keep your permissions scripts. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_permissions_folder_name),
                     option => configuration.PermissionsFolderName = option)
+				.Add("pde=|perdirectoryexecution=",
+					"PerDirectoryExecution - If scripts should executed per master directory (true) or all by each sub directory (false). Defaults to 'false'",
+					option => configuration.PerMasterDirectoryExecution = option != null)
                 // roundhouse items
                 .Add("sc=|schema=|schemaname=",
                     string.Format("SchemaName - This is the schema where RH stores it's tables. Once you set this a certain way, do not change this. This is definitely running with scissors and very sharp. I am allowing you to have flexibility, but because this is a knife you can still get cut if you use it wrong. I'm just saying. You've been warned. Defaults to \"{0}\".",
@@ -286,6 +289,7 @@ namespace roundhouse.console
                     "/o[utputpath] VALUE " +
                     "/w[arnononetimescriptchanges] " +
                     "/silent " +
+					"/pde[PerDirectoryExecution] " +
                     "/d[atabase]t[ype] VALUE " +
                     "/drop " +
                     "/d[onot]c[reatedatabase] " +

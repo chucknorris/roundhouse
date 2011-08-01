@@ -32,7 +32,8 @@ namespace roundhouse.consoles
         public string ScriptsRunErrorsTableName { get; set; }
         public string EnvironmentName { get; set; }
         public bool Restore { get; set; }
-        public string RestoreFromPath { get; set; }
+		public bool PerMasterDirectoryExecution { get; set; }
+    	public string RestoreFromPath { get; set; }
         public string RestoreCustomOptions { get; set; }
         public int RestoreTimeout { get; set; }
         public string CreateDatabaseCustomScript { get; set; }

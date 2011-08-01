@@ -17,7 +17,6 @@ namespace roundhouse.tasks
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
-
         #region MSBuild
 
         public IBuildEngine BuildEngine { get; set; }
@@ -100,6 +99,8 @@ namespace roundhouse.tasks
         public string CreateDatabaseCustomScript { get; set; }
 
         public bool Drop { get; set; }
+
+    	public bool PerMasterDirectoryExecution { get; set; }
 
         public bool DoNotCreateDatabase { get; set; }
 

@@ -31,6 +31,7 @@ namespace roundhouse.infrastructure.app
         string ScriptsRunErrorsTableName { get; set; }
         string EnvironmentName { get; set; }
         bool Restore { get; set; }
+		bool PerMasterDirectoryExecution { get; set; }
         string RestoreFromPath { get; set; }
         string RestoreCustomOptions { get; set; }
         int RestoreTimeout { get; set; }
