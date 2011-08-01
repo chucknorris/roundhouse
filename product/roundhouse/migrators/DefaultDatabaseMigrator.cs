@@ -89,9 +89,7 @@ namespace roundhouse.migrators
 
         public void set_recovery_mode(bool simple)
         {
-            database.open_connection(false);
             database.set_recovery_mode(simple);
-            database.close_connection();
         }
 
         public void run_roundhouse_support_tasks()

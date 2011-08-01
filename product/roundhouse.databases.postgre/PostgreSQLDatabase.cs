@@ -55,6 +55,7 @@ namespace roundhouse.databases.postgresql
 
 		public override string create_database_script()
 		{
+			//TODO: Add IF EXISTS condition to CREATE DATABASE
 			return string.Format(
 				@"CREATE DATABASE {0};",
 				database_name);
@@ -72,6 +73,7 @@ namespace roundhouse.databases.postgresql
 
 		public override string delete_database_script()
 		{
+			//TODO: Add IF EXISTS condition to DROP DATABASE
 			return string.Format(
 				@"DROP DATABASE {0};",
 				database_name);
