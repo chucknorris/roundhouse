@@ -91,7 +91,7 @@ BEGIN
 			,script_name				varchar(255)	NULL
 			,text_of_script				text			NULL
 			,erroneous_part_of_script	text			NULL
-			,error_message				varchar(255)	NULL
+			,error_message				text			NULL
 			,entry_date					timestamp		NOT NULL default current_timestamp
 			,modified_date				timestamp		NOT NULL default current_timestamp
 			,entered_by					varchar(50)		NULL
