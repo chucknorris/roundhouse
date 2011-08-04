@@ -18,7 +18,10 @@ namespace roundhouse.connections
 
         public void close()
         {
-            server_connection.Close();
+            if (server_connection !=null && server_connection.State != ConnectionState.Closed)
+            {
+                server_connection.Close();    
+            }
         }
 
         public IDbConnection underlying_type()

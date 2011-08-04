@@ -96,6 +96,12 @@ namespace roundhouse.databases
             set { database.command_timeout = value; }
         }
 
+        public int admin_command_timeout
+        {
+            get { return database.admin_command_timeout; }
+            set { database.admin_command_timeout = value; }
+        }
+
         public int restore_timeout
         {
             get { return database.restore_timeout; }
@@ -187,7 +193,7 @@ namespace roundhouse.databases
                         ",
                          database_name, restore_from_path,
                          string.IsNullOrEmpty(custom_restore_options) ? string.Empty : ", @with = N'" + custom_restore_options.Replace("'", "''") + "'"
-                       ));
+                       ),ConnectionType.Admin);
             command_timeout = current_timeout;
         }
 
@@ -206,9 +212,9 @@ namespace roundhouse.databases
             database.create_or_update_roundhouse_tables();
         }
 
-        public void run_sql(string sql_to_run)
+        public void run_sql(string sql_to_run,ConnectionType connection_type)
         {
-            database.run_sql(sql_to_run);
+            database.run_sql(sql_to_run,connection_type);
         }
 
         public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)

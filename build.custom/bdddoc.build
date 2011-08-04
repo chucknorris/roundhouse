@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="BDDRunner" default="go">
+  <!-- Project UppercuT - http://projectuppercut.org -->
+  <!-- This is a sample for running BDDDoc -->
+  <property name="build.config.settings" value="__NONE__" overwrite="false" />
+  <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
+  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" overwrite="false" />
+  <property name="dirs.lib" value="${dirs.current}\..\lib" overwrite="false" />
+  <property name="dirs.build" value="${dirs.current}\..\build_output" overwrite="false" />
+  <property name="dirs.build_artifacts" value="${path::get-full-path(dirs.build)}\build_artifacts" overwrite="false" />
+  <property name="dirs.test_results" value="${dirs.build_artifacts}\mbunit2" overwrite="false" />
+  <property name="file.test_results" value="mbunit-results" overwrite="false" />
+  <property name="dirs.bdddoc_results" value="${dirs.build_artifacts}\bdddoc" overwrite="false" />
+  <property name="files.bdddoc_results" value="${dirs.bdddoc_results}\bdddoc-results.html" overwrite="false" />
+  <property name="app.bdddoc" value="${path::get-full-path(dirs.lib)}\bdddoc\bdddoc.console.exe" overwrite="false" />
+  <property name="test_attribute" value="ObservationAttribute" overwrite="false" />
+  <property name="test_assembly" value="__TEST_ASSEMBLY__" overwrite="false" />
+  <property name="folder.app.drop" value="app" overwrite="false" />
+
+  <target name="go" depends="cleanup, run_bdddoc" description="Tests" />
+
+  <target name="cleanup">
+    <echo message="Removing and adding ${dirs.bdddoc_results}."/>
+    <delete dir="${dirs.bdddoc_results}" />
+    <mkdir dir="${dirs.bdddoc_results}" />
+  </target>
+
+  <target name="run_bdddoc" depends="cleanup" description="Running BDDDoc">
+    <echo message="Running BDDDoc against ${dirs.build}\${folder.app.drop}\${test_assembly} ${test_attribute} ${files.bdddoc_results} ${dirs.test_results}\${file.test_results}.xml."/>
+     <exec program="${app.bdddoc}" > 
+        <arg file="${dirs.build}\${folder.app.drop}\${test_assembly}"/> 
+        <arg value="${test_attribute}"/> 
+        <arg file="${files.bdddoc_results}"/> 
+        <arg file="${dirs.test_results}\${file.test_results}.xml"/> 
+    </exec> 
+  </target>
+
+  <target name="open_results">
+    <echo message="Opening results at ${path::get-full-path(files.bdddoc_results)}."/>
+    <exec
+      spawn="true"
+      program="${environment::get-folder-path('ProgramFiles')}\Internet Explorer\iexplore.exe"
+      commandline="${path::get-full-path(files.bdddoc_results)}"
+      >
+    </exec>
+  </target>
+
+</project>

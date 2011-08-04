@@ -9,7 +9,7 @@ namespace roundhouse.infrastructure.logging.custom
         private readonly string log_file_path;
         private readonly FileSystemAccess file_system;
 
-        public FileLogger(string log_file_path,FileSystemAccess file_system)
+        public FileLogger(string log_file_path, FileSystemAccess file_system)
         {
             this.log_file_path = log_file_path;
             this.file_system = file_system;

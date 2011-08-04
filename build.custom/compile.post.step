@@ -29,18 +29,21 @@
     <copy todir="${dirs.build}${path.separator}${folder.app.drop}${path.separator}_PublishedApplications${path.separator}roundhouse">
       <fileset basedir="${dirs.build}${path.separator}${folder.app.drop}">
         <include name="roundhouse.databases.*" />
+        <include name="MySql.Data.dll" />
       </fileset>
     </copy>
     <echo message="Copying database dlls to '${dirs.build}${path.separator}${folder.app.drop}${path.separator}_PublishedApplications${path.separator}roundhouse.console'."/>
     <copy todir="${dirs.build}${path.separator}${folder.app.drop}${path.separator}_PublishedApplications${path.separator}roundhouse.console">
       <fileset basedir="${dirs.build}${path.separator}${folder.app.drop}">
         <include name="roundhouse.databases.*" />
+        <include name="MySql.Data.dll" />
       </fileset>
     </copy>
     <echo message="Copying database dlls to '${dirs.build}${path.separator}${folder.app.drop}${path.separator}_PublishedApplications${path.separator}roundhouse.tasks'."/>
     <copy todir="${dirs.build}${path.separator}${folder.app.drop}${path.separator}_PublishedApplications${path.separator}roundhouse.tasks">
       <fileset basedir="${dirs.build}${path.separator}${folder.app.drop}">
         <include name="roundhouse.databases.*" />
+        <include name="MySql.Data.dll" />
       </fileset>
     </copy>
   </target>

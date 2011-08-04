@@ -9,6 +9,8 @@ namespace roundhouse.infrastructure.app.tokens
     {
         public static string replace_tokens(ConfigurationPropertyHolder configuration, string text_to_replace)
         {
+            if (string.IsNullOrEmpty(text_to_replace)) return string.Empty;
+
             IDictionary<string, string> dictionary = create_dictionary_from_configuration(configuration);
             Regex regex = new Regex("{{(?<key>\\w+)}}");
 

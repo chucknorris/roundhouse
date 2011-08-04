@@ -22,7 +22,7 @@ namespace roundhouse.console
     using infrastructure.app.logging;
     using infrastructure.extensions;
 
-    internal class Program
+    public class Program
     {
         private static readonly ILog the_logger = LogManager.GetLogger(typeof(Program));
 
@@ -65,7 +65,7 @@ namespace roundhouse.console
         public static ConfigurationPropertyHolder set_up_configuration_and_build_the_container(string[] args)
         {
 
-            ConfigurationPropertyHolder configuration = new ConsoleConfiguration();
+            ConfigurationPropertyHolder configuration = new DefaultConfiguration();
             parse_arguments_and_set_up_configuration(configuration, args);
             if (configuration.Debug)
             {
@@ -103,9 +103,17 @@ namespace roundhouse.console
                 .Add("csa=|connstringadmin=|connectionstringadministration=",
                     string.Format("ConnectionStringAdministration - This is used for connecting to master when you may have a different uid and password than normal."),
                     option => configuration.ConnectionStringAdmin = option)
+                .Add("ct=|commandtimeout=",
+                    string.Format("CommandTimeout - This is the timeout when commands are run. This is not for admin commands or restore. Defaults to \"{0}\".",
+                        ApplicationParameters.default_command_timeout),
+                    option => configuration.CommandTimeout = int.Parse(option))
+                .Add("cta=|commandtimeoutadmin=",
+                    string.Format("CommandTimeoutAdministration - This is the timeout when administration commands are run (except for restore, which has its own). Defaults to \"{0}\".",
+                        ApplicationParameters.default_admin_command_timeout),
+                    option => configuration.CommandTimeoutAdmin = int.Parse(option))
                 //database type
                 .Add("dt=|dbt=|databasetype=",
-                    string.Format("DatabaseType - Tells RH what type of database it is running on. This is a plugin model. This is the fully qualified name of a class that implements the interface roundhouse.sql.Database, roundhouse. If you have your own assembly, just set it next to rh.exe and set this value appropriately. Defaults to \"{0}\" which can also run against SQL Server 2005.",
+                    string.Format("DatabaseType - Tells RH what type of database it is running on. This is a plugin model. This is the fully qualified name of a class that implements the interface roundhouse.sql.Database, roundhouse. If you have your own assembly, just set it next to rh.exe and set this value appropriately. Defaults to 'sqlserver' which is a synonym for '{0}'.",
                         ApplicationParameters.default_database_type),
                     option => configuration.DatabaseType = option)
                 // versioning
@@ -121,6 +129,10 @@ namespace roundhouse.console
                         ApplicationParameters.default_version_x_path),
                     option => configuration.VersionXPath = option)
                 // folders
+                 .Add("ad=|alterdatabase=|alterdatabasefolder=|alterdatabasefoldername=",
+                    string.Format("AlterDatabaseFolderName - The name of the folder where you keep your alter database scripts. Read up on token replacement. You will want to use {{DatabaseName}} here instead of specifying a database name. Will recurse through subfolders. Defaults to \"{0}\".",
+                        ApplicationParameters.default_alter_database_folder_name),
+                    option => configuration.AlterDatabaseFolderName = option)
                 .Add("u=|up=|upfolder=|upfoldername=",
                     string.Format("UpFolderName - The name of the folder where you keep your update scripts. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_up_folder_name),
@@ -145,6 +157,10 @@ namespace roundhouse.console
                     string.Format("SprocsFolderName - The name of the folder where you keep your stored procedures. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_sprocs_folder_name),
                     option => configuration.SprocsFolderName = option)
+                 .Add("ix=|indexes=|indexesfolder=|indexesfoldername=",
+                    string.Format("IndexesFolderName - The name of the folder where you keep your indexes. Will recurse through subfolders. Defaults to \"{0}\".",
+                        ApplicationParameters.default_indexes_folder_name),
+                    option => configuration.IndexesFolderName = option)
                 .Add("ra=|runAfterOtherAnyTimeScripts=|runAfterOtherAnyTimeScriptsfolder=|runAfterOtherAnyTimeScriptsfoldername=",
                     string.Format("RunAfterOtherAnyTimeScriptsFolderName - The name of the folder where you keep scripts that will be run after all of the other any time scripts complete. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_runAfterOtherAnyTime_folder_name),
@@ -172,7 +188,7 @@ namespace roundhouse.console
                     option => configuration.ScriptsRunErrorsTableName = option)
                 //environment
                 .Add("env=|environment=|environmentname=",
-                    string.Format("EnvironmentName - This allows RH to be environment aware and only run scripts that are in a particular environment based on the naming of the script. LOCAL.something.sql would only be run in the LOCAL environment. Defaults to \"{0}\".",
+                    string.Format("EnvironmentName - This allows RH to be environment aware and only run scripts that are in a particular environment based on the naming of the script. LOCAL.something.ENV.sql would only be run in the LOCAL environment. Defaults to \"{0}\".",
                         ApplicationParameters.default_environment_name),
                     option => configuration.EnvironmentName = option)
                 //restore
@@ -223,11 +239,11 @@ namespace roundhouse.console
                     option => configuration.RecoveryModeSimple = option != null)
                 //debug
                 .Add("debug",
-                    "Debug - This instructs RH to write out all messages.",
+                    "Debug - This instructs RH to write out all messages. Defaults to false.",
                     option => configuration.Debug = option != null)
                 //force all anytime scripts
                 .Add("runallanytimescripts|forceanytimescripts",
-                    "RunAllAnyTimeScripts - This instructs RH to run any time scripts every time it is run.",
+                    "RunAllAnyTimeScripts - This instructs RH to run any time scripts every time it is run. Defaults to false.",
                     option => configuration.RunAllAnyTimeScripts = option != null)
                 //recorders
                 .Add("baseline",
@@ -257,10 +273,11 @@ namespace roundhouse.console
                     "/[sql]f[ilesdirectory] VALUE " +
                     "/s[ervername] VALUE " +
                     "/c[onnection]s[tring]a[dministration] VALUE " +
+                    "/c[ommand]t[imeout] VALUE /c[ommand]t[imeout]a[dmin] VALUE " +
                     "/r[epositorypath] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
-                    "/u[pfoldername] VALUE /do[wnfoldername] VALUE " +
+                    "/a[lter]d[atabasefoldername] VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
                     "/r[un]f[irstafterupdatefoldername] VALUE /fu[nctionsfoldername] VALUE /v[ie]w[sfoldername] VALUE " +
-                    "/sp[rocsfoldername] VALUE /p[ermissionsfoldername] VALUE " +
+                    "/sp[rocsfoldername] VALUE /i[nde]x[foldername] VALUE /p[ermissionsfoldername] VALUE " +
                     "/sc[hemaname] VALUE /v[ersion]t[ablename] VALUE /s[cripts]r[un]t[ablename] VALUE /s[cripts]r[un]e[rrors]t[ablename] VALUE " +
                     "/env[ironmentname] VALUE " +
                     "/restore /r[estore]f[rom]p[ath] VALUE /r[estore]c[ustom]o[ptions] VALUE /r[estore]t[imeout] VALUE" +

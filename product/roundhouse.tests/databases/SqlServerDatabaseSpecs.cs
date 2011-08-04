@@ -21,7 +21,7 @@ namespace roundhouse.tests.databases
 
             private context c = () =>
             {
-                configuration_property_holder = new ConsoleConfiguration
+                configuration_property_holder = new DefaultConfiguration
                 {
                     Logger = new Log4NetLogFactory().create_logger_bound_to(typeof (SqlServerDatabaseSpecs))
                 };

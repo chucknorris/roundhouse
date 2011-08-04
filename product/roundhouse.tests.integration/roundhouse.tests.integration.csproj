@@ -124,13 +124,24 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="databases\MySqlDatabaseSpecs.cs" />
+    <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="infrastructure\persistence\NHibernateSessionFactorySpecs.cs" />
+    <Compile Include="MigrateSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="traversal\FileSystemTraversalSpecs.cs" />
     <Compile Include="traversal\TemporaryDirectory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\roundhouse.console\roundhouse.console.csproj">
+      <Project>{97CA60FD-D550-4098-8B59-E6CD1F1A3AF2}</Project>
+      <Name>roundhouse.console</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj">
+      <Project>{71419DBB-4809-4102-A002-D484242FCFC9}</Project>
+      <Name>roundhouse.databases.mysql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj">
       <Project>{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}</Project>
       <Name>roundhouse.databases.sqlserver</Name>

@@ -7,7 +7,7 @@
     <authors>Rob Reynolds</authors>
     <owners>Rob Reynolds</owners>
     <summary>RoundhousE - Professional Database Change and Versioning Management</summary>
-    <description>RoundhousE is a Professional Database Change and Versioning Management tool. This is what you include in your projects when you want to integrate roundhouse. This is used with roundhouse.refreshdatabase.</description>
+    <description>RoundhousE is a Professional Database Change and Versioning Management tool. This is what you include in your projects when you want to integrate roundhouse. This is used with roundhouse.refreshdatabase.fnh.</description>
     <projectUrl>http://projectroundhouse.org</projectUrl>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

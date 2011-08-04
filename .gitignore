@@ -16,6 +16,7 @@ _ReSharper*
 *.bak
 *.orig
 *.log
+*.sln.docstates
  
 TestResult.xml
 submit.xml

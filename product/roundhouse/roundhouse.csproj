@@ -69,7 +69,6 @@
       <HintPath>..\..\packages\FluentNHibernate.1.2.0.712\lib\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Iesi.Collections.3.1.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
@@ -113,12 +112,17 @@
     <Compile Include="connections\AdoNetConnection.cs" />
     <Compile Include="connections\IConnection.cs" />
     <Compile Include="consoles\CommandExecutor.cs" />
+    <Compile Include="infrastructure.app\ConnectionType.cs" />
     <Compile Include="databases\DefaultDatabase.cs" />
     <Compile Include="databases\MockDatabase.cs" />
+    <Compile Include="DifferenceWithFluentNHibernate.cs" />
     <Compile Include="infrastructure.app\builders\VersionResolverBuilder.cs" />
+    <Compile Include="infrastructure.app\DatabaseTypeSynonyms.cs" />
     <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
     <Compile Include="infrastructure\extensions\ObjectExtensions.cs" />
+    <Compile Include="infrastructure\logging\custom\ConsoleLogger.cs" />
     <Compile Include="infrastructure\persistence\AuditEventListener.cs" />
+    <Compile Include="infrastructure\persistence\DifferencingNHibernateSessionFactory.cs" />
     <Compile Include="infrastructure\persistence\IRepository.cs" />
     <Compile Include="infrastructure\persistence\NHibernateSessionFactoryBuilder.cs" />
     <Compile Include="infrastructure\persistence\Repository.cs" />
@@ -130,10 +134,11 @@
     <Compile Include="parameters\AdoNetParameter.cs" />
     <Compile Include="parameters\IParameter.cs" />
     <Compile Include="Migrate.cs" />
+    <Compile Include="RoundhousEFluentNHibernateDiffingType.cs" />
     <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
     <Compile Include="sqlsplitters\StatementSplitter.cs" />
-    <Compile Include="consoles\ConsoleConfiguration.cs" />
+    <Compile Include="consoles\DefaultConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />
     <Compile Include="cryptography\MD5CryptographicService.cs" />
     <Compile Include="databases\AdoNetDatabase.cs" />
