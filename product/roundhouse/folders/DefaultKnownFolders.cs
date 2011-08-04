@@ -11,6 +11,7 @@ namespace roundhouse.folders
                                    MigrationsFolder views,
                                    MigrationsFolder sprocs,
                                    MigrationsFolder indexes,
+                                   MigrationsFolder permissions,
                                    MigrationsFolder run_after_other_any_time_scripts,
                                   Folder change_drop
             )

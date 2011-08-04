@@ -107,6 +107,49 @@ namespace roundhouse.runners
                         database_migrator.set_recovery_mode(use_simple_recovery);
                         database_migrator.close_admin_connection();
                     }
+
+                    string current_version = database_migrator.get_current_version(repository_path);
+                    string new_version = version_resolver.resolve_version();
+                    long version_id = database_migrator.version_the_database(repository_path, new_version);
+                    ITraversal traversal = new FileSystemTraversal(known_folders, file_system);
+
+                    traversal.traverse(cfg =>
+                    {
+                        cfg.include_folder(folder => folder == known_folders.alter_database);
+                        cfg.for_each_script(
+                            script =>
+                                {
+                                    string script_file_text = replace_tokens(script.script_contents);
+                                    bool the_sql_ran = database_migrator.run_sql(script_file_text,
+                                                                                 script.script_name,
+                                                                                 script.folder.
+                                                                                     should_run_items_in_folder_once,
+                                                                                 script.folder.
+                                                                                     should_run_items_in_folder_every_time,
+                                                                                 version_id,
+                                                                                 environment,
+                                                                                 new_version,
+                                                                                 repository_path,
+                                                                                 ConnectionType.Admin);
+                                    if (the_sql_ran)
+                                    {
+                                        try
+                                        {
+                                            copy_to_change_drop_folder(script.script_name,
+                                                                       script.folder);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.bound_to(this).log_a_warning_event_containing(
+                                                "Unable to copy {0} to {1}. {2}{3}",
+                                                script.script_name, script.folder.folder_full_path,
+                                                System.Environment.NewLine, ex.ToString());
+                                        }
+                                    }
+                                });
+                        }
+                    );
+
                     database_migrator.open_connection(run_in_a_transaction);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     Log.bound_to(this).log_an_info_event_containing("RoundhousE Structure");
@@ -116,15 +159,11 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     Log.bound_to(this).log_an_info_event_containing("Versioning");
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
-                    string current_version = database_migrator.get_current_version(repository_path);
-                    string new_version = version_resolver.resolve_version();
                     Log.bound_to(this).log_an_info_event_containing(" Migrating {0} from version {1} to {2}.", database_migrator.database.database_name, current_version, new_version);
-                    long version_id = database_migrator.version_the_database(repository_path, new_version);
 
                     //todo: remember when looking through all files below here, change CREATE to ALTER
                     // we are going to create the create if not exists script
 
-                    ITraversal traversal = new FileSystemTraversal(known_folders, file_system);
 
                     traversal.traverse(cfg =>
                         {
@@ -144,7 +183,8 @@ namespace roundhouse.runners
                                     bool the_sql_ran = database_migrator.run_sql(script_file_text, script.script_name,
                                                                                     script.folder.should_run_items_in_folder_once,
                                                                                     script.folder.should_run_items_in_folder_every_time,
-                                                                                    version_id, environment, new_version, repository_path);
+                                                                                    version_id, environment, new_version, repository_path,
+                                                                                    ConnectionType.Default);
                                     if (the_sql_ran)
                                     {
                                         try

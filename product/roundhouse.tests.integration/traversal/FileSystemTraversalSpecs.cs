@@ -59,7 +59,7 @@ namespace roundhouse.tests.integration.traversal
             public void if_told_to_traverse_all_items_expect_that_all_folders_were_traversed()
             {
                 FileSystemAccess access = new WindowsFileSystemAccess();
-                ConfigurationPropertyHolder configuration = new consoles.ConsoleConfiguration
+                ConfigurationPropertyHolder configuration = new consoles.DefaultConfiguration
                                                                 {
                                                                     SqlFilesDirectory = file_system.directory.FullName,
                                                                     DatabaseName = "test"
