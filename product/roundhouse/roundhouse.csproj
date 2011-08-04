@@ -137,6 +137,7 @@
     <Compile Include="RoundhousEFluentNHibernateDiffingType.cs" />
     <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
+    <Compile Include="runners\ScriptRunner.cs" />
     <Compile Include="sqlsplitters\StatementSplitter.cs" />
     <Compile Include="consoles\DefaultConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />

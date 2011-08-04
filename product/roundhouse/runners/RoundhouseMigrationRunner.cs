@@ -1,20 +1,18 @@
+using System;
+using roundhouse.infrastructure;
+using roundhouse.infrastructure.app;
+using roundhouse.infrastructure.extensions;
+using roundhouse.infrastructure.filesystem;
+using roundhouse.infrastructure.logging;
+using roundhouse.migrators;
+using roundhouse.resolvers;
 using roundhouse.folders;
 using roundhouse.traversal;
 
+using Environment = roundhouse.environments.Environment;
+
 namespace roundhouse.runners
 {
-    using System;
-    using System.IO;
-    using infrastructure;
-    using infrastructure.app;
-    using infrastructure.app.tokens;
-    using infrastructure.extensions;
-    using infrastructure.filesystem;
-    using infrastructure.logging;
-    using migrators;
-    using resolvers;
-    using Environment = environments.Environment;
-
     public sealed class RoundhouseMigrationRunner : IRunner
     {
         private readonly string repository_path;
@@ -112,41 +110,12 @@ namespace roundhouse.runners
                     string new_version = version_resolver.resolve_version();
                     long version_id = database_migrator.version_the_database(repository_path, new_version);
                     ITraversal traversal = new FileSystemTraversal(known_folders, file_system);
+                    ScriptRunner runner = new ScriptRunner(configuration, database_migrator, version_id, environment, new_version, repository_path, copy_to_change_drop_folder);
 
                     traversal.traverse(cfg =>
-                    {
-                        cfg.include_folder(folder => folder == known_folders.alter_database);
-                        cfg.for_each_script(
-                            script =>
-                                {
-                                    string script_file_text = replace_tokens(script.script_contents);
-                                    bool the_sql_ran = database_migrator.run_sql(script_file_text,
-                                                                                 script.script_name,
-                                                                                 script.folder.
-                                                                                     should_run_items_in_folder_once,
-                                                                                 script.folder.
-                                                                                     should_run_items_in_folder_every_time,
-                                                                                 version_id,
-                                                                                 environment,
-                                                                                 new_version,
-                                                                                 repository_path,
-                                                                                 ConnectionType.Admin);
-                                    if (the_sql_ran)
-                                    {
-                                        try
-                                        {
-                                            copy_to_change_drop_folder(script.script_name,
-                                                                       script.folder);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Log.bound_to(this).log_a_warning_event_containing(
-                                                "Unable to copy {0} to {1}. {2}{3}",
-                                                script.script_name, script.folder.folder_full_path,
-                                                System.Environment.NewLine, ex.ToString());
-                                        }
-                                    }
-                                });
+                        {
+                            cfg.include_folder(folder => folder == known_folders.alter_database);
+                            cfg.for_each_script(script => runner.execute_script(script, ConnectionType.Admin));
                         }
                     );
 
@@ -167,7 +136,7 @@ namespace roundhouse.runners
 
                     traversal.traverse(cfg =>
                         {
-                            cfg.include_all_folders();
+                            cfg.include_folder(folder => folder != known_folders.alter_database);
                             cfg.for_folder_if(
                                 folder => run_in_a_transaction && folder == known_folders.permissions,
                                 folder =>
@@ -176,29 +145,7 @@ namespace roundhouse.runners
                                     database_migrator.open_connection(false);
                                 }
                             );
-                            cfg.for_each_script(
-                                script =>
-                                {
-                                    string script_file_text = replace_tokens(script.script_contents);
-                                    bool the_sql_ran = database_migrator.run_sql(script_file_text, script.script_name,
-                                                                                    script.folder.should_run_items_in_folder_once,
-                                                                                    script.folder.should_run_items_in_folder_every_time,
-                                                                                    version_id, environment, new_version, repository_path,
-                                                                                    ConnectionType.Default);
-                                    if (the_sql_ran)
-                                    {
-                                        try
-                                        {
-                                            copy_to_change_drop_folder(script.script_name, script.folder);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Log.bound_to(this).log_a_warning_event_containing("Unable to copy {0} to {1}. {2}{3}", script.script_name, script.folder.folder_full_path, System.Environment.NewLine, ex.ToString());
-                                        }
-                                    }
-
-                                }
-                            );
+                            cfg.for_each_script(script => runner.execute_script(script, ConnectionType.Default));
                         }
                     );
 
@@ -257,10 +204,6 @@ namespace roundhouse.runners
         //todo: understand what environment you are deploying to so you can decide what to run - it was suggested there be a specific tag in the file name. Like vw_something.ENV.sql and that be a static "ENV". Then to key off of the actual environment name on the front of the file (ex. TEST.vw_something.ENV.sql)
         //todo:down story
 
-        private string replace_tokens(string sql_text)
-        {
-            return TokenReplacer.replace_tokens(configuration, sql_text);
-        }
 
         private void copy_to_change_drop_folder(string sql_file_ran, Folder migration_folder)
         {
