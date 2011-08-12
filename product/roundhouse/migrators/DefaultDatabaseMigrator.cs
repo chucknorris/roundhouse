@@ -67,12 +67,17 @@ namespace roundhouse.migrators
         public void create_or_restore_database()
         {
             Log.bound_to(this).log_an_info_event_containing("Creating {0} database on {1} server if it doesn't exist.", database.database_name, database.server_name);
-           
+
             database.create_database_if_it_doesnt_exist();
 
             if (restoring_database)
             {
-                restore_database(restore_path, TokenReplacer.replace_tokens(configuration,custom_restore_options));
+                string custom_script = custom_restore_options;
+                if (!configuration.DisableTokenReplacement)
+                {
+                    custom_script = TokenReplacer.replace_tokens(configuration, custom_script);
+                }
+                restore_database(restore_path, custom_script);
             }
         }
 
@@ -83,7 +88,7 @@ namespace roundhouse.migrators
 
         public void restore_database(string restore_from_path, string restore_options)
         {
-            Log.bound_to(this).log_an_info_event_containing("Restoring {0} database on {1} server from path {2}.", database.database_name, database.server_name,restore_from_path);
+            Log.bound_to(this).log_an_info_event_containing("Restoring {0} database on {1} server from path {2}.", database.database_name, database.server_name, restore_from_path);
             database.restore_database(restore_from_path, restore_options);
         }
 
@@ -108,7 +113,7 @@ namespace roundhouse.migrators
             Log.bound_to(this).log_an_info_event_containing(" Creating [{0}] table if it doesn't exist.", database.scripts_run_table_name);
             Log.bound_to(this).log_an_info_event_containing(" Creating [{0}] table if it doesn't exist.", database.scripts_run_errors_table_name);
             database.create_or_update_roundhouse_tables();
-           
+
             if (running_in_a_transaction)
             {
                 database.close_connection();
@@ -141,13 +146,14 @@ namespace roundhouse.migrators
             return database.insert_version_and_get_version_id(repository_path, repository_version);
         }
 
-        public bool run_sql(string sql_to_run, string script_name, bool run_this_script_once, bool run_this_script_every_time, long version_id, Environment environment, string repository_version, string repository_path,ConnectionType connection_type)
+        public bool run_sql(string sql_to_run, string script_name, bool run_this_script_once, bool run_this_script_every_time, long version_id, Environment environment, string repository_version, string repository_path, ConnectionType connection_type)
         {
             bool this_sql_ran = false;
 
             if (this_is_a_one_time_script_that_has_changes_but_has_already_been_run(script_name, sql_to_run, run_this_script_once))
             {
-                if (error_on_one_time_script_changes) {
+                if (error_on_one_time_script_changes)
+                {
                     database.rollback();
                     string error_message = string.Format("{0} has changed since the last time it was run. By default this is not allowed - scripts that run once should never change. To change this behavior to a warning, please set warnOnOneTimeScriptChanges to true and run again. Stopping execution.", script_name);
                     record_script_in_scripts_run_errors_table(script_name, sql_to_run, sql_to_run, error_message, repository_version, repository_path);
@@ -166,7 +172,7 @@ namespace roundhouse.migrators
                 {
                     try
                     {
-                        database.run_sql(sql_statement,connection_type);
+                        database.run_sql(sql_statement, connection_type);
                     }
                     catch (Exception ex)
                     {
@@ -229,7 +235,7 @@ namespace roundhouse.migrators
 
             if (run_this_script_every_time)
             {
-                this_is_an_everytime_script =  true;
+                this_is_an_everytime_script = true;
             }
 
             if (script_name.to_lower().StartsWith("everytime."))

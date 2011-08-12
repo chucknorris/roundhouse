@@ -91,7 +91,11 @@ namespace roundhouse.databases
                 string create_script = create_database_script();
                 if (!string.IsNullOrEmpty(custom_create_database_script))
                 {
-                    create_script = TokenReplacer.replace_tokens(configuration, custom_create_database_script);
+                    create_script = custom_create_database_script;
+                    if (!configuration.DisableTokenReplacement)
+                    {
+                        create_script = TokenReplacer.replace_tokens(configuration, create_script);
+                    }
                 }
                 run_sql(create_script, ConnectionType.Admin);
             }

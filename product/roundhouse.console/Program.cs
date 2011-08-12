@@ -244,7 +244,11 @@ namespace roundhouse.console
                 //force all anytime scripts
                 .Add("runallanytimescripts|forceanytimescripts",
                     "RunAllAnyTimeScripts - This instructs RH to run any time scripts every time it is run. Defaults to false.",
-                    option => configuration.RunAllAnyTimeScripts = option != null)
+                    option => configuration.RunAllAnyTimeScripts = option != null) 
+                //disable token replacement
+                .Add("disabletokens|disabletokenreplacement",
+                    "DisableTokenReplacement - This instructs RH to not perform token replacement {{somename}}. Defaults to false.",
+                    option => configuration.DisableTokenReplacement = option != null)
                 //recorders
                 .Add("baseline",
                     "Baseline - This instructs RH to create an insert for its recording tables, but not to actually run anything against the database. Use this option if you already have scripts that have been run through other means (and BEFORE you start the new ones).",
@@ -293,6 +297,7 @@ namespace roundhouse.console
                     "/simple " +
                     "/debug " +
                     "/runallanytimescripts " +
+                    "/disabletokenreplacement " +
                     "/baseline " +
                     "/dryrun " +
                     "]", Environment.NewLine);

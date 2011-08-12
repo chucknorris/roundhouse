@@ -1,3 +1,4 @@
+using System.Text;
 using roundhouse.folders;
 
 namespace roundhouse.runners
@@ -245,7 +246,7 @@ namespace roundhouse.runners
 
             foreach (string sql_file in file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION))
             {
-                string sql_file_text = replace_tokens(File.ReadAllText(sql_file));
+                string sql_file_text = replace_tokens(get_file_text(sql_file));
                 Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
                 bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file),
                                                              migration_folder.should_run_items_in_folder_once,
@@ -270,8 +271,18 @@ namespace roundhouse.runners
             }
         }
 
+        public string get_file_text(string file_location)
+        {
+            return file_system.read_file_text(file_location);
+        }
+
         private string replace_tokens(string sql_text)
         {
+            if (configuration.DisableTokenReplacement)
+            {
+                return sql_text;
+            }
+
             return TokenReplacer.replace_tokens(configuration,sql_text);
         }
 

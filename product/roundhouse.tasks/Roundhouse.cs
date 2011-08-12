@@ -123,6 +123,8 @@ namespace roundhouse.tasks
 
         public bool RunAllAnyTimeScripts { get; set; }
 
+        public bool DisableTokenReplacement { get; set; }
+
         #endregion
 
         public void run_the_task()

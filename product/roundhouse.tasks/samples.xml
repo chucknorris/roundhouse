@@ -79,6 +79,7 @@
       WithTransaction="false"
       RecoveryModeSimple="false"
       RunAllAnyTimeScripts="false"
+      DisableTokenReplacement="false"
       />
 
   </msbuild>

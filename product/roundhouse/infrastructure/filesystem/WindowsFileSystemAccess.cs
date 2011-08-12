@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace roundhouse.infrastructure.filesystem
 {
@@ -44,6 +45,45 @@ namespace roundhouse.infrastructure.filesystem
         public FileStream open_file_in_read_mode_from(string file_path)
         {
             return File.OpenRead(file_path);
+        }
+
+        /// <summary>
+        /// Returns the contents of a file
+        /// </summary>
+        /// <param name="file_path">Path to the file name</param>
+        /// <returns>A string of the file contents</returns>
+        public string read_file_text(string file_path)
+        {
+            return File.ReadAllText(file_path, get_file_encoding(file_path));
+        }
+
+        /// <summary>
+        /// Takes a guess at the file encoding by looking to see if it has a BOM
+        /// </summary>
+        /// <param name="file_path">Path to the file name</param>
+        /// <returns>A best guess at the encoding of the file</returns>
+        /// <remarks>http://www.west-wind.com/WebLog/posts/197245.aspx</remarks>
+        public static Encoding get_file_encoding(string file_path)
+        {
+            // *** Use Default of Encoding.Default (Ansi CodePage)
+            Encoding enc = Encoding.Default;
+
+            // *** Detect byte order mark if any - otherwise assume default
+            byte[] buffer = new byte[5];
+            FileStream file = new FileStream(file_path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            file.Read(buffer, 0, 5);
+            file.Close();
+
+            if (buffer[0] == 0xef && buffer[1] == 0xbb && buffer[2] == 0xbf)
+                enc = Encoding.UTF8;
+            else if (buffer[0] == 0xfe && buffer[1] == 0xff)
+                enc = Encoding.Unicode;
+            else if (buffer[0] == 0 && buffer[1] == 0 && buffer[2] == 0xfe && buffer[3] == 0xff)
+                enc = Encoding.UTF32;
+            else if (buffer[0] == 0x2b && buffer[1] == 0x2f && buffer[2] == 0x76)
+                enc = Encoding.UTF7;
+
+            return enc;
         }
 
         /// <summary>
@@ -314,7 +354,7 @@ namespace roundhouse.infrastructure.filesystem
         /// <param name="directory">Path to the directory</param>
         /// <param name="pattern">Pattern or extension</param>
         /// <returns>A list of files inside of an existing directory</returns>
-        public string[] get_all_file_name_strings_in(string directory,string pattern)
+        public string[] get_all_file_name_strings_in(string directory, string pattern)
         {
             string[] returnList = Directory.GetFiles(directory, pattern);
             return returnList.OrderBy(x => x).ToArray();

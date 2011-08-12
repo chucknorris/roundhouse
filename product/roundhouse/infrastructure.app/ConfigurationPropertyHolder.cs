@@ -47,5 +47,6 @@ namespace roundhouse.infrastructure.app
         bool DryRun { get; set; }
         bool Baseline { get; set; }
         bool RunAllAnyTimeScripts { get; set; }
+        bool DisableTokenReplacement { get; set; }
     }
 }

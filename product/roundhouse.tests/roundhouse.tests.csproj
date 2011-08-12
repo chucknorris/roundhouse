@@ -121,6 +121,7 @@
     <Compile Include="infrastructure\logging\LogSpecs.cs" />
     <Compile Include="migrators\DefaultDatabaseMigratorSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="infrastructure\filesystem\WindowsFileSystemAccessSpecs.cs" />
     <Compile Include="sqlsplitters\SplitterContext.cs" />
     <Compile Include="sqlsplitters\StatementSplitterSpecs.cs" />
     <Compile Include="TestExtensions.cs" />
@@ -143,9 +144,7 @@
       <Name>roundhouse</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="infrastructure\filesystem\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
@@ -165,6 +164,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="infrastructure\filesystem\ansiencoded.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="infrastructure\filesystem\utf8encoded.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

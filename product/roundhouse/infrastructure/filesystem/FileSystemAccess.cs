@@ -31,6 +31,13 @@ namespace roundhouse.infrastructure.filesystem
         FileStream open_file_in_read_mode_from(string file_path);
 
         /// <summary>
+        /// Returns the contents of a file
+        /// </summary>
+        /// <param name="file_path">Path to the file name</param>
+        /// <returns>A string of the file contents</returns>
+        string read_file_text(string file_path);
+
+        /// <summary>
         /// Determines the file information given a path to an existing file
         /// </summary>
         /// <param name="file_path">Path to an existing file</param>
