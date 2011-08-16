@@ -212,7 +212,7 @@ namespace roundhouse.runners
             finally
             {
                 database_migrator.database.Dispose();
-                copy_log_file_to_change_drop_folder();
+                //copy_log_file_to_change_drop_folder();
             }
         }
 
@@ -294,27 +294,27 @@ namespace roundhouse.runners
             file_system.file_copy_unsafe(sql_file_ran, destination_file, true);
         }
 
-        private void copy_log_file_to_change_drop_folder()
-        {
-            string log_file = ApplicationParameters.logging_file;
-            string log_file_name = file_system.get_file_name_from(log_file);
+        //private void copy_log_file_to_change_drop_folder()
+        //{
+        //    string log_file = ApplicationParameters.logging_file;
+        //    string log_file_name = file_system.get_file_name_from(log_file);
 
-            try
-            {
-                string destination_file = file_system.combine_paths(known_folders.change_drop.folder_full_path, log_file_name);
-                file_system.file_copy(log_file, destination_file, true);
-            }
-            catch (Exception exception)
-            {
-                Log.bound_to(this).
-                    log_an_error_event_containing("{0} encountered an error:{1}{2}",
-                                                  ApplicationParameters.name,
-                                                  System.Environment.NewLine,
-                                                  exception.to_string()
-                                                  );
-            }
+        //    try
+        //    {
+        //        string destination_file = file_system.combine_paths(known_folders.change_drop.folder_full_path, log_file_name);
+        //        file_system.file_copy(log_file, destination_file, true);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Log.bound_to(this).
+        //            log_an_error_event_containing("{0} encountered an error:{1}{2}",
+        //                                          ApplicationParameters.name,
+        //                                          System.Environment.NewLine,
+        //                                          exception.to_string()
+        //                                          );
+        //    }
 
-        }
+        //}
 
     }
 }

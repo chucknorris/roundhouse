@@ -45,7 +45,6 @@ namespace roundhouse.infrastructure.app.builders
             return file_system.combine_paths(paths);
         }
 
-
         private static string get_run_date_time_string()
         {
             return string.Format("{0:yyyyMMdd_HHmmss_ffff}", DateTime.Now);

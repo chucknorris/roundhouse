@@ -17,6 +17,7 @@ namespace roundhouse.infrastructure.app
     using folders;
     using infrastructure.logging;
     using infrastructure.logging.custom;
+    using logging;
     using migrators;
     using resolvers;
     using StructureMap;
@@ -46,7 +47,7 @@ namespace roundhouse.infrastructure.app
             if (string.IsNullOrEmpty(configuration_property_holder.AlterDatabaseFolderName))
             {
                 configuration_property_holder.AlterDatabaseFolderName = ApplicationParameters.default_alter_database_folder_name;
-            } 
+            }
             if (string.IsNullOrEmpty(configuration_property_holder.UpFolderName))
             {
                 configuration_property_holder.UpFolderName = ApplicationParameters.default_up_folder_name;
@@ -143,6 +144,7 @@ namespace roundhouse.infrastructure.app
         {
             Container.initialize_with(null);
             Container.initialize_with(build_items_for_container(configuration_property_holder));
+            initialize_file_log_appender();
         }
 
         private static InversionContainer build_items_for_container(ConfigurationPropertyHolder configuration_property_holder)
@@ -199,6 +201,13 @@ namespace roundhouse.infrastructure.app
             }
 
             return new MultipleLogger(loggers);
+        }
+
+        private static void initialize_file_log_appender()
+        {
+            var known_folders = Container.get_an_instance_of<KnownFolders>();
+
+            Log4NetAppender.set_file_appender(known_folders.change_drop.folder_full_path);
         }
     }
 }
