@@ -15,8 +15,17 @@
   <property name="folder.deployment" value="deployment" overwrite="false" />
   <property name="dirs.deployment" value="${dirs.drop}\${folder.deployment}" />
   <property name="dirs.app.drop" value="${dirs.drop}\${folder.app.drop}" overwrite="false" />
+  <property name="file.key" value="${dirs.current}\${path.to.toplevel}\RoundhousE.snk" overwrite="false" />
 
   <target name="go" depends="copy_roundhouse_files_to_deploy_console, merge_the_dll, merge_the_msbuild" />
+ 
+  <target name="sign_merged_exe">
+    <al output="${dirs.app.drop}\console\rh.exe" target="exe">
+      <sources>
+        <include name="${dirs.app.drop}\console\rh.exe" />
+      </sources>
+    </al>
+  </target>
  
   <target name="copy_roundhouse_files_to_deploy_console">
   <echo message="Removing original roundhouse assemblies from ${dirs.deployment}\console."/>

@@ -22,6 +22,7 @@
   <!-- overwrite this property -->
   <property name="dirs.merge.from" value="${dirs.drop}\${folder.app.drop}\lib" />
   <property name="dirs.merge.to" value="${dirs.drop}\merge" overwrite="false" />
+  <property name="file.key" value="${dirs.current}\${path.to.toplevel}\RoundhousE.snk" overwrite="false" />
   
   <property name="file.internalize.ignore" value="ilmerge.internalize.ignore.txt" />
   <property name="path.file.internalize.ignore" value="${dirs.build_scripts_custom}\${file.internalize.ignore}" />
@@ -40,8 +41,8 @@
   <target name="prepare">
     <mkdir dir="${dirs.merge.log}" />
     <mkdir dir="${dirs.merge.from}" />
-    
     <mkdir dir="${dirs.merge.to}" />
+    <property name="args.ilmerge" value="${args.ilmerge} /keyfile:${file.key}" if="${file::exists(file.key)}"/>
   </target>
 
   <target name="get_regular_dlls">
