@@ -38,7 +38,6 @@ namespace roundhouse.databases
             get { return @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>'{1}(?:[^']|\n[^'])*?'{1})|(?<KEEP1>\s)(?<BATCHSPLITTER>\;)(?<KEEP2>\s)|(?<KEEP1>\s)(?<BATCHSPLITTER>\;)(?<KEEP2>$)"; }
         }
 
-        public string custom_create_database_script { get; set; }
         public int command_timeout { get; set; }
         public int admin_command_timeout { get; set; }
         public int restore_timeout { get; set; }
@@ -84,7 +83,7 @@ namespace roundhouse.databases
         public abstract string restore_database_script(string restore_from_path, string custom_restore_options);
         public abstract string delete_database_script();
 
-        public void create_database_if_it_doesnt_exist()
+        public void create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
             try
             {

@@ -81,7 +81,6 @@
                                     db.version_table_name = configuration_property_holder.VersionTableName;
                                     db.scripts_run_table_name = configuration_property_holder.ScriptsRunTableName;
                                     db.scripts_run_errors_table_name = configuration_property_holder.ScriptsRunErrorsTableName;
-                                    db.custom_create_database_script = configuration_property_holder.CreateDatabaseCustomScript;
                                     db.command_timeout = configuration_property_holder.CommandTimeout;
                                     db.admin_command_timeout = configuration_property_holder.CommandTimeoutAdmin;
                                     db.restore_timeout = configuration_property_holder.RestoreTimeout;
