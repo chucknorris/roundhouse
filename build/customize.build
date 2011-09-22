@@ -6,10 +6,10 @@
   <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
   <property name="path.separator" value="${string::trim(path::combine(' ', ' '))}" />
   <property name="file.current.no_extension" value="customize" />
-  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />
-  <property name="path.to.toplevel" value=".." />
+  <property name="dirs.current" value="${directory::get-current-directory()}" />
+  <property name="dirs.current.file" value="${directory::get-parent-directory(project::get-buildfile-path())}" />  
   <property name="folder.build_scripts_custom" value="build.custom" overwrite="false" />
-  <property name="dirs.build_scripts_custom" value="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}${folder.build_scripts_custom}" />
+  <property name="dirs.build_scripts_custom" value="${dirs.current}${path.separator}..${path.separator}${folder.build_scripts_custom}" />
   <property name="customize.step.name" value="__REPLACE__" overwrite="false" />
   <property name="customize.step.type" value="__REPLACE__" overwrite="false" />
   <property name="customize.step.type.lowered" value="${string::to-lower(customize.step.type)}" />
@@ -17,11 +17,14 @@
   <property name="file.customized" value="" readonly="false" />
   <property name="path.to.custom_file" value="-1" />
   <property name="path.to.custom_file" value="" if="${file::exists(customize.step.name)}" />
+  <property name="app.ruby" value="C:\Ruby\bin\ruby.exe" overwrite="false" />
+  <property name="app.powershell" value="%WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe" overwrite="false" />
 
   <target name="go" depends="run_tasks, report_finish_time" />
 
   <target name="run_tasks">
-    <echo message="Running ${project::get-name()} to create custom tasks." />
+    <echo level="Warning" message="" />
+    <echo level="Warning" message="Running ${project::get-name()} to create custom tasks." />
     <call target="prepare" if="${target::exists('prepare')}" />
     <call target="run_normal_tasks" />
   </target>
@@ -31,7 +34,7 @@
           description="Setting up a customize file for UppercuT." />
 
   <target name="error_check">
-    <echo message="Error checking - the input for customize.step.name is '${customize.step.name}' and the input for customize.step.type is '${customize.step.type}'." />
+    <echo level="Warning" message="Error checking - the input for customize.step.name is '${customize.step.name}' and the input for customize.step.type is '${customize.step.type}'." />
     <fail message="Please send in the arguments for what step to customize and what type of customization. Call customize.bat /? for usage instructions."
       if="${customize.step.name=='__REPLACE__' or customize.step.type =='__REPLACE__'}" />
     <fail message="The type of customization can only be pre, post, or replace."
@@ -40,7 +43,7 @@
 
   <target name="customize">
     <property name="file.customized" value="${path::get-file-name-without-extension(customize.step.name)}.${customize.step.type.lowered}${path::get-extension(customize.step.name)}" />
-    <echo message="Creating a customized step called ${file.customized}." />
+    <echo level="Warning" message="Creating a customized step called ${file.customized}." />
     <call target="resolve_path_to_custom_file" />
     <fail message="${file.customized} already exists in ${dirs.build_scripts_custom}. Will not run." if="${file::exists(dirs.build_scripts_custom + path.separator + file.customized)}" />
     <call target="create_file_if_not_already_existing" />
@@ -52,7 +55,7 @@
     <property name="path.to.custom_file" value="${path.separator}versioners" if="${file::exists('versioners' + path.separator + customize.step.name)}" />
     <fail message="${customize.step.name} does not exist in anywhere in the build directory." if="${path.to.custom_file=='-1'}" />
     <property name="dirs.build_scripts_custom" value="${dirs.build_scripts_custom}${path.to.custom_file}" />
-    <echo message="Found ${customize.step.name} in '${dirs.current}${path.separator}${path.to.custom_file}'. This means the custom path is going to be ${dirs.build_scripts_custom}." />
+    <echo level="Warning" message="Found ${customize.step.name} in '${dirs.current}${path.separator}${path.to.custom_file}'. This means the custom path is going to be ${dirs.build_scripts_custom}." />
   </target>
 
   <target name="create_file_if_not_already_existing">
@@ -64,14 +67,10 @@
       file="${dirs.build_scripts_custom}${path.separator}${file.customized}"
       xpath="/project/@name"
       value="CUSTOM ${string::to-upper(customize.step.type)} ${string::to-upper(path::get-file-name-without-extension(customize.step.name))}" />
-    <xmlpoke
-      file="${dirs.build_scripts_custom}${path.separator}${file.customized}"
-      xpath="/project/property[@name = 'path.to.toplevel']/@value"
-      value="..${path.separator}.." if="${path.to.custom_file !=''}" />
   </target>
 
   <target name="report_finish_time">
-    <echo message="Customize finished at ${datetime::now()}. Please make any customizations you need to now to ${dirs.build_scripts_custom}${path.separator}${file.customized} and don't forget to add it to source control." />
+    <echo level="Warning" message="Customize finished at ${datetime::now()}. Please make any customizations you need to now to ${dirs.build_scripts_custom}${path.separator}${file.customized} and don't forget to add it to source control." />
   </target>
 
 </project>

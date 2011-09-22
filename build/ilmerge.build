@@ -5,21 +5,23 @@
   <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />
   <property name="path.separator" value="${string::trim(path::combine(' ', ' '))}" />
   <property name="file.current.no_extension" value="ilmerge" />
-  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />
-  <property name="path.to.toplevel" value=".." />
+  <property name="dirs.current" value="${directory::get-current-directory()}" />  
+  <property name="dirs.current.file" value="${directory::get-parent-directory(project::get-buildfile-path())}" />  
   <property name="folder.build_scripts" value="build" overwrite="false" />
   <property name="folder.build_scripts_custom" value="build.custom" overwrite="false" />
-  <property name="dirs.build_scripts_custom" value="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}${folder.build_scripts_custom}" />
+  <property name="dirs.build_scripts_custom" value="${dirs.current}${path.separator}${folder.build_scripts_custom}" />
   <property name="folder.code_drop" value="code_drop" overwrite="false" />
-  <property name="dirs.drop" value="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}${folder.code_drop}" overwrite="false" />
+  <property name="dirs.drop" value="${dirs.current}${path.separator}${folder.code_drop}" overwrite="false" />
   <property name="folder.app.drop" value="${project.name}" overwrite="false" />
-  <property name="dirs.lib" value="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}lib" overwrite="false" />
+  <property name="dirs.lib" value="${dirs.current}${path.separator}lib" overwrite="false" />
   <property name="dirs.ilmerge.folder" value="${dirs.lib}${path.separator}ILMerge" />
   <property name="app.ilmerge" value="${dirs.ilmerge.folder}${path.separator}ILMerge.exe" overwrite="false"  />
   <property name="dirs.merge.log" value="${dirs.drop}${path.separator}build_artifacts${path.separator}ilmerge" />
   <property name="log.merge" value="ilmerge.log" />
   <property name="file.uppercut.assembly" value="uppercut.tasks.dll" />
-  <property name="path.uppercut.assembly" value="${dirs.current}${path.separator}${file.uppercut.assembly}" />
+  <property name="path.uppercut.assembly" value="${dirs.current.file}${path.separator}${file.uppercut.assembly}" />
+  <property name="app.ruby" value="C:\Ruby\bin\ruby.exe" overwrite="false" />
+  <property name="app.powershell" value="%WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe" overwrite="false" />
 
   <property name="dirs.merge.from" value="${dirs.drop}${path.separator}${folder.app.drop}" overwrite="false" />
   <property name="dirs.merge.to" value="${dirs.drop}${path.separator}merge" overwrite="false" />
@@ -31,63 +33,35 @@
   <property name="merge.target.type" value="__REPLACE__" overwrite="false" />
   <property name="args.ilmerge" value="/internalize /target:${merge.target.type} /out:${dirs.merge.to}${path.separator}${file.merge.name} /log:${dirs.merge.log}${path.separator}${log.merge} /xmldocs /ndebug /allowDup ${file.merge.name} " />
   <property name="args.ilmerge" value="/internalize:${path.file.internalize.ignore} /target:${merge.target.type} /out:${dirs.merge.to}${path.separator}${file.merge.name} /log:${dirs.merge.log}${path.separator}${log.merge} /xmldocs /ndebug /allowDup ${file.merge.name} " if="${file::exists(path.file.internalize.ignore)}"/>
-  <property name="file.key" value="${dirs.current}\${path.to.toplevel}\RoundhousE.snk" overwrite="false" />
 
-  <property name="allow.powershell.unrestricted" value="false" overwrite="false" />
-  <property name="file.custom.step.before" value="${dirs.build_scripts_custom}${path.separator}${file.current.no_extension}.pre.build" />
-  <property name="file.custom.step.after" value="${dirs.build_scripts_custom}${path.separator}${file.current.no_extension}.post.build" />
-  <property name="file.custom.step.replace" value="${dirs.build_scripts_custom}${path.separator}${file.current.no_extension}.replace.build" />
   <property name="is.replaced" value="false" />
   <property name="fail.build.on.error" value="true" />
 
-  <target name="go" depends="load_uppercut_assemblies, allow_powershell_unrestricted, run_tasks" />
+  <target name="go" depends="load_uppercut_assemblies, run_tasks" />
 
   <target name="run_tasks">
-    <echo message="Running ${project::get-name()} tasks." />
+    <echo level="Warning" message="" />
+    <echo level="Warning" message="====================" />
+    <echo level="Warning" message="${project::get-name()}" />
+    <echo level="Warning" message="====================" />
     <call target="prepare" if="${target::exists('prepare')}" />
-    <call target="custom_tasks_before" if="${target::exists('custom_tasks_before')}"  />
-    <call target="custom_tasks_replace" if="${target::exists('custom_tasks_replace')}"  />
+    <customExtension extends="${project::get-buildfile-path()}" type="pre" failonerror="${fail.build.on.error}" />
+    <customExtension extends="${project::get-buildfile-path()}" type="replace" failonerror="${fail.build.on.error}" />
     <call target="run_normal_tasks" if="${not is.replaced}" />
-    <call target="custom_tasks_after" if="${target::exists('custom_tasks_after')}" />
+    <customExtension extends="${project::get-buildfile-path()}" type="post" failonerror="${fail.build.on.error}" />
   </target>
 
   <target name="run_normal_tasks"
           depends="set_environment_variables, error_check, get_regular_dlls, run_ilmerge, copy_configs, remove_unneeded_assemblies, copy_from_merge, delete_merge_folder"
           description="Running ILMerge with UppercuT default.build." />
 
-  <target name="custom_tasks_before">
-    <echo message="Running custom tasks if ${file.custom.step.before} exists." />
-    <nant buildfile="${file.custom.step.before}" inheritall="true" if="${file::exists(file.custom.step.before)}" failonerror="${fail.build.on.error}" />
-    <exec program="powershell.exe" if="${file::exists(file.custom.step.before + '.ps1')}" failonerror="${fail.build.on.error}">
-      <arg value="${path::get-full-path(file.custom.step.before + '.ps1')}" />
-    </exec>
-    <exec program="ruby.exe" if="${file::exists(file.custom.step.before + '.rb')}" failonerror="${fail.build.on.error}">
-      <arg value="${path::get-full-path(file.custom.step.before + '.rb')}" />
-    </exec>
-  </target>
-
-  <target name="custom_tasks_replace">
-    <echo message="Running custom tasks instead of normal tasks if ${file.custom.step.replace} exists." />
-    <property name="is.replaced" value="true" if="${file::exists(file.custom.step.replace)}" />
-    <nant buildfile="${file.custom.step.replace}" inheritall="true" if="${file::exists(file.custom.step.replace)}" failonerror="${fail.build.on.error}" />
-    <property name="is.replaced" value="true" if="${file::exists(file.custom.step.replace + '.ps1')}" />
-    <exec program="powershell.exe" if="${file::exists(file.custom.step.replace + '.ps1')}" failonerror="${fail.build.on.error}" >
-      <arg value="${path::get-full-path(file.custom.step.replace + '.ps1')}" />
-    </exec>
-    <property name="is.replaced" value="true" if="${file::exists(file.custom.step.replace + '.rb')}" />
-    <exec program="ruby.exe" if="${file::exists(file.custom.step.replace + '.rb')}" failonerror="${fail.build.on.error}" >
-      <arg value="${path::get-full-path(file.custom.step.replace + '.rb')}" />
-    </exec>
-  </target>
-
   <target name="set_environment_variables">
     <property name="dirs.merge.from" value="${environment::get-variable('uc.dirs.merge.from')}" if="${environment::variable-exists('uc.dirs.merge.from')}" />
     <property name="dirs.merge.to" value="${environment::get-variable('uc.dirs.merge.to')}" if="${environment::variable-exists('uc.dirs.merge.to')}" />
     <property name="file.merge.name" value="${environment::get-variable('uc.file.merge.name')}" if="${environment::variable-exists('uc.file.merge.name')}" />
     <property name="merge.target.type" value="${environment::get-variable('uc.merge.target.type')}" if="${environment::variable-exists('uc.merge.target.type')}" />
-    <property name="args.ilmerge" value="/internalize /target:${merge.target.type} /out:${dirs.merge.to}${path.separator}${file.merge.name} /log:${dirs.merge.log}${path.separator}${log.merge} /ndebug /allowDup ${file.merge.name}" />
-    <property name="args.ilmerge" value="/internalize:${path.file.internalize.ignore} /target:${merge.target.type} /out:${dirs.merge.to}${path.separator}${file.merge.name} /log:${dirs.merge.log}${path.separator}${log.merge} /ndebug /allowDup ${file.merge.name}" if="${file::exists(path.file.internalize.ignore)}"/>
-    <property name="args.ilmerge" value="${args.ilmerge} /keyfile:${file.key}" if="${file::exists(file.key)}"/>
+    <property name="args.ilmerge" value="/internalize /target:${merge.target.type} /out:${dirs.merge.to}${path.separator}${file.merge.name} /log:${dirs.merge.log}${path.separator}${log.merge} /ndebug /allowDup ${file.merge.name} " />
+    <property name="args.ilmerge" value="/internalize:${path.file.internalize.ignore} /target:${merge.target.type} /out:${dirs.merge.to}${path.separator}${file.merge.name} /log:${dirs.merge.log}${path.separator}${log.merge} /ndebug /allowDup ${file.merge.name} " if="${file::exists(path.file.internalize.ignore)}"/>
   </target>
   
   <target name="error_check">
@@ -101,7 +75,7 @@
   </target>
 
   <target name="get_regular_dlls">
-    <echo message="Getting output dlls based on name in directory ${path::get-full-path(dirs.merge.from)}." />
+    <echo level="Warning" message="Getting output dlls based on name in directory ${path::get-full-path(dirs.merge.from)}." />
     <property name="dll.names" value="" />
     <foreach item="File" property="dll.filename">
       <in>
@@ -121,8 +95,8 @@
   </target>
 
   <target name="run_ilmerge">
-    <echo message="Merging the the contents of ${dirs.merge.from} into a single executable - ${dirs.merge.to}${path.separator}${file.merge.name}. This will fail if all dependencies are not resolved."/>
-    <echo message="Running this: ${app.ilmerge} ${args.ilmerge}"/>
+    <echo level="Warning" message="Merging the the contents of ${dirs.merge.from} into a single executable - ${dirs.merge.to}${path.separator}${file.merge.name}. This will fail if all dependencies are not resolved."/>
+    <echo level="Warning" message="Running this: ${app.ilmerge} ${args.ilmerge}"/>
     <exec program="${app.ilmerge}"
           workingdir="${dirs.merge.from}"
           commandline="${args.ilmerge}" />
@@ -137,7 +111,7 @@
   </target>
 
   <target name="remove_unneeded_assemblies">
-    <echo message="Removing unneeded assemblies before moving the merged assembly back into ${dirs.merge.from}."/>
+    <echo level="Warning" message="Removing unneeded assemblies before moving the merged assembly back into ${dirs.merge.from}."/>
     <delete>
       <fileset basedir="${dirs.merge.from}" >
         <include name="*.*" />
@@ -157,30 +131,8 @@
     <delete dir="${dirs.merge.to}" failonerror="false"  />
   </target>
 
-  <target name="custom_tasks_after">
-    <echo message="Running custom tasks if ${file.custom.step.after} exists." />
-    <nant buildfile="${file.custom.step.after}" inheritall="true" if="${file::exists(file.custom.step.after)}" failonerror="${fail.build.on.error}" />
-    <exec program="powershell.exe" if="${file::exists(file.custom.step.after + '.ps1')}" failonerror="${fail.build.on.error}" >
-      <arg value="${path::get-full-path(file.custom.step.after + '.ps1')}" />
-    </exec>
-    <exec program="ruby.exe" if="${file::exists(file.custom.step.after + '.rb')}" failonerror="${fail.build.on.error}" >
-      <arg value="${path::get-full-path(file.custom.step.after + '.rb')}" />
-    </exec>
-  </target>
-
   <target name="load_uppercut_assemblies">
     <loadtasks assembly="${path.uppercut.assembly}" if="${file::exists(path.uppercut.assembly)}" />
-  </target>
-
-  <target name="allow_powershell_unrestricted">
-    <!-- powershell 1.0 -->
-    <exec program="powershell.exe" if="${allow.powershell.unrestricted}" failonerror="false">
-      <arg value="set-executionpolicy unrestricted" />
-    </exec>
-    <!-- powershell 2.0 -->
-    <exec program="powershell.exe" if="${allow.powershell.unrestricted}" failonerror="false">
-      <arg value="set-executionpolicy unrestricted -force -scope CurrentUser" />
-    </exec>
   </target>
   
 </project>

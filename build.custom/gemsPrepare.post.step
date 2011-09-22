@@ -62,7 +62,7 @@
   </target>
   
   <target name="copy_notices_to_lib_folder">
-    <echo message="Packaging readme file to ${dirs.drop.gems}\lib."/>
+    <echo level="Warning" message="Packaging readme file to ${dirs.drop.gems}\lib."/>
     <copy file="${dirs.current}\..\README.markdown" tofile="${dirs.drop.gems}\docs\README" failonerror="false" />
     
     <echo message="Packaging other legal stuff to ${dirs.drop.gems}\lib."/>

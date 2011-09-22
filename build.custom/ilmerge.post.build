@@ -28,14 +28,14 @@
   </target>
  
   <target name="copy_roundhouse_files_to_deploy_console">
-  <echo message="Removing original roundhouse assemblies from ${dirs.deployment}\console."/>
+  <echo level="Warning" message="Removing original roundhouse assemblies from ${dirs.deployment}\console."/>
     <delete>
       <fileset basedir="${dirs.drop}\sample\${folder.deployment}\console" >
         <include name="*.*" />
       </fileset>
     </delete>
   
-    <echo message="Copying roundhouse assemblies from '${dirs.app.drop}\console' to '${dirs.deployment}\console'."/>
+    <echo level="Warning" message="Copying roundhouse assemblies from '${dirs.app.drop}\console' to '${dirs.deployment}\console'."/>
     <copy todir="${dirs.drop}\sample\${folder.deployment}\console">
       <fileset basedir="${dirs.app.drop}\console">
         <include name="*.*" />
