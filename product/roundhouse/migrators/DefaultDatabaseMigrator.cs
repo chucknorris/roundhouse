@@ -64,11 +64,11 @@ namespace roundhouse.migrators
             database.close_connection();
         }
 
-        public void create_or_restore_database()
+        public void create_or_restore_database(string custom_create_database_script)
         {
             Log.bound_to(this).log_an_info_event_containing("Creating {0} database on {1} server if it doesn't exist.", database.database_name, database.server_name);
 
-            database.create_database_if_it_doesnt_exist();
+            database.create_database_if_it_doesnt_exist(custom_create_database_script);
 
             if (restoring_database)
             {
