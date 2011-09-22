@@ -87,12 +87,6 @@ namespace roundhouse.databases
             get { return database.sql_statement_separator_regex_pattern; }
         }
 
-        public string custom_create_database_script
-        {
-            get { return database.custom_create_database_script; }
-            set { database.custom_create_database_script = value; }
-        }
-
         public int command_timeout
         {
             get { return database.command_timeout; }
@@ -164,7 +158,7 @@ namespace roundhouse.databases
             database.rollback();
         }
 
-        public void create_database_if_it_doesnt_exist()
+        public void create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
             //TODO: Don't allow creation of the database - record everything from here on out as something that would run
             //database_exists = database.database_exists

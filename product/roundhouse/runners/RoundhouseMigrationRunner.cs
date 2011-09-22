@@ -104,7 +104,7 @@ namespace roundhouse.runners
                     if (!dont_create_the_database)
                     {
                         database_migrator.open_admin_connection();
-                        database_migrator.create_or_restore_database();
+                        database_migrator.create_or_restore_database(get_custom_create_database_script());
                         database_migrator.set_recovery_mode(use_simple_recovery);
                         database_migrator.close_admin_connection();
                     }
@@ -214,6 +214,21 @@ namespace roundhouse.runners
                 database_migrator.database.Dispose();
                 //copy_log_file_to_change_drop_folder();
             }
+        }
+
+        private string get_custom_create_database_script()
+        {
+            if (string.IsNullOrEmpty(configuration.CreateDatabaseCustomScript))
+            {
+                return configuration.CreateDatabaseCustomScript;
+            }
+
+            if(file_system.file_exists(configuration.CreateDatabaseCustomScript))
+            {
+                return file_system.read_file_text(configuration.CreateDatabaseCustomScript);
+            }
+
+            return configuration.CreateDatabaseCustomScript;
         }
 
         private void create_change_drop_folder()
