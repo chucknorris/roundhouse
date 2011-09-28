@@ -103,7 +103,7 @@ namespace roundhouse.databases.sqlserver2000
                             SET @Created = 1
                          END
 
-                        --SELECT @Created 
+                        SELECT @Created 
                         ",
                 database_name);
         }
