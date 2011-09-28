@@ -64,14 +64,16 @@ namespace roundhouse.migrators
             database.close_connection();
         }
 
-        public void create_or_restore_database(string custom_create_database_script)
+        public bool create_or_restore_database(string custom_create_database_script)
         {
+            var database_created = false;
             Log.bound_to(this).log_an_info_event_containing("Creating {0} database on {1} server if it doesn't exist.", database.database_name, database.server_name);
 
-            database.create_database_if_it_doesnt_exist(custom_create_database_script);
+            database_created = database.create_database_if_it_doesnt_exist(custom_create_database_script);
 
             if (restoring_database)
             {
+                database_created = false;
                 string custom_script = custom_restore_options;
                 if (!configuration.DisableTokenReplacement)
                 {
@@ -79,6 +81,8 @@ namespace roundhouse.migrators
                 }
                 restore_database(restore_path, custom_script);
             }
+
+            return database_created;
         }
 
         public void backup_database_if_it_exists()

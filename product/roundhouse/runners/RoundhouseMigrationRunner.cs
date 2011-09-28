@@ -99,12 +99,14 @@ namespace roundhouse.runners
                 //database_migrator.backup_database_if_it_exists();
                 remove_share_from_change_drop_folder();
 
+                bool database_was_created = false;
+
                 if (!dropping_the_database)
                 {
                     if (!dont_create_the_database)
                     {
                         database_migrator.open_admin_connection();
-                        database_migrator.create_or_restore_database(get_custom_create_database_script());
+                        database_was_created = database_migrator.create_or_restore_database(get_custom_create_database_script());
                         database_migrator.set_recovery_mode(use_simple_recovery);
                         database_migrator.close_admin_connection();
                     }
@@ -131,6 +133,14 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     traverse_files_and_run_sql(known_folders.alter_database.folder_full_path, version_id, known_folders.alter_database, environment, new_version,ConnectionType.Admin);
                     database_migrator.close_admin_connection();
+
+                    if (database_was_created)
+                    {
+                        Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
+                        Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These should be one time only scripts.", "Run After Create Database", known_folders.run_after_create_database.folder_full_path);
+                        Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
+                        traverse_files_and_run_sql(known_folders.run_after_create_database.folder_full_path, version_id, known_folders.run_after_create_database, environment, new_version);
+                    }
 
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These should be one time only scripts.", "Update", known_folders.up.folder_full_path);
@@ -162,9 +172,9 @@ namespace roundhouse.runners
                     traverse_files_and_run_sql(known_folders.indexes.folder_full_path, version_id, known_folders.indexes, environment, new_version);
 
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run after Other Anytime Scripts", known_folders.runAfterOtherAnyTimeScripts.folder_full_path);
+                    Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\".", "Run after Other Anytime Scripts", known_folders.run_after_other_any_time_scripts.folder_full_path);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
-                    traverse_files_and_run_sql(known_folders.runAfterOtherAnyTimeScripts.folder_full_path, version_id, known_folders.runAfterOtherAnyTimeScripts, environment, new_version);
+                    traverse_files_and_run_sql(known_folders.run_after_other_any_time_scripts.folder_full_path, version_id, known_folders.run_after_other_any_time_scripts, environment, new_version);
                     
                     Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
                     Log.bound_to(this).log_an_info_event_containing("Looking for {0} scripts in \"{1}\". These scripts will run every time.", "Permission", known_folders.permissions.folder_full_path);

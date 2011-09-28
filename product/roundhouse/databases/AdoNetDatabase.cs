@@ -124,6 +124,20 @@ namespace roundhouse.databases
             }
         }
 
+        protected override object run_sql_scalar(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
+        {
+            object return_value = new object();
+            if (string.IsNullOrEmpty(sql_to_run)) return return_value;
+
+            using (IDbCommand command = setup_database_command(sql_to_run, connection_type, null))
+            {
+                return_value = command.ExecuteScalar();
+                command.Dispose();
+            }
+
+            return return_value;
+        }
+
         protected IDbCommand setup_database_command(string sql_to_run, ConnectionType connection_type, IEnumerable<IParameter<IDbDataParameter>> parameters)
         {
             IDbCommand command = null;

@@ -148,9 +148,9 @@ namespace roundhouse.databases
             database.rollback();
         }
 
-        public void create_database_if_it_doesnt_exist(string custom_create_database_script)
+        public bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
-            database.create_database_if_it_doesnt_exist(custom_create_database_script);
+            return database.create_database_if_it_doesnt_exist(custom_create_database_script);
         }
 
         public void set_recovery_mode(bool simple)
@@ -209,6 +209,11 @@ namespace roundhouse.databases
         public void run_sql(string sql_to_run,ConnectionType connection_type)
         {
             database.run_sql(sql_to_run,connection_type);
+        }    
+        
+        public object run_sql_scalar(string sql_to_run,ConnectionType connection_type)
+        {
+            return database.run_sql_scalar(sql_to_run,connection_type);
         }
 
         public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)

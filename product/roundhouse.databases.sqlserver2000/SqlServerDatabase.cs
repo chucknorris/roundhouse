@@ -94,11 +94,16 @@ namespace roundhouse.databases.sqlserver2000
         public override string create_database_script()
         {
             return string.Format(
-                @"USE master 
-                        IF NOT EXISTS(SELECT * FROM sysdatabases WHERE [name] = '{0}') 
+                @"
+                        DECLARE @Created bit
+                        SET @Created = 0
+                        IF NOT EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
                          BEGIN 
                             CREATE DATABASE [{0}] 
+                            SET @Created = 1
                          END
+
+                        --SELECT @Created 
                         ",
                 database_name);
         }

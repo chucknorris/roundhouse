@@ -129,10 +129,14 @@ namespace roundhouse.console
                         ApplicationParameters.default_version_x_path),
                     option => configuration.VersionXPath = option)
                 // folders
-                 .Add("ad=|alterdatabase=|alterdatabasefolder=|alterdatabasefoldername=",
+                .Add("ad=|alterdatabase=|alterdatabasefolder=|alterdatabasefoldername=",
                     string.Format("AlterDatabaseFolderName - The name of the folder where you keep your alter database scripts. Read up on token replacement. You will want to use {{DatabaseName}} here instead of specifying a database name. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_alter_database_folder_name),
                     option => configuration.AlterDatabaseFolderName = option)
+                .Add("racd=|runaftercreatedatabase=|runaftercreatedatabasefolder=|runaftercreatedatabasefoldername=",
+                    string.Format("RunAfterCreateDatabaseFolderName - The name of the folder where you will keep scripts that ONLY run after a database is created.  Will recurse through subfolders. Defaults to \"{0}\".",
+                        ApplicationParameters.default_run_after_create_database_folder_name),
+                    option => configuration.RunAfterCreateDatabaseFolderName = option)
                 .Add("u=|up=|upfolder=|upfoldername=",
                     string.Format("UpFolderName - The name of the folder where you keep your update scripts. Will recurse through subfolders. Defaults to \"{0}\".",
                         ApplicationParameters.default_up_folder_name),
@@ -279,7 +283,7 @@ namespace roundhouse.console
                     "/c[onnection]s[tring]a[dministration] VALUE " +
                     "/c[ommand]t[imeout] VALUE /c[ommand]t[imeout]a[dmin] VALUE " +
                     "/r[epositorypath] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
-                    "/a[lter]d[atabasefoldername] VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
+                    "/a[lter]d[atabasefoldername] /r[un]a[fter]c[reate]d[atabasefoldername] VALUE VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
                     "/r[un]f[irstafterupdatefoldername] VALUE /fu[nctionsfoldername] VALUE /v[ie]w[sfoldername] VALUE " +
                     "/sp[rocsfoldername] VALUE /i[nde]x[foldername] VALUE /p[ermissionsfoldername] VALUE " +
                     "/sc[hemaname] VALUE /v[ersion]t[ablename] VALUE /s[cripts]r[un]t[ablename] VALUE /s[cripts]r[un]e[rrors]t[ablename] VALUE " +

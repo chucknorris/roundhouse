@@ -83,8 +83,9 @@ namespace roundhouse.databases
         public abstract string restore_database_script(string restore_from_path, string custom_restore_options);
         public abstract string delete_database_script();
 
-        public void create_database_if_it_doesnt_exist(string custom_create_database_script)
+        public bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
+            bool database_was_created = false;
             try
             {
                 string create_script = create_database_script();
@@ -96,7 +97,12 @@ namespace roundhouse.databases
                         create_script = TokenReplacer.replace_tokens(configuration, create_script);
                     }
                 }
-                run_sql(create_script, ConnectionType.Admin);
+
+                var return_value = run_sql_scalar(create_script, ConnectionType.Admin);
+                if (return_value !=null)
+                {
+                    database_was_created = (bool) return_value;
+                }
             }
             catch (Exception ex)
             {
@@ -104,6 +110,8 @@ namespace roundhouse.databases
                     "{0} with provider {1} does not provide a facility for creating a database at this time.{2}{3}",
                     GetType(), provider, Environment.NewLine, ex.Message);
             }
+
+            return database_was_created;
         }
 
         public void set_recovery_mode(bool simple)
@@ -175,7 +183,13 @@ namespace roundhouse.databases
             run_sql(sql_to_run, connection_type, null);
         }
 
+        public virtual object run_sql_scalar(string sql_to_run,ConnectionType connection_type)
+        {
+            return run_sql_scalar(sql_to_run, connection_type, null);
+        }
+
         protected abstract void run_sql(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters);
+        protected abstract object run_sql_scalar(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters);
 
         public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)
         {

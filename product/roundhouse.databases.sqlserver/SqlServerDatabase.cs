@@ -120,11 +120,15 @@ namespace roundhouse.databases.sqlserver
         public override string create_database_script()
         {
             return string.Format(
-                @"USE master 
+                @"      DECLARE @Created bit
+                        SET @Created = 0
                         IF NOT EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
                          BEGIN 
                             CREATE DATABASE [{0}] 
+                            SET @Created = 1
                          END
+
+                        SELECT @Created 
                         ",
                 database_name);
 

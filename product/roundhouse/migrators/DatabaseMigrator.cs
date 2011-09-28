@@ -14,7 +14,7 @@ namespace roundhouse.migrators
         void open_connection(bool with_transaction);
         void close_connection();
         void backup_database_if_it_exists();
-        void create_or_restore_database(string custom_create_database_script);
+        bool create_or_restore_database(string custom_create_database_script);
         void set_recovery_mode(bool simple);
         //void restore_database(string restore_from_path);
         void delete_database();

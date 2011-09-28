@@ -61,6 +61,8 @@ namespace roundhouse.tasks
 
         public string AlterDatabaseFolderName { get; set; }
 
+        public string RunAfterCreateDatabaseFolderName { get; set; }
+
         public string UpFolderName { get; set; }
 
         public string DownFolderName { get; set; }

@@ -4,6 +4,7 @@ namespace roundhouse.folders
     {
         public DefaultKnownFolders(
                                    MigrationsFolder alter_database,
+                                   MigrationsFolder run_after_create_database,
                                    MigrationsFolder up,
                                    MigrationsFolder down,
                                    MigrationsFolder run_first_after_up,
@@ -17,6 +18,7 @@ namespace roundhouse.folders
             )
         {
             this.alter_database = alter_database;
+            this.run_after_create_database = run_after_create_database;
             this.up = up;
             this.down = down;
             this.run_first_after_up = run_first_after_up;
@@ -24,12 +26,13 @@ namespace roundhouse.folders
             this.views = views;
             this.sprocs = sprocs;
             this.indexes = indexes;
-            this.runAfterOtherAnyTimeScripts = runAfterOtherAnyTimeScripts;
+            this.run_after_other_any_time_scripts = runAfterOtherAnyTimeScripts;
             this.permissions = permissions;
             this.change_drop = change_drop;
         }
 
         public MigrationsFolder alter_database { get; private set; }
+        public MigrationsFolder run_after_create_database { get; private set; }
         public MigrationsFolder up { get; private set; }
         public MigrationsFolder down { get; private set; }
         public MigrationsFolder run_first_after_up { get; private set; }
@@ -37,7 +40,7 @@ namespace roundhouse.folders
         public MigrationsFolder views { get; private set; }
         public MigrationsFolder sprocs { get; private set; }
         public MigrationsFolder indexes { get; private set; }
-        public MigrationsFolder runAfterOtherAnyTimeScripts { get; private set; }
+        public MigrationsFolder run_after_other_any_time_scripts { get; private set; }
         public MigrationsFolder permissions { get; private set; }
         
         public Folder change_drop{get; private set;}
