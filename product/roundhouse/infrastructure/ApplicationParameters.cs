@@ -26,6 +26,7 @@ namespace roundhouse.infrastructure
         public static readonly string default_scripts_run_errors_table_name = "ScriptsRunErrors";
         public static readonly string default_version_file = @"_BuildInfo.xml";
         public static readonly string default_version_x_path = @"//buildInfo/version";
+        public static readonly bool   default_up_script_versioning = false;
         public static readonly string default_files_directory = @".";
         public static readonly string default_server_name = "(local)";
         public static readonly string default_output_path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\" + name;

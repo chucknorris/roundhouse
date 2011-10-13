@@ -59,6 +59,8 @@ namespace roundhouse.tasks
 
         public string VersionXPath { get; set; }
 
+        public bool UseLastUpScriptAsVersion { get; set; }
+
         public string AlterDatabaseFolderName { get; set; }
 
         public string RunAfterCreateDatabaseFolderName { get; set; }
