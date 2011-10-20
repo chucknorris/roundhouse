@@ -15,18 +15,10 @@ namespace roundhouse.infrastructure.app.builders
                                                                             configuration_property_holder.VersionFile);
 
             VersionResolver script_number_version_finder = new ScriptfileVersionResolver(file_system,
-                                                                                         configuration_property_holder.
-                                                                                             UseLastUpScriptAsVersion,
-                                                                                            configuration_property_holder.SqlFilesDirectory, configuration_property_holder.UpFolderName);
+                                                                                         configuration_property_holder.VersionFile,
+                                                                                         file_system.combine_paths(configuration_property_holder.SqlFilesDirectory, configuration_property_holder.UpFolderName));
             IEnumerable<VersionResolver> resolvers;
-            if(configuration_property_holder.UseLastUpScriptAsVersion)
-            {
-                resolvers = new List<VersionResolver> {script_number_version_finder};
-            }
-            else
-            {
-                resolvers = new List<VersionResolver> {xml_version_finder, dll_version_finder};      
-            }
+            resolvers = new List<VersionResolver> { xml_version_finder, dll_version_finder, script_number_version_finder };      
              
 
             return new ComplexVersionResolver(resolvers);

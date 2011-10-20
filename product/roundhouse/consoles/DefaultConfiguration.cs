@@ -16,7 +16,6 @@ namespace roundhouse.consoles
         public string RepositoryPath { get; set; }
         public string VersionFile { get; set; }
         public string VersionXPath { get; set; }
-        public bool UseLastUpScriptAsVersion { get; set; }
         public string AlterDatabaseFolderName { get; set; }
         public string RunAfterCreateDatabaseFolderName { get; set; }
         public string UpFolderName { get; set; }

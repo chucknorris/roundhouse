@@ -15,7 +15,6 @@ namespace roundhouse.infrastructure.app
         string RepositoryPath { get; set; }
         string VersionFile { get; set; }
         string VersionXPath { get; set; }
-        bool UseLastUpScriptAsVersion {get; set;}
         string AlterDatabaseFolderName { get; set; }
         string RunAfterCreateDatabaseFolderName { get; set; }
         string UpFolderName { get; set; }

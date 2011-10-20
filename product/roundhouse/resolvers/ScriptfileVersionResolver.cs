@@ -7,20 +7,20 @@ namespace roundhouse.resolvers
 {
     public class ScriptfileVersionResolver : VersionResolver
     {
-        private bool _lastUpScript;
+        private string _versionFile;
         private FileSystemAccess file_system;
         private string upFolder;
 
-        public ScriptfileVersionResolver (FileSystemAccess file_system, bool lastUpScript, string scriptsPath, string upFilesDirectory)
+        public ScriptfileVersionResolver (FileSystemAccess file_system, string  versionFile, string upFolder)
         {
-            _lastUpScript = lastUpScript;
+            _versionFile = versionFile;
             this.file_system = file_system;
-            this.upFolder = file_system.combine_paths(scriptsPath,upFilesDirectory);
+            this.upFolder = upFolder;
         }
 
         public bool meets_criteria()
         {
-            return _lastUpScript;
+            return _versionFile.Contains("up/*.sql");
         }
 
         public string resolve_version()

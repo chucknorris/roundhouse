@@ -128,9 +128,6 @@ namespace roundhouse.console
                     string.Format("VersionXPath - Works in conjunction with an XML version file. Defaults to \"{0}\".",
                         ApplicationParameters.default_version_x_path),
                     option => configuration.VersionXPath = option)
-                .Add("vs|scriptversioning|upscriptversioning",
-                    string.Format("UpScriptVersioning - overrides xml file logic and uses last upscript number as version. Defaults to \"{0}\".", ApplicationParameters.default_up_script_versioning.ToString()),
-                    option => configuration.UseLastUpScriptAsVersion = option != null)
                 // folders
                 .Add("ad=|alterdatabase=|alterdatabasefolder=|alterdatabasefoldername=",
                     string.Format("AlterDatabaseFolderName - The name of the folder where you keep your alter database scripts. Read up on token replacement. You will want to use {{DatabaseName}} here instead of specifying a database name. Will recurse through subfolders. Defaults to \"{0}\".",
