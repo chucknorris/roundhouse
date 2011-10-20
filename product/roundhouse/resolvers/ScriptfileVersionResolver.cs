@@ -7,29 +7,29 @@ namespace roundhouse.resolvers
 {
     public class ScriptfileVersionResolver : VersionResolver
     {
-        private string _versionFile;
+        private string version_file;
         private FileSystemAccess file_system;
-        private string upFolder;
+        private string up_folder;
 
-        public ScriptfileVersionResolver (FileSystemAccess file_system, string  versionFile, string upFolder)
+        public ScriptfileVersionResolver (FileSystemAccess file_system, string  version_file, string upFolder)
         {
-            _versionFile = versionFile;
+            this.version_file = version_file;
             this.file_system = file_system;
-            this.upFolder = upFolder;
+            this.up_folder = upFolder;
         }
 
         public bool meets_criteria()
         {
-            return _versionFile.Contains("up/*.sql");
+            return version_file.Contains("up/*.sql");
         }
 
         public string resolve_version()
         {
             string version = "0";
             string extension = "sql";
-            if(file_system.directory_exists(upFolder))
+            if(file_system.directory_exists(up_folder))
             {
-                var files = file_system.get_directory_info_from(upFolder).GetFiles("*." + extension);
+                var files = file_system.get_directory_info_from(up_folder).GetFiles("*." + extension);
                 long max = 0;
                 foreach(var file in files)
                 {
