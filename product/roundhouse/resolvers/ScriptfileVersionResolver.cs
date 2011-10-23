@@ -5,17 +5,19 @@ using roundhouse.infrastructure.logging;
 
 namespace roundhouse.resolvers
 {
+    using infrastructure.app;
+
     public class ScriptfileVersionResolver : VersionResolver
     {
         private string version_file;
         private FileSystemAccess file_system;
         private string up_folder;
 
-        public ScriptfileVersionResolver (FileSystemAccess file_system, string  version_file, string upFolder)
+        public ScriptfileVersionResolver(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
         {
-            this.version_file = version_file;
             this.file_system = file_system;
-            this.up_folder = upFolder;
+            this.version_file = configuration_property_holder.VersionFile;
+            this.up_folder = file_system.combine_paths(configuration_property_holder.SqlFilesDirectory, configuration_property_holder.UpFolderName);
         }
 
         public bool meets_criteria()
