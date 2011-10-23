@@ -13,7 +13,11 @@ namespace roundhouse.infrastructure.app.builders
                                                                             configuration_property_holder.VersionFile);
             VersionResolver dll_version_finder = new DllFileVersionResolver(file_system,
                                                                             configuration_property_holder.VersionFile);
-            IEnumerable<VersionResolver> resolvers = new List<VersionResolver> {xml_version_finder, dll_version_finder};
+
+            VersionResolver script_number_version_finder = new ScriptfileVersionResolver(file_system,
+                                                                                         configuration_property_holder.VersionFile,
+                                                                                         file_system.combine_paths(configuration_property_holder.SqlFilesDirectory, configuration_property_holder.UpFolderName));
+                IEnumerable<VersionResolver> resolvers = new List<VersionResolver> {xml_version_finder, dll_version_finder};      
 
             return new ComplexVersionResolver(resolvers);
         }
