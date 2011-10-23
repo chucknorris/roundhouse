@@ -131,6 +131,7 @@
     <Compile Include="parameters\AdoNetParameter.cs" />
     <Compile Include="parameters\IParameter.cs" />
     <Compile Include="Migrate.cs" />
+    <Compile Include="resolvers\ScriptfileVersionResolver.cs" />
     <Compile Include="RoundhousEFluentNHibernateDiffingType.cs" />
     <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
