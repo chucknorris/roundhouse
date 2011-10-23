@@ -34,7 +34,7 @@ namespace roundhouse.infrastructure.persistence
                                 () => OracleClientConfiguration.Oracle9.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.access.AccessDatabase, roundhouse.databases.access",
                                 () => JetDriverConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
-            func_dictionary.Add("roundhouse.databases.sqlite.SQLiteDatabase, roundhouse.databases.sqlite",
+            func_dictionary.Add("roundhouse.databases.sqlite.SqliteDatabase, roundhouse.databases.sqlite",
                                 () => SQLiteConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.postgresql.PostgreSQLDatabase, roundhouse.databases.postgresql",
                                 () => PostgreSQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
@@ -50,7 +50,7 @@ namespace roundhouse.infrastructure.persistence
                                 () => OracleClientConfiguration.Oracle9.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.access.AccessDatabase, " + merged_assembly_name,
                                 () => JetDriverConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
-            func_dictionary.Add("roundhouse.databases.sqlite.SQLiteDatabase, " + merged_assembly_name,
+            func_dictionary.Add("roundhouse.databases.sqlite.SqliteDatabase, " + merged_assembly_name,
                                 () => SQLiteConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.postgresql.PostgreSQLDatabase, " + merged_assembly_name,
                                 () => PostgreSQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));

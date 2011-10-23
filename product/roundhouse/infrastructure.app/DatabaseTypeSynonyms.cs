@@ -32,6 +32,10 @@ namespace roundhouse.infrastructure.app
                 case "mysql":
                     database_type_full_name =
                         "roundhouse.databases.mysql.MySqlDatabase, roundhouse.databases.mysql";
+                    break; 
+                case "sqlite":
+                    database_type_full_name =
+                        "roundhouse.databases.sqlite.SqliteDatabase, roundhouse.databases.sqlite";
                     break;
                 case "oracle":
                     database_type_full_name =
