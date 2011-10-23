@@ -14,6 +14,7 @@ namespace roundhouse.databases
     using NHibernate.Criterion;
     using NHibernate.Tool.hbm2ddl;
     using parameters;
+    using sqlsplitters;
     using Environment = System.Environment;
     using Version = model.Version;
 
@@ -98,10 +99,17 @@ namespace roundhouse.databases
                     }
                 }
 
-                var return_value = run_sql_scalar(create_script, ConnectionType.Admin);
-                if (return_value !=null)
+                if (split_batch_statements)
                 {
-                    database_was_created = (bool) return_value;
+                    foreach (var sql_statement in StatementSplitter.split_sql_on_regex_and_remove_empty_statements(create_script, sql_statement_separator_regex_pattern))
+                    {
+                        var return_value = run_sql_scalar(sql_statement, ConnectionType.Admin);
+                        //should only receive a return value once
+                        if (return_value != null)
+                        {
+                            database_was_created = (bool)return_value;
+                        }
+                    }
                 }
             }
             catch (Exception ex)

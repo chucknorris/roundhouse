@@ -233,7 +233,8 @@ namespace roundhouse.runners
                 return configuration.CreateDatabaseCustomScript;
             }
 
-            if(file_system.file_exists(configuration.CreateDatabaseCustomScript))
+            //string custom_script_file = file_system.get_full_path(configuration.CreateDatabaseCustomScript);
+            if (file_system.file_exists(configuration.CreateDatabaseCustomScript))
             {
                 return file_system.read_file_text(configuration.CreateDatabaseCustomScript);
             }
