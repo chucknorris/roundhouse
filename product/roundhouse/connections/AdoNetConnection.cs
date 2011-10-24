@@ -2,6 +2,8 @@ using System.Data;
 
 namespace roundhouse.connections
 {
+    using System.Data.SqlClient;
+
     public class AdoNetConnection : IConnection<IDbConnection>
     {
         private readonly IDbConnection server_connection;
@@ -14,6 +16,15 @@ namespace roundhouse.connections
         public void open()
         {
             server_connection.Open();
+        }
+
+        public void clear_pool()
+        {
+            var sql_conn = server_connection as SqlConnection;
+            if (sql_conn != null)
+            {
+                SqlConnection.ClearPool(sql_conn);
+            }
         }
 
         public void close()

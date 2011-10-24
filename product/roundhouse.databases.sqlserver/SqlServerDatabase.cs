@@ -69,6 +69,8 @@ namespace roundhouse.databases.sqlserver
             }
             configuration_property_holder.ConnectionStringAdmin = admin_connection_string;
             //set_repository(configuration_property_holder);
+
+            //Pooling=false;
         }
 
         public override void set_provider()
@@ -78,7 +80,7 @@ namespace roundhouse.databases.sqlserver
 
         private static string build_connection_string(string server_name, string database_name, string connection_options)
         {
-            return string.Format("Server={0};initial catalog={1};{2}", server_name, database_name, connection_options);
+            return string.Format("data source={0};initial catalog={1};{2}", server_name, database_name, connection_options);
         }
 
         public override void run_database_specific_tasks()
