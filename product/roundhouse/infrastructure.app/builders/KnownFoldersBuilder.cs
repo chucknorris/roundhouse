@@ -9,29 +9,29 @@ namespace roundhouse.infrastructure.app.builders
         public static KnownFolders build(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
         {
             MigrationsFolder alter_database_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                     configuration_property_holder.AlterDatabaseFolderName,false,false);
+                                                                     configuration_property_holder.AlterDatabaseFolderName,false,false,"AlterDatabase");
             MigrationsFolder run_after_create_database_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                     configuration_property_holder.RunAfterCreateDatabaseFolderName,true,false); 
+                                                                     configuration_property_holder.RunAfterCreateDatabaseFolderName,true,false,"Run After Create Database"); 
             MigrationsFolder up_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                     configuration_property_holder.UpFolderName, true, false);
+                                                                     configuration_property_holder.UpFolderName, true, false,"Update");
             MigrationsFolder down_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                       configuration_property_holder.DownFolderName, true, false);
+                                                                       configuration_property_holder.DownFolderName, true, false,"Down Folder - Nothing to see here. Move along.");
             MigrationsFolder run_first_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                            configuration_property_holder.RunFirstAfterUpFolderName, false, false);
+                                                                            configuration_property_holder.RunFirstAfterUpFolderName, false, false, "Run First After Update");
             MigrationsFolder functions_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                            configuration_property_holder.FunctionsFolderName, false, false);
+                                                                            configuration_property_holder.FunctionsFolderName, false, false, "Function");
             MigrationsFolder views_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                        configuration_property_holder.ViewsFolderName, false, false);
+                                                                        configuration_property_holder.ViewsFolderName, false, false,"View");
             MigrationsFolder sprocs_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                         configuration_property_holder.SprocsFolderName, false, false);
+                                                                         configuration_property_holder.SprocsFolderName, false, false, "Stored Procedure");
             MigrationsFolder indexes_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                         configuration_property_holder.IndexesFolderName, false, false);
+                                                                         configuration_property_holder.IndexesFolderName, false, false, "Index");
 
             MigrationsFolder runAfterOtherAnyTimeScripts_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                         configuration_property_holder.RunAfterOtherAnyTimeScriptsFolderName, false, false);
+                                                                         configuration_property_holder.RunAfterOtherAnyTimeScriptsFolderName, false, false, "Run after Other Anytime Scripts");
 
             MigrationsFolder permissions_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory,
-                                                                              configuration_property_holder.PermissionsFolderName, false, true);
+                                                                              configuration_property_holder.PermissionsFolderName, false, true, "Permission");
             Folder change_drop_folder = new DefaultFolder(file_system, combine_items_into_one_path(file_system,
                                                                                                    configuration_property_holder.OutputPath,
                                                                                                    configuration_property_holder.DatabaseName,
