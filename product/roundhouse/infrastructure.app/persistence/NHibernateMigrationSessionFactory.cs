@@ -60,6 +60,7 @@ namespace roundhouse.infrastructure.app.persistence
                 if (!manifestResourceName.Contains("orm")) continue;
 
                 var resource = assembly.GetManifestResourceStream(manifestResourceName);
+                //cfg.a
             }
             
 
