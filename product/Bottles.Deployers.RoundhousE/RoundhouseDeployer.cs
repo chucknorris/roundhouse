@@ -20,7 +20,6 @@ namespace Bottles.Deployers.RoundhousE
     public class RoundhouseDeployer : IDeployer<Roundhouse>
     {
         private IBottleRepository _bottleRepository;
-        private IConnectionStringResolver cs;
 
         public RoundhouseDeployer(IBottleRepository bottleRepository)
         {
@@ -40,7 +39,7 @@ namespace Bottles.Deployers.RoundhousE
                                                    DestinationDirectory = destinationDirectory
                                                });
 
-                rh(directive, destinationDirectory.AppendPath("schema"));
+                rh(directive, destinationDirectory.AppendPath("roundhouse"));
             });
 
         }
