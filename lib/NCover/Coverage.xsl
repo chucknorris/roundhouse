@@ -51,13 +51,13 @@
           .exdatacell {font-size:9px; background-color: #DDEEFF; text-align: right; }
           .detailPercent {  font-size: 9px; font-weight: bold; padding-top: 1px; padding-bottom: 1px; padding-left: 3px; padding-right: 3px;}
         </style>
-				<script language="JavaScript"><![CDATA[   
-				function toggle (field)	
-				{ field.style.display = (field.style.display == "block") ? "none" : "block"; }  
-				
+				<script language="JavaScript"><![CDATA[
+				function toggle (field)
+				{ field.style.display = (field.style.display == "block") ? "none" : "block"; }
+
 				function SwitchAll(how)
 				{	var len = document.all.length-1;
-					for(i=0;i!=len;i++)	{	
+					for(i=0;i!=len;i++)	{
 						var block = document.all[i];
 						if (block != null && block.id != '')
 						{ block.style.display=how;}
@@ -67,7 +67,7 @@
 
 				function ExpandAll()
 				{SwitchAll('block');}
-		
+
 				function CollapseAll()
 				{SwitchAll('none');}
 				]]></script>
@@ -87,7 +87,7 @@
 			<xsl:sort select="@assembly" />
 			<xsl:variable name="module" select="./@assembly" />
 			<div class="assembly">
-				<a name="#{generate-id($module)}">Module 
+				<a name="#{generate-id($module)}">Module
 					<xsl:value-of select="$module" />
 				</a>
 			</div>

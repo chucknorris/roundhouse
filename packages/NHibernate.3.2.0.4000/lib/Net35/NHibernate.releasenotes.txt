@@ -2364,4 +2364,4 @@ PreAlpha Build 2
 - Modified MsSqlServer2000Dialect to maps a BooleanSqlType to a bit column type. 
 - Fixed bug with IdentityMap that caused problems with Session.Flush() loading lazy collections 
 - Added TicksType to TypeFactory 
-- Fixed bug with SchemaExport committing a non existing IDbTransaction 
+- Fixed bug with SchemaExport committing a non existing IDbTransaction

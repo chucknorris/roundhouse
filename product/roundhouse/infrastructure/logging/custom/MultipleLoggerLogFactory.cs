@@ -9,6 +9,6 @@ namespace roundhouse.infrastructure.logging.custom
         {
             return Container.get_an_instance_of<Logger>();
         }
-        
+
     }
 }

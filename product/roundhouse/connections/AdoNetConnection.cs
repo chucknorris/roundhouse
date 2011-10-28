@@ -31,7 +31,7 @@ namespace roundhouse.connections
         {
             if (server_connection !=null && server_connection.State != ConnectionState.Closed)
             {
-                server_connection.Close();    
+                server_connection.Close();
             }
         }
 
