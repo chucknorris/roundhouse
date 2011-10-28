@@ -1,7 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<!-- Created for NCoverExplorer by Grant Drake (see http://www.kiwidude.com/blog/)	-->
 	<xsl:output method="html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"/>
-	
+
 	<xsl:template match="/">
 		<html>
 			<head>
@@ -24,7 +24,7 @@
 					.mainTableCellGraph 		{ background: #ffffff; border-right: #dcdcdc 1px solid; padding-right: 5px; }
 					.mainTableCellBottom		{ border-bottom: #dcdcdc 1px solid;	}
 					.childTableHeader 			{ border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; border-right: 1px solid;	font-weight: bold; padding-left: 10px; }
-					.childTableCellIndentedItem { background: #ffffff; border-left: #dcdcdc 1px solid; border-right: #dcdcdc 1px solid; padding-right: 10px; font-size: 10px; }		
+					.childTableCellIndentedItem { background: #ffffff; border-left: #dcdcdc 1px solid; border-right: #dcdcdc 1px solid; padding-right: 10px; font-size: 10px; }
 					.exclusionTableCellItem 	{ background: #ffffff; border-left: #dcdcdc 1px solid; border-right: #dcdcdc 1px solid; padding-left: 10px; padding-right: 10px; }
 					.projectTable				{ background: #a9d9f7; border-color: #649cc0; }
 					.primaryTable				{ background: #d7eefd; border-color: #a4dafc; }
@@ -46,7 +46,7 @@
 			</body>
 		</html>
 	</xsl:template>
-	
+
 	<!-- Main Project Section -->
 	<xsl:template match="//coverageReport">
 		<xsl:variable name="reportType" select="./@reportTitle" />
@@ -68,28 +68,28 @@
 				<xsl:otherwise>Coverage</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-   
+
 		<xsl:call-template name="header" />
-    
+
 		<xsl:call-template name="projectSummary">
 			<xsl:with-param name="threshold" select="$threshold" />
 			<xsl:with-param name="unvisitedTitle" select="$unvisitedTitle" />
 			<xsl:with-param name="coverageTitle" select="$coverageTitle" />
 			<xsl:with-param name="reportType" select="$reportType" />
 		</xsl:call-template>
-        
+
 		<xsl:call-template name="moduleSummary">
 			<xsl:with-param name="threshold" select="$threshold" />
 			<xsl:with-param name="unvisitedTitle" select="$unvisitedTitle" />
 			<xsl:with-param name="coverageTitle" select="$coverageTitle" />
 		</xsl:call-template>
-    
+
 		<xsl:if test="$reportType = 'Module Namespace Summary'">
 			<xsl:call-template name="moduleNamespaceSummary">
 				<xsl:with-param name="threshold" select="$threshold" />
 			</xsl:call-template>
 		</xsl:if>
-    
+
 		<xsl:if test="($reportType = 'Module Class Summary') or ($reportType = 'Module Class Function Summary')">
 			<xsl:call-template name="classModuleSummary">
 				<xsl:with-param name="threshold" select="$threshold" />
@@ -97,15 +97,15 @@
 				<xsl:with-param name="coverageTitle" select="$coverageTitle" />
 			</xsl:call-template>
 		</xsl:if>
-    
+
 		<xsl:if test="count(./exclusions/exclusion) != 0">
 			<xsl:call-template name="exclusionsSummary" />
 		</xsl:if>
-    
-		<xsl:call-template name="footer" />  
+
+		<xsl:call-template name="footer" />
   </xsl:template>
 
-	
+
 	<!-- Report Header -->
 	<xsl:template name="header">
 				<tr>
@@ -170,7 +170,7 @@
 					</td>
 				</tr>
 	</xsl:template>
-	
+
 	<!-- Project Summary -->
 	<xsl:template name="projectSummary">
 		<xsl:param name="threshold" />
@@ -215,7 +215,7 @@
 				<xsl:with-param name="showThreshold">True</xsl:with-param>
 			</xsl:call-template>
 	</xsl:template>
-		
+
 	<!-- Modules Summary -->
 	<xsl:template name="moduleSummary">
 		<xsl:param name="threshold" />
@@ -229,7 +229,7 @@
 					<td class="primaryTable mainTableHeader">Acceptable</td>
 					<td class="primaryTable mainTableHeader"><xsl:value-of select="$unvisitedTitle" /></td>
 					<td class="primaryTable mainTableGraphHeader" colspan="2"><xsl:value-of select="$coverageTitle" /></td>
-				</tr>				
+				</tr>
 		<xsl:for-each select="./modules/module">
 			<xsl:call-template name="coverageDetail">
 				<xsl:with-param name="name" select="./@name" />
@@ -241,7 +241,7 @@
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
-		
+
 	<!-- Namespaces per Module Summary -->
 	<xsl:template name="moduleNamespaceSummary">
 		<xsl:param name="threshold" />
@@ -254,7 +254,7 @@
 					<td class="secondaryTable mainTableHeader">Acceptable</td>
 					<td class="secondaryTable mainTableHeader">Unvisited SeqPts</td>
 					<td class="secondaryTable mainTableGraphHeader" colspan="2">Coverage</td>
-				</tr>				
+				</tr>
 			<xsl:call-template name="coverageDetailSecondary">
 				<xsl:with-param name="name" select="./@name" />
 				<xsl:with-param name="unvisitedPoints" select="./@unvisitedPoints" />
@@ -264,7 +264,7 @@
 			</xsl:call-template>
 				<tr>
 					<td class="secondaryChildTable childTableHeader" colspan="5">Namespaces</td>
-				</tr>				
+				</tr>
 			<xsl:for-each select="./namespace">
 				<xsl:call-template name="coverageIndentedDetail">
 					<xsl:with-param name="name" select="./@name" />
@@ -276,7 +276,7 @@
 			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
-		
+
 	<!-- Classes per Namespace per Module Summary -->
 	<xsl:template name="classModuleSummary">
 		<xsl:param name="threshold" />
@@ -291,7 +291,7 @@
 					<td class="secondaryTable mainTableHeader">Acceptable</td>
 					<td class="secondaryTable mainTableHeader"><xsl:value-of select="$unvisitedTitle" /></td>
 					<td class="secondaryTable mainTableGraphHeader" colspan="2"><xsl:value-of select="$coverageTitle" /></td>
-				</tr>				
+				</tr>
 			<xsl:call-template name="coverageDetailSecondary">
 				<xsl:with-param name="name" select="./@name" />
 				<xsl:with-param name="unvisitedPoints" select="./@unvisitedPoints" />
@@ -301,7 +301,7 @@
 			</xsl:call-template>
 				<tr>
 					<td class="secondaryChildTable childTableHeader" colspan="5">Namespace / Classes</td>
-				</tr>				
+				</tr>
 			<xsl:for-each select="./namespace">
 				<xsl:call-template name="coverageIndentedDetail">
 					<xsl:with-param name="name" select="./@name" />
@@ -325,7 +325,7 @@
 			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
-	
+
 	<!-- Coverage detail row in main grid displaying a name, statistics and graph bar -->
 	<xsl:template name="coverageDetail">
 		<xsl:param name="name" />
@@ -356,7 +356,7 @@
 					</td>
 				</tr>
 	</xsl:template>
-	
+
 	<!-- Coverage detail row in secondary grid header displaying a name, statistics and graph bar -->
 	<xsl:template name="coverageDetailSecondary">
 		<xsl:param name="name" />
@@ -379,7 +379,7 @@
 					</td>
 				</tr>
 	</xsl:template>
-	
+
 	<!-- Coverage detail row with indented item name and shrunk graph bar -->
 	<xsl:template name="coverageIndentedDetail">
 		<xsl:param name="name" />
@@ -403,7 +403,7 @@
 					</td>
 				</tr>
 	</xsl:template>
-		
+
 	<!-- Exclusions Summary -->
 	<xsl:template name="exclusionsSummary">
 			<tr>
@@ -420,14 +420,14 @@
 				</tr>
 		</xsl:for-each>
 	</xsl:template>
-	
+
 	<!-- Footer -->
 	<xsl:template name="footer">
 				<tr>
 					<td colspan="5">&#160;</td>
 				</tr>
 	</xsl:template>
-	
+
 	<!-- Draw % Green/Red/Yellow Bar -->
 	<xsl:template name="detailPercent">
 		<xsl:param name="notVisited" />

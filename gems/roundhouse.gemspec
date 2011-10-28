@@ -8,10 +8,10 @@ Gem::Specification.new do |s|
   s.files = Dir['lib/**/*'] + Dir['bin/**/*']
   s.bindir = 'bin'
   s.executables << 'rh'
-  
+
   s.summary     = 'RoundhousE - Professional Database Change and Versioning Management'
   s.description = 'RoundhousE is a Professional Database Change and Versioning Management tool'
-  
+
   s.authors           = ['Rob "FerventCoder" Reynolds','Pascal Mestdach','Jochen Jonckheere','Dru Sellers']
   s.email             = 'chucknorrisframework@googlegroups.com'
   s.homepage          = 'http://projectroundhouse.org'
