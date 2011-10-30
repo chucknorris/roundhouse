@@ -40,8 +40,8 @@ namespace roundhouse.infrastructure.persistence
         private readonly ConfigurationPropertyHolder configuration_holder;
         IDictionary<string, NHibernateConfiguration> nhib_config_dict = new Dictionary<string, NHibernateConfiguration>();
         //private readonly Dictionary<string, Func<IPersistenceConfigurer>> func_dictionary;
-        private const string proxy_factory = Environment.ProxyFactoryFactoryClass;
-        private const string proxy_factory_name = "NHibernate.ByteCode.Castle.ProxyFactoryFactory";
+        //private const string proxy_factory = Environment.ProxyFactoryFactoryClass;
+       // private const string proxy_factory_name = "NHibernate.ByteCode.Castle.ProxyFactoryFactory";
 
         public NHibernateSessionFactoryBuilder(ConfigurationPropertyHolder config)
         {

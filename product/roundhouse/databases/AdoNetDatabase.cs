@@ -42,7 +42,13 @@ namespace roundhouse.databases
         public override void close_admin_connection()
         {
             Log.bound_to(this).log_a_debug_event_containing("Closing admin connection");
-            admin_connection.close();
+            if (admin_connection != null)
+            {
+                admin_connection.clear_pool();
+                admin_connection.close();
+                admin_connection.Dispose();
+            }
+
         }
 
         public override void open_connection(bool with_transaction)
@@ -50,13 +56,15 @@ namespace roundhouse.databases
             Log.bound_to(this).log_a_debug_event_containing("Opening connection to '{0}'", connection_string);
             server_connection = GetAdoNetConnection(connection_string);
             server_connection.open();
-
-            set_repository();
-
             if (with_transaction)
             {
                 transaction = server_connection.underlying_type().BeginTransaction();
-                repository.start(true);
+            }
+            
+            set_repository();
+            if (repository != null)
+            {
+                repository.start(with_transaction);
             }
         }
 
@@ -70,12 +78,14 @@ namespace roundhouse.databases
             }
             if (repository != null)
             {
-                repository.finish();    
+                repository.finish();
             }
-            
+
             if (server_connection != null)
             {
-                server_connection.close();    
+                server_connection.clear_pool();
+                server_connection.close();
+                server_connection.Dispose();
             }
         }
 
@@ -110,14 +120,14 @@ namespace roundhouse.databases
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_a_debug_event_containing("Failure executing command, trying again. {0}{1}",Environment.NewLine,ex.ToString());
+                Log.bound_to(this).log_a_debug_event_containing("Failure executing command, trying again. {0}{1}", Environment.NewLine, ex.ToString());
                 run_command_with(sql_to_run, connection_type, parameters);
             }
         }
 
-        private void run_command_with(string sql_to_run,ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
+        private void run_command_with(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
         {
-             using (IDbCommand command = setup_database_command(sql_to_run, connection_type, parameters))
+            using (IDbCommand command = setup_database_command(sql_to_run, connection_type, parameters))
             {
                 command.ExecuteNonQuery();
                 command.Dispose();

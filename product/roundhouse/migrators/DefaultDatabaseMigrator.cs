@@ -67,7 +67,15 @@ namespace roundhouse.migrators
         public bool create_or_restore_database(string custom_create_database_script)
         {
             var database_created = false;
-            Log.bound_to(this).log_an_info_event_containing("Creating {0} database on {1} server if it doesn't exist.", database.database_name, database.server_name);
+
+            if (string.IsNullOrEmpty(custom_create_database_script))
+            {
+                Log.bound_to(this).log_an_info_event_containing("Creating {0} database on {1} server if it doesn't exist.", database.database_name, database.server_name);
+            }
+            else
+            {
+                Log.bound_to(this).log_an_info_event_containing("Creating {0} database on {1} server with custom script.", database.database_name, database.server_name);
+            }
 
             database_created = database.create_database_if_it_doesnt_exist(custom_create_database_script);
 
