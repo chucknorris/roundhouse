@@ -71,11 +71,13 @@ namespace roundhouse.infrastructure.persistence
             {
                 string key = configuration_holder.DatabaseType.Substring(0, configuration_holder.DatabaseType.IndexOf(',')) + ", " +
                              ApplicationParameters.get_merged_assembly_name();
-                return build_session_factory(func_dictionary[key](), DefaultAssemblyLoader.load_assembly(ApplicationParameters.get_merged_assembly_name()),
-                                             top_namespace, additional_function);
+                return build_session_factory(func_dictionary[key](), Assembly.GetExecutingAssembly(),top_namespace, additional_function);
+                //return build_session_factory(func_dictionary[key](), DefaultAssemblyLoader.load_assembly(ApplicationParameters.get_merged_assembly_name()),
+                                             //top_namespace, additional_function);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.bound_to(this).log_a_warning_event_containing("Had an error building session factory from merged, attempting unmerged. The error:{0}{1}",System.Environment.NewLine,ex.ToString());
                 return build_session_factory(func_dictionary[configuration_holder.DatabaseType](), DefaultAssemblyLoader.load_assembly(assembly_name),
                                              top_namespace, additional_function);
             }

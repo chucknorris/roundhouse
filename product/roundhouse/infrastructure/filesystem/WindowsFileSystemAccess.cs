@@ -222,7 +222,7 @@ namespace roundhouse.infrastructure.filesystem
         /// <returns>Returns only the file name minus extensions from the filepath</returns>
         public string get_file_name_without_extension_from(string file_path)
         {
-            return get_file_name_from(file_path).Substring(0, get_file_name_from(file_path).LastIndexOf('.'));
+            return Path.GetFileNameWithoutExtension(file_path);
         }
 
         /// <summary>

@@ -84,7 +84,7 @@ namespace roundhouse.databases
         public abstract string restore_database_script(string restore_from_path, string custom_restore_options);
         public abstract string delete_database_script();
 
-        public bool create_database_if_it_doesnt_exist(string custom_create_database_script)
+        public virtual bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
             bool database_was_created = false;
             try

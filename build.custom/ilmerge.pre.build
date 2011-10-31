@@ -39,7 +39,5 @@
       </fileset>
     </delete>
   </target>
-  
-
 
 </project>

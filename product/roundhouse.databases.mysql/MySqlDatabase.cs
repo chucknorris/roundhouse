@@ -1,10 +1,9 @@
-﻿using roundhouse.infrastructure.logging;
-
-namespace roundhouse.databases.mysql
+﻿namespace roundhouse.databases.mysql
 {
     using System;
     using infrastructure.app;
     using infrastructure.extensions;
+    using infrastructure.logging;
     using MySql.Data.MySqlClient;
 
     public class MySqlDatabase : AdoNetDatabase
@@ -56,6 +55,7 @@ namespace roundhouse.databases.mysql
                 builder.Database = "information_schema";
                 admin_connection_string = builder.ConnectionString;
             }
+            configuration_property_holder.DatabaseName = database_name;
             configuration_property_holder.ConnectionStringAdmin = admin_connection_string;
         }
 
@@ -85,7 +85,7 @@ namespace roundhouse.databases.mysql
         }
 
         // http://bugs.mysql.com/bug.php?id=46429
-        public override void run_sql(string sql_to_run,ConnectionType connection_type)
+        public override void run_sql(string sql_to_run, ConnectionType connection_type)
         {
             if (string.IsNullOrEmpty(sql_to_run)) return;
 

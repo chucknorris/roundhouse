@@ -18,17 +18,14 @@
 
         public void register_db_provider_factory()
         {
-            var dataSet = (DataSet) ConfigurationManager.GetSection("system.data");
+            var dataSet = (DataSet)ConfigurationManager.GetSection("system.data");
 
             var sql_client_row = dataSet.Tables[0]
                 .AsEnumerable()
                 .Where(x => x.Field<string>(2) == "System.Data.SQLite")
                 .SingleOrDefault();
 
-            if (sql_client_row != null)
-            {
-                dataSet.Tables[0].Rows.Remove(sql_client_row);
-            }
+            if (sql_client_row != null) dataSet.Tables[0].Rows.Remove(sql_client_row);
 
             var factory_type = is_merged
                                    ? "System.Data.SQLite.SQLiteFactory, " + ApplicationParameters.get_merged_assembly_name()

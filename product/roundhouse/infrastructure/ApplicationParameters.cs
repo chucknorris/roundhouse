@@ -41,12 +41,9 @@ namespace roundhouse.infrastructure
         public static string get_merged_assembly_name()
         {
             string merged_assembly_name = "rh";
-            Log.bound_to(typeof(ApplicationParameters)).log_a_debug_event_containing("The executing assembly is \"{0}\"",
-                                                                                      Assembly.GetExecutingAssembly().Location);
-            if (Assembly.GetExecutingAssembly().Location.Contains("roundhouse.dll"))
-            {
-                merged_assembly_name = "roundhouse";
-            }
+            Log.bound_to(typeof(ApplicationParameters)).log_a_debug_event_containing("The executing assembly is \"{0}\"", Assembly.GetExecutingAssembly().Location);
+
+            if (Assembly.GetExecutingAssembly().Location.Contains("roundhouse.dll")) merged_assembly_name = "roundhouse";
 
             return merged_assembly_name;
         }
@@ -57,11 +54,8 @@ namespace roundhouse.infrastructure
             var assembly = Assembly.GetExecutingAssembly();
 
             var type = assembly.GetType(type_to_check);
-            if (type == null)
-            {
-                is_merged = false;
-            }
 
+            if (type == null) is_merged = false;
 
             return is_merged;
         }

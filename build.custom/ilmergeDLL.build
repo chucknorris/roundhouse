@@ -31,8 +31,8 @@
   <!-- exe winexe dll -->
   <!-- overwrite this property -->
   <property name="merge.target.type" value="dll" />
-  <property name="args.ilmerge" value="/internalize /target:${merge.target.type} /out:${dirs.merge.to}\${file.merge.name} /log:${dirs.merge.log}\${log.merge} /ndebug /allowDup ${file.merge.name} " />
-  <property name="args.ilmerge" value="/internalize:${path.file.internalize.ignore} /target:${merge.target.type} /out:${dirs.merge.to}\${file.merge.name} /log:${dirs.merge.log}\${log.merge} /ndebug /allowDup ${file.merge.name} " if="${file::exists(path.file.internalize.ignore)}"/>
+  <property name="args.ilmerge" value="/internalize /target:${merge.target.type} /out:${dirs.merge.to}\${file.merge.name} /log:${dirs.merge.log}\${log.merge} /ndebug /zeroPeKind /allowDup ${file.merge.name} " />
+  <property name="args.ilmerge" value="/internalize:${path.file.internalize.ignore} /target:${merge.target.type} /out:${dirs.merge.to}\${file.merge.name} /log:${dirs.merge.log}\${log.merge} /ndebug /zeroPeKind /allowDup ${file.merge.name} " if="${file::exists(path.file.internalize.ignore)}"/>
 
   <target name="go"
           depends="prepare, get_regular_dlls, run_ilmerge, copy_configs, remove_unneeded_assemblies, copy_from_merge, delete_merge_folder"
@@ -59,6 +59,7 @@
           <include name="${dirs.merge.from}\NHibernate.JetDriver.dll" />
           <include name="${dirs.merge.from}\StructureMap.dll" />
           <include name="${dirs.merge.from}\MySql.Data.dll" />
+          <include name="${dirs.merge.from}\System.Data.SQLite.dll" />
         </items>
       </in>
       <do>
@@ -98,6 +99,7 @@
         <include name="StructureMap.dll" />
         <include name="Microsoft.Build.Framework.*" />
         <include name="MySql.Data.dll" />
+        <include name="System.Data.SQLite.dll" />
       </fileset>
     </delete>
   </target>
