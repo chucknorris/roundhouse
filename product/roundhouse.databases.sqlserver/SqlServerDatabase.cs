@@ -69,6 +69,8 @@ namespace roundhouse.databases.sqlserver
             }
             configuration_property_holder.ConnectionStringAdmin = admin_connection_string;
             //set_repository(configuration_property_holder);
+
+            //Pooling=false;
         }
 
         public override void set_provider()
@@ -78,7 +80,7 @@ namespace roundhouse.databases.sqlserver
 
         private static string build_connection_string(string server_name, string database_name, string connection_options)
         {
-            return string.Format("Server={0};initial catalog={1};{2}", server_name, database_name, connection_options);
+            return string.Format("data source={0};initial catalog={1};{2}", server_name, database_name, connection_options);
         }
 
         public override void run_database_specific_tasks()
@@ -120,11 +122,15 @@ namespace roundhouse.databases.sqlserver
         public override string create_database_script()
         {
             return string.Format(
-                @"USE master 
+                @"      DECLARE @Created bit
+                        SET @Created = 0
                         IF NOT EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
                          BEGIN 
                             CREATE DATABASE [{0}] 
+                            SET @Created = 1
                          END
+
+                        SELECT @Created 
                         ",
                 database_name);
 
@@ -190,9 +196,13 @@ namespace roundhouse.databases.sqlserver
         {
             return string.Format(
                 @"USE master 
-                        IF EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
+                        IF EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}' AND source_database_id is NULL) 
                         BEGIN 
                             ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+                        END
+
+                        IF EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
+                        BEGIN
                             EXEC msdb.dbo.sp_delete_database_backuphistory @database_name = '{0}' 
                             DROP DATABASE [{0}] 
                         END",

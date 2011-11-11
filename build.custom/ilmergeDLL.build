@@ -22,6 +22,7 @@
   <!-- overwrite this property -->
   <property name="dirs.merge.from" value="${dirs.drop}\${folder.app.drop}\lib" />
   <property name="dirs.merge.to" value="${dirs.drop}\merge" overwrite="false" />
+  <property name="file.key" value="${dirs.current}\${path.to.toplevel}\RoundhousE.snk" overwrite="false" />
   
   <property name="file.internalize.ignore" value="ilmerge.internalize.ignore.txt" />
   <property name="path.file.internalize.ignore" value="${dirs.build_scripts_custom}\${file.internalize.ignore}" />
@@ -40,12 +41,12 @@
   <target name="prepare">
     <mkdir dir="${dirs.merge.log}" />
     <mkdir dir="${dirs.merge.from}" />
-    
     <mkdir dir="${dirs.merge.to}" />
+    <property name="args.ilmerge" value="${args.ilmerge} /keyfile:${file.key}" if="${file::exists(file.key)}"/>
   </target>
 
   <target name="get_regular_dlls">
-    <echo message="Getting output dlls based on name in directory ${path::get-full-path(dirs.merge.from)}." />
+    <echo level="Warning" message="Getting output dlls based on name in directory ${path::get-full-path(dirs.merge.from)}." />
     <property name="dll.names" value="" />
     <foreach item="File" property="dll.filename">
       <in>
@@ -72,8 +73,8 @@
   </target>
 
   <target name="run_ilmerge">
-    <echo message="Merging the the contents of ${dirs.merge.from} into a single executable - ${dirs.merge.to}\${file.merge.name}. This will fail if all dependencies are not resolved."/>
-    <echo message="Running this: ${app.ilmerge} ${args.ilmerge}"/>
+    <echo level="Warning" message="Merging the the contents of ${dirs.merge.from} into a single executable - ${dirs.merge.to}\${file.merge.name}. This will fail if all dependencies are not resolved."/>
+    <echo level="Warning" message="Running this: ${app.ilmerge} ${args.ilmerge}"/>
     <exec program="${app.ilmerge}"
           workingdir="${dirs.merge.from}"
           commandline="${args.ilmerge}" />
@@ -88,7 +89,7 @@
   </target>
 
   <target name="remove_unneeded_assemblies">
-    <echo message="Removing unneeded assemblies before moving the merged assembly back into ${dirs.merge.from}."/>
+    <echo level="Warning" message="Removing unneeded assemblies before moving the merged assembly back into ${dirs.merge.from}."/>
     <delete>
       <fileset basedir="${dirs.merge.from}" >
         <exclude name="log4net.dll" />

@@ -16,6 +16,7 @@ namespace roundhouse.infrastructure.app
         string VersionFile { get; set; }
         string VersionXPath { get; set; }
         string AlterDatabaseFolderName { get; set; }
+        string RunAfterCreateDatabaseFolderName { get; set; }
         string UpFolderName { get; set; }
         string DownFolderName { get; set; }
         string RunFirstAfterUpFolderName { get; set; }
@@ -48,5 +49,6 @@ namespace roundhouse.infrastructure.app
         bool DryRun { get; set; }
         bool Baseline { get; set; }
         bool RunAllAnyTimeScripts { get; set; }
+        bool DisableTokenReplacement { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace roundhouse.infrastructure
         public static string name = "RoundhousE";
         // defaults
         public static readonly string default_alter_database_folder_name = "alterDatabase";
+        public static readonly string default_run_after_create_database_folder_name = "runAfterCreateDatabase";
         public static readonly string default_up_folder_name = "up";
         public static readonly string default_down_folder_name = "down";
         public static readonly string default_run_first_after_up_folder_name = "runFirstAfterUp";
@@ -40,7 +41,7 @@ namespace roundhouse.infrastructure
         public static string get_merged_assembly_name()
         {
             string merged_assembly_name = "rh";
-            Log.bound_to(typeof (ApplicationParameters)).log_a_debug_event_containing("The executing assembly is \"{0}\"",
+            Log.bound_to(typeof(ApplicationParameters)).log_a_debug_event_containing("The executing assembly is \"{0}\"",
                                                                                       Assembly.GetExecutingAssembly().Location);
             if (Assembly.GetExecutingAssembly().Location.Contains("roundhouse.dll"))
             {

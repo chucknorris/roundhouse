@@ -47,6 +47,13 @@ namespace $rootnamespace$
             ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
             path_to_sql_scripts_up_folder = Path.Combine(configuration.SqlFilesDirectory, configuration.UpFolderName);
 
+            databaseMigrator.Set(c =>
+            {
+                c.Silent = true;
+                c.VersionFile = mappingsAssembly.Location;
+            }
+        );
+
             switch (diffingType)
             {
                 case RoundhousEFluentNHDiffingType.InitialDevelopment:
@@ -56,7 +63,7 @@ namespace $rootnamespace$
                     run_maintenance_database_setup(false, databaseMigrator, configuration, mappingsAssembly, conventionsAssembly, name_of_script_to_create);
                     break;
                 case RoundhousEFluentNHDiffingType.MaintenanceWithRestore:
-                    run_maintenance_database_setup(true, databaseMigrator, configuration, mappingsAssembly, conventionsAssembly,name_of_script_to_create);
+                    run_maintenance_database_setup(true, databaseMigrator, configuration, mappingsAssembly, conventionsAssembly, name_of_script_to_create);
                     break;
             }
         }
@@ -72,13 +79,12 @@ namespace $rootnamespace$
             migrator.Run();
 
             generate_database_schema(configuration.DatabaseName, mappings_assembly, conventions_assembly);
-            
 
             configuration.SqlFilesDirectory = files_directory;
             migrator.RunDropCreate();
         }
 
-        private void generate_database_schema(string database_name,Assembly mappings_assembly,Assembly conventions_assembly)
+        private void generate_database_schema(string database_name, Assembly mappings_assembly, Assembly conventions_assembly)
         {
             NHibernateSessionFactory.build_session_factory(database_name, mappings_assembly, conventions_assembly, generate_the_schema);
         }
@@ -92,7 +98,7 @@ namespace $rootnamespace$
 
         // maintenance database setup
 
-        private void run_maintenance_database_setup(bool restoring_the_database, Migrate migrator, ConfigurationPropertyHolder configuration, Assembly mappings_assembly, Assembly conventions_assembly,string name_of_script)
+        private void run_maintenance_database_setup(bool restoring_the_database, Migrate migrator, ConfigurationPropertyHolder configuration, Assembly mappings_assembly, Assembly conventions_assembly, string name_of_script)
         {
             var updateScriptFileName = Path.Combine(path_to_sql_scripts_up_folder, name_of_script);
             if (File.Exists(updateScriptFileName)) { File.Delete(updateScriptFileName); }
@@ -109,7 +115,7 @@ namespace $rootnamespace$
             migrator.Run();
         }
 
-        private void upgrade_database_schema(string database_name,Assembly mappings_assembly,Assembly conventions_assembly)
+        private void upgrade_database_schema(string database_name, Assembly mappings_assembly, Assembly conventions_assembly)
         {
             NHibernateSessionFactory.build_session_factory(database_name, mappings_assembly, conventions_assembly, update_the_schema);
         }

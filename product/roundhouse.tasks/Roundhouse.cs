@@ -60,6 +60,8 @@ namespace roundhouse.tasks
 
         public string AlterDatabaseFolderName { get; set; }
 
+        public string RunAfterCreateDatabaseFolderName { get; set; }
+
         public string UpFolderName { get; set; }
 
         public string DownFolderName { get; set; }
@@ -123,6 +125,8 @@ namespace roundhouse.tasks
         public bool Baseline { get; set; }
 
         public bool RunAllAnyTimeScripts { get; set; }
+
+        public bool DisableTokenReplacement { get; set; }
 
         #endregion
 

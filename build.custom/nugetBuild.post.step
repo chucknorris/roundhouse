@@ -48,7 +48,7 @@
           description="" />
 
   <target name="flatten_files">
-    <echo message="Bringing nupkg files up to '${dirs.drop.nuget}' directory" />
+    <echo level="Warning" message="Bringing nupkg files up to '${dirs.drop.nuget}' directory" />
     <copy todir="${dirs.drop.nuget}" flatten="true">
       <fileset basedir="${dirs.drop.nuget}">
         <include name="**/*.nupkg" />

@@ -87,12 +87,6 @@ namespace roundhouse.databases
             get { return database.sql_statement_separator_regex_pattern; }
         }
 
-        public string custom_create_database_script
-        {
-            get { return database.custom_create_database_script; }
-            set { database.custom_create_database_script = value; }
-        }
-
         public int command_timeout
         {
             get { return database.command_timeout; }
@@ -164,10 +158,12 @@ namespace roundhouse.databases
             database.rollback();
         }
 
-        public void create_database_if_it_doesnt_exist()
+        public bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
             //TODO: Don't allow creation of the database - record everything from here on out as something that would run
             //database_exists = database.database_exists
+            return true;
+            //return database.
         }
 
         public void set_recovery_mode(bool simple)
@@ -211,6 +207,13 @@ namespace roundhouse.databases
         {
             Log.bound_to(this).log_an_info_event_containing("Running statemtent: {0}{1}", Environment.NewLine, sql_to_run);
             //database.run_sql(sql_to_run);
+        }
+        
+        public object run_sql_scalar(string sql_to_run,ConnectionType connection_type)
+        {
+            Log.bound_to(this).log_an_info_event_containing("Running statemtent: {0}{1}", Environment.NewLine, sql_to_run);
+            //database.run_sql(sql_to_run);
+            return new object();
         }
 
         public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)

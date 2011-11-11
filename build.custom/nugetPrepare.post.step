@@ -25,8 +25,8 @@
   
   <target name="prep_nuget">
     
-    <echo message="Deleting ${dirs.drop.nuget}\lib\MSBuild." />
-    <echo message="Moving ${dirs.drop.nuget}\lib\MSBuild to ${dirs.drop.nuget}\roundhouse.msbuild\lib." />
+    <echo level="Warning" message="Deleting ${dirs.drop.nuget}\lib\MSBuild." />
+    <echo level="Warning" message="Moving ${dirs.drop.nuget}\lib\MSBuild to ${dirs.drop.nuget}\roundhouse.msbuild\lib." />
     <move todir="${dirs.drop.nuget}\roundhouse.msbuild\lib" overwrite="true">
       <fileset basedir="${dirs.drop.nuget}\lib\MSBuild">
         <exclude name="log4net*" />
@@ -44,7 +44,7 @@
     </move>
     <delete dir="${dirs.drop.nuget}\lib\MSBuild" />
     
-    <echo message="Moving ${dirs.drop.nuget}\lib\console to ${dirs.drop.nuget}\roundhouse\bin." />
+    <echo level="Warning" message="Moving ${dirs.drop.nuget}\lib\console to ${dirs.drop.nuget}\roundhouse\bin." />
     <move todir="${dirs.drop.nuget}\roundhouse\bin" overwrite="true">
       <fileset basedir="${dirs.drop.nuget}\lib\console">
         <include name="**/*.*" />
@@ -52,7 +52,7 @@
     </move>
     <delete dir="${dirs.drop.nuget}\lib\console" />
   
-    <echo message="Moving ${dirs.drop.nuget}\lib\lib to ${dirs.drop.nuget}\roundhouse.lib\lib." />
+    <echo level="Warning" message="Moving ${dirs.drop.nuget}\lib\lib to ${dirs.drop.nuget}\roundhouse.lib\lib." />
     <move todir="${dirs.drop.nuget}\roundhouse.lib\lib" overwrite="true">
       <fileset basedir="${dirs.drop.nuget}\lib\lib">
         <include name="roundhouse.*" />
@@ -63,7 +63,7 @@
   </target>
   
   <target name="remove_docs">
-   <echo message="Removing unnecesary documents from '${dirs.drop.nuget}\docs'" />
+   <echo level="Warning" message="Removing unnecesary documents from '${dirs.drop.nuget}\docs'" />
     <delete>
       <fileset basedir="${dirs.drop.nuget}\docs" >
         <include name="buildCustomization/**" />
@@ -94,7 +94,7 @@
   </target>
   
     <target name="update_roundhouse_dependencies_with_new_version">
-    <echo message="Finding and updating roundhouse version dependencies in all nuspec files in ${dirs.drop.nuget}."/>
+    <echo level="Warning" message="Finding and updating roundhouse version dependencies in all nuspec files in ${dirs.drop.nuget}."/>
     <foreach item="File" property="spec.file">
       <in>
         <items>
@@ -102,7 +102,7 @@
         </items>
       </in>
       <do>
-        <echo message="Replacing version in '${spec.file}'" />
+        <echo level="Warning" message="Replacing version in '${spec.file}'" />
         <xmlpoke
           file="${spec.file}"
           xpath="/package/metadata/dependencies/dependency[@id='roundhouse']/@version"
