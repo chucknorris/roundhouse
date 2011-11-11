@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.access", "product\roundhouse.databases.access\roundhouse.databases.access.csproj", "{35E058E3-8FEE-4107-AEDC-37A452C588EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.postgresql", "product\roundhouse.databases.postgre\roundhouse.databases.postgresql.csproj", "{41CE538E-E6F1-4AB6-AB66-508DEF669A39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.postgresql", "product\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj", "{41CE538E-E6F1-4AB6-AB66-508DEF669A39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

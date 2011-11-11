@@ -1,14 +1,12 @@
-﻿using roundhouse.infrastructure.app.logging;
-using roundhouse.infrastructure.logging;
-using roundhouse.infrastructure.logging.custom;
-
-namespace roundhouse.tasks
+﻿namespace roundhouse.tasks
 {
     using System;
     using folders;
     using infrastructure.app;
+    using infrastructure.app.logging;
     using infrastructure.containers;
     using infrastructure.filesystem;
+    using infrastructure.logging;
     using Microsoft.Build.Framework;
     using migrators;
     using resolvers;
@@ -102,8 +100,6 @@ namespace roundhouse.tasks
 
         public bool Drop { get; set; }
 
-    	public bool PerMasterDirectoryExecution { get; set; }
-
         public bool DoNotCreateDatabase { get; set; }
 
         public string OutputPath { get; set; }
@@ -127,6 +123,8 @@ namespace roundhouse.tasks
         public bool RunAllAnyTimeScripts { get; set; }
 
         public bool DisableTokenReplacement { get; set; }
+
+        public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
 
         #endregion
 
@@ -160,6 +158,5 @@ namespace roundhouse.tasks
 
             roundhouse_runner.run();
         }
-
     }
 }

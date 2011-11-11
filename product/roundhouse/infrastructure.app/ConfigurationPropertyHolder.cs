@@ -32,7 +32,6 @@ namespace roundhouse.infrastructure.app
         string ScriptsRunErrorsTableName { get; set; }
         string EnvironmentName { get; set; }
         bool Restore { get; set; }
-		bool PerMasterDirectoryExecution { get; set; }
         string RestoreFromPath { get; set; }
         string RestoreCustomOptions { get; set; }
         int RestoreTimeout { get; set; }
@@ -50,5 +49,6 @@ namespace roundhouse.infrastructure.app
         bool Baseline { get; set; }
         bool RunAllAnyTimeScripts { get; set; }
         bool DisableTokenReplacement { get; set; }
+        bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
     }
 }
