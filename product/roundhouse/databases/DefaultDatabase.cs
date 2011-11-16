@@ -111,6 +111,15 @@ namespace roundhouse.databases
                         }
                     }
                 }
+                else
+                {
+                    var return_value = run_sql_scalar(create_script, ConnectionType.Admin);
+                    //should only receive a return value once
+                    if (return_value != null)
+                    {
+                        database_was_created = (bool)return_value;
+                    }
+                }
             }
             catch (Exception ex)
             {

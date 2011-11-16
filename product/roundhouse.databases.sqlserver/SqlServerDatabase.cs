@@ -68,9 +68,6 @@ namespace roundhouse.databases.sqlserver
                 admin_connection_string = Regex.Replace(admin_connection_string, "database=.*?;", "database=master;", RegexOptions.IgnoreCase);
             }
             configuration_property_holder.ConnectionStringAdmin = admin_connection_string;
-            //set_repository(configuration_property_holder);
-
-            //Pooling=false;
         }
 
         public override void set_provider()
