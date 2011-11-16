@@ -86,7 +86,7 @@ namespace roundhouse.runners
 
             create_change_drop_folder();
             Log.bound_to(this).log_a_debug_event_containing("The change_drop (output) folder is: {0}", known_folders.change_drop.folder_full_path);
-            Log.bound_to(this).log_an_info_event_containing("Using per master directory execution: {0}", configuration.SearchAllSubdirectoriesInsteadOfTraverse);
+            Log.bound_to(this).log_a_debug_event_containing("Using SearchAllSubdirectoriesInsteadOfTraverse execution: {0}", configuration.SearchAllSubdirectoriesInsteadOfTraverse);
 
             try
             {
@@ -137,6 +137,13 @@ namespace roundhouse.runners
                     }
 
                     log_and_traverse(known_folders.up, version_id, new_version, ConnectionType.Default);
+
+                    //int last_errors = -1;
+                    //int new_errors = 0;
+                    //while (last_errors != new_errors || last_errors !=0)
+                    //{
+                        
+                    //}
                     log_and_traverse(known_folders.run_first_after_up, version_id, new_version, ConnectionType.Default);
                     log_and_traverse(known_folders.functions, version_id, new_version, ConnectionType.Default);
                     log_and_traverse(known_folders.views, version_id, new_version, ConnectionType.Default);

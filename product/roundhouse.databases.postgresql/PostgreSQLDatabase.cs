@@ -1,4 +1,7 @@
-﻿namespace roundhouse.databases.postgresql
+﻿using System.Text.RegularExpressions;
+using roundhouse.consoles;
+
+namespace roundhouse.databases.postgresql
 {
     using System;
     using infrastructure.app;
@@ -8,6 +11,17 @@
 
     public class PostgreSQLDatabase : AdoNetDatabase
     {
+        public override bool split_batch_statements
+        {
+            get { return false; }
+            set
+            {
+
+                throw new Exception(
+                    "This option can not be changed because PostgreSQL database migrator always splits batch statements by using Npgsql class from Npgsql ADO.NET provider");
+            }
+        }
+
         private readonly PostgreAdoNetProviderResolver postgre_ado_net_provider_resolver;
 
         public PostgreSQLDatabase()
@@ -36,13 +50,27 @@
                 }
             }
 
+            if (server_name == infrastructure.ApplicationParameters.default_server_name)
+            {
+                server_name = "localhost";
+            }
+
+            if (string.IsNullOrEmpty(connection_string))
+            {
+                InteractivePrompt.write_header(configuration_property_holder);
+                var user_name = InteractivePrompt.get_user("postgres", configuration_property_holder);
+                var password = InteractivePrompt.get_password("postgres", configuration_property_holder);
+                InteractivePrompt.write_footer();
+
+                connection_string = build_connection_string(server_name, database_name, user_name, password);
+            }
+
             configuration_property_holder.ConnectionString = connection_string;
 
             set_provider();
             if (string.IsNullOrEmpty(admin_connection_string))
             {
-                var builder = new NpgsqlConnection(connection_string);
-                admin_connection_string = builder.ConnectionString;
+                admin_connection_string = Regex.Replace(connection_string, "database=.*?;", "database=postgres;", RegexOptions.IgnoreCase);
             }
             configuration_property_holder.ConnectionStringAdmin = admin_connection_string;
         }
@@ -52,11 +80,33 @@
             provider = "Npgsql";
         }
 
+        private static string build_connection_string(string server_name, string database_name, string user_name, string password)
+        {
+            return string.Format("Server={0};Database={1};Port=5432;UserId={2};Password={3};", server_name, database_name, user_name, password);
+        }
+
         public override string create_database_script()
         {
-            //TODO: Add IF EXISTS condition to CREATE DATABASE
             return string.Format(
-                @"CREATE DATABASE {0};",
+                @"
+--CREATE FUNCTION RH_CreateDb() RETURNS void AS $$
+--DECLARE 
+--    t_exists integer;
+--    --t_created boolean;
+--BEGIN
+--    --set t_created = false;
+--    select INTO t_exists count(*) from pg_catalog.pg_database where datname = '{0}';
+--	IF t_exists = 0 THEN
+		CREATE DATABASE {0};
+--        --t_created = true;
+--	END IF;	
+
+--    --return t_created;
+--END;
+--$$ LANGUAGE 'plpgsql';
+--SELECT RH_CreateDb();
+--DROP FUNCTION RH_CreateDb();
+",
                 database_name);
         }
 
@@ -72,22 +122,20 @@
 
         public override string delete_database_script()
         {
-            //TODO: Add IF EXISTS condition to DROP DATABASE
-            return string.Format(
-                @"DROP DATABASE {0};",
-                database_name);
+            //compatible starting at 8.2
+            return string.Format(@"DROP DATABASE IF EXISTS {0};", database_name);
         }
 
         public override void create_or_update_roundhouse_tables()
         {
-            Log.bound_to(this).log_an_info_event_containing("Creating schema [{0}].", roundhouse_schema_name);
-            run_sql(TableCreationScripts.create_roundhouse_schema(roundhouse_schema_name), ConnectionType.Default);
-            Log.bound_to(this).log_an_info_event_containing("Creating table [{0}].", version_table_name);
+            //Log.bound_to(this).log_an_info_event_containing("Creating schema [{0}].", roundhouse_schema_name);
+            //run_sql(TableCreationScripts.create_roundhouse_schema(roundhouse_schema_name), ConnectionType.Default);
+            Log.bound_to(this).log_an_info_event_containing("Creating table [{0}_{1}].", roundhouse_schema_name, version_table_name);
             run_sql(TableCreationScripts.create_roundhouse_version_table(roundhouse_schema_name, version_table_name), ConnectionType.Default);
-            Log.bound_to(this).log_an_info_event_containing("Creating table [{0}].", scripts_run_table_name);
+            Log.bound_to(this).log_an_info_event_containing("Creating table [{0}_{1}].", roundhouse_schema_name, scripts_run_table_name);
             run_sql(TableCreationScripts.create_roundhouse_scripts_run_table(roundhouse_schema_name, version_table_name, scripts_run_table_name),
                     ConnectionType.Default);
-            Log.bound_to(this).log_an_info_event_containing("Creating table [{0}].", scripts_run_errors_table_name);
+            Log.bound_to(this).log_an_info_event_containing("Creating table [{0}_{1}].", roundhouse_schema_name, scripts_run_errors_table_name);
             run_sql(TableCreationScripts.create_roundhouse_scripts_run_errors_table(roundhouse_schema_name, scripts_run_errors_table_name),
                     ConnectionType.Default);
         }

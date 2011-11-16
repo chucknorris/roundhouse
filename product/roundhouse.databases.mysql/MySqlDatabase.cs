@@ -1,4 +1,5 @@
-﻿using roundhouse.infrastructure.logging;
+﻿using roundhouse.consoles;
+using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.mysql
 {
@@ -24,7 +25,7 @@ namespace roundhouse.databases.mysql
             set
             {
                 throw new Exception(
-                    "This options could not be changed because MySQL database migrator always splits batch statements by using MySqlScript class from MySQL ADO.NET provider");
+                    "This option can not be changed because MySQL database migrator always splits batch statements by using MySqlScript class from MySQL ADO.NET provider");
             }
         }
 
@@ -47,6 +48,21 @@ namespace roundhouse.databases.mysql
                 }
             }
 
+            if (server_name == infrastructure.ApplicationParameters.default_server_name)
+            {
+                server_name = "localhost";
+            }
+
+            if (string.IsNullOrEmpty(connection_string))
+            {
+                InteractivePrompt.write_header(configuration_property_holder);
+                var user_name = InteractivePrompt.get_user("root", configuration_property_holder);
+                var password = InteractivePrompt.get_password("root", configuration_property_holder);
+                InteractivePrompt.write_footer();
+                
+                connection_string = build_connection_string(server_name, database_name, user_name, password);
+            }
+
             configuration_property_holder.ConnectionString = connection_string;
 
             set_provider();
@@ -63,6 +79,11 @@ namespace roundhouse.databases.mysql
         {
             // http://stackoverflow.com/questions/1216626/how-to-use-ado-net-dbproviderfactory-with-mysql/1216887#1216887
             provider = "MySql.Data.MySqlClient";
+        }
+
+        private static string build_connection_string(string server_name, string database_name, string user_name, string password)
+        {
+            return string.Format("Server={0};Database={1};Port=3306;Uid={2};Pwd={3};", server_name, database_name, user_name, password);
         }
 
         public override string create_database_script()

@@ -40,6 +40,7 @@ namespace roundhouse.infrastructure.app
                 case "access":
                     database_type_full_name = "roundhouse.databases.access.AccessDatabase, roundhouse.databases.access";
                     break;
+                case "pg":
                 case "postgres":
                 case "postgresql":
                     database_type_full_name = "roundhouse.databases.postgresql.PostgreSQLDatabase, roundhouse.databases.postgresql";
