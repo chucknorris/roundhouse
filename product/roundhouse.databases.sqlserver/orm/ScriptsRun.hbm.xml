@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true">
+  <class name="roundhouse.model.ScriptsRun, roundhouse" lazy="false">
+    <!-- schema -->
+    <id name="id" column="id" unsaved-value="0">
+      <generator class="identity" />
+    </id>
+    <property name="version_id" />
+    <property name="script_name" />
+    <property name="text_of_script" length="5000" />
+    <property name="text_hash" length="512" />
+    <property name="one_time_script" />
+    
+    <!-- audit -->
+    <property name="entry_date" />
+    <property name="modified_date" />
+    <property name="entered_by" length="50" />
+    
+  </class>
+</hibernate-mapping>

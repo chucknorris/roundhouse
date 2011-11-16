@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true">
+  <class name="roundhouse.model.Version, roundhouse" lazy="false">
+    <!-- schema -->
+    <id name="id" column="id" unsaved-value="0">
+      <generator class="identity" />
+    </id>
+    <property name="repository_path" />
+    <property name="version" length="50" />
+    
+    <!-- audit -->
+    <property name="entry_date" />
+    <property name="modified_date" />
+    <property name="entered_by" length="50" />
+    
+  </class>
+</hibernate-mapping>
