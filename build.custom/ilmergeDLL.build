@@ -60,7 +60,7 @@
           <include name="${dirs.merge.from}\StructureMap.dll" />
           <include name="${dirs.merge.from}\MySql.Data.dll" />
           <include name="${dirs.merge.from}\Npgsql.dll" />
-          <!--include name="${dirs.merge.from}\Mono.Security.dll" /-->
+          <include name="${dirs.merge.from}\Mono.Security.dll" />
         </items>
       </in>
       <do>
@@ -101,7 +101,7 @@
         <include name="Microsoft.Build.Framework.*" />
         <include name="MySql.Data.dll" />
         <include name="Npgsql.dll" />
-        <!--include name="Mono.Security.dll" /-->
+        <include name="Mono.Security.dll" />
       </fileset>
     </delete>
   </target>
