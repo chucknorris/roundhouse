@@ -50,6 +50,12 @@ namespace roundhouse.databases.postgresql
                 }
             }
 
+            server_name = server_name.to_lower();
+            database_name = database_name.to_lower();
+            configuration_property_holder.ServerName = server_name;
+            configuration_property_holder.DatabaseName = database_name;
+
+
             if (server_name == infrastructure.ApplicationParameters.default_server_name)
             {
                 server_name = "localhost";
@@ -87,27 +93,29 @@ namespace roundhouse.databases.postgresql
 
         public override string create_database_script()
         {
-            return string.Format(
-                @"
---CREATE FUNCTION RH_CreateDb() RETURNS void AS $$
---DECLARE 
---    t_exists integer;
---    --t_created boolean;
---BEGIN
---    --set t_created = false;
---    select INTO t_exists count(*) from pg_catalog.pg_database where datname = '{0}';
---	IF t_exists = 0 THEN
-		CREATE DATABASE {0};
---        --t_created = true;
---	END IF;	
+            return string.Format("CREATE DATABASE {0};", database_name);
 
---    --return t_created;
---END;
---$$ LANGUAGE 'plpgsql';
---SELECT RH_CreateDb();
---DROP FUNCTION RH_CreateDb();
-",
-                database_name);
+            //            return string.Format(
+            //                @"
+            //--CREATE FUNCTION RH_CreateDb() RETURNS void AS $$
+            //--DECLARE 
+            //--    t_exists integer;
+            //--    --t_created boolean;
+            //--BEGIN
+            //--    --set t_created = false;
+            //--    select INTO t_exists count(*) from pg_catalog.pg_database where datname = '{0}';
+            //--	IF t_exists = 0 THEN
+            //		CREATE DATABASE {0};
+            //--        --t_created = true;
+            //--	END IF;	
+            //
+            //--    --return t_created;
+            //--END;
+            //--$$ LANGUAGE 'plpgsql';
+            //--SELECT RH_CreateDb();
+            //--DROP FUNCTION RH_CreateDb();
+            //",
+            //                database_name);
         }
 
         public override string set_recovery_mode_script(bool simple)
