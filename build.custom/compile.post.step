@@ -30,6 +30,8 @@
       <fileset basedir="${dirs.build}${path.separator}${folder.app.drop}">
         <include name="roundhouse.databases.*" />
         <include name="MySql.Data.dll" />
+        <include name="Npgsql.dll" />
+        <include name="Mono.Security.dll" />
         <include name="System.Data.SQLite.dll" />
       </fileset>
     </copy>
@@ -38,6 +40,8 @@
       <fileset basedir="${dirs.build}${path.separator}${folder.app.drop}">
         <include name="roundhouse.databases.*" />
         <include name="MySql.Data.dll" />
+        <include name="Npgsql.dll" />
+        <include name="Mono.Security.dll" />
         <include name="System.Data.SQLite.dll" />
       </fileset>
     </copy>
@@ -46,6 +50,8 @@
       <fileset basedir="${dirs.build}${path.separator}${folder.app.drop}">
         <include name="roundhouse.databases.*" />
         <include name="MySql.Data.dll" />
+        <include name="Npgsql.dll" />
+        <include name="Mono.Security.dll" />
         <include name="System.Data.SQLite.dll" />
       </fileset>
     </copy>

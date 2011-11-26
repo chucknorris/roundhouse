@@ -59,6 +59,8 @@
           <include name="${dirs.merge.from}\NHibernate.JetDriver.dll" />
           <include name="${dirs.merge.from}\StructureMap.dll" />
           <include name="${dirs.merge.from}\MySql.Data.dll" />
+          <include name="${dirs.merge.from}\Npgsql.dll" />
+          <include name="${dirs.merge.from}\Mono.Security.dll" />
           <include name="${dirs.merge.from}\System.Data.SQLite.dll" />
         </items>
       </in>
@@ -99,6 +101,8 @@
         <include name="StructureMap.dll" />
         <include name="Microsoft.Build.Framework.*" />
         <include name="MySql.Data.dll" />
+        <include name="Npgsql.dll" />
+        <include name="Mono.Security.dll" />
         <include name="System.Data.SQLite.dll" />
       </fileset>
     </delete>

@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.access
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlite", "product\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj", "{1D41D70E-E310-4699-B7CB-C1F77476A685}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.postgresql", "product\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj", "{41CE538E-E6F1-4AB6-AB66-508DEF669A39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Build|Any CPU = Build|Any CPU
@@ -103,6 +105,12 @@ Global
 		{1D41D70E-E310-4699-B7CB-C1F77476A685}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D41D70E-E310-4699-B7CB-C1F77476A685}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D41D70E-E310-4699-B7CB-C1F77476A685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Build|Any CPU.ActiveCfg = Release|Any CPU
+		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Build|Any CPU.Build.0 = Release|Any CPU
+		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,5 +124,6 @@ Global
 		{4CF5718B-9C74-4590-9848-A81360AE1D22} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{35E058E3-8FEE-4107-AEDC-37A452C588EC} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{1D41D70E-E310-4699-B7CB-C1F77476A685} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
+		{41CE538E-E6F1-4AB6-AB66-508DEF669A39} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 	EndGlobalSection
 EndGlobal

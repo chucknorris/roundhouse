@@ -357,8 +357,20 @@ namespace roundhouse.infrastructure.filesystem
         public string[] get_all_file_name_strings_in(string directory, string pattern)
         {
             string[] returnList = Directory.GetFiles(directory, pattern);
-            return returnList.OrderBy(x => x).ToArray();
+			return returnList.OrderBy(get_file_name_from).ToArray();
         }
+
+		/// <summary>
+		/// Gets a list of all files inside of an existing directory, includes files in subdirectories also
+		/// </summary>
+		/// <param name="directory">Path to the directory</param>
+		/// <param name="pattern">Pattern or extension</param>
+		/// <returns>A list of files inside of an existing directory</returns>
+		public string[] get_all_file_name_strings_recurevly_in(string directory, string pattern)
+		{
+			string[] returnList = Directory.GetFiles(directory, pattern, SearchOption.AllDirectories);
+			return returnList.OrderBy(get_file_name_from).ToArray();
+		}
 
         #endregion
 

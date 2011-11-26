@@ -109,6 +109,7 @@
     <Compile Include="connections\AdoNetConnection.cs" />
     <Compile Include="connections\IConnection.cs" />
     <Compile Include="consoles\CommandExecutor.cs" />
+    <Compile Include="consoles\InteractivePrompt.cs" />
     <Compile Include="infrastructure.app\ConnectionType.cs" />
     <Compile Include="databases\DefaultDatabase.cs" />
     <Compile Include="databases\MockDatabase.cs" />

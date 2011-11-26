@@ -111,6 +111,15 @@ namespace roundhouse.databases
                         }
                     }
                 }
+                else
+                {
+                    var return_value = run_sql_scalar(create_script, ConnectionType.Admin);
+                    //should only receive a return value once
+                    if (return_value != null)
+                    {
+                        database_was_created = (bool)return_value;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -180,7 +189,7 @@ namespace roundhouse.databases
 
         public abstract void run_database_specific_tasks();
 
-        public void create_or_update_roundhouse_tables()
+        public virtual void create_or_update_roundhouse_tables()
         {
             SchemaUpdate s = new SchemaUpdate(repository.nhibernate_configuration);
             s.Execute(false, true);
