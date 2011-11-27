@@ -1,6 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -35,8 +35,16 @@ namespace roundhouse.tests.integration.traversal
                         temp.has_subdirectory_named("views").with(views => views.has_file_named("vw_Dude.sql"));
                         temp.has_subdirectory_named("sprocs").with(sprocs => sprocs.has_files_named("usp_GetDate.sql", "usp_SelectTimmy.sql").with_random_content());
                         temp.has_subdirectory_named("runAfterOtherAnyTimeScripts").with(ra => ra.has_file_named("createFiveItems.sql").with_random_content());
-                        temp.has_subdirectory_named("permissions").with(p =>
-                            p.has_files_named("0001_AppRole.sql", "0002_AppReadOnlyRole.sql", "0003_AppPermissionsWiring.sql").with_random_content());
+                    	temp.has_subdirectory_named("permissions").with(p =>
+                    	    {
+                    	        p.has_subdirectory_named("sub").with(
+									s => s.has_file_named("0002_AppReadOnlyRole.sql").with_random_content()
+								);
+
+                    	    	p.has_files_named("0001_AppRole.sql",
+                    	    	                  "0003_AppPermissionsWiring.sql")
+                    	    		.with_random_content();
+                    	    });
                     }
                 );
             };
@@ -82,7 +90,60 @@ namespace roundhouse.tests.integration.traversal
                 Assert.In("runAfterOtherAnyTimeScripts", traversedfolders);
                 Assert.In("permissions", traversedfolders);
             }
-        }
 
+			[Observation]
+            public void if_told_to_traverse_width_first_expect_width_first_order()
+            {
+                FileSystemAccess access = new WindowsFileSystemAccess();
+                ConfigurationPropertyHolder configuration = new consoles.DefaultConfiguration
+                                                                {
+                                                                    SqlFilesDirectory = file_system.directory.FullName,
+                                                                    DatabaseName = "test"
+                                                                };
+                ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
+                KnownFolders folders = KnownFoldersBuilder.build(access, configuration);
+                FileSystemTraversal traversal = new FileSystemTraversal(folders, access, false);
+                
+                List<string> scripts = new List<string>();
+
+                traversal.traverse(t =>
+                                       {
+                                           t.include_folder(folders.permissions);
+                                           t.for_each_script(s => scripts.Add(s.script_name));
+                                       });
+
+				Assert.AreEqual(3, scripts.Count);
+				Assert.AreEqual("0001_AppRole.sql", scripts[0]);
+				Assert.AreEqual("0003_AppPermissionsWiring.sql", scripts[1]);
+				Assert.AreEqual("0002_AppReadOnlyRole.sql", scripts[2]);
+            }
+
+			[Observation]
+            public void if_told_to_traverse_depth_first_expect_depth_first_order()
+            {
+                FileSystemAccess access = new WindowsFileSystemAccess();
+                ConfigurationPropertyHolder configuration = new consoles.DefaultConfiguration
+                                                                {
+                                                                    SqlFilesDirectory = file_system.directory.FullName,
+                                                                    DatabaseName = "test"
+                                                                };
+                ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
+                KnownFolders folders = KnownFoldersBuilder.build(access, configuration);
+                FileSystemTraversal traversal = new FileSystemTraversal(folders, access, true);
+                
+                List<string> scripts = new List<string>();
+
+                traversal.traverse(t =>
+                                       {
+                                           t.include_folder(folders.permissions);
+                                           t.for_each_script(s => scripts.Add(s.script_name));
+                                       });
+
+				Assert.AreEqual(3, scripts.Count);
+				Assert.AreEqual("0001_AppRole.sql", scripts[0]);
+				Assert.AreEqual("0002_AppReadOnlyRole.sql", scripts[1]);
+				Assert.AreEqual("0003_AppPermissionsWiring.sql", scripts[2]);
+            }
+        }
     }
 }
