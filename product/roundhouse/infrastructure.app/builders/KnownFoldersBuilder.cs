@@ -22,6 +22,7 @@ namespace roundhouse.infrastructure.app.builders
 
             Folder change_drop_folder = new DefaultFolder(file_system, combine_items_into_one_path(file_system,
                                                                                                    configuration_property_holder.OutputPath,
+                                                                                                   "migrations",
                                                                                                    remove_paths_from(configuration_property_holder.DatabaseName,file_system),
                                                                                                    remove_paths_from(configuration_property_holder.ServerName,file_system)),
                                                           get_run_date_time_string());
