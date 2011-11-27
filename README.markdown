@@ -80,7 +80,7 @@ It helps keep to the product updated, pays for site hosting, etc. https://www.pa
 * FIX: Removed the temporary log location. See details https://github.com/chucknorris/roundhouse/issues/7 (r340)  
 * **New Configuration Switch!** DisableTokenReplacement - Token replacement should be configurable. See [issue 56](http://code.google.com/p/roundhouse/issues/detail?id=56) for details. (r339)  
 * FIX: Token replacer should only replace for items it finds. See [issue 56](http://code.google.com/p/roundhouse/issues/detail?id=56) for details. (r339)  
-* **Possible Breaking Change!** File encoding will always read files as UTF-8, and fall back to ANSI. See [issue 39](http://code.google.com/p/roundhouse/issues/detail?id=39) for details. (r337)  
+* **Possible Breaking Change!** File encoding will always try to read files as UTF-8, but fall back to ANSI. You can't go wrong if you encode in ANSI. See [issue 39](http://code.google.com/p/roundhouse/issues/detail?id=39) for details. (r337)  
 * Restores are a bit smarter about moving files to a default location when one has not been specified. See details https://github.com/chucknorris/roundhouse/issues/9 or [issue 13](http://code.google.com/p/roundhouse/issues/detail?id=13) (r336)  
 * FIX: Do not run token replacement on empty text. See details https://github.com/chucknorris/roundhouse/issues/10 (r330)  
 * Custom Scripts also run token replacement (r321)  
