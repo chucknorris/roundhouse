@@ -135,20 +135,20 @@ namespace roundhouse.runners
 					Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
 
 					database_migrator.open_admin_connection();
-					traversal.traverse(cfg =>
-						{
-							cfg.include_folder(known_folders.alter_database);
-							cfg.for_each_script(script => runner.execute_script(script, ConnectionType.Admin));
-						}
-					);
+					
+					// this is a simplified version of traversal that just allows one folder and then an action for each script
+					traversal.traverse_folder(known_folders.alter_database, script => runner.execute_script(script, ConnectionType.Admin));
+		
 					database_migrator.close_admin_connection();
 
-					traversal.traverse(cfg =>
+					//This is a bit more complex
+					traversal.traverse(t =>
 						{
+							// you can include several folders by name, or by Func<Folder,bool>
 							if (database_was_created)
-								cfg.include_folder(known_folders.run_after_create_database);
+								t.include_folder(known_folders.run_after_create_database);
 
-							cfg.include_folders(known_folders.up,
+							t.include_folders(known_folders.up,
 												known_folders.run_first_after_up,
 												known_folders.functions,
 												known_folders.views,
@@ -156,7 +156,8 @@ namespace roundhouse.runners
 												known_folders.indexes,
 												known_folders.run_after_other_any_time_scripts);
 
-							cfg.for_each_script(script => runner.execute_script(script, ConnectionType.Default));
+							// logic for all scripts, can also have before and after logic for each folder
+							t.for_each_script(script => runner.execute_script(script, ConnectionType.Default));
 						}
 					);
 
@@ -166,12 +167,7 @@ namespace roundhouse.runners
 						database_migrator.open_connection(false);
 					}
 
-					traversal.traverse(cfg =>
-						{
-							cfg.include_folder(known_folders.permissions);
-							cfg.for_each_script(script => runner.execute_script(script, ConnectionType.Default));
-						}
-					);
+					traversal.traverse_folder(known_folders.permissions, script => runner.execute_script(script, ConnectionType.Default));
 
 					Log.bound_to(this).log_an_info_event_containing(
 						"{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",

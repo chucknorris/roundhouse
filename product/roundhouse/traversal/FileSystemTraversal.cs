@@ -33,7 +33,14 @@ namespace roundhouse.traversal
                                   folders.permissions
                               };
         }
-
+		public void traverse_folder(MigrationsFolder folder, Action<IScriptInfo> action)
+		{
+			traverse(cfg =>
+			         	{
+			         		cfg.include_folder(folder);
+							cfg.for_each_script(action);
+			         	});
+		}
         public void traverse(Action<TraversalConfiguration> configure_traversal)
         {
             TraversalConfiguration configuration = new TraversalConfiguration();

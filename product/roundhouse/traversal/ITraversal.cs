@@ -8,7 +8,8 @@ namespace roundhouse.traversal
     /// </summary>
     public interface ITraversal
     {
-        void traverse(Action<TraversalConfiguration> configure_traversal);
+		void traverse(Action<TraversalConfiguration> configure_traversal);
+		void traverse_folder(MigrationsFolder folder, Action<IScriptInfo> action);
     }
 
     public interface IScriptInfo
