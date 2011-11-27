@@ -23,12 +23,9 @@ namespace $rootnamespace$
     using FluentNHibernate.Cfg.Db;
     using NHibernate;
     using NHibernate.Cfg;
-    using Environment = NHibernate.Cfg.Environment;
 
     public class NHibernateSessionFactory
     {
-        private const string proxy_factory = Environment.ProxyFactoryFactoryClass;
-        private const string proxy_factory_name = "NHibernate.ByteCode.Castle.ProxyFactoryFactory";
         private const string db_server = "(local)";
 
         public static ISessionFactory build_session_factory(string db_name, Assembly mappings_assembly, Assembly conventions_assembly,Action<Configuration> additional_function)
@@ -42,18 +39,7 @@ namespace $rootnamespace$
                                  m.HbmMappings.AddFromAssembly(mappings_assembly);
                                  m.FluentMappings.AddFromAssembly(mappings_assembly)
                                      .Conventions.AddAssembly(conventions_assembly);
-                             }).ExposeConfiguration(cfg => {
-                                                        var proxy_factory_location = proxy_factory_name + ", NHibernate.ByteCode.Castle";
-
-                                                        if (cfg.Properties.ContainsKey(proxy_factory))
-                                                        {
-                                                            cfg.Properties[proxy_factory] = proxy_factory_location;
-                                                        }
-                                                        else
-                                                        {
-                                                            cfg.Properties.Add(proxy_factory, proxy_factory_location);
-                                                        }
-                                                    }).ExposeConfiguration(additional_function).BuildSessionFactory();
+                             }).ExposeConfiguration(additional_function).BuildSessionFactory();
         }
 
         private static void no_operation(Configuration cfg) {}
