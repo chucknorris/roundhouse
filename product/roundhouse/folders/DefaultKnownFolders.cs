@@ -25,9 +25,8 @@ namespace roundhouse.folders
             this.functions = functions;
             this.views = views;
             this.sprocs = sprocs;
-            this.runAfterOtherAnyTimeScripts = run_after_other_any_time_scripts;
             this.indexes = indexes;
-            this.run_after_other_any_time_scripts = runAfterOtherAnyTimeScripts;
+            this.run_after_other_any_time_scripts = run_after_other_any_time_scripts;
             this.permissions = permissions;
             this.change_drop = change_drop;
         }

@@ -25,7 +25,7 @@ namespace roundhouse.traversal
                                   folders.functions,
                                   folders.views,
                                   folders.sprocs,
-                                  folders.runAfterOtherAnyTimeScripts,
+                                  folders.run_after_other_any_time_scripts,
                                   folders.permissions
                               };
         }
