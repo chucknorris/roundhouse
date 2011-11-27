@@ -69,7 +69,7 @@ It helps keep to the product updated, pays for site hosting, etc. https://www.pa
 * **New Configuration Switch!** SearchAllSubdirectoriesInsteadOfTraverse - All migrations subfolders are traversed by default and run in order of each folder's scripts. This option runs all items in subfolders at same time. Thanks SiimV! See details https://github.com/chucknorris/roundhouse/issues/31 (r359)  
 * FIX: Transactions not working with restore. See details https://github.com/chucknorris/roundhouse/issues/26 (r357)  
 * FIX: Fixed a nasty bug with SQL Server where it tries to hold a connection (interferes with drop/create mode) and gives a transport error. See details https://github.com/chucknorris/roundhouse/issues/12 (r357)  
-* Script Number Versioning. See details https://github.com/chucknorris/roundhouse/pull/25 (r356)  
+* **New Version Resolver!** - Script Number Versioning. See details https://github.com/chucknorris/roundhouse/pull/25 (r356)  
 * FIX: Custom create script should split batch statements. See details https://github.com/chucknorris/roundhouse/issues/22 (r353)  
 * **New Migrations Folder!** RunAfterCreateDatabaseFolder - Runs only one time and only after a database has been created. This works with a limited set of database types at the moment. Please test if you are planning on using. See details https://github.com/chucknorris/roundhouse/issues/20 (r351)  
 * Almost everything is now ilmerged internalized. See details https://github.com/chucknorris/roundhouse/issues/8 and https://github.com/chucknorris/roundhouse/issues/15 (r350)  
