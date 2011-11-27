@@ -61,7 +61,6 @@
           <include name="${dirs.merge.from}\MySql.Data.dll" />
           <include name="${dirs.merge.from}\Npgsql.dll" />
           <include name="${dirs.merge.from}\Mono.Security.dll" />
-          <include name="${dirs.merge.from}\System.Data.SQLite.dll" />
         </items>
       </in>
       <do>
