@@ -20,14 +20,14 @@
   <target name="go" depends="cleanup_roundhouse_drop, restructure_roundhouse_drop_folder, copy_roundhouse_files_to_deploy_console, copy_test_databases_to_deploy, create_copy_of_environment_file_for_sample, move_sample_to_drop, copy_notices" description="Packaging" />
 
   <target name="cleanup_roundhouse_drop">
-    <echo message="Removing ${dirs.drop}\${folder.app.drop}." />
+    <echo level="Warning" message="Removing ${dirs.drop}\${folder.app.drop}." />
     <delete>
       <fileset basedir="${dirs.drop}\${folder.app.drop}">
         <include name="**/*.*" />
       </fileset>
     </delete>
     
-    <echo message="Renaming ${dirs.drop}\_PublishedApplications to ${dirs.drop}\${folder.app.drop}." />
+    <echo level="Warning" message="Renaming ${dirs.drop}\_PublishedApplications to ${dirs.drop}\${folder.app.drop}." />
     <move todir="${dirs.drop}\${folder.app.drop}" overwrite="true">
       <fileset basedir="${dirs.drop}\_PublishedApplications">
         <include name="**/*.*" />
@@ -38,7 +38,7 @@
   </target>
 
   <target name="restructure_roundhouse_drop_folder">
-    <echo message="Renaming ${dirs.drop}\${folder.app.drop}\roundhouse to ${dirs.drop}\${folder.app.drop}\lib." />
+    <echo level="Warning" message="Renaming ${dirs.drop}\${folder.app.drop}\roundhouse to ${dirs.drop}\${folder.app.drop}\lib." />
     <move todir="${dirs.drop}\${folder.app.drop}\lib" overwrite="true">
       <fileset basedir="${dirs.drop}\${folder.app.drop}\roundhouse">
         <include name="**/*.*" />
@@ -46,7 +46,7 @@
     </move>
     <delete dir="${dirs.drop}\${folder.app.drop}\roundhouse" />
     
-    <echo message="Renaming ${dirs.drop}\${folder.app.drop}\roundhouse.tasks to ${dirs.drop}\${folder.app.drop}\MSBuild." />
+    <echo level="Warning" message="Renaming ${dirs.drop}\${folder.app.drop}\roundhouse.tasks to ${dirs.drop}\${folder.app.drop}\MSBuild." />
     <move todir="${dirs.drop}\${folder.app.drop}\MSBuild" overwrite="true">
       <fileset basedir="${dirs.drop}\${folder.app.drop}\roundhouse.tasks">
         <include name="**/*.*" />
@@ -54,7 +54,7 @@
     </move>
     <delete dir="${dirs.drop}\${folder.app.drop}\roundhouse.tasks" />
     
-    <echo message="Renaming ${dirs.drop}\${folder.app.drop}\roundhouse.console to ${dirs.drop}\${folder.app.drop}\console." />
+    <echo level="Warning" message="Renaming ${dirs.drop}\${folder.app.drop}\roundhouse.console to ${dirs.drop}\${folder.app.drop}\console." />
     <move todir="${dirs.drop}\${folder.app.drop}\console" overwrite="true">
       <fileset basedir="${dirs.drop}\${folder.app.drop}\roundhouse.console">
         <include name="**/*.*" />
@@ -64,7 +64,7 @@
   </target>
   
   <target name="copy_roundhouse_files_to_deploy_console">
-    <echo message="Copying roundhouse assemblies to ${dirs.deployment}\console."/>
+    <echo level="Warning" message="Copying roundhouse assemblies to ${dirs.deployment}\console."/>
     <copy todir="${dirs.deployment}\Console">
       <fileset basedir="${dirs.drop}\${folder.app.drop}\console">
         <include name="*.*" />
@@ -73,7 +73,7 @@
   </target>
 
   <target name="copy_test_databases_to_deploy">
-    <echo message="Copying roundhouse test databases from ${path.file.test_databases} to ${dirs.deployment}."/>
+    <echo level="Warning" message="Copying roundhouse test databases from ${path.file.test_databases} to ${dirs.deployment}."/>
      <copy todir="${dirs.deployment}">
       <fileset basedir="${path.file.test_databases}">
         <include name="**/*.*" />
@@ -113,10 +113,10 @@
   </target>
   
   <target name ="copy_notices">
-    <echo message="Packaging readme file to ${dirs.drop}."/>
+    <echo level="Warning" message="Packaging readme file to ${dirs.drop}."/>
     <copy file="${dirs.current}\..\README.markdown" tofile="${dirs.drop}\ReadMe.txt" />
     
-    <echo message="Packaging other legal stuff to ${dirs.drop}\LEGAL."/>
+    <echo level="Warning" message="Packaging other legal stuff to ${dirs.drop}\LEGAL."/>
     <copy todir="${dirs.drop}\LEGAL">
       <fileset basedir="${dirs.current}\..\docs\legal">
         <include name="**/*" />

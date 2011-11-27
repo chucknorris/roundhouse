@@ -142,7 +142,7 @@ namespace roundhouse.databases.oracle
             base.run_sql(sql_to_run.Replace("\r\n", "\n"), connection_type);
         }
 
-        private object run_sql_scalar(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
+        protected override object run_sql_scalar(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
         {
             Log.bound_to(this).log_a_debug_event_containing("Replacing \r\n with \n to be compliant with Oracle.");
             //http://www.barrydobson.com/2009/02/17/pls-00103-encountered-the-symbol-when-expecting-one-of-the-following/

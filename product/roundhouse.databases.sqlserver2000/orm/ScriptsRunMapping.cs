@@ -11,7 +11,7 @@ namespace roundhouse.databases.sqlserver2000.orm
         public ScriptsRunMapping()
         {
             //HibernateMapping.Schema(ApplicationParameters.CurrentMappings.roundhouse_schema_name);
-            Table(ApplicationParameters.CurrentMappings.scripts_run_errors_table_name);
+            Table(ApplicationParameters.CurrentMappings.scripts_run_table_name);
             Not.LazyLoad();
             HibernateMapping.DefaultAccess.Property();
             HibernateMapping.DefaultCascade.SaveUpdate();

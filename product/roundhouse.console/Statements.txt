@@ -1,6 +1,7 @@
 ﻿/db=TestRoundhouse /f="..\..\db\SQLServer\TestRoundhousE" /simple /dt=sqlserver /silent
 /db=TestRoundhouse /f="..\..\db\SQLServer\TestRoundhousE" /simple /dt=sqlserver /t /silent
 /db=TestRoundhouse /f="..\..\db\Oracle\TestRoundhousE" /cs="Data Source=Oracle;User Id=TestRoundhousE;Password=TestRoundhousE;Integrated Security=no;" /csa="Data Source=Oracle;User Id=Bob;Password=bob;Integrated Security=no;" /dt=oracle
+/d bob /dt sqlite /silent
 
 ::restore
 /db=TestRoundhouse /f="..\..\db\SQLServer\TestRoundhousE" /silent /restore /restorefrompath="..\..\code_drop\sample\deployment\TestRoundhousE.bak"

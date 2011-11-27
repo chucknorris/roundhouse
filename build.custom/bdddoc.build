@@ -20,13 +20,13 @@
   <target name="go" depends="cleanup, run_bdddoc" description="Tests" />
 
   <target name="cleanup">
-    <echo message="Removing and adding ${dirs.bdddoc_results}."/>
+    <echo level="Warning" message="Removing and adding ${dirs.bdddoc_results}."/>
     <delete dir="${dirs.bdddoc_results}" />
     <mkdir dir="${dirs.bdddoc_results}" />
   </target>
 
   <target name="run_bdddoc" depends="cleanup" description="Running BDDDoc">
-    <echo message="Running BDDDoc against ${dirs.build}\${folder.app.drop}\${test_assembly} ${test_attribute} ${files.bdddoc_results} ${dirs.test_results}\${file.test_results}.xml."/>
+    <echo level="Warning" message="Running BDDDoc against ${dirs.build}\${folder.app.drop}\${test_assembly} ${test_attribute} ${files.bdddoc_results} ${dirs.test_results}\${file.test_results}.xml."/>
      <exec program="${app.bdddoc}" > 
         <arg file="${dirs.build}\${folder.app.drop}\${test_assembly}"/> 
         <arg value="${test_attribute}"/> 
@@ -36,7 +36,7 @@
   </target>
 
   <target name="open_results">
-    <echo message="Opening results at ${path::get-full-path(files.bdddoc_results)}."/>
+    <echo level="Warning" message="Opening results at ${path::get-full-path(files.bdddoc_results)}."/>
     <exec
       spawn="true"
       program="${environment::get-folder-path('ProgramFiles')}\Internet Explorer\iexplore.exe"

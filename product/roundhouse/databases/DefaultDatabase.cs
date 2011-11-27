@@ -14,6 +14,7 @@ namespace roundhouse.databases
     using NHibernate.Criterion;
     using NHibernate.Tool.hbm2ddl;
     using parameters;
+    using sqlsplitters;
     using Environment = System.Environment;
     using Version = model.Version;
 
@@ -38,7 +39,6 @@ namespace roundhouse.databases
             get { return @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>'{1}(?:[^']|\n[^'])*?'{1})|(?<KEEP1>\s)(?<BATCHSPLITTER>\;)(?<KEEP2>\s)|(?<KEEP1>\s)(?<BATCHSPLITTER>\;)(?<KEEP2>$)"; }
         }
 
-        public string custom_create_database_script { get; set; }
         public int command_timeout { get; set; }
         public int admin_command_timeout { get; set; }
         public int restore_timeout { get; set; }
@@ -84,16 +84,42 @@ namespace roundhouse.databases
         public abstract string restore_database_script(string restore_from_path, string custom_restore_options);
         public abstract string delete_database_script();
 
-        public void create_database_if_it_doesnt_exist()
+        public virtual bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
+            bool database_was_created = false;
             try
             {
                 string create_script = create_database_script();
                 if (!string.IsNullOrEmpty(custom_create_database_script))
                 {
-                    create_script = TokenReplacer.replace_tokens(configuration, custom_create_database_script);
+                    create_script = custom_create_database_script;
+                    if (!configuration.DisableTokenReplacement)
+                    {
+                        create_script = TokenReplacer.replace_tokens(configuration, create_script);
+                    }
                 }
-                run_sql(create_script, ConnectionType.Admin);
+
+                if (split_batch_statements)
+                {
+                    foreach (var sql_statement in StatementSplitter.split_sql_on_regex_and_remove_empty_statements(create_script, sql_statement_separator_regex_pattern))
+                    {
+                        var return_value = run_sql_scalar(sql_statement, ConnectionType.Admin);
+                        //should only receive a return value once
+                        if (return_value != null)
+                        {
+                            database_was_created = (bool)return_value;
+                        }
+                    }
+                }
+                else
+                {
+                    var return_value = run_sql_scalar(create_script, ConnectionType.Admin);
+                    //should only receive a return value once
+                    if (return_value != null)
+                    {
+                        database_was_created = (bool)return_value;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -101,6 +127,8 @@ namespace roundhouse.databases
                     "{0} with provider {1} does not provide a facility for creating a database at this time.{2}{3}",
                     GetType(), provider, Environment.NewLine, ex.Message);
             }
+
+            return database_was_created;
         }
 
         public void set_recovery_mode(bool simple)
@@ -161,7 +189,7 @@ namespace roundhouse.databases
 
         public abstract void run_database_specific_tasks();
 
-        public void create_or_update_roundhouse_tables()
+        public virtual void create_or_update_roundhouse_tables()
         {
             SchemaUpdate s = new SchemaUpdate(repository.nhibernate_configuration);
             s.Execute(false, true);
@@ -172,7 +200,13 @@ namespace roundhouse.databases
             run_sql(sql_to_run, connection_type, null);
         }
 
+        public virtual object run_sql_scalar(string sql_to_run,ConnectionType connection_type)
+        {
+            return run_sql_scalar(sql_to_run, connection_type, null);
+        }
+
         protected abstract void run_sql(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters);
+        protected abstract object run_sql_scalar(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters);
 
         public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)
         {

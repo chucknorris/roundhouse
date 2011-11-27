@@ -25,10 +25,7 @@
                 .Where(x => x.Field<string>(2) == "MySql.Data.MySqlClient")
                 .SingleOrDefault();
 
-            if (my_sql_client_row != null)
-            {
-                dataSet.Tables[0].Rows.Remove(my_sql_client_row);
-            }
+            if (my_sql_client_row != null) dataSet.Tables[0].Rows.Remove(my_sql_client_row);
 
             var factory_type = is_merged ? "MySql.Data.MySqlClient.MySqlClientFactory, " + ApplicationParameters.get_merged_assembly_name(): "MySql.Data.MySqlClient.MySqlClientFactory, MySql.Data";
 

@@ -18,16 +18,14 @@ namespace roundhouse.infrastructure.app.tokens
             {
                 string key = "";
 
-                try
+                key = m.Groups["key"].Value.to_lower();
+                if (!dictionary.ContainsKey(key))
                 {
-                    key = m.Groups["key"].Value.to_lower();
-                    var value = dictionary[key];
-                    return value;
+                    return "{{" + key + "}}";
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
+
+                var value = dictionary[key];
+                return value;
             });
 
             return output;

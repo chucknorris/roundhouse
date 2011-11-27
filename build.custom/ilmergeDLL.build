@@ -22,6 +22,7 @@
   <!-- overwrite this property -->
   <property name="dirs.merge.from" value="${dirs.drop}\${folder.app.drop}\lib" />
   <property name="dirs.merge.to" value="${dirs.drop}\merge" overwrite="false" />
+  <property name="file.key" value="${dirs.current}\${path.to.toplevel}\RoundhousE.snk" overwrite="false" />
   
   <property name="file.internalize.ignore" value="ilmerge.internalize.ignore.txt" />
   <property name="path.file.internalize.ignore" value="${dirs.build_scripts_custom}\${file.internalize.ignore}" />
@@ -30,8 +31,8 @@
   <!-- exe winexe dll -->
   <!-- overwrite this property -->
   <property name="merge.target.type" value="dll" />
-  <property name="args.ilmerge" value="/internalize /target:${merge.target.type} /out:${dirs.merge.to}\${file.merge.name} /log:${dirs.merge.log}\${log.merge} /ndebug /allowDup ${file.merge.name} " />
-  <property name="args.ilmerge" value="/internalize:${path.file.internalize.ignore} /target:${merge.target.type} /out:${dirs.merge.to}\${file.merge.name} /log:${dirs.merge.log}\${log.merge} /ndebug /allowDup ${file.merge.name} " if="${file::exists(path.file.internalize.ignore)}"/>
+  <property name="args.ilmerge" value="/internalize /target:${merge.target.type} /out:${dirs.merge.to}\${file.merge.name} /log:${dirs.merge.log}\${log.merge} /ndebug /zeroPeKind /allowDup ${file.merge.name} " />
+  <property name="args.ilmerge" value="/internalize:${path.file.internalize.ignore} /target:${merge.target.type} /out:${dirs.merge.to}\${file.merge.name} /log:${dirs.merge.log}\${log.merge} /ndebug /zeroPeKind /allowDup ${file.merge.name} " if="${file::exists(path.file.internalize.ignore)}"/>
 
   <target name="go"
           depends="prepare, get_regular_dlls, run_ilmerge, copy_configs, remove_unneeded_assemblies, copy_from_merge, delete_merge_folder"
@@ -40,24 +41,27 @@
   <target name="prepare">
     <mkdir dir="${dirs.merge.log}" />
     <mkdir dir="${dirs.merge.from}" />
-    
     <mkdir dir="${dirs.merge.to}" />
+    <property name="args.ilmerge" value="${args.ilmerge} /keyfile:${file.key}" if="${file::exists(file.key)}"/>
   </target>
 
   <target name="get_regular_dlls">
-    <echo message="Getting output dlls based on name in directory ${path::get-full-path(dirs.merge.from)}." />
+    <echo level="Warning" message="Getting output dlls based on name in directory ${path::get-full-path(dirs.merge.from)}." />
     <property name="dll.names" value="" />
     <foreach item="File" property="dll.filename">
       <in>
         <items>
           <exclude name="${dirs.merge.from}\${file.merge.name}" />
           <exclude name="${dirs.merge.from}\log4net.dll" />
+          <exclude name="${dirs.merge.from}\System.Data.SQLite.dll" />
           <include name="${dirs.merge.from}\*.exe" />
           <!--include name="${dirs.merge.from}\*.dll" /-->
           <include name="${dirs.merge.from}\roundhouse*.dll" />
           <include name="${dirs.merge.from}\NHibernate.JetDriver.dll" />
           <include name="${dirs.merge.from}\StructureMap.dll" />
           <include name="${dirs.merge.from}\MySql.Data.dll" />
+          <include name="${dirs.merge.from}\Npgsql.dll" />
+          <include name="${dirs.merge.from}\Mono.Security.dll" />
         </items>
       </in>
       <do>
@@ -70,8 +74,8 @@
   </target>
 
   <target name="run_ilmerge">
-    <echo message="Merging the the contents of ${dirs.merge.from} into a single executable - ${dirs.merge.to}\${file.merge.name}. This will fail if all dependencies are not resolved."/>
-    <echo message="Running this: ${app.ilmerge} ${args.ilmerge}"/>
+    <echo level="Warning" message="Merging the the contents of ${dirs.merge.from} into a single executable - ${dirs.merge.to}\${file.merge.name}. This will fail if all dependencies are not resolved."/>
+    <echo level="Warning" message="Running this: ${app.ilmerge} ${args.ilmerge}"/>
     <exec program="${app.ilmerge}"
           workingdir="${dirs.merge.from}"
           commandline="${args.ilmerge}" />
@@ -86,7 +90,7 @@
   </target>
 
   <target name="remove_unneeded_assemblies">
-    <echo message="Removing unneeded assemblies before moving the merged assembly back into ${dirs.merge.from}."/>
+    <echo level="Warning" message="Removing unneeded assemblies before moving the merged assembly back into ${dirs.merge.from}."/>
     <delete>
       <fileset basedir="${dirs.merge.from}" >
         <exclude name="log4net.dll" />
@@ -97,6 +101,9 @@
         <include name="StructureMap.dll" />
         <include name="Microsoft.Build.Framework.*" />
         <include name="MySql.Data.dll" />
+        <include name="Npgsql.dll" />
+        <include name="Mono.Security.dll" />
+        <include name="System.Data.SQLite.dll" />
       </fileset>
     </delete>
   </target>

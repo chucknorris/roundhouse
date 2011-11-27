@@ -16,7 +16,7 @@
   <target name="go" depends="remove_unnecessary_folders" />
    
   <target name="remove_unnecessary_folders">
-    <echo message="Deleting unnecessary folders before zipping up project." />
+    <echo level="Warning" message="Deleting unnecessary folders before zipping up project." />
     <delete dir="${dirs.drop}\${folder.build_artifacts}" />
   </target>
 

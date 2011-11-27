@@ -1,14 +1,12 @@
-﻿using roundhouse.infrastructure.app.logging;
-using roundhouse.infrastructure.logging;
-using roundhouse.infrastructure.logging.custom;
-
-namespace roundhouse.tasks
+﻿namespace roundhouse.tasks
 {
     using System;
     using folders;
     using infrastructure.app;
+    using infrastructure.app.logging;
     using infrastructure.containers;
     using infrastructure.filesystem;
+    using infrastructure.logging;
     using Microsoft.Build.Framework;
     using migrators;
     using resolvers;
@@ -17,7 +15,6 @@ namespace roundhouse.tasks
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
-
         #region MSBuild
 
         public IBuildEngine BuildEngine { get; set; }
@@ -60,6 +57,8 @@ namespace roundhouse.tasks
         public string VersionXPath { get; set; }
 
         public string AlterDatabaseFolderName { get; set; }
+
+        public string RunAfterCreateDatabaseFolderName { get; set; }
 
         public string UpFolderName { get; set; }
 
@@ -123,6 +122,10 @@ namespace roundhouse.tasks
 
         public bool RunAllAnyTimeScripts { get; set; }
 
+        public bool DisableTokenReplacement { get; set; }
+
+        public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
+
         #endregion
 
         public void run_the_task()
@@ -155,6 +158,5 @@ namespace roundhouse.tasks
 
             roundhouse_runner.run();
         }
-
     }
 }

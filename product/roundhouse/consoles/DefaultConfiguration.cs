@@ -17,6 +17,7 @@ namespace roundhouse.consoles
         public string VersionFile { get; set; }
         public string VersionXPath { get; set; }
         public string AlterDatabaseFolderName { get; set; }
+        public string RunAfterCreateDatabaseFolderName { get; set; }
         public string UpFolderName { get; set; }
         public string DownFolderName { get; set; }
         public string RunFirstAfterUpFolderName { get; set; }
@@ -32,7 +33,7 @@ namespace roundhouse.consoles
         public string ScriptsRunErrorsTableName { get; set; }
         public string EnvironmentName { get; set; }
         public bool Restore { get; set; }
-        public string RestoreFromPath { get; set; }
+    	public string RestoreFromPath { get; set; }
         public string RestoreCustomOptions { get; set; }
         public int RestoreTimeout { get; set; }
         public string CreateDatabaseCustomScript { get; set; }
@@ -48,5 +49,7 @@ namespace roundhouse.consoles
         public bool DryRun { get; set; }
         public bool Baseline { get; set; }
         public bool RunAllAnyTimeScripts { get; set; }
+        public bool DisableTokenReplacement { get; set; }
+        public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
     }
 }

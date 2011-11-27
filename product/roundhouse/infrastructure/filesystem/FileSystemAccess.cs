@@ -31,6 +31,13 @@ namespace roundhouse.infrastructure.filesystem
         FileStream open_file_in_read_mode_from(string file_path);
 
         /// <summary>
+        /// Returns the contents of a file
+        /// </summary>
+        /// <param name="file_path">Path to the file name</param>
+        /// <returns>A string of the file contents</returns>
+        string read_file_text(string file_path);
+
+        /// <summary>
         /// Determines the file information given a path to an existing file
         /// </summary>
         /// <param name="file_path">Path to an existing file</param>
@@ -184,6 +191,14 @@ namespace roundhouse.infrastructure.filesystem
         /// <returns>A list of files inside of an existing directory</returns>
         string[] get_all_file_name_strings_in(string directory, string pattern);
 
+		/// <summary>
+		/// Gets a list of all files inside of an existing directory, includes files in subdirectories also
+		/// </summary>
+		/// <param name="directory">Path to the directory</param>
+		/// <param name="pattern">Pattern or extension</param>
+		/// <returns>A list of files inside of an existing directory</returns>
+		string[] get_all_file_name_strings_recurevly_in(string directory, string pattern);
+
         #endregion
 
         /// <summary>
@@ -199,6 +214,5 @@ namespace roundhouse.infrastructure.filesystem
         /// <param name="paths">Each item in order from left to right of the path</param>
         /// <returns></returns>
         string combine_paths(params string[] paths);
-
     }
 }
