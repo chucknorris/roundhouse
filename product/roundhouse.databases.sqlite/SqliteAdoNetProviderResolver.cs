@@ -32,15 +32,11 @@
 
             if (sql_client_row != null) dataSet.Tables[0].Rows.Remove(sql_client_row);
 
-            var factory_type = is_merged
-                                   ? "System.Data.SQLite.SQLiteFactory, " + ApplicationParameters.get_merged_assembly_name()
-                                   : "System.Data.SQLite.SQLiteFactory, System.Data.SQLite";
-
             dataSet.Tables[0].Rows.Add(
                 "Sqlite Data Provider",
                 ".Net Framework Data Provider for Sqlite",
                 "System.Data.SQLite",
-                factory_type);
+               "System.Data.SQLite.SQLiteFactory, System.Data.SQLite");
         }
 
         public void enable_loading_from_merged_assembly()
