@@ -22,7 +22,9 @@ namespace roundhouse.traversal
     		this.file_system = file_system;
             all_folders = new List<MigrationsFolder>
                               {
-                                  folders.up,
+                                  folders.alter_database,
+                                  folders.run_after_create_database,
+								  folders.up,
                                   folders.run_first_after_up,
                                   folders.functions,
                                   folders.views,

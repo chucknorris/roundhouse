@@ -156,15 +156,6 @@ namespace roundhouse.runners
 												known_folders.indexes,
 												known_folders.run_after_other_any_time_scripts);
 
-
-							cfg.before_folder_if(
-								folder => run_in_a_transaction && folder == known_folders.permissions,
-								folder =>
-								{
-									database_migrator.close_connection();
-									database_migrator.open_connection(false);
-								}
-							);
 							cfg.for_each_script(script => runner.execute_script(script, ConnectionType.Default));
 						}
 					);
