@@ -25,7 +25,7 @@
         //    set
         //    {
         //        throw new Exception(
-        //            "This options could not be changed because Sqlite database migrator always splits batch statements by using SqliteScript class from Sqlite ADO.NET provider");
+        //            "This option can not be changed because SQLite database migrator always splits batch statements by using SQLiteScript class from SQLite ADO.NET provider");
         //    }
         //}
 
@@ -62,6 +62,8 @@
 
             configuration_property_holder.DatabaseName = database_name;
             configuration_property_holder.ConnectionStringAdmin = admin_connection_string;
+
+            sqlite_ado_net_provider_resolver.output_path = configuration_property_holder.OutputPath;
 
             set_provider();
         }
