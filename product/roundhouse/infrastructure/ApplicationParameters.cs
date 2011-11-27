@@ -1,6 +1,7 @@
 namespace roundhouse.infrastructure
 {
     using System;
+    using System.IO;
     using System.Reflection;
     using logging;
 
@@ -28,12 +29,13 @@ namespace roundhouse.infrastructure
         public static readonly string default_version_x_path = @"//buildInfo/version";
         public static readonly string default_files_directory = @".";
         public static readonly string default_server_name = "(local)";
-        public static readonly string default_output_path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\" + name;
+        public static readonly string default_output_path = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "ChuckNorris"), name);
         public static readonly string default_database_type = "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
         public static readonly string logging_file = @"C:\Temp\RoundhousE\roundhouse.changes.log";
         public static readonly string log4net_configuration_assembly = @"roundhouse";
         public static readonly string log4net_configuration_resource = @"roundhouse.infrastructure.app.logging.log4net.config.xml";
         public static readonly string log4net_configuration_resource_no_console = @"roundhouse.infrastructure.app.logging.log4net.config.no.console.xml";
+        public static readonly string sqlite_dll_resource = @"roundhouse.databases.sqlite.assemblyresource.System.Data.SQLite.dll";
         public static readonly int default_command_timeout = 60;
         public static readonly int default_admin_command_timeout = 300;
         public static readonly int default_restore_timeout = 900;
