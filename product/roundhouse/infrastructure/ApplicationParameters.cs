@@ -3,6 +3,7 @@ namespace roundhouse.infrastructure
     using System;
     using System.IO;
     using System.Reflection;
+    using extensions;
     using logging;
 
     public static class ApplicationParameters
@@ -45,7 +46,7 @@ namespace roundhouse.infrastructure
             string merged_assembly_name = "rh";
             Log.bound_to(typeof(ApplicationParameters)).log_a_debug_event_containing("The executing assembly is \"{0}\"", Assembly.GetExecutingAssembly().Location);
 
-            if (Assembly.GetExecutingAssembly().Location.Contains("roundhouse.dll")) merged_assembly_name = "roundhouse";
+            if (Assembly.GetExecutingAssembly().Location.to_lower().Contains("roundhouse.dll")) merged_assembly_name = "roundhouse";
 
             return merged_assembly_name;
         }
