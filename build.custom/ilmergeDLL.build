@@ -53,6 +53,7 @@
         <items>
           <exclude name="${dirs.merge.from}\${file.merge.name}" />
           <exclude name="${dirs.merge.from}\log4net.dll" />
+          <exclude name="${dirs.merge.from}\System.Data.SQLite.dll" />
           <include name="${dirs.merge.from}\*.exe" />
           <!--include name="${dirs.merge.from}\*.dll" /-->
           <include name="${dirs.merge.from}\roundhouse*.dll" />

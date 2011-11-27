@@ -65,6 +65,7 @@
       <in>
         <items>
           <exclude name="${dirs.merge.from}${path.separator}${file.merge.name}" />
+          <exclude name="${dirs.merge.from}\System.Data.SQLite.dll" />
           <include name="${dirs.merge.from}${path.separator}*.dll" />
           <include name="${dirs.merge.from}${path.separator}*.exe" />
         </items>

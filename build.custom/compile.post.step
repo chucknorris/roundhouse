@@ -32,6 +32,7 @@
         <include name="MySql.Data.dll" />
         <include name="Npgsql.dll" />
         <include name="Mono.Security.dll" />
+        <include name="System.Data.SQLite.dll" />
       </fileset>
     </copy>
     <echo level="Warning" message="Copying database dlls to '${dirs.build}${path.separator}${folder.app.drop}${path.separator}_PublishedApplications${path.separator}roundhouse.console'."/>
@@ -41,6 +42,7 @@
         <include name="MySql.Data.dll" />
         <include name="Npgsql.dll" />
         <include name="Mono.Security.dll" />
+        <include name="System.Data.SQLite.dll" />
       </fileset>
     </copy>
     <echo level="Warning" message="Copying database dlls to '${dirs.build}${path.separator}${folder.app.drop}${path.separator}_PublishedApplications${path.separator}roundhouse.tasks'."/>
@@ -50,6 +52,7 @@
         <include name="MySql.Data.dll" />
         <include name="Npgsql.dll" />
         <include name="Mono.Security.dll" />
+        <include name="System.Data.SQLite.dll" />
       </fileset>
     </copy>
   </target>
