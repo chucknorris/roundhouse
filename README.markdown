@@ -62,16 +62,37 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
-=0.8.0.x=  
-* FIX: Fixed a nasty bug with SQL Server where it tries to hold a connection (interferes with drop/create mode) and gives a transport error (r331)  
-* Custom Scripts also run token replacement (r321, r330)  
-* Two new switches available, CommandTimeout and CommandTimeoutAdmin! (r329)  
+## 0.8.5.362  
+* FIX: KeyNotFoundException in NHibernateSessionFactoryBuilder. See [issue 59] (http://code.google.com/p/roundhouse/issues/detail?id=59) for details. (r361)  
+* **SQLite Support!**. See details https://github.com/chucknorris/roundhouse/issues/21 (r360)  
+* **PostgreSQL Support!** Thanks SiimV! See details https://github.com/chucknorris/roundhouse/issues/30 (r359)  
+* **New Configuration Switch!** SearchAllSubdirectoriesInsteadOfTraverse - All migrations subfolders are traversed by default and run in order of each folder's scripts. This option runs all items in subfolders at same time. Thanks SiimV! See details https://github.com/chucknorris/roundhouse/issues/31 (r359)  
+* FIX: Transactions not working with restore. See details https://github.com/chucknorris/roundhouse/issues/26 (r357)  
+* FIX: Fixed a nasty bug with SQL Server where it tries to hold a connection (interferes with drop/create mode) and gives a transport error. See details https://github.com/chucknorris/roundhouse/issues/12 (r357)  
+* Script Number Versioning. See details https://github.com/chucknorris/roundhouse/pull/25 (r356)  
+* FIX: Custom create script should split batch statements. See details https://github.com/chucknorris/roundhouse/issues/22 (r353)  
+* **New Migrations Folder!** RunAfterCreateDatabaseFolder - Runs only one time and only after a database has been created. This works with a limited set of database types at the moment. Please test if you are planning on using. See details https://github.com/chucknorris/roundhouse/issues/20 (r351)  
+* Almost everything is now ilmerged internalized. See details https://github.com/chucknorris/roundhouse/issues/8 and https://github.com/chucknorris/roundhouse/issues/15 (r350)  
+* FIX: Cannot drop databases with snapshots. See details https://github.com/chucknorris/roundhouse/pull/13 (r349)  
+* Create database custom script can handle file paths. See details https://github.com/chucknorris/roundhouse/pull/17 (r348)  
+* FIX: SQL Server 2000 needs to create all of its tables. See details https://github.com/chucknorris/roundhouse/issues/18 (r346)  
+* RH assemblies are now signed. See details https://github.com/chucknorris/roundhouse/issues/14 (r342)  
+* FIX: Removed the temporary log location. See details https://github.com/chucknorris/roundhouse/issues/7 (r340)  
+* **New Configuration Switch!** DisableTokenReplacement - Token replacement should be configurable. See [issue 56](http://code.google.com/p/roundhouse/issues/detail?id=56) for details. (r339)  
+* FIX: Token replacer should only replace for items it finds. See [issue 56](http://code.google.com/p/roundhouse/issues/detail?id=56) for details. (r339)  
+* **Possible Breaking Change!** File encoding will always read files as UTF-8, and fall back to ANSI. See [issue 39](http://code.google.com/p/roundhouse/issues/detail?id=39) for details. (r337)  
+* Restores are a bit smarter about moving files to a default location when one has not been specified. See details https://github.com/chucknorris/roundhouse/issues/9 or [issue 13](http://code.google.com/p/roundhouse/issues/detail?id=13) (r336)  
+* FIX: Do not run token replacement on empty text. See details https://github.com/chucknorris/roundhouse/issues/10 (r330)  
+* Custom Scripts also run token replacement (r321)  
+* **New Configuration Switches!** Two new switches available - CommandTimeout and CommandTimeoutAdmin! (r329)  
 * FIX: Migrate doesn't try to configure log4net now (causes issues w/libraries that do) (r326)  
-* Two new folders available: Indexes and AlterDatabase (r324)  
+* **New Migrations Folder!** Indexes folder now available (r327)  
+* **New Migrations Folder!** AlterDatabase folder now available. See details https://github.com/chucknorris/roundhouse/issues/6 (r324)  
 * FIX: Included sample for Oracle doesn't work. See [issue 55] (http://code.google.com/p/roundhouse/issues/detail?id=55) for details. (r322)  
-* RH now works with MySQL. Thanks Diyan. See details https://github.com/chucknorris/roundhouse/pull/3 (r317)  
+* Custom Restore Options should use token replacement (r321)  
+* **MySQL Support!**. Thanks Diyan. See details https://github.com/chucknorris/roundhouse/pull/3 (r320)  
   
-=0.8.0.300=  
+## 0.8.0.300  
 * RH now does token replacement in the sql files using '{{PropertyName}}'. See [issue 33] (http://code.google.com/p/roundhouse/issues/detail?id=33) for details. (r299)  
 * Always run files that have '.EVERYTIME.' in the name. See [issue 51] (http://code.google.com/p/roundhouse/issues/detail?id=51) for details. (r299)  
 * RoundhousE ships a DLL for embedding. See [issue 44] (http://code.google.com/p/roundhouse/issues/detail?id=44) for details. It has a semi-fluent interface - see (https://gist.github.com/977990) for details. (r299)  
@@ -81,10 +102,10 @@ It helps keep to the product updated, pays for site hosting, etc. https://www.pa
 * Sample is now a project in the release folder. (r287)  
 * MSBuild is available again. (r288)  
   
-=0.7.0.281=  
+## 0.7.0.281  
 * Fixed a few issues with using the connection string. You should now be able to only supply the connection string and not server/database as well.  
   
-=0.7.0.276=  
+## 0.7.0.276  
 * Fixed a collation issue with RoundhousE id columns in its tracking tables. See [issue 46] (http://code.google.com/p/roundhouse/issues/detail?id=46) for details. (r274)  
 * RestoreFromPath can take a relative path. (r269)  
 * RH can now upgrade it's internals without user interaction. See [issue 40] (http://code.google.com/p/roundhouse/issues/detail?id=40) for details. (r268)  
@@ -102,77 +123,9 @@ It helps keep to the product updated, pays for site hosting, etc. https://www.pa
 * Fix: Capture errortastic changes to DDL/DML (up) files in the script run errors table. (r191)  
 * Added admin connection string to do administrative tasks. (r190)  
   
-=0.5.0.188=  
-* RH handles nonsupported DDL transactions. RH will also stop and inform the user when DDL transactions are not supported, so user can choose to continue - see [issue 28](http://code.google.com/p/roundhouse/issues/detail?id=28) for details. (r172 - branch, r185)  
-* RH logs when errors occur in the RoundhousE.ScriptRunErrors table - see [issue 28](http://code.google.com/p/roundhouse/issues/detail?id=28) for details. (r167 - branch, r185)  
-* RH supports SQL Server 2000 - see [issue 30](http://code.google.com/p/roundhouse/issues/detail?id=30) for details. (r167 - branch, r185)  
-* RH supports Oracle - see [issue 34](http://code.google.com/p/roundhouse/issues/detail?id=34) for details. (r157 - branch, r185)  
-  
-=0.2.0.175=  
-* RH should handle when user names have apostrophes (') in them - see [issue 32](http://code.google.com/p/roundhouse/issues/detail?id=32) for details. (r175)  
-* Database names should have delimiters to allow for non standard characters - see [issue 31](http://code.google.com/p/roundhouse/issues/detail?id=31) for details. (r174)  
-* Added autowiring permissions sample. (r169)  
-* If copying to change output fails, log a warning and move on. (r156)  
-  
-=0.2.0.150=  
-* Turning off batch splitting where it is not necessary as it does affect performance. (r150)  
-* Splitting statements on GO has been enhanced to catch end of file GOs - see [issue 25](http://code.google.com/p/roundhouse/issues/detail?id=25) for details. (r149)  
-  
-=0.2.0.148=  
-* Splitting statements on GO has been enhanced - see [issue 25](http://code.google.com/p/roundhouse/issues/detail?id=25) for details. (r147)  
-  
-=0.2.0.144=  
-* Splitting statements on GO is now a two-phased approach - see [issue 25](http://code.google.com/p/roundhouse/issues/detail?id=25) for details. (r143)  
-* Trying out StructureMap (r136)  
-  
-=0.2.0.131=  
-* More fine-grained splitting by the word GO - see [issue 25](http://code.google.com/p/roundhouse/issues/detail?id=25) for details. (r130)  
-* Command timeout became more explicit so database decorators can access and manipulate the value now. (r129)  
-* RH should be able to use ADO.NET instead of SMO for SqlServer - see [issue 22](http://code.google.com/p/roundhouse/issues/detail?id=22) for details. (r125)  
-* Option not to create a database if none exists - see [issue 24](http://code.google.com/p/roundhouse/issues/detail?id=24) for details. (r123)  
-* Console should exit with an error code instead of crashing on errors - see [issue 23](http://code.google.com/p/roundhouse/issues/detail?id=23) for details. (r119)  
-  
-=0.2.0.117=  
-* Restore timeouts can now be specified (with a default timeout of 900 seconds) - see [issue 21](http://code.google.com/p/roundhouse/issues/detail?id=21) for details. (r117)  
-* Custom database create scripts are now possible - see [issue 20](http://code.google.com/p/roundhouse/issues/detail?id=20) for details. (r116)  
-* All types of migrations will split sql statements from files that have more than one statement into multiple statements and run each consecutively - see [issue 27](http://code.google.com/p/roundhouse/issues/detail?id=17) for details. (r113)  
-* Fixed issue with running roundhouse twice during MSBuild - see [issue 16](http://code.google.com/p/roundhouse/issues/detail?id=16) for details. (r112)  
-  
-=0.2.0.108=  
-* Reports version during run - see [issue 9](http://code.google.com/p/roundhouse/issues/detail?id=9) for details. (r108)  
-* Logs what type of script it is looking for and where it is looking for them - see [issue 14](http://code.google.com/p/roundhouse/issues/detail?id=14) for details. (r107)  
-* Removed double error reporting on exception. (r107)  
-* Adding getting started documentation  
-* Added a custom restore option to add additional arguments (like MOVE) to a restore - see [issue 12](http://code.google.com/p/roundhouse/issues/detail?id=12) for details. (r104)  
-* Fixed a connection string initialization issue (r103)  
-  
-=0.2.0.101=  
-* File Sorting - Fixed a sorting issue with file names to do explicit sorting. (r101)  
-* RH has an icon of the logo (r99)  
-  
-=0.2.0.97=  
-* OleDB Support - RH can now be run for advanced database connections with a connection string. (r96)  
-  - OleDB may not support creating/restoring/deleting databases.  
-  - Microsoft Access is supported through OleDB.  
-  - Other databases will need to have scripts written for their type before they would be supported.  
-   
-=0.0.0.86=  
-* Environment awareness - RH determines an environment file first that it has ".ENV." in the file name and then if it is the proper environment file based on whether the file also contains the specific environment name. For example LOCAL.0001_DoSomething.ENV.sql will run in the LOCAL environment but no where else.  
-* Runs permissions files every time regardless of changes.  
-  
-=0.0.0.85=  
-* Added synonyms for database types - see [issue 10](http://code.google.com/p/roundhouse/issues/detail?id=10) for details. (r85)  
-* Removed some of the logging - no more event logging for limited permissions running (r83)  
-  
-=0.0.0.82=  
-* The command line version (rh.exe) is merged into a single assembly with all dependencies (except Microsoft.SQL dlls) internalized. No configuration file necessary either. (r77, r82)  
-* Log from console runner is now copied into the change_drop folder. (r81)  
-* Recovery mode is now explicit. Default is full. Otherwise pass in /simple - see [issue 8](http://code.google.com/p/roundhouse/issues/detail?id=8) for details. (r78)  
-* Excluded the drop database from transactions (not that you would call /drop with /t). (r76)  
-  
-=0.0.0.74=  
-* Fixed an issue with holding connections - see [issue 7](http://code.google.com/p/roundhouse/issues/detail?id=7) for details. (r74)  
-* Added the ability to run with transactions  
+## Prior Release Notes  
+**Prior releases notes are on the [wiki](https://github.com/chucknorris/roundhouse/wiki/releasenotes).**  
+
   
 # CREDITS
 UppercuT - Automated Builds (automated build in 10 minutes or less?!) [http://projectuppercut.org](http://projectuppercut.org)
