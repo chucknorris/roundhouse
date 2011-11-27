@@ -13,6 +13,7 @@ _ReSharper*
 *.cache
 *~
 *.swp
+*.bak
 *.orig
 *.log
 *.sln.docstates

@@ -134,8 +134,12 @@
     <Compile Include="Migrate.cs" />
     <Compile Include="resolvers\ScriptfileVersionResolver.cs" />
     <Compile Include="RoundhousEFluentNHibernateDiffingType.cs" />
+    <Compile Include="runners\RoundhouseMigrationRunner.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
+    <Compile Include="runners\ScriptRunner.cs" />
     <Compile Include="sqlsplitters\StatementSplitter.cs" />
     <Compile Include="consoles\DefaultConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />
@@ -184,12 +188,14 @@
     <Compile Include="resolvers\DllFileVersionResolver.cs" />
     <Compile Include="resolvers\XmlFileVersionResolver.cs" />
     <Compile Include="runners\IRunner.cs" />
-    <Compile Include="runners\RoundhouseMigrationRunner.cs" />
     <Compile Include="resolvers\VersionResolver.cs" />
     <Compile Include="databases\Database.cs" />
     <Compile Include="migrators\DatabaseMigrator.cs" />
     <Compile Include="migrators\DefaultDatabaseMigrator.cs" />
     <Compile Include="databases\SqlServerLiteSpeedDatabase.cs" />
+    <Compile Include="traversal\FileSystemTraversal.cs" />
+    <Compile Include="traversal\ITraversal.cs" />
+    <Compile Include="traversal\TraversalConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="infrastructure.app\logging\log4net.config.xml" />

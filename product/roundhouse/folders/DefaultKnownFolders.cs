@@ -12,9 +12,9 @@ namespace roundhouse.folders
                                    MigrationsFolder views,
                                    MigrationsFolder sprocs,
                                    MigrationsFolder indexes,
-                                   MigrationsFolder runAfterOtherAnyTimeScripts,        
                                    MigrationsFolder permissions,
-                                   Folder change_drop
+                                   MigrationsFolder run_after_other_any_time_scripts,
+                                  Folder change_drop
             )
         {
             this.alter_database = alter_database;
@@ -26,7 +26,7 @@ namespace roundhouse.folders
             this.views = views;
             this.sprocs = sprocs;
             this.indexes = indexes;
-            this.run_after_other_any_time_scripts = runAfterOtherAnyTimeScripts;
+            this.run_after_other_any_time_scripts = run_after_other_any_time_scripts;
             this.permissions = permissions;
             this.change_drop = change_drop;
         }

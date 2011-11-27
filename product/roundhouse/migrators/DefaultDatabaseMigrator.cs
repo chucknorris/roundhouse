@@ -299,25 +299,25 @@ namespace roundhouse.migrators
             return !hash_is_same;
         }
 
-        private bool this_script_should_run(string script_name, string sql_to_run, bool run_this_script_once, bool run_this_script_every_time)
-        {
-            if (this_is_an_every_time_script(script_name, run_this_script_every_time))
-            {
-                return true;
-            }
+		private bool this_script_should_run(string script_name, string sql_to_run, bool run_this_script_once, bool run_this_script_every_time)
+		{
+			if (this_is_an_every_time_script(script_name, run_this_script_every_time))
+			{
+				return true;
+			}
 
-            if (this_script_has_run_already(script_name) && run_this_script_once)
-            {
-                return false;
-            }
+			if (this_script_has_run_already(script_name) && run_this_script_once)
+			{
+				return false;
+			}
 
-            if (is_running_all_any_time_scripts && !run_this_script_once)
-            {
-                return true;
-            }
+			if (is_running_all_any_time_scripts && !run_this_script_once)
+			{
+				return true;
+			}
 
-            return this_script_has_changed_since_last_run(script_name, sql_to_run);
-        }
+			return this_script_has_changed_since_last_run(script_name, sql_to_run);
+		}
 
         public bool this_is_an_environment_file_and_its_in_the_right_environment(string script_name, Environment environment)
         {

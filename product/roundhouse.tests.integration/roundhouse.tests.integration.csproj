@@ -125,6 +125,8 @@
     <Compile Include="infrastructure\persistence\NHibernateSessionFactorySpecs.cs" />
     <Compile Include="MigrateSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="traversal\FileSystemTraversalSpecs.cs" />
+    <Compile Include="traversal\TemporaryDirectory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\roundhouse.console\roundhouse.console.csproj">
