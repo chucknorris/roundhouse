@@ -82,9 +82,9 @@ namespace roundhouse.traversal
                 return;
 
 			if (search_all_subdirectories_instead_of_traverse)
-				traverse_hierarchy_by_folders(directory, folder, configuration);
-			else
 				search_all_subdirectories(directory, folder, configuration);
+			else
+				traverse_hierarchy_by_folders(directory, folder, configuration);
         }
 
 
