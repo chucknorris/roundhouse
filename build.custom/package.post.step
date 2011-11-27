@@ -92,10 +92,12 @@
   <target name="move_sample_to_drop">
     <copy todir="${dirs.drop}\${folder.sample}\sampleproject">
       <fileset basedir="${dirs.build}\..\${folder.sample}">
-        <exclude name="**/bin" />
-        <exclude name="**/_Resharper*" />
-        <exclude name="**/obj" />
-        <include name="**/**" />
+        <exclude name="**\bin\**" />
+        <exclude name="**\obj\**" />
+        <exclude name="**\_Resharper*\**" />
+        <exclude name="**\_ReSharper*\**" />        
+        <exclude name="**\packages\**" />
+        <include name="**\**" />
       </fileset>
     </copy>
   

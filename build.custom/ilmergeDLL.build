@@ -97,6 +97,8 @@
         <!--include name="*.*" /-->
         <include name="roundhouse*" />
         <include name="*.exe" />
+        <include name="*.pdb" />
+        <include name="*.xml" />
         <include name="NHibernate.JetDriver.dll" />
         <include name="StructureMap.dll" />
         <include name="Microsoft.Build.Framework.*" />
