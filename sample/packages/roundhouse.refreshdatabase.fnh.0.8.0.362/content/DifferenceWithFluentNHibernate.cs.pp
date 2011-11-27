@@ -1,6 +1,6 @@
-// ==============================================================================
+﻿// ==============================================================================
 // 
-// Fervent Coder Copyright � 2011 - Released under the Apache 2.0 License
+// Fervent Coder Copyright © 2011 - Released under the Apache 2.0 License
 // 
 // Copyright 2007-2008 The Apache Software Foundation.
 //  
@@ -15,7 +15,7 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the 
 // specific language governing permissions and limitations under the License.
 // ==============================================================================
-namespace BuildDatabase
+namespace $rootnamespace$
 {
     using System.IO;
     using System.Reflection;
