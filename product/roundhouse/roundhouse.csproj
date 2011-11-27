@@ -134,6 +134,9 @@
     <Compile Include="Migrate.cs" />
     <Compile Include="resolvers\ScriptfileVersionResolver.cs" />
     <Compile Include="RoundhousEFluentNHibernateDiffingType.cs" />
+    <Compile Include="runners\RoundhouseMigrationRunner.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
     <Compile Include="runners\ScriptRunner.cs" />
@@ -185,7 +188,6 @@
     <Compile Include="resolvers\DllFileVersionResolver.cs" />
     <Compile Include="resolvers\XmlFileVersionResolver.cs" />
     <Compile Include="runners\IRunner.cs" />
-    <Compile Include="runners\RoundhouseMigrationRunner.cs" />
     <Compile Include="resolvers\VersionResolver.cs" />
     <Compile Include="databases\Database.cs" />
     <Compile Include="migrators\DatabaseMigrator.cs" />

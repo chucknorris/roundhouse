@@ -66,14 +66,14 @@ namespace roundhouse.tests.integration.traversal
                                                                 };
                 ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
                 KnownFolders folders = KnownFoldersBuilder.build(access, configuration);
-                FileSystemTraversal traversal = new FileSystemTraversal(folders, access);
+                FileSystemTraversal traversal = new FileSystemTraversal(folders, access, false);
                 
                 List<string> traversedfolders = new List<string>();
 
                 traversal.traverse(t =>
                                        {
                                            t.include_all_folders();
-                                           t.for_each_folder(f => traversedfolders.Add(f.folder_name));
+                                           t.before_each_folder(f => traversedfolders.Add(f.folder_name));
                                        });
                 Assert.In("up", traversedfolders);
                 Assert.In("functions", traversedfolders);
