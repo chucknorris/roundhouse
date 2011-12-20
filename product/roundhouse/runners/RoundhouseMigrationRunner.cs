@@ -1,6 +1,7 @@
 namespace roundhouse.runners
 {
     using System;
+    using databases;
     using folders;
     using infrastructure;
     using infrastructure.app;
@@ -105,7 +106,11 @@ namespace roundhouse.runners
                     {
                         database_migrator.open_admin_connection();
                         database_was_created = database_migrator.create_or_restore_database(get_custom_create_database_script());
-                        database_migrator.set_recovery_mode(use_simple_recovery);
+                        if (configuration.RecoveryMode != RecoveryMode.NoChange)
+                        {
+                            database_migrator.set_recovery_mode(configuration.RecoveryMode == RecoveryMode.Simple);    
+                        }
+                        
                         database_migrator.close_admin_connection();
                     }
                     database_migrator.open_connection(run_in_a_transaction);
@@ -119,8 +124,7 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     string current_version = database_migrator.get_current_version(repository_path);
                     string new_version = version_resolver.resolve_version();
-                    Log.bound_to(this).log_an_info_event_containing(" Migrating {0} from version {1} to {2}.", database_migrator.database.database_name,
-                                                                    current_version, new_version);
+                    Log.bound_to(this).log_an_info_event_containing(" Migrating {0} from version {1} to {2}.", database_migrator.database.database_name,current_version, new_version);
                     long version_id = database_migrator.version_the_database(repository_path, new_version);
 
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));

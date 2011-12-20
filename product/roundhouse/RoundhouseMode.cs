@@ -1,9 +1,6 @@
 ﻿namespace roundhouse
 {
-    using System;
-
-    [Obsolete("Use RoundhouseMode",true)]
-    public enum RoundhousEFluentNHDiffingType
+    public enum RoundhouseMode
     {
         InitialDevelopment,
         Maintenance,

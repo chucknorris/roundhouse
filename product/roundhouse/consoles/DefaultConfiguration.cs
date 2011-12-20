@@ -1,5 +1,7 @@
 namespace roundhouse.consoles
 {
+    using System;
+    using databases;
     using infrastructure.app;
     using infrastructure.logging;
 
@@ -33,7 +35,7 @@ namespace roundhouse.consoles
         public string ScriptsRunErrorsTableName { get; set; }
         public string EnvironmentName { get; set; }
         public bool Restore { get; set; }
-    	public string RestoreFromPath { get; set; }
+        public string RestoreFromPath { get; set; }
         public string RestoreCustomOptions { get; set; }
         public int RestoreTimeout { get; set; }
         public string CreateDatabaseCustomScript { get; set; }
@@ -44,6 +46,8 @@ namespace roundhouse.consoles
         public bool Drop { get; set; }
         public bool DoNotCreateDatabase { get; set; }
         public bool WithTransaction { get; set; }
+        public RecoveryMode RecoveryMode { get; set; }
+        [Obsolete("Use RecoveryMode = Simple")]
         public bool RecoveryModeSimple { get; set; }
         public bool Debug { get; set; }
         public bool DryRun { get; set; }

@@ -60,7 +60,7 @@
         Silent="false"
         DatabaseType="roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse"
         WithTransaction="false"
-        RecoveryModeSimple="false"
+        RecoveryMode="Full"
         RunAllAnyTimeScripts="false"
         DisableTokenReplacement="false"
         />

@@ -2,6 +2,9 @@ using roundhouse.infrastructure.logging;
 
 namespace roundhouse.infrastructure.app
 {
+    using System;
+    using databases;
+
     public interface ConfigurationPropertyHolder
     {
         Logger Logger { get; set; }
@@ -43,6 +46,8 @@ namespace roundhouse.infrastructure.app
         bool Drop { get; set; }
         bool DoNotCreateDatabase { get; set; }
         bool WithTransaction { get; set; }
+        RecoveryMode RecoveryMode { get; set; }
+        [Obsolete("Use RecoveryMode = Simple")]
         bool RecoveryModeSimple { get; set; }
         bool Debug { get; set; }
         bool DryRun { get; set; }

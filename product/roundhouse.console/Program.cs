@@ -3,6 +3,7 @@
     using System;
     using System.Reflection;
     using consoles;
+    using databases;
     using folders;
     using infrastructure;
     using infrastructure.app;
@@ -254,10 +255,13 @@
                 .Add("t|trx|transaction|wt|withtransaction",
                      "WithTransaction - This instructs RH to run inside of a transaction. Defaults to false.",
                      option => configuration.WithTransaction = option != null)
-                //simple
+                //recovery mode
                 .Add("simple",
                      "RecoveryModeSimple - This instructs RH to set the database recovery mode to simple recovery. Defaults to false.",
                      option => configuration.RecoveryModeSimple = option != null)
+                .Add("rcm=|recoverymode=",
+                    "RecoveryMode - This instructs RH to set the database recovery mode to Simple|Full|NoChange. Defaults to NoChange.",
+                    option => configuration.RecoveryMode = (RecoveryMode)Enum.Parse(typeof(RecoveryMode),option,true))
                 //debug
                 .Add("debug",
                      "Debug - This instructs RH to write out all messages. Defaults to false.",
@@ -319,7 +323,7 @@
                         "/drop " +
                         "/d[onot]c[reatedatabase] " +
                         "/t[ransaction] " +
-                        "/simple " +
+                        "/r[e]c[overy]m[ode] NoChange|Simple|Full" +
                         "/debug " +
                         "/runallanytimescripts " +
                         "/disabletokenreplacement " +

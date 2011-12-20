@@ -128,10 +128,13 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.RestoreTimeout = ApplicationParameters.default_restore_timeout;
             }
-
             if (!string.IsNullOrEmpty(configuration_property_holder.RestoreFromPath))
             {
                 configuration_property_holder.RestoreFromPath = Path.GetFullPath(configuration_property_holder.RestoreFromPath);
+            }
+            if (configuration_property_holder.RecoveryModeSimple)
+            {
+                configuration_property_holder.RecoveryMode = RecoveryMode.Simple;
             }
         }
 

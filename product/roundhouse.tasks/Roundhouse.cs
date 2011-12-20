@@ -1,6 +1,7 @@
 ﻿namespace roundhouse.tasks
 {
     using System;
+    using databases;
     using folders;
     using infrastructure.app;
     using infrastructure.app.logging;
@@ -112,6 +113,9 @@
 
         public bool WithTransaction { get; set; }
 
+        public RecoveryMode RecoveryMode { get; set; }
+
+        [Obsolete("Use RecoverMode=Simple now")]
         public bool RecoveryModeSimple { get; set; }
 
         public bool Debug { get; set; }
