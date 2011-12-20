@@ -107,6 +107,7 @@ namespace roundhouse.migrators
         public void set_recovery_mode(bool simple)
         {
             //database.open_connection(false);
+            Log.bound_to(this).log_an_info_event_containing("Setting recovery mode to '{0}' for database {1}.", simple ? "Simple":"Full", database.database_name );
             database.set_recovery_mode(simple);
             //database.close_connection();
         }

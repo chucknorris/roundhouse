@@ -200,7 +200,7 @@ namespace roundhouse.databases
             run_sql(sql_to_run, connection_type, null);
         }
 
-        public virtual object run_sql_scalar(string sql_to_run,ConnectionType connection_type)
+        public virtual object run_sql_scalar(string sql_to_run, ConnectionType connection_type)
         {
             return run_sql_scalar(sql_to_run, connection_type, null);
         }
@@ -384,10 +384,14 @@ namespace roundhouse.databases
             if (connection != null)
             {
                 IDbConnection conn = (IDbConnection)connection.underlying_type();
-                if (conn.State != ConnectionState.Closed)
+                if (conn != null)
                 {
-                    conn.Close();
+                    if (conn.State != ConnectionState.Closed)
+                    {
+                        conn.Close();
+                    }
                 }
+
                 connection.Dispose();
             }
         }
