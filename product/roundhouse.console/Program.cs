@@ -15,6 +15,7 @@
     using log4net;
     using log4net.Core;
     using log4net.Repository;
+    using log4net.Repository.Hierarchy;
     using migrators;
     using resolvers;
     using runners;
@@ -62,14 +63,15 @@
         {
             ConfigurationPropertyHolder configuration = new DefaultConfiguration();
             parse_arguments_and_set_up_configuration(configuration, args);
+           
+            ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
+            ApplicationConfiguraton.build_the_container(configuration);
+
             if (configuration.Debug)
             {
                 change_log_to_debug_level();
             }
-
-            ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
-            ApplicationConfiguraton.build_the_container(configuration);
-
+            
             return configuration;
         }
 
@@ -359,6 +361,14 @@
         {
             ILoggerRepository log_repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
             log_repository.Threshold = Level.Debug;
+            foreach (ILogger log in log_repository.GetCurrentLoggers())
+            {
+                var logger = log as log4net.Repository.Hierarchy.Logger;
+                if (logger != null)
+                {
+                    logger.Level = log4net.Core.Level.Debug;
+                }
+            }
         }
 
         public static void run_migrator(ConfigurationPropertyHolder configuration)
