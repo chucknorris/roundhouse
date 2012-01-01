@@ -14,7 +14,7 @@
     <tags>roundhouse db migrations msbuild chucknorris</tags>
     <iconUrl>http://roundhouse.googlecode.com/svn/trunk/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
     <dependencies>
-      <dependency id="log4net" version="1.2.10" />
+      <dependency id="log4net" version="[1.2.10]" />
     </dependencies>
   </metadata>
 </package>
