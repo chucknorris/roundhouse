@@ -1,17 +1,19 @@
 using System;
-using System.Text.RegularExpressions;
 using roundhouse.infrastructure.filesystem;
 using roundhouse.infrastructure.logging;
+using System.Linq;
 
 namespace roundhouse.resolvers
 {
     using infrastructure.app;
+    using System.IO;
 
     public class ScriptfileVersionResolver : VersionResolver
     {
         private string version_file;
         private FileSystemAccess file_system;
         private string up_folder;
+        private string extension = "sql";
 
         public ScriptfileVersionResolver(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
         {
@@ -22,27 +24,40 @@ namespace roundhouse.resolvers
 
         public bool meets_criteria()
         {
-            return version_file.Contains("up/*.sql");
+            return version_file.Equals(extension, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public string resolve_version()
         {
             string version = "0";
-            string extension = "sql";
-            if(file_system.directory_exists(up_folder))
+            Version ver = new Version();
+            
+            if (file_system.directory_exists(up_folder))
             {
-                var files = file_system.get_directory_info_from(up_folder).GetFiles("*." + extension);
+                var files = file_system.get_directory_info_from(up_folder)
+                    .GetFiles("*." + extension).OrderBy(x => x.Name);
                 long max = 0;
-                foreach(var file in files)
+                foreach (var file in files)
                 {
-                    var match = Regex.Match(file.Name, @"(\d+)_.*\." + extension, RegexOptions.Multiline | RegexOptions.IgnoreCase);
-                    if(match.Success)
+                    string fileName = Path.GetFileNameWithoutExtension(file.Name);
+                    if (fileName.Contains("_")) fileName = fileName.Substring(0, fileName.IndexOf("_"));
+                    if (fileName.Contains(".")) //using ##.##.##_description.sql format
                     {
-                        long fileNumber = Convert.ToInt64(match.Groups[1].Value);
+                        Version tmp = new Version(fileName);
+                        if (tmp > ver)
+                        {
+                            ver = tmp;
+                            version = ver.ToString();
+                        }
+                    }
+                    else //using ###_description.sql format
+                    {
+                        long fileNumber = 0;
+                        long.TryParse(fileName, out fileNumber);
                         max = Math.Max(max, fileNumber);
+                        version = max.ToString();
                     }
                 }
-                version = max.ToString();
                 Log.bound_to(this).log_an_info_event_containing(" Found version {0} from up directory.", version);
             }
             return version;
