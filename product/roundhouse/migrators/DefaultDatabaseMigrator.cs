@@ -317,7 +317,8 @@ namespace roundhouse.migrators
             {
                 return false;
             }
-	        return true;
+            
+            return true;
         }
 
         public bool this_is_an_environment_file_and_its_in_the_right_environment(string script_name, Environment environment)
