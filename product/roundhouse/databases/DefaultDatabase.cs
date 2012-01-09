@@ -103,22 +103,19 @@ namespace roundhouse.databases
                 {
                     foreach (var sql_statement in StatementSplitter.split_sql_on_regex_and_remove_empty_statements(create_script, sql_statement_separator_regex_pattern))
                     {
-                        var return_value = run_sql_scalar(sql_statement, ConnectionType.Admin);
                         //should only receive a return value once
+                        var return_value = run_sql_scalar_boolean(sql_statement, ConnectionType.Admin);
                         if (return_value != null)
                         {
-                            database_was_created = (bool)return_value;
+                            database_was_created = return_value.Value;
                         }
                     }
                 }
                 else
                 {
-                    var return_value = run_sql_scalar(create_script, ConnectionType.Admin);
                     //should only receive a return value once
-                    if (return_value != null)
-                    {
-                        database_was_created = (bool)return_value;
-                    }
+                    var return_value = run_sql_scalar_boolean(create_script, ConnectionType.Admin);
+                    database_was_created = return_value.GetValueOrDefault(false);
                 }
             }
             catch (Exception ex)
@@ -129,6 +126,16 @@ namespace roundhouse.databases
             }
 
             return database_was_created;
+        }
+
+        private bool? run_sql_scalar_boolean(string sql_to_run, ConnectionType connection_type)
+        {
+            var return_value = run_sql_scalar(sql_to_run, connection_type);
+            if (return_value != null && return_value != DBNull.Value)
+            {
+                return Convert.ToBoolean(return_value);
+            }
+            return null;
         }
 
         public void set_recovery_mode(bool simple)
