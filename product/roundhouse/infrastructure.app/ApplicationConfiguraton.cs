@@ -52,6 +52,10 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.RunAfterCreateDatabaseFolderName = ApplicationParameters.default_run_after_create_database_folder_name;
             }
+			if (string.IsNullOrEmpty(configuration_property_holder.RunBeforeUpFolderName))
+			{
+				configuration_property_holder.RunBeforeUpFolderName = ApplicationParameters.default_run_before_up_folder_name;
+			}
             if (string.IsNullOrEmpty(configuration_property_holder.UpFolderName))
             {
                 configuration_property_holder.UpFolderName = ApplicationParameters.default_up_folder_name;
