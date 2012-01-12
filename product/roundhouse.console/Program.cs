@@ -143,6 +143,11 @@
                          "RunAfterCreateDatabaseFolderName - The name of the folder where you will keep scripts that ONLY run after a database is created.  Will recurse through subfolders. Defaults to \"{0}\".",
                          ApplicationParameters.default_run_after_create_database_folder_name),
                      option => configuration.RunAfterCreateDatabaseFolderName = option)
+				.Add("rb=|runbefore=|runbeforeupfolder=|runbeforeupfoldername=",
+					 string.Format(
+						 "RunBeforeUpFolderName - The name of the folder where you keep scripts that you want to run before your update scripts. Will recurse through subfolders. Defaults to \"{0}\".",
+						 ApplicationParameters.default_run_before_up_folder_name),
+					 option => configuration.RunBeforeUpFolderName = option)
                 .Add("u=|up=|upfolder=|upfoldername=",
                      string.Format(
                          "UpFolderName - The name of the folder where you keep your update scripts. Will recurse through subfolders. Defaults to \"{0}\".",
@@ -315,7 +320,8 @@
                         "/c[onnection]s[tring]a[dministration] VALUE " +
                         "/c[ommand]t[imeout] VALUE /c[ommand]t[imeout]a[dmin] VALUE " +
                         "/r[epositorypath] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
-                        "/a[lter]d[atabasefoldername] /r[un]a[fter]c[reate]d[atabasefoldername] VALUE VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
+                        "/a[lter]d[atabasefoldername] /r[un]a[fter]c[reate]d[atabasefoldername] VALUE VALUE " +
+						"/r[un]b[eforeupfoldername] VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
                         "/r[un]f[irstafterupdatefoldername] VALUE /fu[nctionsfoldername] VALUE /v[ie]w[sfoldername] VALUE " +
                         "/sp[rocsfoldername] VALUE /i[nde]x[foldername] VALUE /p[ermissionsfoldername] VALUE " +
                         "/sc[hemaname] VALUE /v[ersion]t[ablename] VALUE /s[cripts]r[un]t[ablename] VALUE /s[cripts]r[un]e[rrors]t[ablename] VALUE " +

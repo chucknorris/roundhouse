@@ -20,6 +20,7 @@ namespace roundhouse.infrastructure.app
         string VersionXPath { get; set; }
         string AlterDatabaseFolderName { get; set; }
         string RunAfterCreateDatabaseFolderName { get; set; }
+		string RunBeforeUpFolderName { get; set; }
         string UpFolderName { get; set; }
         string DownFolderName { get; set; }
         string RunFirstAfterUpFolderName { get; set; }
