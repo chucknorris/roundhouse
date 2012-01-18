@@ -245,6 +245,12 @@
                          "OutputPath - This is where everything related to the migration is stored. This includes any backups, all items that ran, permission dumps, logs, etc. Defaults to \"{0}\".",
                          ApplicationParameters.default_output_path),
                      option => configuration.OutputPath = option)
+                //output
+                .Add("disableoutput",
+                     string.Format(
+                         "DisableoOutput - Disable output of backups, items ran, permissions dumps, etc. Log files are kept. Useful for example in CI environment. Defaults to \"{0}\".",
+                         ApplicationParameters.default_disable_output),
+                     option => configuration.DisableOutput = option != null)
                 //warn on changes
                 .Add("w|warnononetimescriptchanges",
                      "WarnOnOneTimeScriptChanges - If you do not want RH to error when you change scripts that should not change, you must set this flag. One time scripts are DDL/DML (anything in the upFolder). Defaults to false.",
