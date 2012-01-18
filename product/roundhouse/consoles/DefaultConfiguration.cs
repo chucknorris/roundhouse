@@ -55,5 +55,6 @@ namespace roundhouse.consoles
         public bool RunAllAnyTimeScripts { get; set; }
         public bool DisableTokenReplacement { get; set; }
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
+        public bool DisableOutput { get; set; }
     }
 }
