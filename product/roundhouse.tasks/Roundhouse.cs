@@ -130,6 +130,8 @@
 
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
 
+        public bool DisableOutput { get; set; }
+
         #endregion
 
         public void run_the_task()
