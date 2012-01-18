@@ -26,20 +26,20 @@ namespace Bottles.Deployers.RoundhousE
 
         public void Execute(Roundhouse directive, HostManifest host, IPackageLog log)
         {
+            var destinationDirectory = directive.GetDirectory().AppendPath("roundhouse");
+
             host.BottleReferences.Each(b =>
             {
-                var destinationDirectory = directive.GetDirectory().AppendPath(b.Name);
                 _bottleRepository.ExplodeFiles(new BottleExplosionRequest()
                                                {
                                                    BottleDirectory = BottleFiles.DataFolder,
                                                    CopyBehavior =  CopyBehavior.overwrite,
                                                    BottleName = b.Name,
                                                    DestinationDirectory = destinationDirectory
-                                               });
-
-                rh(directive, destinationDirectory.AppendPath("roundhouse"));
+                                               });    
             });
 
+            rh(directive, destinationDirectory);
         }
 
         private void rh(Roundhouse directive, string destinationDirectory)
@@ -52,7 +52,7 @@ namespace Bottles.Deployers.RoundhousE
             configuration.SqlFilesDirectory = destinationDirectory;
 
 
-            RoundhouseMigrationRunner runner = new RoundhouseMigrationRunner(
+            var runner = new RoundhouseMigrationRunner(
                 configuration.RepositoryPath,
                 Container.get_an_instance_of<roundhouse.environments.Environment>(),
                 Container.get_an_instance_of<KnownFolders>(),
