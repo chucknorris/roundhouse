@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HtmlTags</name>
+    </assembly>
+    <members>
+        <member name="M:HtmlTags.HtmlTag.After(HtmlTags.HtmlTag)">
+            <summary>
+            Inserts a sibling tag immediately after the current tag. Any existing sibling will follow the inserted tag.
+            </summary>
+            <param name="nextTag">The tag to add as a sibling</param>
+            <returns>The original tag</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.After">
+            <summary>
+            Returns the sibling tag that immediately follows the current tag. Same as <see cref="P:HtmlTags.HtmlTag.Next"/>.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Add(System.String)">
+            <summary>
+            Creates nested child tags and returns the innermost tag. Use <see cref="M:HtmlTags.HtmlTag.Append(System.String)"/> if you want to return the parent tag.
+            </summary>
+            <param name="tagNames">One or more HTML element names separated by a <c>/</c> or <c>&gt;</c></param>
+            <returns>The innermost tag that was newly added</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Add(System.String,System.Action{HtmlTags.HtmlTag})">
+            <summary>
+            Creates nested child tags and returns the innermost tag after running <paramref name="configuration"/> on it. Use <see cref="M:HtmlTags.HtmlTag.Append(System.String,System.Action{HtmlTags.HtmlTag})"/> if you want to return the parent tag.
+            </summary>
+            <param name="tagNames">One or more HTML element names separated by a <c>/</c> or <c>&gt;</c></param>
+            <param name="configuration">Modifications to perform on the newly added innermost tag</param>
+            <returns>The innermost tag that was newly added</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Add``1">
+            <summary>
+            Creates a tag of <typeparamref name="T"/> and adds it as a child. Returns the created child tag.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:HtmlTags.HtmlTag"/> to create</typeparam>
+            <returns>The created child tag</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Append(HtmlTags.HtmlTag)">
+            <summary>
+            Adds the given tag as the last child of the parent, and returns the parent.
+            </summary>
+            <param name="child">The tag to add as a child of the parent.</param>
+            <returns>The parent tag</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Append(System.String)">
+            <summary>
+            Creates nested child tags and returns the tag on which the method was called. Use <see cref="M:HtmlTags.HtmlTag.Add(System.String)"/> if you want to return the innermost tag.
+            </summary>
+            <param name="tagNames">One or more HTML element names separated by a <c>/</c> or <c>&gt;</c></param>
+            <returns>The instance on which the method was called (the parent of the new tags)</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Append(System.String,System.Action{HtmlTags.HtmlTag})">
+            <summary>
+            Creates nested child tags, runs <paramref name="configuration"/> on the innermost tag, and returns the tag on which the method was called. Use <see cref="M:HtmlTags.HtmlTag.Add(System.String,System.Action{HtmlTags.HtmlTag})"/> if you want to return the innermost tag.
+            </summary>
+            <param name="tagNames"></param>
+            <param name="configuration"></param>
+            <returns>The parent tag</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Append(HtmlTags.ITagSource)">
+            <summary>
+            Adds all tags from <paramref name="tagSource"/> as children of the current tag. Returns the parent tag.
+            </summary>
+            <param name="tagSource">The source of tags to add as children.</param>
+            <returns>The parent tag</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Append(System.Collections.Generic.IEnumerable{HtmlTags.HtmlTag})">
+            <summary>
+            Adds a sequence of tags as children of the current tag. Returns the parent tag.
+            </summary>
+            <param name="tags">A sequence of tags to add as children.</param>
+            <returns>The parent tag</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Data(System.String,System.Object)">
+            <summary>
+            Stores a value in an HTML5 custom data attribute
+            </summary>
+            <param name="key">The name of the data attribute. Will have "data-" prepended when rendered.</param>
+            <param name="value">The value to store. Non-string values will be JSON encoded.</param>
+            <returns>The calling tag.</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Data``1(System.String,System.Action{``0})">
+            <summary>
+            Modifies an existing reference value stored in an HTML5 custom data
+            </summary>
+            <typeparam name="T">The type of the data stored in the given location</typeparam>
+            <param name="key">The name of the data storage location</param>
+            <param name="configure">The action to perform on the currently stored value</param>
+            <returns>The calling tag.</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.Data(System.String)">
+            <summary>
+            Returns the value stored in HTML5 custom data
+            </summary>
+            <param name="key">The name of the data storage location</param>
+            <returns>The calling tag.</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.MetaData(System.String,System.Object)">
+            <summary>
+            Stores multiple JSON-encoded key/value pairs in a the "data-:" attribute. Useful when used with the jquery.metadata plugin
+            </summary>
+            <param name="key">The name of the stored value</param>
+            <param name="value">The value to store</param>
+            <remarks>You need to configure the the jquery.metadata plugin to read from the data-: attribute.
+            Add the following line after you have loaded jquery.metadata.js, but before you use its metadata() method:
+            <code>
+            if ($.metadata) {
+               $.metadata.setType('attr', 'data-:');
+            }
+            </code>
+            </remarks>
+            <returns>The calling tag.</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.MetaData``1(System.String,System.Action{``0})">
+            <summary>
+            Modifies an existing reference value stored in MetaData
+            </summary>
+            <typeparam name="T">The type of the stored value</typeparam>
+            <param name="key">The name of the stored value</param>
+            <param name="configure">The action to perform on the currently stored value</param>
+            <returns>The calling tag.</returns>
+        </member>
+        <member name="M:HtmlTags.HtmlTag.MetaData(System.String)">
+            <summary>
+            Returns the MetaData value stored for a given key.
+            </summary>
+            <param name="key">The name of the stored value</param>
+            <returns>The calling tag.</returns>
+        </member>
+        <member name="P:HtmlTags.HtmlTag.Next">
+            <summary>
+            The sibling tag that immediately follows the current tag. 
+            Setting this value will remove any existing value. Use <see cref="M:HtmlTags.HtmlTag.After(HtmlTags.HtmlTag)"/> if you wish to insert a new sibling before any existing sibling.
+            </summary>
+        </member>
+        <member name="M:HtmlTags.JsonUtil.ToUnsafeJson(System.Object)">
+            <summary>
+              Allows you to use function names (via <see cref="M:HtmlTags.javascript.function(System.String)"/>) in the value of a property, which is against the JSON spec
+            </summary>
+            <param name="objectToSerialize"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HtmlTags.LiteralTag">
+            <summary>
+            HtmlTag that *only outputs the literal html put into it in the 
+            constructor function
+            </summary>
+        </member>
+        <member name="M:HtmlTags.LiteralTagExtensions.AppendHtml(HtmlTags.HtmlTag,System.String)">
+            <summary>
+            Adds a LiteralTag to the Children collection
+            </summary>
+            <param name="tag"></param>
+            <param name="html"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

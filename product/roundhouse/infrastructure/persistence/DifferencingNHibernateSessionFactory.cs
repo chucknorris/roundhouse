@@ -11,7 +11,6 @@
 //    public class DifferencingNHibernateSessionFactory
 //    {
 //        private const string proxy_factory = NHibernate.Cfg.Environment.ProxyFactoryFactoryClass;
-//        private const string proxy_factory_name = "NHibernate.ByteCode.Castle.ProxyFactoryFactory";
 //        private static bool is_merged = true;
 
 //        public static ISessionFactory build_session_factory(string db_name, Assembly mappings_assembly, Assembly conventions_assembly, Action<Configuration> additional_function)
@@ -26,22 +25,6 @@
 //                            m.HbmMappings.AddFromAssembly(mappings_assembly);
 //                            GetMappingsFromExternalAssemblies(m, mappings_assembly, conventions_assembly);
 //                        })
-//                .ExposeConfiguration(cfg =>
-//                                {
-
-//                                    string proxy_factory_location = proxy_factory_name + ", " + ApplicationParameters.get_merged_assembly_name();
-//                                    if (!is_merged) proxy_factory_location = proxy_factory_name + ", NHibernate.ByteCode.Castle";
-
-//                                    if (cfg.Properties.ContainsKey(proxy_factory))
-//                                    {
-
-//                                        cfg.Properties[proxy_factory] = proxy_factory_location;
-//                                    }
-//                                    else
-//                                    {
-//                                        cfg.Properties.Add(proxy_factory, proxy_factory_location);
-//                                    }
-//                                })
 //                .ExposeConfiguration(additional_function)
 //                .BuildSessionFactory();
 //        }
