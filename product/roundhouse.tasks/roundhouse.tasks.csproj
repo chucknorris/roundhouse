@@ -85,9 +85,9 @@
     <Reference Include="NHibernate.JetDriver, Version=2.0.0.1001, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\lib\references\NHibernate.JetDriver\NHibernate.JetDriver.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap, Version=2.5.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+    <Reference Include="StructureMap, Version=2.6.3.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\references\StructureMap\StructureMap.dll</HintPath>
+      <HintPath>..\..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

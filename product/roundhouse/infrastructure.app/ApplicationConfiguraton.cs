@@ -164,18 +164,18 @@ namespace roundhouse.infrastructure.app
 
             ObjectFactory.Configure(cfg =>
                                         {
-                                            cfg.For<ConfigurationPropertyHolder>().AsSingletons().Use(configuration_property_holder);
-                                            cfg.For<FileSystemAccess>().AsSingletons().Use<WindowsFileSystemAccess>();
-                                            cfg.For<Database>().AsSingletons().Use(context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<KnownFolders>().AsSingletons().Use(context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<LogFactory>().AsSingletons().Use<MultipleLoggerLogFactory>();
-                                            //cfg.For<Logger>().AsSingletons().Use(context => LogBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<ConfigurationPropertyHolder>().Singleton().Use(configuration_property_holder);
+                                            cfg.For<FileSystemAccess>().Singleton().Use<WindowsFileSystemAccess>();
+                                            cfg.For<Database>().Singleton().Use(context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<KnownFolders>().Singleton().Use(context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
+                                            cfg.For<LogFactory>().Singleton().Use<MultipleLoggerLogFactory>();
+                                            //cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<Logger>().Use(multiLogger);
-                                            cfg.For<CryptographicService>().AsSingletons().Use<MD5CryptographicService>();
-                                            cfg.For<DatabaseMigrator>().AsSingletons().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
-                                            cfg.For<VersionResolver>().AsSingletons().Use(
+                                            cfg.For<CryptographicService>().Singleton().Use<MD5CryptographicService>();
+                                            cfg.For<DatabaseMigrator>().Singleton().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
+                                            cfg.For<VersionResolver>().Singleton().Use(
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<Environment>().AsSingletons().Use(new DefaultEnvironment(configuration_property_holder));
+                                            cfg.For<Environment>().Singleton().Use(new DefaultEnvironment(configuration_property_holder));
                                         });
 
             // forcing a build of database to initialize connections so we can be sure server/database have values
