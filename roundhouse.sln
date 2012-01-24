@@ -34,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.postgr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bottles", "bottles", "{DF4D94CB-902F-4DCE-B4FD-81542EEB33F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bottles.Deployers.RoundhousE", "product\Bottles.Deployers.RoundhousE\Bottles.Deployers.RoundhousE.csproj", "{50FE3924-D7FD-4AC2-A103-AED685A183CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.bottles.deployers", "product\roundhouse.bottles.deployers\roundhouse.bottles.deployers.csproj", "{50FE3924-D7FD-4AC2-A103-AED685A183CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{828B1EB9-E0BD-47E4-A553-12E483B7EE9B}"
 	ProjectSection(SolutionItems) = preProject

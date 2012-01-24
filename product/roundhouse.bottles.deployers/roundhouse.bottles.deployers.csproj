@@ -8,8 +8,8 @@
     <ProjectGuid>{50FE3924-D7FD-4AC2-A103-AED685A183CA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bottles.Deployers.RoundhousE</RootNamespace>
-    <AssemblyName>Bottles.Deployers.RoundhousE</AssemblyName>
+    <RootNamespace>roundhouse.bottles.deployers</RootNamespace>
+    <AssemblyName>roundhouse.bottles.deployers</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\roundhouse\</SolutionDir>

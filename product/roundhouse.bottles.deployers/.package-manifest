@@ -3,5 +3,5 @@
   <Role>binaries</Role>
   <Name>roundhouse-deployers</Name>
   <assembly>roundhouse</assembly>
-  <assembly>Bottles.Deployers.RoundhousE</assembly>
+  <assembly>roundhouse.bottles.deployers</assembly>
 </package>

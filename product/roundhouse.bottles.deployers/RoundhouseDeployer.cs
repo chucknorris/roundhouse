@@ -1,21 +1,24 @@
 ﻿using System.Collections.Generic;
+using Bottles;
 using Bottles.Deployment;
 using Bottles.Deployment.Runtime;
 using Bottles.Deployment.Runtime.Content;
 using Bottles.Diagnostics;
 using FubuCore;
-using roundhouse;
-using roundhouse.consoles;
-using roundhouse.folders;
-using roundhouse.infrastructure.app;
-using roundhouse.infrastructure.containers;
-using roundhouse.infrastructure.filesystem;
-using roundhouse.migrators;
-using roundhouse.resolvers;
-using roundhouse.runners;
 
-namespace Bottles.Deployers.RoundhousE
+namespace roundhouse.bottles.deployers
 {
+    public class Roundhouse : IDirective
+    {
+        public string ConnectionString { get; set; }
+
+        public string Directory { get; set; }
+        public string GetDirectory()
+        {
+            return Directory ?? ".";
+        }
+    }
+
     public class RoundhouseDeployer : IDeployer<Roundhouse>
     {
         private IBottleRepository _bottleRepository;
@@ -43,7 +46,7 @@ namespace Bottles.Deployers.RoundhousE
             rh(directive, destinationDirectory);
         }
 
-        private void rh(Roundhouse directive, string destinationDirectory)
+        void rh(Roundhouse directive, string destinationDirectory)
         {
             var migrate = new Migrate();
             migrate.Set(cfg=>
@@ -61,14 +64,4 @@ namespace Bottles.Deployers.RoundhousE
 
     }
 
-    public class Roundhouse : IDirective
-    {
-        public string ConnectionString { get; set; }
-
-        public string Directory { get; set; }
-        public string GetDirectory()
-        {
-            return Directory ?? ".";
-        }
-    }
 }
