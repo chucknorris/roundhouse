@@ -31,6 +31,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlite", "product\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj", "{1D41D70E-E310-4699-B7CB-C1F77476A685}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.postgresql", "product\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj", "{41CE538E-E6F1-4AB6-AB66-508DEF669A39}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bottles", "bottles", "{DF4D94CB-902F-4DCE-B4FD-81542EEB33F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bottles.Deployers.RoundhousE", "product\Bottles.Deployers.RoundhousE\Bottles.Deployers.RoundhousE.csproj", "{50FE3924-D7FD-4AC2-A103-AED685A183CA}"
