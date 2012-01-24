@@ -8,6 +8,7 @@ _ReSharper*
 *.suo
 *.user 
 *.csproj.user
+*.DotSettings.user
 *.resharper.user
 *.ReSharper.user
 *.cache
