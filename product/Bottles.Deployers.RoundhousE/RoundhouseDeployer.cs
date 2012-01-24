@@ -4,6 +4,7 @@ using Bottles.Deployment.Runtime;
 using Bottles.Deployment.Runtime.Content;
 using Bottles.Diagnostics;
 using FubuCore;
+using roundhouse;
 using roundhouse.consoles;
 using roundhouse.folders;
 using roundhouse.infrastructure.app;
@@ -44,30 +45,13 @@ namespace Bottles.Deployers.RoundhousE
 
         private void rh(Roundhouse directive, string destinationDirectory)
         {
-            var configuration = new DefaultConfiguration();
-            ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
-            ApplicationConfiguraton.build_the_container(configuration);
-            
-            configuration.ConnectionString = directive.ConnectionString;
-            configuration.SqlFilesDirectory = destinationDirectory;
-
-
-            var runner = new RoundhouseMigrationRunner(
-                configuration.RepositoryPath,
-                Container.get_an_instance_of<roundhouse.environments.Environment>(),
-                Container.get_an_instance_of<KnownFolders>(),
-                Container.get_an_instance_of<FileSystemAccess>(),
-                Container.get_an_instance_of<DatabaseMigrator>(),
-                Container.get_an_instance_of<VersionResolver>(),
-                configuration.Silent,
-                configuration.Drop,
-                configuration.DoNotCreateDatabase,
-                configuration.WithTransaction,
-                configuration.RecoveryModeSimple,
-                configuration);
-
-
-            runner.run();
+            var migrate = new Migrate();
+            migrate.Set(cfg=>
+            {
+                cfg.ConnectionString = directive.ConnectionString;
+                cfg.SqlFilesDirectory = destinationDirectory;
+                cfg.Silent = true;
+            }).Run();
         }
 
         public string GetDescription(Roundhouse directive)
