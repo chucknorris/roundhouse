@@ -21,7 +21,7 @@ namespace roundhouse.bottles.deployers
 
     public class RoundhouseDeployer : IDeployer<Roundhouse>
     {
-        private IBottleRepository _bottleRepository;
+        readonly IBottleRepository _bottleRepository;
 
         public RoundhouseDeployer(IBottleRepository bottleRepository)
         {
@@ -30,7 +30,7 @@ namespace roundhouse.bottles.deployers
 
         public void Execute(Roundhouse directive, HostManifest host, IPackageLog log)
         {
-            var destinationDirectory = directive.GetDirectory().AppendPath("roundhouse");
+            var destinationDirectory = directive.GetDirectory();
 
             host.BottleReferences.Each(b =>
             {
