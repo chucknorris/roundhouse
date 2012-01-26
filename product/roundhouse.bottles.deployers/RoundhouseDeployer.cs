@@ -31,6 +31,7 @@ namespace roundhouse.bottles.deployers
         public void Execute(Roundhouse directive, HostManifest host, IPackageLog log)
         {
             var destinationDirectory = directive.GetDirectory();
+            new FileSystem().CleanDirectory(destinationDirectory);
 
             host.BottleReferences.Each(b =>
             {

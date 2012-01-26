@@ -34,18 +34,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bottles, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Bottles.0.9.1.179\lib\Bottles.dll</HintPath>
+      <HintPath>..\..\packages\Bottles.0.9.1.181\lib\Bottles.dll</HintPath>
     </Reference>
     <Reference Include="Bottles.Deployment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Bottles.Deployment.0.9.1.179\lib\Bottles.Deployment.dll</HintPath>
+      <HintPath>..\..\packages\Bottles.Deployment.0.9.1.181\lib\Bottles.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="FubuCore, Version=0.9.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FubuCore.0.9.4.109\lib\FubuCore.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlTags, Version=1.0.0.52, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="HtmlTags, Version=1.0.0.54, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\HtmlTags.1.0.0.52\lib\4.0\HtmlTags.dll</HintPath>
+      <HintPath>..\..\packages\HtmlTags.1.0.0.54\lib\4.0\HtmlTags.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
