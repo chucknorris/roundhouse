@@ -122,7 +122,7 @@
                      option => configuration.DatabaseType = option)
                 // versioning
                 .Add("wfc=|workflowconfig=|workflowconfigfile=",
-                    "WorkflowConfigFile - Custom configuration file listing the folders to execute and the order of execution.",
+                    "WorkflowConfigFile - Custom configuration file listing the folders to execute and the order of execution. Expected format: Friendly Name, Folder Name, Timing. Timing can be 'anytime', 'onetime' or 'everytime'.",
                     option => configuration.WorkflowConfigFile = option)
                 .Add("r=|repo=|repositorypath=",
                      string.Format(
@@ -319,6 +319,7 @@
                         "/c[onnection]s[tring]a[dministration] VALUE " +
                         "/c[ommand]t[imeout] VALUE /c[ommand]t[imeout]a[dmin] VALUE " +
                         "/r[epositorypath] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
+                        "/w[ork]f[low]c[onfig] VALUE " +
                         "/a[lter]d[atabasefoldername] /r[un]a[fter]c[reate]d[atabasefoldername] VALUE VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
                         "/r[un]f[irstafterupdatefoldername] VALUE /fu[nctionsfoldername] VALUE /v[ie]w[sfoldername] VALUE " +
                         "/sp[rocsfoldername] VALUE /i[nde]x[foldername] VALUE /p[ermissionsfoldername] VALUE " +
