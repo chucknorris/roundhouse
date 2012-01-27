@@ -90,6 +90,12 @@ dml statements
 GO  
 dml statements '
 
+GO
+
+INSERT [dbo].[Foo] ([Bar]) VALUES (N'hello--world.
+Thanks!')
+INSERT [dbo].[Foo] ([Bar]) VALUES (N'Go speed racer, go speed racer, go speed racer go!!!!! ')
+
 GO";
 
 			public static string tsql_statement_scrubbed = @"
@@ -175,7 +181,13 @@ dml statements
 GO  
 dml statements '
 
-" + StatementSplitter.batch_terminator_replacement_string + @"";
+" + StatementSplitter.batch_terminator_replacement_string + @"
+
+INSERT [dbo].[Foo] ([Bar]) VALUES (N'hello--world.
+Thanks!')
+INSERT [dbo].[Foo] ([Bar]) VALUES (N'Go speed racer, go speed racer, go speed racer go!!!!! ')
+
+"+ StatementSplitter.batch_terminator_replacement_string + @"";
 
         	public static string plsql_statement =
 				@"
