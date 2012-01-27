@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using roundhouse.infrastructure.app;
 using roundhouse.folders;
 using roundhouse.infrastructure.logging;

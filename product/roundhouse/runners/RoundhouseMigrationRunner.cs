@@ -12,7 +12,7 @@ namespace roundhouse.runners
     using migrators;
     using resolvers;
     using Environment = environments.Environment;
-    using roundhouse.workflow;
+    using workflow;
 
     public sealed class RoundhouseMigrationRunner : IRunner
     {
@@ -29,7 +29,7 @@ namespace roundhouse.runners
         private readonly bool use_simple_recovery;
         private readonly ConfigurationPropertyHolder configuration;
         private const string SQL_EXTENSION = "*.sql";
-        private WorkflowProvider workflow_provider;
+        private readonly WorkflowProvider workflow_provider;
 
         public RoundhouseMigrationRunner(
             string repository_path,

@@ -13,7 +13,7 @@
     using resolvers;
     using runners;
     using Environment = environments.Environment;
-    using roundhouse.workflow;
+    using workflow;
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {

@@ -19,7 +19,7 @@
     using migrators;
     using resolvers;
     using runners;
-    using roundhouse.workflow;
+    using workflow;
 
     public class Program
     {
