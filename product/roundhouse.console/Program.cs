@@ -121,6 +121,9 @@
                          ApplicationParameters.default_database_type),
                      option => configuration.DatabaseType = option)
                 // versioning
+                .Add("wfc=|workflowconfig=|workflowconfigfile=",
+                    "WorkflowConfigFile - Custom configuration file listing the folders to execute and the order of execution.",
+                    option => configuration.WorkflowConfigFile = option)
                 .Add("r=|repo=|repositorypath=",
                      string.Format(
                          "RepositoryPath - The repository. A string that can be anything. Used to track versioning along with the version. Defaults to null."),
