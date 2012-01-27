@@ -190,6 +190,7 @@
     <Compile Include="migrators\DatabaseMigrator.cs" />
     <Compile Include="migrators\DefaultDatabaseMigrator.cs" />
     <Compile Include="databases\SqlServerLiteSpeedDatabase.cs" />
+    <Compile Include="workflow\WorkflowProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="infrastructure.app\logging\log4net.config.xml" />

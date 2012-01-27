@@ -12,6 +12,7 @@ namespace roundhouse.runners
     using migrators;
     using resolvers;
     using Environment = environments.Environment;
+    using roundhouse.workflow;
 
     public sealed class RoundhouseMigrationRunner : IRunner
     {
@@ -28,6 +29,7 @@ namespace roundhouse.runners
         private readonly bool use_simple_recovery;
         private readonly ConfigurationPropertyHolder configuration;
         private const string SQL_EXTENSION = "*.sql";
+        private WorkflowProvider workflow_provider;
 
         public RoundhouseMigrationRunner(
             string repository_path,
@@ -36,6 +38,7 @@ namespace roundhouse.runners
             FileSystemAccess file_system,
             DatabaseMigrator database_migrator,
             VersionResolver version_resolver,
+            WorkflowProvider workflow_provider,
             bool silent,
             bool dropping_the_database,
             bool dont_create_the_database,
@@ -49,6 +52,7 @@ namespace roundhouse.runners
             this.file_system = file_system;
             this.database_migrator = database_migrator;
             this.version_resolver = version_resolver;
+            this.workflow_provider = workflow_provider;
             this.silent = silent;
             this.dropping_the_database = dropping_the_database;
             this.dont_create_the_database = dont_create_the_database;
@@ -140,20 +144,17 @@ namespace roundhouse.runners
                         log_and_traverse(known_folders.run_after_create_database, version_id, new_version, ConnectionType.Default);
                     }
 
-                    log_and_traverse(known_folders.up, version_id, new_version, ConnectionType.Default);
-
                     //int last_errors = -1;
                     //int new_errors = 0;
                     //while (last_errors != new_errors || last_errors !=0)
                     //{
 
                     //}
-                    log_and_traverse(known_folders.run_first_after_up, version_id, new_version, ConnectionType.Default);
-                    log_and_traverse(known_folders.functions, version_id, new_version, ConnectionType.Default);
-                    log_and_traverse(known_folders.views, version_id, new_version, ConnectionType.Default);
-                    log_and_traverse(known_folders.sprocs, version_id, new_version, ConnectionType.Default);
-                    log_and_traverse(known_folders.indexes, version_id, new_version, ConnectionType.Default);
-                    log_and_traverse(known_folders.run_after_other_any_time_scripts, version_id, new_version, ConnectionType.Default);
+
+                    foreach (var folder in workflow_provider.GetFolders())
+                    {
+                        log_and_traverse(folder, version_id, new_version, ConnectionType.Default);
+                    }
 
                     if (run_in_a_transaction)
                     {
