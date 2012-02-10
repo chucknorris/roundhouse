@@ -13,9 +13,17 @@ namespace roundhouse.bottles.deployers
         public string ConnectionString { get; set; }
 
         public string Directory { get; set; }
+
+        public int CommandTimeout { get; set; }
+
         public string GetDirectory()
         {
             return Directory ?? ".";
+        }
+        public int GetCommandTimeout()
+        {
+            if (CommandTimeout <= 0) return 30;
+            return CommandTimeout;
         }
     }
 
@@ -52,6 +60,7 @@ namespace roundhouse.bottles.deployers
             var migrate = new Migrate();
             migrate.Set(cfg=>
             {
+                cfg.CommandTimeout = directive.GetCommandTimeout();
                 cfg.ConnectionString = directive.ConnectionString;
                 cfg.SqlFilesDirectory = destinationDirectory;
                 cfg.Silent = true;
