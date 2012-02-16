@@ -13,7 +13,7 @@ namespace roundhouse.resolvers
         public TextVersionResolver(FileSystemAccess file_system, string version_file)
         {
             this.file_system = file_system;
-            this.version_file = version_file;
+            this.version_file = file_system.get_full_path(version_file);
         }
 
         public bool meets_criteria()
