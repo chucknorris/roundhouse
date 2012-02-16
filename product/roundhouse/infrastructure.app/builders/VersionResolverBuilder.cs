@@ -10,9 +10,10 @@ namespace roundhouse.infrastructure.app.builders
         {
             VersionResolver xml_version_finder = new XmlFileVersionResolver(file_system, configuration_property_holder.VersionXPath, configuration_property_holder.VersionFile);
             VersionResolver dll_version_finder = new DllFileVersionResolver(file_system, configuration_property_holder.VersionFile);
+            VersionResolver text_version_finder = new TextVersionResolver(file_system, configuration_property_holder.VersionFile);
             VersionResolver script_number_version_finder = new ScriptfileVersionResolver(file_system, configuration_property_holder);
-            
-            IEnumerable<VersionResolver> resolvers = new List<VersionResolver> { xml_version_finder, dll_version_finder, script_number_version_finder };
+
+            IEnumerable<VersionResolver> resolvers = new List<VersionResolver> { xml_version_finder, dll_version_finder, text_version_finder, script_number_version_finder };
 
             return new ComplexVersionResolver(resolvers);
         }
