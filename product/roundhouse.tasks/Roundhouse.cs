@@ -13,6 +13,7 @@
     using resolvers;
     using runners;
     using Environment = environments.Environment;
+    using workflow;
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
@@ -132,6 +133,7 @@
 
         public bool DisableOutput { get; set; }
 
+        public string WorkflowConfigFile { get; set; }
         #endregion
 
         public void run_the_task()
@@ -155,6 +157,7 @@
                 Container.get_an_instance_of<FileSystemAccess>(),
                 Container.get_an_instance_of<DatabaseMigrator>(),
                 Container.get_an_instance_of<VersionResolver>(),
+                Container.get_an_instance_of<WorkflowProvider>(),
                 Silent,
                 Drop,
                 DoNotCreateDatabase,

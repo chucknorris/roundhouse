@@ -13,6 +13,7 @@ namespace roundhouse
     using resolvers;
     using runners;
     using Environment = roundhouse.environments.Environment;
+    using workflow;
 
     public class Migrate
     {
@@ -64,6 +65,7 @@ namespace roundhouse
                Container.get_an_instance_of<FileSystemAccess>(),
                Container.get_an_instance_of<DatabaseMigrator>(),
                Container.get_an_instance_of<VersionResolver>(),
+               Container.get_an_instance_of<WorkflowProvider>(),
                configuration.Silent,
                configuration.Drop,
                configuration.DoNotCreateDatabase,
