@@ -132,7 +132,7 @@ namespace roundhouse.databases.oracle
             run_sql(insert_version_script(), ConnectionType.Default, insert_parameters);
 
             var select_parameters = new List<IParameter<IDbDataParameter>> { create_parameter("repository_path", DbType.AnsiString, repository_path, 255) };
-            return Convert.ToInt64((decimal)run_sql_scalar(get_version_id_script(), ConnectionType.Default, select_parameters));
+            return Convert.ToInt64(run_sql_scalar(get_version_id_script(), ConnectionType.Default, select_parameters));
         }
 
         public override void run_sql(string sql_to_run, ConnectionType connection_type)
