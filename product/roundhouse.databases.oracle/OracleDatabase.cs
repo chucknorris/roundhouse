@@ -210,7 +210,7 @@ namespace roundhouse.databases.oracle
                     SELECT id
                     FROM (SELECT * FROM {0}_{1}
                             WHERE 
-                                repository_path = :repository_path
+                                NVL(repository_path, '') = NVL(:repository_path, '')
                             ORDER BY entry_date DESC)
                     WHERE ROWNUM < 2
                 ",
