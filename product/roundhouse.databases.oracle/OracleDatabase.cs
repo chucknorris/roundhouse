@@ -172,7 +172,7 @@ namespace roundhouse.databases.oracle
             parameter.Direction = ParameterDirection.Input;
             parameter.ParameterName = name;
             parameter.DbType = type;
-            parameter.Value = value;
+            parameter.Value = value ?? DBNull.Value;
             if (size != null)
             {
                 parameter.Size = size.Value;
