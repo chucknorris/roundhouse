@@ -48,7 +48,7 @@
             }
             catch (Exception ex)
             {
-                the_logger.Info(ex.Message);
+                the_logger.Error(ex.Message, ex);
                 Environment.Exit(1);
             }
         }
