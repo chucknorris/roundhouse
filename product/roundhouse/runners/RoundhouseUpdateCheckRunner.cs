@@ -40,11 +40,6 @@ namespace roundhouse.runners
 
         public void run()
         {
-            database_migrator.open_connection(false);
-
-            // TODO: Consider if we should just return false if the roundhouse tables does not exist, instead of creating them.
-            database_migrator.run_roundhouse_support_tasks();
-
             bool is_up_to_date = is_database_up_to_date();
 
             // Info and warn level logging is turned off, in order to make it easy to use the output of this command.
@@ -55,15 +50,24 @@ namespace roundhouse.runners
 
         public bool is_database_up_to_date()
         {
-            return check_folder(known_folders.alter_database)
-                && check_folder(known_folders.up)
-                && check_folder(known_folders.run_first_after_up)
-                && check_folder(known_folders.functions)
-                && check_folder(known_folders.views)
-                && check_folder(known_folders.sprocs)
-                && check_folder(known_folders.indexes)
-                && check_folder(known_folders.run_after_other_any_time_scripts)
-                && check_folder(known_folders.permissions);
+            database_migrator.open_connection(false);
+
+            // TODO: Consider if we should just return false if the roundhouse tables does not exist, instead of creating them.
+            database_migrator.run_roundhouse_support_tasks();
+
+            bool up_to_date = check_folder(this.known_folders.alter_database)
+                                      && check_folder(this.known_folders.up)
+                                      && check_folder(this.known_folders.run_first_after_up)
+                                      && check_folder(this.known_folders.functions)
+                                      && check_folder(this.known_folders.views)
+                                      && check_folder(this.known_folders.sprocs)
+                                      && check_folder(this.known_folders.indexes)
+                                      && check_folder(this.known_folders.run_after_other_any_time_scripts)
+                                      && check_folder(this.known_folders.permissions);
+
+            database_migrator.close_connection();
+
+            return up_to_date;
         }
 
         private bool check_folder(MigrationsFolder migration_folder)
