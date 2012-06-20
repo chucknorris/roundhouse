@@ -74,9 +74,9 @@ namespace roundhouse.tests.infrastructure.app.tokens
             }
 
             [Observation]
-            public void if_given_a_value_that_does_not_exist_should_return_the_value()
+            public void if_given_a_value_that_does_not_exist_should_return_the_value_with_original_casing()
             {
-                TokenReplacer.replace_tokens(configuration, "ALTER DATABASE {{database}}").should_be_equal_to("ALTER DATABASE {{database}}");
+                TokenReplacer.replace_tokens(configuration, "ALTER DATABASE {{DataBase}}").should_be_equal_to("ALTER DATABASE {{DataBase}}");
             }
         }
     }

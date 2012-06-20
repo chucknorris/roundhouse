@@ -18,7 +18,7 @@ namespace roundhouse.infrastructure.app.tokens
             {
                 string key = "";
 
-                key = m.Groups["key"].Value.to_lower();
+                key = m.Groups["key"].Value;
                 if (!dictionary.ContainsKey(key))
                 {
                     return "{{" + key + "}}";
@@ -33,10 +33,10 @@ namespace roundhouse.infrastructure.app.tokens
 
         private static IDictionary<string, string> create_dictionary_from_configuration(ConfigurationPropertyHolder configuration)
         {
-            Dictionary<string, string> property_dictionary = new Dictionary<string, string>();
+            Dictionary<string, string> property_dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (var property in configuration.GetType().GetProperties())
             {
-                property_dictionary.Add(property.Name.to_lower(), property.GetValue(configuration, null).to_string());
+                property_dictionary.Add(property.Name, property.GetValue(configuration, null).to_string());
             }
 
             return property_dictionary;
