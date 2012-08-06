@@ -76,7 +76,8 @@ namespace roundhouse.infrastructure.persistence
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_a_warning_event_containing("Had an error building session factory from merged, attempting unmerged. The error:{0}{1}",System.Environment.NewLine,ex.ToString());
+                // Changed from warning to debug. I may not be using session factory and this warning just adds noise.
+                Log.bound_to(this).log_a_debug_event_containing("Had an error building session factory from merged, attempting unmerged. The error:{0}{1}",System.Environment.NewLine,ex.ToString());
                 return build_session_factory(func_dictionary[configuration_holder.DatabaseType](), DefaultAssemblyLoader.load_assembly(assembly_name),
                                              top_namespace, additional_function);
             }
