@@ -182,7 +182,7 @@ namespace roundhouse.migrators
                 
                 if (configuration.DryRun)
                 {
-                    Log.bound_to(this).log_an_info_event_containing("DryRun! Should be running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
+                    Log.bound_to(this).log_a_warning_event_containing("DryRun {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
                 }
                 else
                 {
