@@ -190,7 +190,7 @@ namespace roundhouse.migrators
                     this_sql_ran = ThisSqlRan(sql_to_run, script_name, run_this_script_once, version_id, repository_version, repository_path, connection_type);
                 }
             }
-            else
+            else if (!configuration.DryRun)
             {
                 Log.bound_to(this).log_an_info_event_containing(" Skipped {0} - {1}.", script_name, run_this_script_once ? "One time script" : "No changes were found to run");
             }
