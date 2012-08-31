@@ -22,9 +22,9 @@ namespace roundhouse.databases.oracle.orm
             Map(x => x.repository_path);
             Map(x => x.version).Length(50);
             Map(x => x.script_name);
-            Map(x => x.text_of_script).CustomSqlType("Clob").CustomType<StringClobSqlType>();
-            Map(x => x.erroneous_part_of_script).CustomSqlType("Clob").CustomType<StringClobSqlType>();
-            Map(x => x.error_message).CustomSqlType("Clob").CustomType<StringClobSqlType>();
+            Map(x => x.text_of_script).CustomSqlType("Clob").CustomType("StringClob");
+            Map(x => x.erroneous_part_of_script).CustomSqlType("Clob").CustomType("StringClob");
+            Map(x => x.error_message).CustomSqlType("Clob").CustomType("StringClob");
 
             //audit
             Map(x => x.entry_date);
