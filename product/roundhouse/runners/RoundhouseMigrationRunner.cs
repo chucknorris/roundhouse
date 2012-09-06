@@ -137,7 +137,20 @@ namespace roundhouse.runners
 
                     if (database_was_created)
                     {
+                        // Allow different transaction settings for the RunAfterCreateScripts
+                        if (run_in_a_transaction != configuration.RunAfterCreateScriptWithTransaction)
+                        {
+                            database_migrator.close_connection();
+                            database_migrator.open_connection(configuration.RunAfterCreateScriptWithTransaction);
+                        }
+
                         log_and_traverse(known_folders.run_after_create_database, version_id, new_version, ConnectionType.Default);
+
+                        if (run_in_a_transaction != configuration.RunAfterCreateScriptWithTransaction)
+                        {
+                            database_migrator.close_connection();
+                            database_migrator.open_connection(run_in_a_transaction);
+                        }
                     }
 
                     log_and_traverse(known_folders.up, version_id, new_version, ConnectionType.Default);

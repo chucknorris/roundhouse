@@ -56,5 +56,6 @@ namespace roundhouse.infrastructure.app
         bool DisableTokenReplacement { get; set; }
         bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         bool DisableOutput { get; set; }
+        bool RunAfterCreateScriptWithTransaction { get; set; }
     }
 }

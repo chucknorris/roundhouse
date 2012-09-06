@@ -132,6 +132,19 @@
 
         public bool DisableOutput { get; set; }
 
+        private bool? _runAfterCreateScriptWithTransaction;
+        public bool RunAfterCreateScriptWithTransaction
+        {
+            get
+            {
+                return _runAfterCreateScriptWithTransaction ?? WithTransaction;
+            }
+            set
+            {
+                _runAfterCreateScriptWithTransaction = value;
+            }
+        }
+
         #endregion
 
         public void run_the_task()

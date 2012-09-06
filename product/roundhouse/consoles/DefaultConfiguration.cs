@@ -56,5 +56,17 @@ namespace roundhouse.consoles
         public bool DisableTokenReplacement { get; set; }
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         public bool DisableOutput { get; set; }
+        private bool? _runAfterCreateScriptWithTransaction;
+        public bool RunAfterCreateScriptWithTransaction
+        {
+            get
+            {
+                return _runAfterCreateScriptWithTransaction ?? WithTransaction;
+            }
+            set
+            {
+                _runAfterCreateScriptWithTransaction = value;
+            }
+        }
     }
 }
