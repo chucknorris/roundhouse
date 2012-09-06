@@ -23,6 +23,7 @@ namespace roundhouse.infrastructure.app
     using StructureMap;
     using Container = roundhouse.infrastructure.containers.Container;
     using Environment = roundhouse.environments.Environment;
+    using roundhouse.infrastructure.filesystem.filelocators;
 
     public static class ApplicationConfiguraton
     {
@@ -176,6 +177,10 @@ namespace roundhouse.infrastructure.app
                                             cfg.For<VersionResolver>().Singleton().Use(
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<Environment>().Singleton().Use(new DefaultEnvironment(configuration_property_holder));
+                                            cfg.For<FileLocator>().Singleton().Use(
+                                                configuration_property_holder.SearchAllSubdirectoriesInsteadOfTraverse
+                                                    ? (FileLocator)new Recurse()
+                                                    : new Traverse());
                                         });
 
             // forcing a build of database to initialize connections so we can be sure server/database have values

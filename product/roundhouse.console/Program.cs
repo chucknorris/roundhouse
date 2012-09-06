@@ -19,6 +19,7 @@
     using migrators;
     using resolvers;
     using runners;
+    using roundhouse.infrastructure.filesystem.filelocators;
 
     public class Program
     {
@@ -417,7 +418,8 @@
                 configuration.DoNotCreateDatabase,
                 configuration.WithTransaction,
                 configuration.RecoveryModeSimple,
-                configuration);
+                configuration,
+                Container.get_an_instance_of<FileLocator>());
         }
 
         private static RoundhouseRedGateCompareRunner get_diff_runner(ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner)
@@ -425,7 +427,8 @@
             return new RoundhouseRedGateCompareRunner(
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
-                configuration, migration_runner);
+                configuration, migration_runner,
+                Container.get_an_instance_of<FileLocator>());
         }
     }
 }

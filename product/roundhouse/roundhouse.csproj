@@ -117,6 +117,8 @@
     <Compile Include="infrastructure.app\DatabaseTypeSynonyms.cs" />
     <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
     <Compile Include="infrastructure\extensions\ObjectExtensions.cs" />
+    <Compile Include="infrastructure\filesystem\filelocators\Recurse.cs" />
+    <Compile Include="infrastructure\filesystem\filelocators\Traverse.cs" />
     <Compile Include="infrastructure\logging\custom\ConsoleLogger.cs" />
     <Compile Include="infrastructure\persistence\AuditEventListener.cs" />
     <Compile Include="infrastructure\persistence\DifferencingNHibernateSessionFactory.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="RoundhouseMode.cs" />
     <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
+    <Compile Include="infrastructure\filesystem\filelocators\FileLocator.cs" />
     <Compile Include="sqlsplitters\StatementSplitter.cs" />
     <Compile Include="consoles\DefaultConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />

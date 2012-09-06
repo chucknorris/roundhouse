@@ -13,6 +13,7 @@
     using resolvers;
     using runners;
     using Environment = environments.Environment;
+    using roundhouse.infrastructure.filesystem.filelocators;
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
@@ -160,7 +161,8 @@
                 DoNotCreateDatabase,
                 WithTransaction,
                 RecoveryModeSimple,
-                this);
+                this,
+                Container.get_an_instance_of<FileLocator>());
 
             roundhouse_runner.run();
         }
