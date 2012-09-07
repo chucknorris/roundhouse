@@ -20,9 +20,9 @@
             Map(x => x.repository_path);
             Map(x => x.version).Length(50);
             Map(x => x.script_name);
-            Map(x => x.text_of_script).CustomSqlType("text");
-            Map(x => x.erroneous_part_of_script).CustomSqlType("text");
-            Map(x => x.error_message).CustomSqlType("text");
+            Map(x => x.text_of_script).CustomType("StringClob").CustomSqlType("text");
+            Map(x => x.erroneous_part_of_script).CustomType("StringClob").CustomSqlType("text");
+            Map(x => x.error_message).CustomType("StringClob").CustomSqlType("text");
 
             //audit
             Map(x => x.entry_date);
