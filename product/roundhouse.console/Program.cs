@@ -1,32 +1,34 @@
-﻿namespace roundhouse.console
-{
-    using System;
-    using System.Reflection;
-    using consoles;
-    using databases;
-    using folders;
-    using infrastructure;
-    using infrastructure.app;
-    using infrastructure.app.logging;
-    using infrastructure.commandline.options;
-    using infrastructure.containers;
-    using infrastructure.extensions;
-    using infrastructure.filesystem;
-    using log4net;
-    using log4net.Core;
-    using log4net.Repository;
-    using log4net.Repository.Hierarchy;
-    using migrators;
-    using resolvers;
-    using runners;
+﻿using System;
+using System.Reflection;
+using log4net;
+using log4net.Core;
+using log4net.Repository;
+using log4net.Repository.Hierarchy;
+using roundhouse.consoles;
+using roundhouse.databases;
+using roundhouse.folders;
+using roundhouse.infrastructure;
+using roundhouse.infrastructure.app;
+using roundhouse.infrastructure.app.logging;
+using roundhouse.infrastructure.commandline.options;
+using roundhouse.infrastructure.containers;
+using roundhouse.infrastructure.extensions;
+using roundhouse.infrastructure.filesystem;
+using roundhouse.migrators;
+using roundhouse.resolvers;
+using roundhouse.runners;
 
+namespace roundhouse.console
+{
     public class Program
     {
-        private static readonly ILog the_logger = LogManager.GetLogger(typeof (Program));
+        private static readonly ILog the_logger = LogManager.GetLogger(typeof(Program));
 
         private static void Main(string[] args)
         {
             Log4NetAppender.configure();
+
+            int exit_code = 0;
 
             try
             {
@@ -43,13 +45,19 @@
                 {
                     run_migrator(set_up_configuration_and_build_the_container(args));
                 }
-
-                Environment.Exit(0);
             }
             catch (Exception ex)
             {
                 the_logger.Error(ex.Message, ex);
-                Environment.Exit(1);
+                exit_code = 1;
+            }
+            finally
+            {
+#if DEBUG
+                System.Console.WriteLine("Press any key to continue...");
+                System.Console.ReadKey();
+#endif
+                Environment.Exit(exit_code);
             }
         }
 
@@ -63,7 +71,7 @@
         {
             ConfigurationPropertyHolder configuration = new DefaultConfiguration();
             parse_arguments_and_set_up_configuration(configuration, args);
-           
+
             ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
             ApplicationConfiguraton.build_the_container(configuration);
 
@@ -71,7 +79,7 @@
             {
                 change_log_to_debug_level();
             }
-            
+
             return configuration;
         }
 
@@ -143,11 +151,11 @@
                          "RunAfterCreateDatabaseFolderName - The name of the folder where you will keep scripts that ONLY run after a database is created.  Will recurse through subfolders. Defaults to \"{0}\".",
                          ApplicationParameters.default_run_after_create_database_folder_name),
                      option => configuration.RunAfterCreateDatabaseFolderName = option)
-				.Add("rb=|runbefore=|runbeforeupfolder=|runbeforeupfoldername=",
-					 string.Format(
-						 "RunBeforeUpFolderName - The name of the folder where you keep scripts that you want to run before your update scripts. Will recurse through subfolders. Defaults to \"{0}\".",
-						 ApplicationParameters.default_run_before_up_folder_name),
-					 option => configuration.RunBeforeUpFolderName = option)
+                .Add("rb=|runbefore=|runbeforeupfolder=|runbeforeupfoldername=",
+                     string.Format(
+                         "RunBeforeUpFolderName - The name of the folder where you keep scripts that you want to run before your update scripts. Will recurse through subfolders. Defaults to \"{0}\".",
+                         ApplicationParameters.default_run_before_up_folder_name),
+                     option => configuration.RunBeforeUpFolderName = option)
                 .Add("u=|up=|upfolder=|upfoldername=",
                      string.Format(
                          "UpFolderName - The name of the folder where you keep your update scripts. Will recurse through subfolders. Defaults to \"{0}\".",
@@ -273,8 +281,8 @@
                      "RecoveryModeSimple - This instructs RH to set the database recovery mode to simple recovery. Defaults to false.",
                      option => configuration.RecoveryModeSimple = option != null)
                 .Add("rcm=|recoverymode=",
-                    "RecoveryMode - This instructs RH to set the database recovery mode to Simple|Full|NoChange. Defaults to NoChange.",
-                    option => configuration.RecoveryMode = (RecoveryMode)Enum.Parse(typeof(RecoveryMode),option,true))
+                     "RecoveryMode - This instructs RH to set the database recovery mode to Simple|Full|NoChange. Defaults to NoChange.",
+                     option => configuration.RecoveryMode = (RecoveryMode)Enum.Parse(typeof(RecoveryMode), option, true))
                 //debug
                 .Add("debug",
                      "Debug - This instructs RH to write out all messages. Defaults to false.",
@@ -282,7 +290,7 @@
                 //force all anytime scripts
                 .Add("runallanytimescripts|forceanytimescripts",
                      "RunAllAnyTimeScripts - This instructs RH to run any time scripts every time it is run. Defaults to false.",
-                     option => configuration.RunAllAnyTimeScripts = option != null) 
+                     option => configuration.RunAllAnyTimeScripts = option != null)
                 //disable token replacement
                 .Add("disabletokens|disabletokenreplacement",
                      "DisableTokenReplacement - This instructs RH to not perform token replacement {{somename}}. Defaults to false.",
@@ -321,7 +329,7 @@
                         "/c[ommand]t[imeout] VALUE /c[ommand]t[imeout]a[dmin] VALUE " +
                         "/r[epositorypath] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
                         "/a[lter]d[atabasefoldername] /r[un]a[fter]c[reate]d[atabasefoldername] VALUE VALUE " +
-						"/r[un]b[eforeupfoldername] VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
+                        "/r[un]b[eforeupfoldername] VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
                         "/r[un]f[irstafterupdatefoldername] VALUE /fu[nctionsfoldername] VALUE /v[ie]w[sfoldername] VALUE " +
                         "/sp[rocsfoldername] VALUE /i[nde]x[foldername] VALUE /p[ermissionsfoldername] VALUE " +
                         "/sc[hemaname] VALUE /v[ersion]t[ablename] VALUE /s[cripts]r[un]t[ablename] VALUE /s[cripts]r[un]e[rrors]t[ablename] VALUE " +
@@ -375,10 +383,10 @@
             log_repository.Threshold = Level.Debug;
             foreach (ILogger log in log_repository.GetCurrentLoggers())
             {
-                var logger = log as log4net.Repository.Hierarchy.Logger;
+                var logger = log as Logger;
                 if (logger != null)
                 {
-                    logger.Level = log4net.Core.Level.Debug;
+                    logger.Level = Level.Debug;
                 }
             }
         }

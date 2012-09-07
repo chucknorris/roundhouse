@@ -36,6 +36,7 @@
 
   <logger name="NHibernate.SQL">
     <level value="ERROR"/>
+    <appender-ref ref="ColoredConsoleAppender"/>
   </logger>
 
   <logger name="roundhouse">

@@ -204,11 +204,13 @@ namespace roundhouse.databases
 
         public virtual void run_sql(string sql_to_run, ConnectionType connection_type)
         {
+            Log.bound_to(this).log_a_debug_event_containing("[SQL] Running (on connection '{0}'): {1}{2}", connection_type.ToString(), Environment.NewLine, sql_to_run);
             run_sql(sql_to_run, connection_type, null);
         }
 
         public virtual object run_sql_scalar(string sql_to_run, ConnectionType connection_type)
         {
+            Log.bound_to(this).log_a_debug_event_containing("[SQL] Running (on connection '{0}'): {1}{2}", connection_type.ToString(), Environment.NewLine, sql_to_run);
             return run_sql_scalar(sql_to_run, connection_type, null);
         }
 
