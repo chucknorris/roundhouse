@@ -179,26 +179,18 @@ namespace roundhouse.migrators
             if (this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment)
                 && this_script_should_run(script_name, sql_to_run, run_this_script_once, run_this_script_every_time))
             {
-                Log.bound_to(this).log_an_info_event_containing(" Running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
-
-                foreach (var sql_statement in get_statements_to_run(sql_to_run))
+                
+                if (configuration.DryRun)
                 {
-                    try
-                    {
-                        database.run_sql(sql_statement, connection_type);
-                    }
-                    catch (Exception ex)
-                    {
-                        database.rollback();
-                        record_script_in_scripts_run_errors_table(script_name, sql_to_run, sql_statement, ex.Message, repository_version, repository_path);
-                        database.close_connection();
-                        throw;
-                    }
+                    Log.bound_to(this).log_a_warning_event_containing("DryRun {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
                 }
-                record_script_in_scripts_run_table(script_name, sql_to_run, run_this_script_once, version_id);
-                this_sql_ran = true;
+                else
+                {
+                    Log.bound_to(this).log_an_info_event_containing(" Running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
+                    this_sql_ran = ThisSqlRan(sql_to_run, script_name, run_this_script_once, version_id, repository_version, repository_path, connection_type);
+                }
             }
-            else
+            else if (!configuration.DryRun)
             {
                 Log.bound_to(this).log_an_info_event_containing(" Skipped {0} - {1}.", script_name, run_this_script_once ? "One time script" : "No changes were found to run");
             }
@@ -206,6 +198,29 @@ namespace roundhouse.migrators
             return this_sql_ran;
         }
 
+        private bool ThisSqlRan(string sql_to_run, string script_name, bool run_this_script_once, long version_id,
+                               string repository_version, string repository_path, ConnectionType connection_type)
+        {
+            bool this_sql_ran;
+            foreach (var sql_statement in get_statements_to_run(sql_to_run))
+            {
+                try
+                {
+                    database.run_sql(sql_statement, connection_type);
+                }
+                catch (Exception ex)
+                {
+                    database.rollback();
+                    record_script_in_scripts_run_errors_table(script_name, sql_to_run, sql_statement, ex.Message,
+                                                              repository_version, repository_path);
+                    database.close_connection();
+                    throw;
+                }
+            }
+            record_script_in_scripts_run_table(script_name, sql_to_run, run_this_script_once, version_id);
+            this_sql_ran = true;
+            return this_sql_ran;
+        }
         public IEnumerable<string> get_statements_to_run(string sql_to_run)
         {
             IList<string> sql_statements = new List<string>();
