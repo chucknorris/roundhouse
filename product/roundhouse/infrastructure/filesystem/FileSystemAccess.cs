@@ -1,6 +1,7 @@
 namespace roundhouse.infrastructure.filesystem
 {
     using System.IO;
+using roundhouse.folders;
 
     /// <summary>
     /// Handles all access to the file system objects
@@ -95,6 +96,14 @@ namespace roundhouse.infrastructure.filesystem
         /// <param name="file_path">File to analyze</param>
         /// <returns>The oldest date on the file</returns>
         string get_file_date(string file_path);
+
+        /// <summary>
+        /// Determines the file name from the filepath
+        /// </summary>
+        /// <param name="file_path">Full path to file including file name</param>
+        /// <param name="containingFolder">The folder containing this file.</param>
+        /// <returns>Returns only the file name from the filepath</returns>
+        string get_file_name_from(string file_path, Folder containingFolder);
 
         /// <summary>
         /// Determines the file name from the filepath

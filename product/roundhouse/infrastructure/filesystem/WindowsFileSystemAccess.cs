@@ -9,6 +9,7 @@ namespace roundhouse.infrastructure.filesystem
     using System.Runtime.InteropServices;
     using logging;
     using extensions;
+    using roundhouse.folders;
 
     /// <summary>
     /// All file system access code comes through here
@@ -209,12 +210,28 @@ namespace roundhouse.infrastructure.filesystem
         /// Determines the file name from the filepath
         /// </summary>
         /// <param name="file_path">Full path to file including file name</param>
+        /// <param name="containingFolder">The folder containing this file.</param>
+        /// <returns>Returns only the file name from the filepath</returns>
+        public string get_file_name_from(string file_path, Folder containingFolder)
+        {
+            if(!file_path.StartsWith(containingFolder.folder_full_path))
+            {
+                throw new Exception("Something bad has happened!");
+            }
+
+            // we want to return the relative path to the file.
+            return file_path.Substring(containingFolder.folder_full_path.Length).TrimStart(Path.DirectorySeparatorChar);
+        }
+
+        /// <summary>
+        /// Determines the file name from the filepath
+        /// </summary>
+        /// <param name="file_path">Full path to file including file name</param>
         /// <returns>Returns only the file name from the filepath</returns>
         public string get_file_name_from(string file_path)
         {
             return Path.GetFileName(file_path);
         }
-
         /// <summary>
         /// Determines the file name from the filepath without the extension
         /// </summary>
