@@ -54,7 +54,8 @@ namespace roundhouse.consoles
         public bool Baseline { get; set; }
         public bool RunAllAnyTimeScripts { get; set; }
         public bool DisableTokenReplacement { get; set; }
-        public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         public bool DisableOutput { get; set; }
+        public string ScriptOrder { get; set; }
+        public string SpecifiedOrderFile { get; set; }
     }
 }

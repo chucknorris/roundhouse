@@ -91,7 +91,7 @@ using roundhouse.infrastructure.filesystem.filelocators;
 
             create_change_drop_folder();
             Log.bound_to(this).log_a_debug_event_containing("The change_drop (output) folder is: {0}", known_folders.change_drop.folder_full_path);
-            Log.bound_to(this).log_a_debug_event_containing("Using SearchAllSubdirectoriesInsteadOfTraverse execution: {0}", configuration.SearchAllSubdirectoriesInsteadOfTraverse);
+            Log.bound_to(this).log_a_debug_event_containing("Using ScriptOrder execution: {0}", configuration.ScriptOrder);
 
             try
             {

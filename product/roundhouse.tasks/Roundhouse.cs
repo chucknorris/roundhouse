@@ -129,9 +129,17 @@
 
         public bool DisableTokenReplacement { get; set; }
 
-        public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
+        public bool SearchAllSubdirectoriesInsteadOfTraverse
+        {
+            get { return ScriptOrder == "recurse"; }
+            set { ScriptOrder = value ? "recurse" : "traverse"; }
+        }
 
         public bool DisableOutput { get; set; }
+
+        public string ScriptOrder { get; set; }
+
+        public string SpecifiedOrderFile { get; set; }
 
         #endregion
 

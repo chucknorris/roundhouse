@@ -118,6 +118,7 @@
     <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
     <Compile Include="infrastructure\extensions\ObjectExtensions.cs" />
     <Compile Include="infrastructure\filesystem\filelocators\Recurse.cs" />
+    <Compile Include="infrastructure\filesystem\filelocators\SpecifiedOrdering.cs" />
     <Compile Include="infrastructure\filesystem\filelocators\Traverse.cs" />
     <Compile Include="infrastructure\logging\custom\ConsoleLogger.cs" />
     <Compile Include="infrastructure\persistence\AuditEventListener.cs" />

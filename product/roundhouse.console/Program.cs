@@ -292,7 +292,19 @@
                      option => configuration.DryRun = option != null)
                 .Add("searchallinsteadoftraverse=|searchallsubdirectoriesinsteadoftraverse=",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
-                     option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
+                     option => configuration.ScriptOrder = option != null ? "recurse" : "traverse")
+                .Add("scriptorder=",
+                     string.Format(
+                         "ScriptOrder is used to tell RoundHouse which script ordering method to use, can be: traverse, recurse or specified, defaults to: {0}",
+                         ApplicationParameters.default_script_order),
+                     option => configuration.ScriptOrder = option)
+                .Add("specifiedorderfile=",
+                     string.Format(
+                         "SpecifiedOrderFile - The file name relative to the migration folder of the ordering file using by the specified scriptorder type, defaults to: {0}",
+                         ApplicationParameters.default_specified_order_file),
+                     option => configuration.SpecifiedOrderFile = option
+                );
+
                 ;
 
             try
