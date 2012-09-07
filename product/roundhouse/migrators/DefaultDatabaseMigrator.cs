@@ -189,7 +189,9 @@ namespace roundhouse.migrators
                     }
                     catch (Exception ex)
                     {
+                        Log.bound_to(this).log_an_error_event_containing("Error executing file '{0}': statement running was '{1}'", script_name, sql_statement);
                         database.rollback();
+                        
                         record_script_in_scripts_run_errors_table(script_name, sql_to_run, sql_statement, ex.Message, repository_version, repository_path);
                         database.close_connection();
                         throw;
