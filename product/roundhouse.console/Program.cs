@@ -268,6 +268,20 @@
                 .Add("t|trx|transaction|wt|withtransaction",
                      "WithTransaction - This instructs RH to run inside of a transaction. Defaults to false.",
                      option => configuration.WithTransaction = option != null)
+                // Run After Create Scripts in a transaction
+                .Add("runAfterCreateWithTransaction=",
+                    "runAfterCreateWithTransaction - This instructs RH whether to run the afterCreate scripts inside a transaction. Defaults to withtransaction option",
+                    option => {
+                        // Only set it if the option is explicit here.
+                        if ("true" == option)
+                        {
+                            configuration.RunAfterCreateScriptWithTransaction = true;
+                        }
+                        else if("false" == option)
+                        {
+                            configuration.RunAfterCreateScriptWithTransaction = false;
+                        }
+                    })
                 //recovery mode
                 .Add("simple",
                      "RecoveryModeSimple - This instructs RH to set the database recovery mode to simple recovery. Defaults to false.",
