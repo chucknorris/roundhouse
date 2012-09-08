@@ -227,8 +227,42 @@ GO
                 string sql_to_match = words_to_check + symbols_to_check.Replace("'","").Replace("\"","") + " GO BOB" + symbols_to_check;
                 string expected_scrubbed = words_to_check + symbols_to_check.Replace("'", "").Replace("\"", "") + " " + batch_terminator_replacement_string + " BOB" + symbols_to_check;
                 Console.WriteLine(sql_to_match);
-                string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
+                string sql_statement_scrubbed = splitter.Split(sql_to_match);
                 Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+            }
+
+            [Observation]
+            public void should_replace_on_go_with_preceeding_line_having_comment_and_apostrophe()
+            {
+                string sql_to_match = @"select 1 -- '
+GO
+''
+GO
+";
+                string expected_scrubbed = @"select 1 -- '
+" + batch_terminator_replacement_string + @"
+''
+" + batch_terminator_replacement_string + @"
+";
+                Console.WriteLine(sql_to_match);
+                string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace)); 
+                Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+
+            }
+
+            [Observation]
+            public void should_not_replace_on_go_with_preceeding_line_having_comment_inside_string_literal()
+            {
+                string sql_to_match = @"select ' 1 --
+GO
+'";
+                string expected_scrubbed = @"select ' 1 --
+GO
+'";
+                Console.WriteLine(sql_to_match);
+                string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace)); 
+                Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+
             }
 
             [Observation]
@@ -451,7 +485,19 @@ GO
                 string expected_scrubbed = @"/* GO 
 */";
                 Console.WriteLine(sql_to_match);
-                string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
+                string sql_statement_scrubbed = splitter.Split(sql_to_match);
+                Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+            }
+
+            [Observation]
+            public void should_not_replace_on_go_inside_of_nested_comments_with_a_line_break()
+            {
+                string sql_to_match = @"/* /* */ GO 
+*/";
+                string expected_scrubbed = @"/* /* */ GO 
+*/";
+                Console.WriteLine(sql_to_match);
+                string sql_statement_scrubbed = splitter.Split(sql_to_match);
                 Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
             }
 
