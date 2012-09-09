@@ -60,6 +60,8 @@
 // t##K#       i,                                j       
 //      ;i                                           
 
+using roundhouse.sqlsplitters;
+
 namespace roundhouse.databases
 {
     using System;
@@ -109,5 +111,7 @@ namespace roundhouse.databases
         bool has_run_script_already(string script_name);
         string get_current_script_hash(string script_name);
         //object run_sql_scalar(string sql_to_run);
+
+        StatementSplitter sql_splitter { get; }
     }
 }

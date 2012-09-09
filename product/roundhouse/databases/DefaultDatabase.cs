@@ -39,6 +39,14 @@ namespace roundhouse.databases
             get { return @"(?<KEEP1>^(?:[\s\t])*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>'{1}(?:[^']|\n[^'])*?'{1})|(?<KEEP1>\s)(?<BATCHSPLITTER>\;)(?<KEEP2>\s)|(?<KEEP1>\s)(?<BATCHSPLITTER>\;)(?<KEEP2>$)"; }
         }
 
+        public virtual StatementSplitter sql_splitter
+        {
+            get
+            {
+                return new DefaultStatementSplitter(sql_statement_separator_regex_pattern);
+            }
+        }
+
         public int command_timeout { get; set; }
         public int admin_command_timeout { get; set; }
         public int restore_timeout { get; set; }
@@ -101,7 +109,7 @@ namespace roundhouse.databases
 
                 if (split_batch_statements)
                 {
-                    foreach (var sql_statement in StatementSplitter.split_sql_on_regex_and_remove_empty_statements(create_script, sql_statement_separator_regex_pattern))
+                    foreach (var sql_statement in sql_splitter.split(create_script))
                     {
                         //should only receive a return value once
                         var return_value = run_sql_scalar_boolean(sql_statement, ConnectionType.Admin);
