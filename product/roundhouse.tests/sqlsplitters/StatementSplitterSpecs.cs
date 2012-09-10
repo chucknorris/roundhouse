@@ -21,15 +21,12 @@ namespace roundhouse.tests.sqlsplitters
         public abstract class concern_for_StatementSplitter : observations_for_a_static_sut
         {
             protected static StatementSplitter splitter;
-            protected static string tsql_separator_regex_string;
             protected static string access_sql_separator_regex_string;
             protected static string plsql_separator_regex_string;
 
             private context c = () =>
                                     {
-                                        Database database = new SqlServerDatabase();
-                                        tsql_separator_regex_string = database.sql_statement_separator_regex_pattern;
-                                        database = new AccessDatabase();
+                                        Database database = new AccessDatabase();
                                         access_sql_separator_regex_string = database.sql_statement_separator_regex_pattern;
                                         database = new OracleDatabase();
                                         plsql_separator_regex_string = database.sql_statement_separator_regex_pattern;
@@ -39,12 +36,13 @@ namespace roundhouse.tests.sqlsplitters
         [Concern(typeof(StatementSplitter))]
         public class when_replacing_tsql_statements_with_the_statement_splitters_match_evaluator : concern_for_StatementSplitter
         {
-            protected static string symbols_to_check = "`~!@#$%^&*()-_+=,.;:'\"[]\\/?<>";
+            protected static string symbols_to_check = "`~!@#$%^&*()-_+=,.;:\"[]\\/?<>";
             protected static string words_to_check = "abcdefghijklmnopqrstuvwzyz0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
             private because b = () =>
                                     {
-                                        splitter = new DefaultStatementSplitter(tsql_separator_regex_string);
+                                        Database database = new SqlServerDatabase();
+                                        splitter = database.sql_splitter;
                                     };
 
             [Observation]
@@ -70,9 +68,8 @@ namespace roundhouse.tests.sqlsplitters
             {
                 string sql_to_match = @" GO" + string.Format("\t");
                 Console.WriteLine(sql_to_match);
-                var expected_scrubbed = new[] { " \t" };
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
-                CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+                Assert.IsEmpty(sql_statement_scrubbed);
             }
 
             [Observation]
@@ -94,7 +91,7 @@ GO
 ";
                 var expected_scrubbed = new [] {
                     @"--
- "};
+"};
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -107,7 +104,7 @@ GO
 GO
 ";
                 var expected_scrubbed = new [] { @"-- " + words_to_check + @"
- "};
+"};
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray(); 
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -120,7 +117,7 @@ GO
 GO
 ";
                 var expected_scrubbed =  new [] { @"-- " + symbols_to_check + @"
- "};
+"};
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -151,7 +148,7 @@ GO
             {
                 string sql_to_match = words_to_check + @" GO
 ";
-                var expected_scrubbed = new [] { words_to_check + @"  "};
+                var expected_scrubbed = new [] { words_to_check + @" "};
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -162,7 +159,7 @@ GO
             {
                 string sql_to_match = symbols_to_check + words_to_check + @" GO
 ";
-                var expected_scrubbed = new [] { symbols_to_check + words_to_check + @"  "};
+                var expected_scrubbed = new [] { symbols_to_check + words_to_check + @" "};
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -173,7 +170,7 @@ GO
             {
                 string sql_to_match = words_to_check + symbols_to_check + @" GO
 ";
-                var expected_scrubbed = new [] { words_to_check + symbols_to_check + @"  "};
+                var expected_scrubbed = new [] { words_to_check + symbols_to_check + @" "};
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -183,7 +180,7 @@ GO
             public void should_replace_on_go_with_words_after_on_the_same_line()
             {
                 string sql_to_match = @" GO " + words_to_check;
-                var expected_scrubbed = new [] { @"  " + words_to_check };
+                var expected_scrubbed = new [] { @" " + words_to_check };
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -193,7 +190,7 @@ GO
             public void should_replace_on_go_with_words_after_on_the_same_line_including_symbols()
             {
                 string sql_to_match = @" GO " + words_to_check + symbols_to_check;
-                var expected_scrubbed = new [] {@"  " + words_to_check + symbols_to_check };
+                var expected_scrubbed = new [] {@" " + words_to_check + symbols_to_check };
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -203,7 +200,7 @@ GO
             public void should_replace_on_go_with_words_before_and_after_on_the_same_line()
             {
                 string sql_to_match = words_to_check + @" GO " + words_to_check;
-                var expected_scrubbed = new [] { words_to_check + @"  " , @"  " + words_to_check };
+                var expected_scrubbed = new [] { words_to_check + @" " , @" " + words_to_check };
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -213,7 +210,7 @@ GO
             public void should_replace_on_go_with_words_before_and_after_on_the_same_line_including_symbols()
             {
                 string sql_to_match = words_to_check + symbols_to_check.Replace("'","").Replace("\"","") + " GO BOB" + symbols_to_check;
-                var expected_scrubbed = new [] { words_to_check + symbols_to_check.Replace("'", "").Replace("\"", "") + "  " , "  BOB" + symbols_to_check};
+                var expected_scrubbed = new [] { words_to_check + symbols_to_check.Replace("'", "").Replace("\"", "") + " " , " BOB" + symbols_to_check};
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
                 CollectionAssert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
@@ -230,7 +227,6 @@ GO
                 var expected_scrubbed = new [] { @"select 1 -- '
 " , @"
 ''
-" , @"
 "};
                 Console.WriteLine(sql_to_match);
                 var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray(); 

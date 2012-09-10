@@ -100,23 +100,23 @@ GO";
 
 			public static string[] tsql_statement_scrubbed = new [] { @"
 BOB1
- " , @" 
+" , @"
 
 /* COMMENT */
 BOB2
- " , @" 
+" , @"
 
 -- GO
 
-BOB3  " , @" 
+BOB3 " , @"
 
 --`~!@#$%^&*()-_+=,.;:'""[]\/?<> GO
 
 BOB5
-    " , @" 
+   " , @"
 
 BOB6
- " , @" 
+" , @"
 
 /* GO */
 
@@ -131,12 +131,12 @@ GO
 BOB8
 
 --
- " , @" 
+" , @"
 
 BOB9
 
 -- `~!@#$%^&*()-_+=,.;:'""[]\/?<>
- " , @" 
+" , @"
 
 BOB10GO
 
@@ -164,7 +164,7 @@ ALTER TABLE Inv.something ADD
 	slsald varchar(15) NULL,
 	uhasdf varchar(15) NULL,
     daf_asdfasdf DECIMAL(20,6) NULL;
- " , @" 
+" , @"
 
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Daily job', 
 		@step_id=1, 
@@ -181,13 +181,13 @@ dml statements
 GO  
 dml statements '
 
- " , @" 
+" , @"
 
 INSERT [dbo].[Foo] ([Bar]) VALUES (N'hello--world.
 Thanks!')
 INSERT [dbo].[Foo] ([Bar]) VALUES (N'Go speed racer, go speed racer, go speed racer go!!!!! ')
 
- "};
+"};
 
         	public static string plsql_statement =
 				@"
