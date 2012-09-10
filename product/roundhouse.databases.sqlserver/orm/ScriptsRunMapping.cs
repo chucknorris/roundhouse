@@ -19,7 +19,7 @@ namespace roundhouse.databases.sqlserver.orm
             Id(x => x.id).Column("id").GeneratedBy.Identity().UnsavedValue(0);
             Map(x => x.version_id);
             Map(x => x.script_name);
-            Map(x => x.text_of_script).CustomSqlType("text");
+            Map(x => x.text_of_script).CustomType("StringClob").CustomSqlType("text");
             Map(x => x.text_hash).Length(512);
             Map(x => x.one_time_script);
 

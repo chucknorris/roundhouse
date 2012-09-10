@@ -1,3 +1,4 @@
+using System.Data.OracleClient;
 using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.oracle
@@ -86,6 +87,11 @@ namespace roundhouse.databases.oracle
             provider = "System.Data.OracleClient";
         }
 
+        protected override void connection_specific_setup(IDbConnection connection)
+        {
+            ((OracleConnection)connection).InfoMessage += (sender, e) => Log.bound_to(this).log_an_info_event_containing("  [SQL PRINT]: {0}{1}",Environment.NewLine, e.Message);
+        }
+
         public override void run_database_specific_tasks()
         {
             Log.bound_to(this).log_an_info_event_containing("Creating a sequence for the '{0}' table.", version_table_name);
@@ -132,7 +138,7 @@ namespace roundhouse.databases.oracle
             run_sql(insert_version_script(), ConnectionType.Default, insert_parameters);
 
             var select_parameters = new List<IParameter<IDbDataParameter>> { create_parameter("repository_path", DbType.AnsiString, repository_path, 255) };
-            return Convert.ToInt64((decimal)run_sql_scalar(get_version_id_script(), ConnectionType.Default, select_parameters));
+            return Convert.ToInt64(run_sql_scalar(get_version_id_script(), ConnectionType.Default, select_parameters));
         }
 
         public override void run_sql(string sql_to_run, ConnectionType connection_type)
@@ -172,7 +178,7 @@ namespace roundhouse.databases.oracle
             parameter.Direction = ParameterDirection.Input;
             parameter.ParameterName = name;
             parameter.DbType = type;
-            parameter.Value = value;
+            parameter.Value = value ?? DBNull.Value;
             if (size != null)
             {
                 parameter.Size = size.Value;
@@ -210,7 +216,7 @@ namespace roundhouse.databases.oracle
                     SELECT id
                     FROM (SELECT * FROM {0}_{1}
                             WHERE 
-                                repository_path = :repository_path
+                                NVL(repository_path, '') = NVL(:repository_path, '')
                             ORDER BY entry_date DESC)
                     WHERE ROWNUM < 2
                 ",

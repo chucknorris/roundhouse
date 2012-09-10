@@ -140,6 +140,7 @@ namespace roundhouse.runners
                         log_and_traverse(known_folders.run_after_create_database, version_id, new_version, ConnectionType.Default);
                     }
 
+					log_and_traverse(known_folders.run_before_up, version_id, new_version, ConnectionType.Default);
                     log_and_traverse(known_folders.up, version_id, new_version, ConnectionType.Default);
 
                     //int last_errors = -1;
