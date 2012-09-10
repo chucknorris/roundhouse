@@ -10,12 +10,20 @@ namespace roundhouse.infrastructure.filesystem
     using logging;
     using extensions;
     using roundhouse.folders;
+    using roundhouse.infrastructure.app;
 
     /// <summary>
     /// All file system access code comes through here
     /// </summary>
     public sealed class WindowsFileSystemAccess : FileSystemAccess
     {
+        public WindowsFileSystemAccess(ConfigurationPropertyHolder configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        private ConfigurationPropertyHolder configuration;
+
         #region File
 
         /// <summary>
@@ -214,6 +222,11 @@ namespace roundhouse.infrastructure.filesystem
         /// <returns>Returns only the file name from the filepath</returns>
         public string get_file_name_from(string file_path, Folder containingFolder)
         {
+            if (!configuration.StoreScriptRelativePath)
+            {
+                return Path.GetFileName(file_path);
+            }
+
             if(!file_path.StartsWith(containingFolder.folder_full_path))
             {
                 throw new Exception("Something bad has happened!");

@@ -305,6 +305,9 @@ namespace roundhouse.console
                 .Add("searchallinsteadoftraverse=|searchallsubdirectoriesinsteadoftraverse=",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
+                .Add("storescriptrelativepath",
+                     "StoreScriptRelativePath - Store the relative path of each script instead of just it's filename. This allows multiple scripts with the same filename, provided that they are in different folders. Defaults to 'false'",
+                     option => configuration.StoreScriptRelativePath = option != null)
                 ;
 
             try
