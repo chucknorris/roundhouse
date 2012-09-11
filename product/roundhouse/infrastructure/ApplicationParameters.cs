@@ -12,6 +12,7 @@ namespace roundhouse.infrastructure
         // defaults
         public static readonly string default_alter_database_folder_name = "alterDatabase";
         public static readonly string default_run_after_create_database_folder_name = "runAfterCreateDatabase";
+		public static readonly string default_run_before_up_folder_name = "runBeforeUp";
         public static readonly string default_up_folder_name = "up";
         public static readonly string default_down_folder_name = "down";
         public static readonly string default_run_first_after_up_folder_name = "runFirstAfterUp";

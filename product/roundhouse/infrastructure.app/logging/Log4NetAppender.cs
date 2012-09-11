@@ -66,8 +66,6 @@ namespace roundhouse.infrastructure.app.logging
             if (!already_configured_file_appender)
             {
                 already_configured_file_appender = true;
-                var log = LogManager.GetLogger("roundhouse");
-                var l = (log4net.Repository.Hierarchy.Logger)log.Logger;
 
                 var layout = new PatternLayout
                 {
@@ -75,16 +73,22 @@ namespace roundhouse.infrastructure.app.logging
                 };
                 layout.ActivateOptions();
 
-                var app = new RollingFileAppender
+                var rollingFileAppender = new RollingFileAppender
                 {
                     Name = "roundhouse.changes.log.appender",
                     File = Path.Combine(Path.GetFullPath(output_directory), "roundhouse.changes.log"),
                     Layout = layout,
                     AppendToFile = false
                 };
-                app.ActivateOptions();
+                rollingFileAppender.ActivateOptions();
 
-                l.AddAppender(app);
+                var log = LogManager.GetLogger("roundhouse");
+                var logger = (log4net.Repository.Hierarchy.Logger)log.Logger;
+                logger.AddAppender(rollingFileAppender);
+            
+                var nhLog = LogManager.GetLogger("NHibernate.SQL");
+                var nhLogger = (log4net.Repository.Hierarchy.Logger)nhLog.Logger;
+                nhLogger.AddAppender(rollingFileAppender);
             }
         }
 
