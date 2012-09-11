@@ -49,54 +49,72 @@ namespace roundhouse.infrastructure.filesystem.filelocators
             ?   File.ReadAllLines(ordering_file)
                 // skip comment lines.
                 .Where(line => !line.StartsWith("#"))
-                .Select((relativeFileName, order) => new KeyValuePair<string, int>(relativeFileName, order))
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.InvariantCultureIgnoreCase)
-            :   new Dictionary<string, int>();
+            :   Enumerable.Empty<string>();
 
 			var files = Directory.GetFiles(directory, pattern, SearchOption.AllDirectories);
             // Sort the files according to their position in the ordering file
             // or failing that their relative file paths.
-            Array.Sort(files, (lhsRaw, rhsRaw) =>
-                                          {
-                                              // obtain the file names relative to the search directory.
-                                              var lhs =
-                                                  lhsRaw.Substring(directory.Length).TrimStart(
-                                                      Path.DirectorySeparatorChar);
-                                              var rhs =
-                                                  rhsRaw.Substring(directory.Length).TrimStart(
-                                                      Path.DirectorySeparatorChar);
-                                              int lhsPosition;
-                                              int rhsPosition;
-
-                                              // Figure out whether the files are in the specified order file.
-                                              bool lhsIsSpecified = specifiedOrder.TryGetValue(lhs, out lhsPosition);
-                                              bool rhsIsSpecified = specifiedOrder.TryGetValue(rhs, out rhsPosition);
-
-                                              if(lhsIsSpecified && rhsIsSpecified)
-                                              {
-                                                  // Both in specified ordering file,
-                                                  // Order them by their location in that file.
-                                                  return Comparer<int>.Default.Compare(lhsPosition, rhsPosition);
-                                              } else if(lhsIsSpecified)
-                                              {
-                                                  // Left hand side is in the specified file,
-                                                  // so it goes before the right hand side.
-                                                  return -1;
-                                              } else if (rhsIsSpecified)
-                                              {
-                                                  // Right hand side is in the specified file,
-                                                  // so it goes before the left hand side.
-                                                  return 1;
-                                              }
-
-                                              // neither side is in the ordering file,
-                                              // use the string comparer against the the relative path to
-                                              // each file.
-                                              return StringComparer.InvariantCultureIgnoreCase.Compare(lhs, rhs);
-                                          }
-            );
+            Array.Sort(files, new Comparer(specifiedOrder, directory)); 
 
             return files;
         }
+
+        /// <summary>
+        /// Sorts string according to their position in the specified ordering,
+        /// or by the invariant culture ignore case comparer.
+        /// </summary>
+        public class Comparer : IComparer<string>
+        {
+            public Comparer(IEnumerable<string> ordering, string directory)
+            {
+                this.specifiedOrder = ordering
+                    .Select((relativeFileName, order) => new KeyValuePair<string, int>(relativeFileName, order))
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.InvariantCultureIgnoreCase);
+                this.directory = directory;
+            }
+
+            private Dictionary<string, int> specifiedOrder;
+            private string directory;
+
+            public int Compare(string lhsRaw, string rhsRaw)
+            {
+                // obtain the file names relative to the search directory.
+                var lhs =
+                  lhsRaw.Substring(directory.Length).TrimStart(
+                      Path.DirectorySeparatorChar);
+                var rhs =
+                  rhsRaw.Substring(directory.Length).TrimStart(
+                      Path.DirectorySeparatorChar);
+                int lhsPosition;
+                int rhsPosition;
+
+                // Figure out whether the files are in the specified order file.
+                bool lhsIsSpecified = specifiedOrder.TryGetValue(lhs, out lhsPosition);
+                bool rhsIsSpecified = specifiedOrder.TryGetValue(rhs, out rhsPosition);
+
+                if(lhsIsSpecified && rhsIsSpecified)
+                {
+                  // Both in specified ordering file,
+                  // Order them by their location in that file.
+                  return Comparer<int>.Default.Compare(lhsPosition, rhsPosition);
+                } else if(lhsIsSpecified)
+                {
+                  // Left hand side is in the specified file,
+                  // so it goes before the right hand side.
+                  return -1;
+                } else if (rhsIsSpecified)
+                {
+                  // Right hand side is in the specified file,
+                  // so it goes before the left hand side.
+                  return 1;
+                }
+
+                // neither side is in the ordering file,
+                // use the string comparer against the the relative path to
+                // each file.
+                return StringComparer.InvariantCultureIgnoreCase.Compare(lhs, rhs);
+            }
+        }
+
     }
 }
