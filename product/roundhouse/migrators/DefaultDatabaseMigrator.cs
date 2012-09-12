@@ -214,7 +214,7 @@ namespace roundhouse.migrators
 
             if (database.split_batch_statements)
             {
-                foreach (var sql_statement in StatementSplitter.split_sql_on_regex_and_remove_empty_statements(sql_to_run, database.sql_statement_separator_regex_pattern))
+                foreach (var sql_statement in  database.sql_splitter.split(sql_to_run))
                 {
                     sql_statements.Add(sql_statement);
                 }

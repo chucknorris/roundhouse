@@ -1,3 +1,5 @@
+using roundhouse.sqlsplitters;
+
 namespace roundhouse.databases
 {
     using System;
@@ -253,6 +255,14 @@ namespace roundhouse.databases
             {
                 database.Dispose();
                 disposing = true;
+            }
+        }
+
+        public StatementSplitter sql_splitter 
+        {
+            get
+            {
+                return database.sql_splitter;
             }
         }
     }

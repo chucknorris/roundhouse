@@ -91,6 +91,7 @@
     <Compile Include="orm\VersionMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerDatabase.cs" />
+    <Compile Include="SqlServerStatementSplitter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\roundhouse\roundhouse.csproj">

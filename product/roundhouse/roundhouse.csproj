@@ -137,7 +137,7 @@
     <Compile Include="RoundhouseMode.cs" />
     <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
-    <Compile Include="sqlsplitters\StatementSplitter.cs" />
+    <Compile Include="sqlsplitters\DefaultStatementSplitter.cs" />
     <Compile Include="consoles\DefaultConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />
     <Compile Include="cryptography\MD5CryptographicService.cs" />
@@ -191,6 +191,7 @@
     <Compile Include="migrators\DatabaseMigrator.cs" />
     <Compile Include="migrators\DefaultDatabaseMigrator.cs" />
     <Compile Include="databases\SqlServerLiteSpeedDatabase.cs" />
+    <Compile Include="sqlsplitters\StatementSplitter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="infrastructure.app\logging\log4net.config.xml" />
