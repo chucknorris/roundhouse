@@ -46,6 +46,17 @@ namespace roundhouse.tests.sqlsplitters
                                     };
 
             [Observation]
+            public void should_replace_on_lowercase_go_statement()
+            {
+                string sql_to_match = "\r\nwhere DataName = 'AttributeKeyMap'\r\ngo ";
+                Console.WriteLine(sql_to_match);
+                var expected = new[] { "\r\nwhere DataName = 'AttributeKeyMap'\r\n" };
+
+                var sql_statement_scrubbed = splitter.split(sql_to_match).ToArray();
+                CollectionAssert.AreEqual(expected, sql_statement_scrubbed);
+            }
+
+            [Observation]
             public void should_replace_on_full_statement_without_issue()
             {
                 string sql_to_match = SplitterContext.FullSplitter.tsql_statement;

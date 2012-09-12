@@ -66,7 +66,8 @@ namespace roundhouse.databases.sqlserver
                                     (?<NEW_LINE>$)",
                                   RegexOptions.Multiline | 
                                   RegexOptions.IgnorePatternWhitespace |
-                                  RegexOptions.ExplicitCapture);
+                                  RegexOptions.ExplicitCapture |
+                                  RegexOptions.IgnoreCase);
             var match = tokenPattern.Match(sql_batch);
             while(match.Success)
             {
