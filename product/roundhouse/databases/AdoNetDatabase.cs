@@ -186,7 +186,10 @@ namespace roundhouse.databases
                     command.Parameters.Add(parameter.underlying_type);
                 }
             }
-            command.Transaction = transaction;
+            if (connection_type != ConnectionType.Admin)
+            {
+                command.Transaction = transaction;
+            }
             command.CommandText = sql_to_run;
             command.CommandType = CommandType.Text;
 
