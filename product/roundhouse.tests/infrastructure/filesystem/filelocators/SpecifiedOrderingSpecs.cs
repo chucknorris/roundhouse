@@ -88,6 +88,26 @@ namespace roundhouse.tests.infrastructure.filesystem.filelocators
             }
 
             [Observation]
+            public void Should_put_shorter_filenames_before_longer_filenames()
+            {
+                var expected = new string[]
+                                   {
+                                       @"001\first.sql",
+                                       @"001\first.longer.sql"
+                                   };
+                var actual =  new string[]
+                                   {
+                                       @"001\first.longer.sql",
+                                       @"001\first.sql",
+                                   };
+                var comparator = new SpecifiedOrdering.Comparer(Enumerable.Empty<string>(), "");
+
+                Array.Sort(actual, comparator);
+
+                CollectionAssert.AreEqual(expected, actual);
+            }
+
+            [Observation]
             public void Should_throw_when_item_is_specified_twice()
             {
                 bool threw = false;

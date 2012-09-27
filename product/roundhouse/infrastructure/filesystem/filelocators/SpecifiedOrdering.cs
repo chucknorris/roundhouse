@@ -109,6 +109,20 @@ namespace roundhouse.infrastructure.filesystem.filelocators
                   return 1;
                 }
 
+                // we want to ignore the file extension when comparing
+                int lhsLengthExcludingFileExtension = lhs.LastIndexOf('.');
+                int rhsLengthExcludingFileExtension = rhs.LastIndexOf('.');
+
+                if(lhsLengthExcludingFileExtension != -1)
+                {
+                    lhs = lhs.Substring(0, lhsLengthExcludingFileExtension);
+                }
+
+                if(rhsLengthExcludingFileExtension != -1)
+                {
+                    rhs = rhs.Substring(0, rhsLengthExcludingFileExtension);
+                }
+
                 // neither side is in the ordering file,
                 // use the string comparer against the the relative path to
                 // each file.
