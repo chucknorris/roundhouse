@@ -5,6 +5,7 @@ namespace roundhouse.folders
         public DefaultKnownFolders(
                                    MigrationsFolder alter_database,
                                    MigrationsFolder run_after_create_database,
+								   MigrationsFolder run_before_up,
                                    MigrationsFolder up,
                                    MigrationsFolder down,
                                    MigrationsFolder run_first_after_up,
@@ -19,6 +20,7 @@ namespace roundhouse.folders
         {
             this.alter_database = alter_database;
             this.run_after_create_database = run_after_create_database;
+			this.run_before_up = run_before_up;
             this.up = up;
             this.down = down;
             this.run_first_after_up = run_first_after_up;
@@ -33,6 +35,7 @@ namespace roundhouse.folders
 
         public MigrationsFolder alter_database { get; private set; }
         public MigrationsFolder run_after_create_database { get; private set; }
+		public MigrationsFolder run_before_up { get; private set; }
         public MigrationsFolder up { get; private set; }
         public MigrationsFolder down { get; private set; }
         public MigrationsFolder run_first_after_up { get; private set; }
