@@ -57,5 +57,6 @@ namespace roundhouse.infrastructure.app
         bool DisableTokenReplacement { get; set; }
         bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         bool DisableOutput { get; set; }
+        System.Text.Encoding FileEncoding { get; set; }
     }
 }

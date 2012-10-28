@@ -305,6 +305,15 @@ namespace roundhouse.console
                 .Add("searchallinsteadoftraverse=|searchallsubdirectoriesinsteadoftraverse=",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
+                .Add("fileencoding=",
+                     "File Encoding - Explicitly specify the file encoding of all files",
+                     option =>
+                         {
+                             if(option != null)
+                             {
+                                 configuration.FileEncoding = System.Text.Encoding.GetEncoding(option);
+                             }
+                         })
                 ;
 
             try
