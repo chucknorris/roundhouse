@@ -30,6 +30,8 @@ namespace roundhouse.consoles
         public string IndexesFolderName { get; set; }
         public string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
         public string PermissionsFolderName { get; set; }
+        public string BeforeTransactionFolderName { get; set; }
+        public string AfterTransactionFolderName { get; set; }
         public string SchemaName { get; set; }
         public string VersionTableName { get; set; }
         public string ScriptsRunTableName { get; set; }
