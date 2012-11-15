@@ -111,8 +111,7 @@ namespace roundhouse.runners
                     {
                         database_migrator.set_recovery_mode(configuration.RecoveryMode == RecoveryMode.Simple);
                     }
-
-
+                    
                     database_migrator.open_connection(run_in_a_transaction);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
                     Log.bound_to(this).log_an_info_event_containing("RoundhousE Structure");
@@ -131,6 +130,8 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("Migration Scripts");
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
 
+                    run_out_side_of_transaction_folder(known_folders.before_migration, version_id, new_version);
+                    
                     database_migrator.open_admin_connection();
                     log_and_traverse(known_folders.alter_database, version_id, new_version, ConnectionType.Admin);
                     database_migrator.close_admin_connection();
@@ -162,6 +163,7 @@ namespace roundhouse.runners
                         database_migrator.open_connection(false);
                     }
                     log_and_traverse(known_folders.permissions, version_id, new_version, ConnectionType.Default);
+                    run_out_side_of_transaction_folder(known_folders.after_migration, version_id, new_version);
 
                     Log.bound_to(this).log_an_info_event_containing(
                         "{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",
@@ -217,6 +219,26 @@ namespace roundhouse.runners
 
             Log.bound_to(this).log_an_info_event_containing("{0}", "-".PadRight(50, '-'));
             traverse_files_and_run_sql(folder.folder_full_path, version_id, folder, environment, new_version, connection_type);
+        }
+
+        public void run_out_side_of_transaction_folder(MigrationsFolder folder, long version_id, string new_version)
+        {
+            if (!string.IsNullOrEmpty(folder.folder_name))
+            {
+                if (run_in_a_transaction)
+                {
+                    database_migrator.close_connection();
+                    database_migrator.open_connection(false);
+                }
+
+                log_and_traverse(folder, version_id, new_version, ConnectionType.Default);
+
+                if (run_in_a_transaction)
+                {
+                    database_migrator.close_connection();
+                    database_migrator.open_connection(run_in_a_transaction);
+                }
+            }
         }
 
         private string get_custom_create_database_script()
