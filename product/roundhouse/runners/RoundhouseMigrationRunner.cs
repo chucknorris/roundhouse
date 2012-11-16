@@ -112,7 +112,7 @@ namespace roundhouse.runners
                         database_migrator.set_recovery_mode(configuration.RecoveryMode == RecoveryMode.Simple);
                     }
                     
-                    run_out_side_of_transaction_folder(known_folders.before_transaction);
+                    run_out_side_of_transaction_folder(known_folders.before_transaction, true);
 
                     database_migrator.open_connection(run_in_a_transaction);
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
@@ -162,8 +162,8 @@ namespace roundhouse.runners
                         database_migrator.close_connection();
                         database_migrator.open_connection(false);
                     }
-                    run_out_side_of_transaction_folder(known_folders.after_transaction);
                     log_and_traverse(known_folders.permissions, version_id, new_version, ConnectionType.Default);
+                    run_out_side_of_transaction_folder(known_folders.after_transaction, false);
 
                     Log.bound_to(this).log_an_info_event_containing(
                         "{0}{0}{1} v{2} has kicked your database ({3})! You are now at version {4}. All changes and backups can be found at \"{5}\".",
@@ -221,13 +221,24 @@ namespace roundhouse.runners
             traverse_files_and_run_sql(folder.folder_full_path, version_id, folder, environment, new_version, connection_type);
         }
 
-        public void run_out_side_of_transaction_folder(MigrationsFolder folder)
+        public void run_out_side_of_transaction_folder(MigrationsFolder folder, bool reopenConnection)
         {
             if (run_in_a_transaction && !string.IsNullOrEmpty(folder.folder_name))
             {
-                database_migrator.open_connection(false);
+
+                if (reopenConnection)
+                {
+                    database_migrator.close_connection();
+                    database_migrator.open_connection(false);
+                }
+
                 log_and_traverse(folder, 0, "0", ConnectionType.Default);
-                database_migrator.close_connection();
+
+                if (reopenConnection)
+                {
+                    database_migrator.close_connection();
+                    database_migrator.open_connection(true);
+                }
             }
         }
 
