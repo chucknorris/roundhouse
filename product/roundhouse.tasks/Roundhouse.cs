@@ -81,6 +81,10 @@
 
         public string PermissionsFolderName { get; set; }
 
+        public string BeforeTransactionFolderName { get; set; }
+
+        public string AfterTransactionFolderName { get; set; }
+
         public string SchemaName { get; set; }
 
         public string VersionTableName { get; set; }
