@@ -5,7 +5,7 @@ namespace roundhouse.databases.ravendb.commands
 {
     public interface IRavenCommand : IDisposable
     {
-        void ExecuteCommand();
+        string ExecuteCommand();
         string Address { get; set; }
     }
 
@@ -24,7 +24,9 @@ namespace roundhouse.databases.ravendb.commands
             WebClient.Dispose();
         }
 
-        public abstract void ExecuteCommand();
+        public abstract string ExecuteCommand();
         public string Address { get; set; }
     }
+
+    
 }

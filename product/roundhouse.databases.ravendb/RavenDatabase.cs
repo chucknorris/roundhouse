@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using roundhouse.databases.ravendb.commands;
+using roundhouse.databases.ravendb.models;
+using roundhouse.databases.ravendb.serializers;
 using roundhouse.infrastructure.app;
 using roundhouse.model;
 
@@ -15,6 +16,7 @@ namespace roundhouse.databases.ravendb
         public RavenDatabase()
         {
             RavenCommandFactory = new RavenCommandFactory();
+            Serializer = new JsonSerializer();
         }
 
         public void Dispose()
@@ -45,6 +47,7 @@ namespace roundhouse.databases.ravendb
         }
 
         public IRavenCommandFactory RavenCommandFactory { get; set; }
+        public ISerializer Serializer { get; set; }
 
         public void open_connection(bool with_transaction)
         {
@@ -72,7 +75,9 @@ namespace roundhouse.databases.ravendb
 
         public bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
-            return false;
+            //create default if this doesn't exist
+            run_sql(custom_create_database_script, ConnectionType.Admin);
+            return true;
         }
 
         public void set_recovery_mode(bool simple)
@@ -104,7 +109,8 @@ namespace roundhouse.databases.ravendb
         {
             
         }
-
+        
+        //TODO REPLACE ConnectionString
         public void run_sql(string sql_to_run, ConnectionType connection_type)
         {
             using (IRavenCommand command = RavenCommandFactory.CreateRavenCommand(sql_to_run))
@@ -130,7 +136,7 @@ namespace roundhouse.databases.ravendb
                 version_id = version_id,
                 entered_by = user_name??"System"
             };
-            var data = JsonConvert.SerializeObject(scriptSuccessModel);
+            var data = Serializer.SerializeObject(scriptSuccessModel);
 
             var scriptToRun = string.Format(@"PUT {0}/docs/ScriptsRun/{1} -d ""{2}"" ", connection_string, script_name, data);
             using (IRavenCommand command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
@@ -152,7 +158,7 @@ namespace roundhouse.databases.ravendb
                 erroneous_part_of_script = sql_erroneous_part,
                 entered_by = user_name??"System",
             };
-            var data = JsonConvert.SerializeObject(scriptsRunError);
+            var data = Serializer.SerializeObject(scriptsRunError);
 
             var scriptToRun = string.Format(@"PUT {0}/docs/ScriptsRunError/{1} -d ""{2}"" ", connection_string, script_name, data);
             using (IRavenCommand command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
@@ -163,13 +169,28 @@ namespace roundhouse.databases.ravendb
 
         public string get_version(string repository_path)
         {
-            return null;
             //do a get of the versionfile - deserialize it and sort with linq on lowest
+            var scriptToRun = string.Format(@"GET {0}/docs/Version", connection_string);
+            string data;
+            using (var command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
+            {
+                data = command.ExecuteCommand();
+            }
+            var model = Serializer.DeserializeObject<VersionDocument>(data);
+
+            var latestVersion=model.Versions.Where(s => s.RepositoryPath == repository_path)
+                 .OrderByDescending(s => s.ModifiedDate)
+                 .FirstOrDefault();
+            if (latestVersion != null)
+            {
+                return latestVersion.Version;
+            }
+            return null;
         }
 
         public long insert_version_and_get_version_id(string repository_path, string repository_version)
         {
-            throw new NotImplementedException();
+            return -1;
         }
 
         public bool has_run_script_already(string script_name)

@@ -12,9 +12,9 @@
 
         public string Data { get; protected set; }
 
-        public override void ExecuteCommand()
+        public override string ExecuteCommand()
         {
-            WebClient.UploadString(Address, _method, Data);
+           return  WebClient.UploadString(Address, _method, Data);
         }
     }
 }

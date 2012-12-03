@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,15 +15,10 @@ namespace roundhouse.databases.ravendb.commands
         {
             _method = "GET";
         }
-        
 
-        public string Data{ get; set; }
-
-        public override void ExecuteCommand()
+        public override string ExecuteCommand()
         {
-            var result = WebClient.DownloadString(Address);
+            return WebClient.DownloadString(Address);
         }
-
-        public string Address { get; set; }
     }
 }

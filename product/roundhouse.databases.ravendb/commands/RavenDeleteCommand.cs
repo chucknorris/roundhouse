@@ -10,9 +10,9 @@
             _method = "DELETE";
         }
         
-        public override void ExecuteCommand()
+        public override string ExecuteCommand()
         {
-            WebClient.UploadString(Address, _method, null);
+            return WebClient.UploadString(Address, _method, null);
         }
     }
 }

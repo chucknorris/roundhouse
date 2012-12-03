@@ -11,7 +11,6 @@ namespace roundhouse.databases.ravendb.commands
     public class RavenCommandFactory
     : IRavenCommandFactory
     {
-
         private string regex =
             @"(?<httpmethod>.*)(?<spaces>\s+)(?<address>http.*)(?<spaces>\s\x2d[d]{1}\s+)\""(?<data>.*)\""\s*$";
 
@@ -38,6 +37,8 @@ namespace roundhouse.databases.ravendb.commands
                     return new RavenPatchCommand(address, data);
                 case "PUT":
                     return new RavenPutCommand(address, data);
+                case "GET":
+                    return new RavenGetCommand(address);
                 default:
                     throw new NotSupportedException(string.Format("HttpMethod {0} is not supported", httpMethod));
             }
