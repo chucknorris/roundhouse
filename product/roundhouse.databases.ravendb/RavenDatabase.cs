@@ -133,6 +133,7 @@ namespace roundhouse.databases.ravendb
                 version_id = version_id,
                 entered_by = user_name??"System"
             };
+            
             var data = Serializer.SerializeObject(scriptSuccessModel);
 
             var scriptToRun = string.Format(@"PUT {0}/docs/ScriptsRun/{1} -d ""{2}"" ", connection_string, script_name, data);
@@ -175,12 +176,12 @@ namespace roundhouse.databases.ravendb
             }
             var model = Serializer.DeserializeObject<VersionDocument>(data);
 
-            var latestVersion=model.Versions.Where(s => s.RepositoryPath == repository_path)
-                 .OrderByDescending(s => s.ModifiedDate)
+            var latestVersion=model.Versions.Where(s => s.repository_path == repository_path)
+                 .OrderByDescending(s => s.modified_date)
                  .FirstOrDefault();
             if (latestVersion != null)
             {
-                return latestVersion.Version;
+                return latestVersion.version;
             }
             return null;
         }

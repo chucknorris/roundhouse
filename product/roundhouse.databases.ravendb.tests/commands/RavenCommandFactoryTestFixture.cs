@@ -46,5 +46,25 @@ namespace roundhouse.databases.ravendb.tests.commands
         {
             Assert.That(ravenPatchCommand.Data, Is.EqualTo(expectedData));
         }
+
+        [Test]
+        [TestCase("http://server/", "http://localhost:8080/docs/testdocument", "http://server/docs/testdocument")]
+        [TestCase("http://server/", "http://localhost/docs/testdocument", "http://server/docs/testdocument")]
+        [TestCase("http://server/", "http://localhost/docs/testdocument", "http://server/docs/testdocument")]
+        [TestCase("http://server:8080/", "http://localhost:8080/docs/testdocument", "http://server:8080/docs/testdocument")]
+        [TestCase("http://server/databases/Condor", "http://localhost:8080/docs/testdocument", "http://server/databases/Condor/docs/testdocument")]
+        [TestCase("http://server/databases/Condor//", "http://localhost:8080/docs/testdocument", "http://server/databases/Condor/docs/testdocument")]
+        [TestCase("http://server with magic spaces/databases/Condor//", "http://localhost:8080/docs/testdocument", "http://server with magic spaces/databases/Condor/docs/testdocument")]
+        public void AssertAddressBasedOnConnectionString(string connectionString, string address, string expectedAddress)
+        {
+            var ravenCommandFactory = new RavenCommandFactory();
+            ravenCommandFactory.ConnectionString = connectionString;
+
+            IRavenCommand command =
+                ravenCommandFactory.CreateRavenCommand(string.Format(@"POST {0} -d ""data"" ", address));
+            
+            Assert.That(command.Address, Is.EqualTo(expectedAddress));
+
+        }
     }
 }
