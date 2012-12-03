@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{57EAD027-D5C6-4F81-B4EC-4DA926471CA2}</ProjectGuid>
+    <ProjectGuid>{667DADC5-7098-4F51-B668-2A89BD50A09B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>roundhouse.databases.ravendb</RootNamespace>
-    <AssemblyName>roundhouse.databases.ravendb</AssemblyName>
+    <RootNamespace>roundhouse.databases.ravendb.tests</RootNamespace>
+    <AssemblyName>roundhouse.databases.ravendb.tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,14 +26,17 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,25 +47,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="commands\RavenCommand.cs" />
-    <Compile Include="commands\RavenCommandFactory.cs" />
-    <Compile Include="commands\RavenDeleteCommand.cs" />
-    <Compile Include="commands\RavenGetCommand.cs" />
-    <Compile Include="commands\RavenPatchCommand.cs" />
-    <Compile Include="commands\RavenPostCommand.cs" />
-    <Compile Include="commands\RavenPutCommand.cs" />
-    <Compile Include="models\versionModel.cs" />
-    <Compile Include="RavenDatabase.cs" />
+    <Compile Include="commands\RavenCommandFactoryTestFixture.cs" />
+    <Compile Include="RavenDatabaseTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\roundhouse\roundhouse.csproj">
-      <Project>{a95de649-d5ba-4402-9d9c-3d8d67e2ff44}</Project>
-      <Name>roundhouse</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\roundhouse.databases.ravendb\roundhouse.databases.ravendb.csproj">
+      <Project>{57ead027-d5c6-4f81-b4ec-4da926471ca2}</Project>
+      <Name>roundhouse.databases.ravendb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\roundhouse\roundhouse.csproj">
+      <Project>{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}</Project>
+      <Name>roundhouse</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
