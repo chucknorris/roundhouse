@@ -53,6 +53,11 @@ namespace roundhouse.infrastructure.app
                     //    database_type_full_name =
                     //        "roundhouse.databases.oledb.OleDbDatabase, roundhouse.databases.oledb";
                     //    break;
+                case "raven":
+                case "ravendb":
+                case "raven-db":
+                    database_type_full_name = "roundhouse.databases.ravendb.RavenDatabase, roundhouse.databases.ravendb";
+                    break;
             }
 
             return database_type_full_name;
