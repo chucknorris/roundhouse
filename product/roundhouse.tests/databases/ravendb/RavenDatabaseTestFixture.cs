@@ -1,13 +1,14 @@
 ﻿using System;
-using NUnit.Framework;
+using MbUnit.Framework;
 using Rhino.Mocks;
+using roundhouse.databases.ravendb;
 using roundhouse.databases.ravendb.commands;
 using roundhouse.databases.ravendb.models;
 using roundhouse.databases.ravendb.serializers;
 using roundhouse.infrastructure.app;
 using Version = roundhouse.model.Version;
 
-namespace roundhouse.databases.ravendb.tests
+namespace roundhouse.tests.databases.ravendb
 {
     [TestFixture]
     public class RavenDatabaseTestFixture
@@ -98,7 +99,7 @@ namespace roundhouse.databases.ravendb.tests
             string result = database.get_version("path");
 
             //Assert
-            Assert.That(result, Is.Null);
+            Assert.IsNull(result);
 
             command.VerifyAllExpectations();
             factory.VerifyAllExpectations();
@@ -143,7 +144,7 @@ namespace roundhouse.databases.ravendb.tests
             string result = database.get_version("path");
 
             //Assert
-            Assert.That(result, Is.EqualTo("13"));
+            Assert.AreEqual("13", result);
 
             command.VerifyAllExpectations();
             factory.VerifyAllExpectations();
@@ -195,7 +196,7 @@ namespace roundhouse.databases.ravendb.tests
             string result = database.get_version("path");
 
             //Assert
-            Assert.That(result, Is.EqualTo("15"));
+            Assert.AreEqual("15", result);
 
             command.VerifyAllExpectations();
             factory.VerifyAllExpectations();
@@ -229,7 +230,7 @@ namespace roundhouse.databases.ravendb.tests
             string result = database.get_version("path");
 
             //Assert
-            Assert.That(result, Is.EqualTo("12"));
+            Assert.AreEqual("12", result);
 
             command.VerifyAllExpectations();
             factory.VerifyAllExpectations();
@@ -239,8 +240,8 @@ namespace roundhouse.databases.ravendb.tests
         public void WhenNoRavenCommandFactoryIsSetTheDefaultIsUsed()
         {
             var database = new RavenDatabase();
-            Assert.That(database.RavenCommandFactory, Is.Not.Null);
-            Assert.That(database.RavenCommandFactory, Is.TypeOf<RavenCommandFactory>());
+            Assert.IsNotNull(database.RavenCommandFactory);
+            Assert.IsInstanceOfType(typeof(RavenCommandFactory), database.RavenCommandFactory);
         }
 
         [Test]

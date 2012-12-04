@@ -45,8 +45,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{828B1E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.ravendb", "product\roundhouse.databases.ravendb\roundhouse.databases.ravendb.csproj", "{57EAD027-D5C6-4F81-B4EC-4DA926471CA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.ravendb.tests", "product\roundhouse.databases.ravendb.tests\roundhouse.databases.ravendb.tests.csproj", "{667DADC5-7098-4F51-B668-2A89BD50A09B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Build|Any CPU = Build|Any CPU
@@ -138,12 +136,6 @@ Global
 		{57EAD027-D5C6-4F81-B4EC-4DA926471CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57EAD027-D5C6-4F81-B4EC-4DA926471CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57EAD027-D5C6-4F81-B4EC-4DA926471CA2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{667DADC5-7098-4F51-B668-2A89BD50A09B}.Build|Any CPU.ActiveCfg = Release|Any CPU
-		{667DADC5-7098-4F51-B668-2A89BD50A09B}.Build|Any CPU.Build.0 = Release|Any CPU
-		{667DADC5-7098-4F51-B668-2A89BD50A09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{667DADC5-7098-4F51-B668-2A89BD50A09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{667DADC5-7098-4F51-B668-2A89BD50A09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{667DADC5-7098-4F51-B668-2A89BD50A09B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -151,7 +143,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0726928C-FDAC-4C79-B423-841C7E0DF5B8} = {807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}
 		{705033B8-10BA-4E7F-854E-08A7C5590DC5} = {807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}
-		{667DADC5-7098-4F51-B668-2A89BD50A09B} = {807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}
 		{3828D379-C96A-49C8-8BC9-0182CC8C55B1} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{71419DBB-4809-4102-A002-D484242FCFC9} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
