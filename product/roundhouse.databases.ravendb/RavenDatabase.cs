@@ -21,7 +21,7 @@ namespace roundhouse.databases.ravendb
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // 
         }
 
         public ConfigurationPropertyHolder configuration { get; set; }
@@ -120,9 +120,13 @@ namespace roundhouse.databases.ravendb
             }
         }
 
+        //TODO REPLACE ConnectionString
         public object run_sql_scalar(string sql_to_run, ConnectionType connection_type)
         {
-            throw new NotImplementedException();
+            using (IRavenCommand command = RavenCommandFactory.CreateRavenCommand(sql_to_run))
+            {
+                return command.ExecuteCommand();
+            }
         }
 
         public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once,

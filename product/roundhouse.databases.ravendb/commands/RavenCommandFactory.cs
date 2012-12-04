@@ -10,17 +10,15 @@ namespace roundhouse.databases.ravendb.commands
         string ConnectionString { get; set; }
     }
 
-    public class RavenCommandFactory
-    : IRavenCommandFactory
+    public class RavenCommandFactory : IRavenCommandFactory
     {
-        private string regex =
-            @"(?<httpmethod>.*)(?<spaces>\s+)(?<address>http.*)(?<spaces>\s\x2d[d]{1}\s+)\""(?<data>.*)\""\s*$";
+        private string regex = @"^(?<httpmethod>\w*)\s+(?<address>https?:\/\/[\w,:,/,#,@]*)(\s+\-d\s+\""(?<data>.*)\"")?";
 
         public string ConnectionString { get; set; }
 
         public IRavenCommand CreateRavenCommand(string command)
         {
-            Match result = Regex.Match(command, regex, RegexOptions.Multiline);
+            Match result = Regex.Match(command, regex, RegexOptions.Singleline);
             string httpMethod = string.Empty;
             string address = string.Empty;
             string data = string.Empty;
