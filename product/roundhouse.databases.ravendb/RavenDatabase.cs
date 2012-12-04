@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+using roundhouse.cryptography;
 using roundhouse.databases.ravendb.commands;
 using roundhouse.databases.ravendb.models;
 using roundhouse.databases.ravendb.serializers;
 using roundhouse.infrastructure.app;
+using roundhouse.infrastructure.logging;
 using roundhouse.model;
+using Version = roundhouse.model.Version;
 
 namespace roundhouse.databases.ravendb
 {
@@ -40,10 +43,11 @@ namespace roundhouse.databases.ravendb
         public bool supports_ddl_transactions { get; private set; }
         public void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
         {
-            throw new NotImplementedException();
+            
         }
 
         public IRavenCommandFactory RavenCommandFactory { get; set; }
+
         public ISerializer Serializer { get; set; }
 
         public void open_connection(bool with_transaction)
@@ -168,15 +172,9 @@ namespace roundhouse.databases.ravendb
         public string get_version(string repository_path)
         {
             //do a get of the versionfile - deserialize it and sort with linq on lowest
-            var scriptToRun = string.Format(@"GET {0}/docs/Version", connection_string);
-            string data;
-            using (var command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
-            {
-                data = command.ExecuteCommand();
-            }
-            var model = Serializer.DeserializeObject<VersionDocument>(data);
+            var versionDocument = GetVersionDocument();
 
-            var latestVersion=model.Versions.Where(s => s.repository_path == repository_path)
+            var latestVersion = versionDocument.Versions.Where(s => s.repository_path == repository_path)
                  .OrderByDescending(s => s.modified_date)
                  .FirstOrDefault();
             if (latestVersion != null)
@@ -186,19 +184,78 @@ namespace roundhouse.databases.ravendb
             return null;
         }
 
+        private VersionDocument GetVersionDocument()
+        {
+            var scriptToRun = string.Format(@"GET {0}/docs/Version", connection_string);
+            string data;
+            using (var command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
+            {
+                data = command.ExecuteCommand();
+            }
+            var versionDocument = Serializer.DeserializeObject<VersionDocument>(data);
+            return versionDocument;
+        }
+
         public long insert_version_and_get_version_id(string repository_path, string repository_version)
         {
-            return -1;
+            long version_id = 0;
+
+            Version version = new Version
+            {
+                version = repository_version ?? string.Empty,
+                repository_path = repository_path ?? string.Empty,
+            };
+            try
+            {
+                var versionDocument = GetVersionDocument();
+                var highestVersion = versionDocument.Versions.Max(s => s.id);
+                version.id = ++highestVersion;
+                versionDocument.Versions.Add(version);
+                version_id = version.id;
+            }
+            catch (Exception ex)
+            {
+                Log.bound_to(this).log_an_error_event_containing("{0} with provider {1} does not provide a facility for inserting versions at this time.{2}{3}",
+                                                                 GetType(), provider, Environment.NewLine, ex.Message);
+                throw;
+            }
+
+            return version_id;
         }
 
         public bool has_run_script_already(string script_name)
         {
-            throw new NotImplementedException();
+            return false;
+            //bool script_has_run = false;
+
+            //DetachedCriteria crit = DetachedCriteria.For<ScriptsRun>()
+            //    .Add(Restrictions.Eq("script_name", script_name))
+            //    .AddOrder(Order.Desc("id"))
+            //    .SetMaxResults(1);
+
+            //try
+            //{
+            //    IList<ScriptsRun> items = repository.get_with_criteria<ScriptsRun>(crit);
+            //    if (items != null && items.Count > 0)
+            //    {
+            //        script_has_run = true;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.bound_to(this).log_an_error_event_containing(
+            //        "{0} with provider {1} does not provide a facility for determining if a script has run at this time.{2}{3}",
+            //        GetType(), provider, Environment.NewLine, ex.Message);
+            //    throw;
+            //}
+
+            //return script_has_run;
         }
 
         public string get_current_script_hash(string script_name)
         {
-            throw new NotImplementedException();
+            cryptography.MD5CryptographicService service = new MD5CryptographicService();
+            return service.hash(script_name);
         }
     }
 }
