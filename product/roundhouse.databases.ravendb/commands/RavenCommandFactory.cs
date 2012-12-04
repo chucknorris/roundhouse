@@ -31,7 +31,7 @@ namespace roundhouse.databases.ravendb.commands
                 data = result.Groups["data"].Value.Trim();
             }
 
-            if (!String.IsNullOrWhiteSpace(ConnectionString))
+            if (!String.IsNullOrEmpty(ConnectionString))
             {
                 ConnectionString = ConnectionString.TrimEnd('/');
                 Match replaceMatch = Regex.Match(address, @"^((http[s]?|ftp):\/)?\/?(?<domain>[^\/\s]+)(?<remaining>.*)$");
