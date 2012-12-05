@@ -80,7 +80,7 @@ namespace roundhouse.tests.databases.ravendb
             command.Expect(s => s.Dispose());
 
             var factory = MockRepository.GenerateStrictMock<IRavenCommandFactory>();
-            factory.Expect(s => s.CreateRavenCommand("GET connectionString/docs/Version")).Return(command);
+            factory.Expect(s => s.CreateRavenCommand("GET connectionString/docs/Roundhouse/Version")).Return(command);
 
             var versionDocument = new VersionDocument();
             versionDocument.Versions.Add(new Version {version = "12", repository_path = "pathOther"});
@@ -114,7 +114,7 @@ namespace roundhouse.tests.databases.ravendb
             command.Expect(s => s.Dispose());
 
             var factory = MockRepository.GenerateStrictMock<IRavenCommandFactory>();
-            factory.Expect(s => s.CreateRavenCommand("GET connectionString/docs/Version")).Return(command);
+            factory.Expect(s => s.CreateRavenCommand("GET connectionString/docs/Roundhouse/Version")).Return(command);
 
             var versionDocument = new VersionDocument();
             versionDocument.Versions.Add(new Version
@@ -160,7 +160,7 @@ namespace roundhouse.tests.databases.ravendb
             command.Expect(s => s.Dispose());
 
             var factory = MockRepository.GenerateStrictMock<IRavenCommandFactory>();
-            factory.Expect(s => s.CreateRavenCommand("GET connectionString/docs/Version")).Return(command);
+            factory.Expect(s => s.CreateRavenCommand("GET connectionString/docs/Roundhouse/Version")).Return(command);
 
             var versionDocument = new VersionDocument();
             versionDocument.Versions.Add(new Version
@@ -211,7 +211,7 @@ namespace roundhouse.tests.databases.ravendb
             command.Expect(s => s.Dispose());
 
             var factory = MockRepository.GenerateStrictMock<IRavenCommandFactory>();
-            factory.Expect(s => s.CreateRavenCommand("GET connectionString/docs/Version")).Return(command);
+            factory.Expect(s => s.CreateRavenCommand("GET connectionString/docs/Roundhouse/Version")).Return(command);
 
             var versionDocument = new VersionDocument();
             versionDocument.Versions.Add(new Version {version = "12", repository_path = "path"});
