@@ -19,6 +19,7 @@ namespace roundhouse.infrastructure
         public static readonly string default_functions_folder_name = "functions";
         public static readonly string default_views_folder_name = "views";
         public static readonly string default_sprocs_folder_name = "sprocs";
+        public static readonly string default_triggers_folder_name = "triggers";
         public static readonly string default_indexes_folder_name = "indexes";
         public static readonly string default_runAfterOtherAnyTime_folder_name = "runAfterOtherAnyTimeScripts";
         public static readonly string default_permissions_folder_name = "permissions";

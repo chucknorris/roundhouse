@@ -185,6 +185,11 @@ namespace roundhouse.console
                          "SprocsFolderName - The name of the folder where you keep your stored procedures. Will recurse through subfolders. Defaults to \"{0}\".",
                          ApplicationParameters.default_sprocs_folder_name),
                      option => configuration.SprocsFolderName = option)
+                .Add("trg=|triggers=|triggersfolder=|triggersfoldername=",
+                     string.Format(
+                         "TriggersFolderName - The name of the folder where you keep your triggers. Will recurse through subfolders. Defaults to \"{0}\".",
+                         ApplicationParameters.default_triggers_folder_name),
+                     option => configuration.TriggersFolderName = option)
                 .Add("ix=|indexes=|indexesfolder=|indexesfoldername=",
                      string.Format(
                          "IndexesFolderName - The name of the folder where you keep your indexes. Will recurse through subfolders. Defaults to \"{0}\".",
