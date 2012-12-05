@@ -12,7 +12,7 @@ namespace roundhouse.databases.ravendb.commands
 
     public class RavenCommandFactory : IRavenCommandFactory
     {
-        private string regex = @"^(?<httpmethod>\w*)\s+(?<address>https?:\/\/[\w,:,/,#,@]*).*((\-d\s+\""(?<data>[^\""]*))|(\-h\s+\""(?<headers>[^\""]*)))";
+        private string regex = @"^(?<httpmethod>\w*)\s+(?<address>https?:\/\/[\w,:,/,#,@,%]*)(?:(?:\s+\-h\s+\""(?<headers>[^\""]*)\"")|(?:\s+\-d\s+\""(?<data>[^\""]*)\""))*";
 
         public string ConnectionString { get; set; }
 
