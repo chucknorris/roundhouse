@@ -181,41 +181,61 @@ namespace roundhouse.databases.ravendb
             var latestVersion = versionDocument.Versions.Where(s => s.repository_path == repository_path)
                  .OrderByDescending(s => s.modified_date)
                  .FirstOrDefault();
-            if (latestVersion != null)
-            {
-                return latestVersion.version;
-            }
-            return null;
+
+            return latestVersion != null ? latestVersion.version : null;
         }
 
         private VersionDocument GetVersionDocument()
         {
-            var scriptToRun = string.Format(@"GET {0}/docs/Version", connection_string);
+            var scriptToRun = string.Format(@"GET {0}/docs/Roundhouse/Version", connection_string);
+
             string data;
+
             using (var command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
             {
                 data = command.ExecuteCommand();
             }
-            var versionDocument = Serializer.DeserializeObject<VersionDocument>(data);
-            return versionDocument;
+
+            return data == null ? 
+                new VersionDocument() : 
+                Serializer.DeserializeObject<VersionDocument>(data);
+        }
+
+        private void SetVersionDocument(VersionDocument versionDocument)
+        {
+            var scriptToRun = string.Format(@"PUT {0}/docs/Roundhouse/Version", connection_string);
+
+            using (var command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
+            {
+                command.ExecuteCommand();
+            }
         }
 
         public long insert_version_and_get_version_id(string repository_path, string repository_version)
         {
-            long version_id = 0;
+            var version = new Version
+                {
+                    version = repository_version ?? string.Empty,
+                    repository_path = repository_path ?? string.Empty,
+                };
 
-            Version version = new Version
-            {
-                version = repository_version ?? string.Empty,
-                repository_path = repository_path ?? string.Empty,
-            };
             try
             {
                 var versionDocument = GetVersionDocument();
-                var highestVersion = versionDocument.Versions.Max(s => s.id);
+
+                long highestVersion = 0;
+
+                if (versionDocument.Versions.Any())
+                {
+                    highestVersion = versionDocument.Versions.Max(s => s.id);
+                }
+
                 version.id = ++highestVersion;
                 versionDocument.Versions.Add(version);
-                version_id = version.id;
+
+                SetVersionDocument(versionDocument);
+
+                return version.id;
             }
             catch (Exception ex)
             {
@@ -223,8 +243,6 @@ namespace roundhouse.databases.ravendb
                                                                  GetType(), provider, Environment.NewLine, ex.Message);
                 throw;
             }
-
-            return version_id;
         }
 
         public bool has_run_script_already(string script_name)
