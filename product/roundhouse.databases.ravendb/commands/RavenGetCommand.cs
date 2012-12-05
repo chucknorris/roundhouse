@@ -1,4 +1,6 @@
 ﻿
+using System.Net;
+
 namespace roundhouse.databases.ravendb.commands
 {
     public class RavenGetCommand : RavenCommand
@@ -13,7 +15,24 @@ namespace roundhouse.databases.ravendb.commands
 
         public override string ExecuteCommand()
         {
-            return WebClient.DownloadString(Address);
+            try
+            {
+                return WebClient.DownloadString(Address);
+            }
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
+                {
+                    var resp = (HttpWebResponse) ex.Response;
+
+                    if (resp.StatusCode == HttpStatusCode.NotFound) // HTTP 404
+                    {
+                        return null;
+                    }
+                }
+
+                throw;
+            }
         }
     }
 }
