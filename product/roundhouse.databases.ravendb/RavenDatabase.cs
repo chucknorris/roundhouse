@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Principal;
 using roundhouse.cryptography;
 using roundhouse.databases.ravendb.commands;
@@ -17,7 +15,6 @@ namespace roundhouse.databases.ravendb
     {
         public RavenDatabase()
         {
-            RavenCommandFactory = new RavenCommandFactory();
             Serializer = new JsonSerializer();
         }
 
@@ -43,12 +40,11 @@ namespace roundhouse.databases.ravendb
         public int restore_timeout { get; set; }
         public bool split_batch_statements { get; set; }
         public bool supports_ddl_transactions { get; private set; }
+
         public void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
         {
-            
-        }
 
-        public IRavenCommandFactory RavenCommandFactory { get; set; }
+        }
 
         public ISerializer Serializer { get; set; }
 
@@ -70,17 +66,17 @@ namespace roundhouse.databases.ravendb
 
         public void open_admin_connection()
         {
-           
+
         }
 
         public void close_admin_connection()
         {
-            
+
         }
 
         public void rollback()
         {
-            
+
         }
 
         public bool create_database_if_it_doesnt_exist(string custom_create_database_script)
@@ -92,93 +88,163 @@ namespace roundhouse.databases.ravendb
 
         public void set_recovery_mode(bool simple)
         {
-            
+
         }
 
         public void backup_database(string output_path_minus_database)
         {
-            
+
         }
 
         public void restore_database(string restore_from_path, string custom_restore_options)
         {
-            
+
         }
 
         public void delete_database_if_it_exists()
         {
-            
+
         }
 
         public void run_database_specific_tasks()
         {
-            
+
         }
 
         public void create_or_update_roundhouse_tables()
         {
-            
+
         }
-        
-        //TODO REPLACE ConnectionString
+
         public void run_sql(string sql_to_run, ConnectionType connection_type)
         {
-            using (IRavenCommand command = RavenCommandFactory.CreateRavenCommand(sql_to_run))
+            if (string.IsNullOrEmpty(sql_to_run)) return;
+
+            //really naive retry logic. Consider Lokad retry policy
+            //this is due to sql server holding onto a connection http://social.msdn.microsoft.com/Forums/en-US/adodotnetdataproviders/thread/99963999-a59b-4614-a1b9-869c6dff921e
+            try
             {
-                command.ExecuteCommand();
+                run_command_with(sql_to_run, connection_type);
+            }
+            catch (Exception ex)
+            {
+                Log.bound_to(this).log_a_debug_event_containing("Failure executing command, trying again. {0}{1}", Environment.NewLine, ex.ToString());
+                run_command_with(sql_to_run, connection_type);
             }
         }
 
-        //TODO REPLACE ConnectionString
+        private void run_command_with(string sql_to_run, ConnectionType connection_type)
+        {
+            using (IRavenCommand command = setup_database_command(sql_to_run, connection_type))
+            {
+                command.Execute();
+                command.Dispose();
+            }
+        }
+
         public object run_sql_scalar(string sql_to_run, ConnectionType connection_type)
         {
-            using (IRavenCommand command = RavenCommandFactory.CreateRavenCommand(sql_to_run))
+            object return_value = new object();
+
+            if (string.IsNullOrEmpty(sql_to_run)) return return_value;
+
+            using (IRavenCommand command = setup_database_command(sql_to_run, connection_type))
             {
-                return command.ExecuteCommand();
+                return_value = command.Execute();
+                command.Dispose();
             }
+
+            return return_value;
         }
 
-        public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once,
-                                      long version_id)
+        private IRavenCommand setup_database_command(string script_to_run, ConnectionType connection_type)
         {
-            var scriptSuccessModel = new ScriptsRun
-            {
-                script_name = script_name,
-                text_of_script = sql_to_run,
-                text_hash = sql_to_run_hash,
-                one_time_script = run_this_script_once,
-                version_id = version_id,
-                entered_by = user_name??"System"
-            };
-            
-            var data = Serializer.SerializeObject(scriptSuccessModel);
+            IRavenCommand command = null;
 
-            var scriptToRun = string.Format(@"PUT {0}/docs/ScriptsRun/{1} -d ""{2}"" ", connection_string, script_name, data);
-            using (IRavenCommand command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
+            switch (connection_type)
             {
-                command.ExecuteCommand();
+                case ConnectionType.Default:
+                    Log.bound_to(this).log_a_debug_event_containing("Setting up command for normal connection");
+                    command = RavenCommand.CreateCommand(connection_string, script_to_run);
+                    command.CommandTimeout = command_timeout;
+                    break;
+                case ConnectionType.Admin:
+                    Log.bound_to(this).log_a_debug_event_containing("Setting up command for admin connection");
+                    command = RavenCommand.CreateCommand(admin_connection_string, script_to_run);
+                    command.CommandTimeout = admin_command_timeout;
+                    break;
+            }
+
+            return command;
+        }
+
+        public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)
+        {
+            var script_run = new ScriptsRun
+                {
+                    version_id = version_id,
+                    script_name = script_name,
+                    text_of_script = sql_to_run,
+                    text_hash = sql_to_run_hash,
+                    one_time_script = run_this_script_once,
+                    entry_date = DateTime.Now,
+                    modified_date = DateTime.Now,
+                    entered_by = get_identity()
+                };
+
+            try
+            {
+                // todo: get de document first and then update
+
+                var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
+
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", null, Serializer.SerializeObject(script_run)))
+                {
+                    command.Execute();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.bound_to(this).log_an_error_event_containing(
+                    "{0} with provider {1} does not provide a facility for recording scripts run at this time.{2}{3}",
+                    GetType(), provider, Environment.NewLine, ex.Message);
+                throw;
             }
         }
 
         public void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message,
                                             string repository_version, string repository_path)
         {
-            var scriptsRunError = new ScriptsRunError()
-            {
-                script_name = script_name,
-                text_of_script = sql_to_run,
-                error_message = error_message,
-                repository_path = repository_path,
-                version = repository_version,
-                erroneous_part_of_script = sql_erroneous_part,
-                entered_by = user_name??"System",
-            };
-            var data = Serializer.SerializeObject(scriptsRunError);
+            var script_run_error = new ScriptsRunError
+                {
+                    version = repository_version ?? string.Empty,
+                    script_name = script_name,
+                    text_of_script = sql_to_run,
+                    erroneous_part_of_script = sql_erroneous_part,
+                    repository_path = repository_path ?? string.Empty,
+                    error_message = error_message,
+                    entry_date = DateTime.Now,
+                    modified_date = DateTime.Now,
+                    entered_by = get_identity()
+                };
 
-            var scriptToRun = string.Format(@"PUT {0}/docs/ScriptsRunError/{1} -d ""{2}"" ", connection_string, script_name, data);
-            using (IRavenCommand command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
+            try
             {
-                command.ExecuteCommand();
+                // todo: get de document first and then update
+
+                var address = string.Format("/docs/RoundhousE/ScriptsRunError/{0}/", script_name);
+
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", null, Serializer.SerializeObject(script_run_error)))
+                {
+                    command.Execute();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.bound_to(this).log_an_error_event_containing(
+                    "{0} with provider {1} does not provide a facility for recording scripts run errors at this time.{2}{3}",
+                    GetType(), provider, Environment.NewLine, ex.Message);
+                throw;
             }
         }
 
@@ -192,9 +258,9 @@ namespace roundhouse.databases.ravendb
         {
             string versionsJson;
 
-            using (var command = new RavenGetCommand(string.Format("{0}/docs/RoundhousE/Versions", connection_string)))
+            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", "GET", null, null))
             {
-                versionsJson = command.ExecuteCommand();
+                versionsJson= (string)command.Execute();
             }
 
             return versionsJson == null ?
@@ -204,9 +270,9 @@ namespace roundhouse.databases.ravendb
 
         private void set_versions(Versions versions)
         {
-            using (var command = new RavenPutCommand(string.Format("{0}/docs/RoundhousE/Versions", connection_string), Serializer.SerializeObject(versions)))
+            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", "PUT", null, Serializer.SerializeObject(versions)))
             {
-                command.ExecuteCommand();
+                command.Execute();
             }
         }
 

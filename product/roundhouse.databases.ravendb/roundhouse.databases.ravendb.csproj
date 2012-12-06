@@ -43,13 +43,8 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="commands\IRavenCommand.cs" />
     <Compile Include="commands\RavenCommand.cs" />
-    <Compile Include="commands\RavenCommandFactory.cs" />
-    <Compile Include="commands\RavenDeleteCommand.cs" />
-    <Compile Include="commands\RavenGetCommand.cs" />
-    <Compile Include="commands\RavenPatchCommand.cs" />
-    <Compile Include="commands\RavenPostCommand.cs" />
-    <Compile Include="commands\RavenPutCommand.cs" />
     <Compile Include="RavenDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="serializers\ISerializer.cs" />

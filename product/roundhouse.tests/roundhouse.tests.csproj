@@ -105,7 +105,6 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="databases\ravendb\commands\RavenCommandFactoryTestFixture.cs" />
     <Compile Include="databases\ravendb\RavenDatabaseTestFixture.cs" />
     <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
     <Compile Include="EmptyTestContainer.cs" />
@@ -149,7 +148,9 @@
       <Name>roundhouse</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="databases\ravendb\commands\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
