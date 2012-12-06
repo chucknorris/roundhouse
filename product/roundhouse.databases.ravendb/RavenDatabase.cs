@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using roundhouse.cryptography;
 using roundhouse.databases.ravendb.commands;
-using roundhouse.databases.ravendb.models;
+using roundhouse.databases.ravendb.model;
 using roundhouse.databases.ravendb.serializers;
 using roundhouse.infrastructure.app;
 using roundhouse.infrastructure.logging;
@@ -49,6 +51,13 @@ namespace roundhouse.databases.ravendb
         public IRavenCommandFactory RavenCommandFactory { get; set; }
 
         public ISerializer Serializer { get; set; }
+
+        public string get_identity()
+        {
+            string identity_of_updater = WindowsIdentity.GetCurrent() != null ? WindowsIdentity.GetCurrent().Name : string.Empty;
+
+            return identity_of_updater;
+        }
 
         public void open_connection(bool with_transaction)
         {
@@ -175,37 +184,27 @@ namespace roundhouse.databases.ravendb
 
         public string get_version(string repository_path)
         {
-            //do a get of the versionfile - deserialize it and sort with linq on lowest
-            var versionDocument = GetVersionDocument();
-
-            var latestVersion = versionDocument.Versions.Where(s => s.repository_path == repository_path)
-                 .OrderByDescending(s => s.modified_date)
-                 .FirstOrDefault();
-
-            return latestVersion != null ? latestVersion.version : null;
+            var versions = get_versions();
+            return versions.GetLastVersionNumber(repository_path);
         }
 
-        private VersionDocument GetVersionDocument()
+        private Versions get_versions()
         {
-            var scriptToRun = string.Format(@"GET {0}/docs/Roundhouse/Version", connection_string);
+            string versionsJson;
 
-            string data;
-
-            using (var command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
+            using (var command = new RavenGetCommand(string.Format("{0}/docs/RoundhousE/Versions", connection_string)))
             {
-                data = command.ExecuteCommand();
+                versionsJson = command.ExecuteCommand();
             }
 
-            return data == null ? 
-                new VersionDocument() : 
-                Serializer.DeserializeObject<VersionDocument>(data);
+            return versionsJson == null ?
+                       new Versions() :
+                       Serializer.DeserializeObject<Versions>(versionsJson);
         }
 
-        private void SetVersionDocument(VersionDocument versionDocument)
+        private void set_versions(Versions versions)
         {
-            var scriptToRun = string.Format(@"PUT {0}/docs/Roundhouse/Version", connection_string);
-
-            using (var command = RavenCommandFactory.CreateRavenCommand(scriptToRun))
+            using (var command = new RavenPutCommand(string.Format("{0}/docs/RoundhousE/Versions", connection_string), Serializer.SerializeObject(versions)))
             {
                 command.ExecuteCommand();
             }
@@ -217,23 +216,18 @@ namespace roundhouse.databases.ravendb
                 {
                     version = repository_version ?? string.Empty,
                     repository_path = repository_path ?? string.Empty,
+                    entry_date = DateTime.Now,
+                    modified_date = DateTime.Now,
+                    entered_by = get_identity()
                 };
 
             try
             {
-                var versionDocument = GetVersionDocument();
+                var versions = get_versions();
 
-                long highestVersion = 0;
+                versions.AddVersionItem(version);
 
-                if (versionDocument.Versions.Any())
-                {
-                    highestVersion = versionDocument.Versions.Max(s => s.id);
-                }
-
-                version.id = ++highestVersion;
-                versionDocument.Versions.Add(version);
-
-                SetVersionDocument(versionDocument);
+                set_versions(versions);
 
                 return version.id;
             }
