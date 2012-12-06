@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Principal;
-using roundhouse.cryptography;
 using roundhouse.databases.ravendb.commands;
 using roundhouse.databases.ravendb.model;
 using roundhouse.databases.ravendb.serializers;
@@ -20,7 +19,6 @@ namespace roundhouse.databases.ravendb
 
         public void Dispose()
         {
-            // 
         }
 
         public ConfigurationPropertyHolder configuration { get; set; }
@@ -57,7 +55,6 @@ namespace roundhouse.databases.ravendb
 
         public void open_connection(bool with_transaction)
         {
-
         }
 
         public void close_connection()
@@ -71,12 +68,10 @@ namespace roundhouse.databases.ravendb
 
         public void close_admin_connection()
         {
-
         }
 
         public void rollback()
         {
-
         }
 
         public bool create_database_if_it_doesnt_exist(string custom_create_database_script)
@@ -88,32 +83,34 @@ namespace roundhouse.databases.ravendb
 
         public void set_recovery_mode(bool simple)
         {
-
+            Log.bound_to(this).log_a_warning_event_containing("{0} with provider {1} does not provide a facility for setting recovery mode to simple at this time.",
+                                                              GetType(), provider);
         }
 
         public void backup_database(string output_path_minus_database)
         {
-
+            Log.bound_to(this).log_a_warning_event_containing("{0} with provider {1} does not provide a facility for backing up a database at this time.",
+                                                              GetType(), provider);
         }
 
         public void restore_database(string restore_from_path, string custom_restore_options)
         {
-
+            Log.bound_to(this).log_a_warning_event_containing("{0} with provider {1} does not provide a facility for restoring a database at this time.",
+                                                              GetType(), provider);
         }
 
         public void delete_database_if_it_exists()
         {
-
+            Log.bound_to(this).log_an_error_event_containing("{0} with provider {1} does not provide a facility for deleting a database at this time.",
+                                                             GetType(), provider);
         }
 
         public void run_database_specific_tasks()
         {
-
         }
 
         public void create_or_update_roundhouse_tables()
         {
-
         }
 
         public void run_sql(string sql_to_run, ConnectionType connection_type)
@@ -194,11 +191,18 @@ namespace roundhouse.databases.ravendb
 
             try
             {
-                // todo: get de document first and then update
 
                 var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
+                var data = Serializer.SerializeObject(script_run);
 
-                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", null, Serializer.SerializeObject(script_run)))
+                // put the document as new root (always last run)
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", null, data))
+                {
+                    command.Execute();
+                }
+
+                // put the document with version (history of runs)
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, string.Format("{0}/{1}", address, version_id), "PUT", null, data))
                 {
                     command.Execute();
                 }
@@ -230,8 +234,6 @@ namespace roundhouse.databases.ravendb
 
             try
             {
-                // todo: get de document first and then update
-
                 var address = string.Format("/docs/RoundhousE/ScriptsRunError/{0}/", script_name);
 
                 using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", null, Serializer.SerializeObject(script_run_error)))
@@ -260,7 +262,7 @@ namespace roundhouse.databases.ravendb
 
             using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", "GET", null, null))
             {
-                versionsJson= (string)command.Execute();
+                versionsJson = (string) command.Execute();
             }
 
             return versionsJson == null ?
@@ -305,39 +307,59 @@ namespace roundhouse.databases.ravendb
             }
         }
 
-        public bool has_run_script_already(string script_name)
-        {
-            return false;
-            //bool script_has_run = false;
-
-            //DetachedCriteria crit = DetachedCriteria.For<ScriptsRun>()
-            //    .Add(Restrictions.Eq("script_name", script_name))
-            //    .AddOrder(Order.Desc("id"))
-            //    .SetMaxResults(1);
-
-            //try
-            //{
-            //    IList<ScriptsRun> items = repository.get_with_criteria<ScriptsRun>(crit);
-            //    if (items != null && items.Count > 0)
-            //    {
-            //        script_has_run = true;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Log.bound_to(this).log_an_error_event_containing(
-            //        "{0} with provider {1} does not provide a facility for determining if a script has run at this time.{2}{3}",
-            //        GetType(), provider, Environment.NewLine, ex.Message);
-            //    throw;
-            //}
-
-            //return script_has_run;
-        }
-
         public string get_current_script_hash(string script_name)
         {
-            cryptography.MD5CryptographicService service = new MD5CryptographicService();
-            return service.hash(script_name);
+            string hash = string.Empty;
+
+            try
+            {
+                var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
+                string scriptsRunJson = null;
+
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "GET", null, null))
+                {
+                    scriptsRunJson = (string) command.Execute();
+                }
+
+                if (scriptsRunJson != null)
+                {
+                    hash = Serializer.DeserializeObject<ScriptsRun>(scriptsRunJson).text_hash;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.bound_to(this).log_an_error_event_containing(
+                    "{0} with provider {1} does not provide a facility for hashing (through recording scripts run) at this time.{2}{3}",
+                    GetType(), provider, Environment.NewLine, ex.Message);
+                throw;
+            }
+
+            return hash;
+        }
+
+        public bool has_run_script_already(string script_name)
+        {
+            bool script_has_run = false;
+
+            try
+            {
+                var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
+
+                // todo: ?metadata-only=true
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "GET", null, null))
+                {
+                    script_has_run = command.Execute() != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.bound_to(this).log_an_error_event_containing(
+                    "{0} with provider {1} does not provide a facility for determining if a script has run at this time.{2}{3}",
+                    GetType(), provider, Environment.NewLine, ex.Message);
+                throw;
+            }
+
+            return script_has_run;
         }
     }
 }
