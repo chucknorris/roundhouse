@@ -12,7 +12,7 @@ namespace roundhouse.databases.ravendb.commands
 
     public class RavenCommandFactory : IRavenCommandFactory
     {
-        private string regex = @"^(?<httpmethod>\w*)\s+(?<address>https?:\/\/[\w,:,/,#,@,%]*)(?:(?:\s+\-h\s+\""(?<headers>[^\""]*)\"")|(?:\s+\-d\s+\""(?<data>[^\""]*)\""))*";
+        private string regex = @"^(?<httpmethod>\w*)\s+(?<address>https?:\/\/[^\s]+)(?:(?:\s+\-h\s+\""(?<headers>[^\""]*)\"")|(?:\s+\-d\s+\""(?<data>[^\""]*)\""))*";
 
         public string ConnectionString { get; set; }
 
@@ -35,7 +35,7 @@ namespace roundhouse.databases.ravendb.commands
             if (!String.IsNullOrEmpty(ConnectionString))
             {
                 ConnectionString = ConnectionString.TrimEnd('/');
-                Match replaceMatch = Regex.Match(address, @"^((http[s]?|ftp):\/)?\/?(?<domain>[^\/\s]+)(?<remaining>.*)$");
+                Match replaceMatch = Regex.Match(address, @"^https?:\/\/(?<domain>[^\/\s]+)(?<remaining>.*)$");
                 string lastPartUri;
                 if (replaceMatch.Success)
                 {
