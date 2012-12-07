@@ -101,7 +101,7 @@ namespace roundhouse.databases.ravendb
 
         public void delete_database_if_it_exists()
         {
-            Log.bound_to(this).log_an_error_event_containing("{0} with provider {1} does not provide a facility for deleting a database at this time.",
+            Log.bound_to(this).log_a_warning_event_containing("{0} with provider {1} does not provide a facility for deleting a database at this time.",
                                                              GetType(), provider);
         }
 
@@ -193,16 +193,17 @@ namespace roundhouse.databases.ravendb
             {
 
                 var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
+                var headers = new[] { "Raven-Entity-Name: RoundhousE", "Content-Type: application/json" };
                 var data = Serializer.SerializeObject(script_run);
 
                 // put the document as new root (always last run)
-                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", null, data))
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", headers, data))
                 {
                     command.Execute();
                 }
 
                 // put the document with version (history of runs)
-                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, string.Format("{0}/{1}", address, version_id), "PUT", null, data))
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, string.Format("{0}/{1}", address, version_id), "PUT", headers, data))
                 {
                     command.Execute();
                 }
@@ -235,8 +236,9 @@ namespace roundhouse.databases.ravendb
             try
             {
                 var address = string.Format("/docs/RoundhousE/ScriptsRunError/{0}/", script_name);
+                var headers = new[] {"Raven-Entity-Name: RoundhousE", "Content-Type: application/json"};
 
-                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", null, Serializer.SerializeObject(script_run_error)))
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", headers, Serializer.SerializeObject(script_run_error)))
                 {
                     command.Execute();
                 }
@@ -272,7 +274,9 @@ namespace roundhouse.databases.ravendb
 
         private void set_versions(Versions versions)
         {
-            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", "PUT", null, Serializer.SerializeObject(versions)))
+            var headers = new[] { "Raven-Entity-Name: RoundhousE", "Content-Type: application/json" };
+
+            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", "PUT", headers, Serializer.SerializeObject(versions)))
             {
                 command.Execute();
             }
