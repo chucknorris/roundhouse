@@ -80,7 +80,7 @@ namespace roundhouse.databases.ravendb.commands
                                .Select(m => m.Groups["headers"])
                                .Select(g => g.Value)
                                .ToArray();
-            var data = Regex.Match(script_to_run, @"\s+(?:-d|--data)\s+\""(?<data>[^\""]*)").Groups["data"].Value;
+            var data = Regex.Match(script_to_run, @"\s+(?:-d|--data)\s+""(?<data>(?:[^""\\]+|\\.)*)""").Groups["data"].Value;
 
             return CreateCommand(connection_string, address, http_method, headers, data);
         }
