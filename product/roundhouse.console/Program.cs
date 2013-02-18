@@ -75,11 +75,6 @@ namespace roundhouse.console
             ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
             ApplicationConfiguraton.build_the_container(configuration);
 
-            if (configuration.Debug)
-            {
-                change_log_to_debug_level();
-            }
-
             return configuration;
         }
 
@@ -375,20 +370,6 @@ namespace roundhouse.console
             the_logger.Info(message);
             option_set.WriteOptionDescriptions(Console.Error);
             Environment.Exit(-1);
-        }
-
-        public static void change_log_to_debug_level()
-        {
-            ILoggerRepository log_repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
-            log_repository.Threshold = Level.Debug;
-            foreach (ILogger log in log_repository.GetCurrentLoggers())
-            {
-                var logger = log as Logger;
-                if (logger != null)
-                {
-                    logger.Level = Level.Debug;
-                }
-            }
         }
 
         public static void run_migrator(ConfigurationPropertyHolder configuration)
