@@ -5,21 +5,27 @@ bin
 obj
 _ReSharper*
 /packages
+App_Data
+
 
 *.suo
 *.user 
 *.csproj.user
 *.DotSettings.user
-*.resharper.user
-*.ReSharper.user
+*.[rR]esharper.user
 *.cache
 *~
 *.swp
 *.orig
 *.log
 *.sln.docstates
+*.results.xml
+*.bak
  
 TestResult.xml
 submit.xml
 SolutionVersion.cs
 SolutionVersion.vb
+
+.DS_Store
+Thumbs.db
