@@ -25,7 +25,7 @@ Copyright (C) 2005 Microsoft Corporation. All rights reserved.
     <Disable_CopyExeApplication Condition="'$(Disable_CopyExeApplication)' == ''">False</Disable_CopyExeApplication>
     <CleanExeProjectOutputDir>True</CleanExeProjectOutputDir>
     <CleanExeProjectOutputDir Condition="$(ExeProjectOutputDirInsideProject)" >False</CleanExeProjectOutputDir>
-</PropertyGroup>
+  </PropertyGroup>
 
   <PropertyGroup>
     <PrepareForRunDependsOn>
@@ -37,6 +37,25 @@ Copyright (C) 2005 Microsoft Corporation. All rights reserved.
       _BuiltExeOutputGroupOutput
     </PrepareForRunDependsOn>
   </PropertyGroup>
+
+  <!--***************************************************************-->
+  <!--App.config -->
+  <!--***************************************************************-->
+  <PropertyGroup>
+    <ProjectConfigFileName Condition="'$(ProjectConfigFileName)'==''">app.config</ProjectConfigFileName>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--a item collection such that we can get the file name and extension from it-->
+    <AppConfigFileName Include="$(ProjectConfigFileName)" />
+  </ItemGroup>
+  <Target Name="CopyAndRenameAppConfig">
+    <Copy SourceFiles="@(AppConfigFileName)"
+      DestinationFiles="@(AppConfigFileName->'$(ExeProjectOutputDir)\$(AssemblyName).exe%(Extension)')"
+      Retries="$(CopyRetryCount)"
+      RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" 
+      Condition="Exists('%(RootDir)%(Directory)%(Filename)%(Extension)')"
+      />
+  </Target>
 
   <!--***************************************************************-->
   <!--Global setting for Clean target -->
@@ -74,35 +93,35 @@ Copyright (C) 2005 Microsoft Corporation. All rights reserved.
 	to a folder other than ~\bin such as is the case with Team Build.
   
   The original _CopyExeApplication is now a Legacy, you can still use it by setting $(UseWPP_CopyExeApplication) to true.
-  By default, it now change to use _WPPCopyWebApplication target in Microsoft.Web.Publish.targets.   It allow to leverage the web.config trsnaformation.
+  By default, it now change to use _WPPCopyWebApplication target in Microsoft.Web.Publish.targets.   It allow to leverage the app.config trsnaformation.
 	============================================================
 	-->
 
   <PropertyGroup>
     <!--This will be overwrite by ..\web\Microsoft.Web.Publishing.targets when $(UseWPP_CopyExeApplication) set to true-->
-   <OnBefore_CopyExeApplicationDefault>
-     _CopyExeApplicationLegacy;
-   </OnBefore_CopyExeApplicationDefault>
-   <OnBefore_CopyExeApplication Condition="'$(OnBefore_CopyExeApplication)'==''">
-    $(OnBefore_CopyExeApplicationDefault);
-  </OnBefore_CopyExeApplication>
-    
-  <OnAfter_CopyExeApplication Condition="'$(OnAfter_CopyExeApplication)'==''">
-  </OnAfter_CopyExeApplication>
+    <OnBefore_CopyExeApplicationDefault>
+      _CopyExeApplicationLegacy;
+    </OnBefore_CopyExeApplicationDefault>
+    <OnBefore_CopyExeApplication Condition="'$(OnBefore_CopyExeApplication)'==''">
+      $(OnBefore_CopyExeApplicationDefault);
+    </OnBefore_CopyExeApplication>
 
-  <_CopyExeApplicationDependsOn Condition="'$(_CopyExeApplicationDependsOn)'==''">
-    $(OnBefore_CopyExeApplication);
-  </_CopyExeApplicationDependsOn>
+    <OnAfter_CopyExeApplication Condition="'$(OnAfter_CopyExeApplication)'==''">
+    </OnAfter_CopyExeApplication>
+
+    <_CopyExeApplicationDependsOn Condition="'$(_CopyExeApplicationDependsOn)'==''">
+      $(OnBefore_CopyExeApplication);
+    </_CopyExeApplicationDependsOn>
 
   </PropertyGroup>
-  <Target Name="_CopyExeApplication" 
-          Condition="!$(Disable_CopyExeApplication) And '$(OutDir)' != '$(OutputPath)'" 
+  <Target Name="_CopyExeApplication"
+          Condition="!$(Disable_CopyExeApplication) And '$(OutDir)' != '$(OutputPath)'"
           DependsOnTargets="$(_CopyExeApplicationDependsOn)">
 
     <CallTarget Condition="'$(OnAfter_CopyExeApplication)' != ''" Targets="$(OnAfter_CopyExeApplication)" RunEachTargetSeparately="true" />
-    
+
   </Target>
-  
+
   <!--
 	============================================================
 	_CopyExeApplicationLegacy
@@ -121,56 +140,59 @@ Copyright (C) 2005 Microsoft Corporation. All rights reserved.
     <!-- Create the _PublishedApplications\app folder -->
     <MakeDir Directories="$(ExeProjectOutputDir)" />
 
+    <!-- ##### APP.CONFIG RENAME ##### -->
+    <CallTarget Targets="CopyAndRenameAppConfig" />
+
     <!-- Copy build outputs to _PublishedApplications\app folder -->
-    <Copy SourceFiles="@(IntermediateAssembly)" DestinationFolder="$(ExeProjectOutputDir)\" 
+    <Copy SourceFiles="@(IntermediateAssembly)" DestinationFolder="$(ExeProjectOutputDir)\"
           SkipUnchangedFiles="true"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
-    <Copy SourceFiles="@(AddModules)" 
-          DestinationFolder="$(ExeProjectOutputDir)\" 
+    <Copy SourceFiles="@(AddModules)"
+          DestinationFolder="$(ExeProjectOutputDir)\"
           SkipUnchangedFiles="true"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
-    <Copy SourceFiles="$(IntermediateOutputPath)$(_SGenDllName)" 
-          DestinationFolder="$(ExeProjectOutputDir)\%(Content.SubFolder)%(Content.RecursiveDir)" 
-          SkipUnchangedFiles="true" 
+    <Copy SourceFiles="$(IntermediateOutputPath)$(_SGenDllName)"
+          DestinationFolder="$(ExeProjectOutputDir)\%(Content.SubFolder)%(Content.RecursiveDir)"
+          SkipUnchangedFiles="true"
           Condition="'$(_SGenDllCreated)'=='true'"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
-    <Copy SourceFiles="$(IntermediateOutputPath)$(TargetName).pdb" 
-          DestinationFolder="$(ExeProjectOutputDir)\" 
-          SkipUnchangedFiles="true" 
-          Condition="'$(_DebugSymbolsProduced)'=='true'" 
+    <Copy SourceFiles="$(IntermediateOutputPath)$(TargetName).pdb"
+          DestinationFolder="$(ExeProjectOutputDir)\"
+          SkipUnchangedFiles="true"
+          Condition="'$(_DebugSymbolsProduced)'=='true'"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
-    <Copy SourceFiles="@(DocFileItem)" 
-          DestinationFolder="$(ExeProjectOutputDir)\" 
-          SkipUnchangedFiles="true" 
+    <Copy SourceFiles="@(DocFileItem)"
+          DestinationFolder="$(ExeProjectOutputDir)\"
+          SkipUnchangedFiles="true"
           Condition="'$(_DocumentationFileProduced)'=='true'"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
-    <Copy SourceFiles="@(IntermediateSatelliteAssembliesWithTargetPath)" 
-          DestinationFiles="@(IntermediateSatelliteAssembliesWithTargetPath->'$(ExeProjectOutputDir)\%(Culture)\$(TargetName).resources.dll')" 
-          SkipUnchangedFiles="true" 
+    <Copy SourceFiles="@(IntermediateSatelliteAssembliesWithTargetPath)"
+          DestinationFiles="@(IntermediateSatelliteAssembliesWithTargetPath->'$(ExeProjectOutputDir)\%(Culture)\$(TargetName).resources.dll')"
+          SkipUnchangedFiles="true"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
-    <Copy SourceFiles="@(ReferenceComWrappersToCopyLocal); @(ResolvedIsolatedComModules); @(_DeploymentLooseManifestFile); @(NativeReferenceFile)" 
-          DestinationFolder="$(ExeProjectOutputDir)" 
-          SkipUnchangedFiles="true" 
+    <Copy SourceFiles="@(ReferenceComWrappersToCopyLocal); @(ResolvedIsolatedComModules); @(_DeploymentLooseManifestFile); @(NativeReferenceFile)"
+          DestinationFolder="$(ExeProjectOutputDir)"
+          SkipUnchangedFiles="true"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
 
     <!-- copy any referenced assemblies to _PublishedApplications\app folder -->
     <Copy SourceFiles="@(ReferenceCopyLocalPaths)"
-          DestinationFiles="@(ReferenceCopyLocalPaths->'$(ExeProjectOutputDir)\%(DestinationSubDirectory)%(Filename)%(Extension)')" 
-          SkipUnchangedFiles="true" 
+          DestinationFiles="@(ReferenceCopyLocalPaths->'$(ExeProjectOutputDir)\%(DestinationSubDirectory)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
 
     <!-- Copy content files recursively to _PublishedApplications\app\ folder -->
     <Copy SourceFiles="@(Content)" Condition="'%(Content.Link)' == ''"
-          DestinationFolder="$(ExeProjectOutputDir)\%(Content.RelativeDir)" 
-          SkipUnchangedFiles="true" 
+          DestinationFolder="$(ExeProjectOutputDir)\%(Content.RelativeDir)"
+          SkipUnchangedFiles="true"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
     <Copy SourceFiles="@(Content)" Condition="!$(DisableLinkInCopyExeApplicaton) And '%(Content.Link)' != ''"
@@ -180,14 +202,14 @@ Copyright (C) 2005 Microsoft Corporation. All rights reserved.
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
 
     <!-- Copy items that have been marked to be copied to the bin folder -->
-    <Copy SourceFiles="@(_SourceItemsToCopyToOutputDirectory)" 
-          DestinationFolder="$(ExeProjectOutputDir)" 
-          SkipUnchangedFiles="true" 
+    <Copy SourceFiles="@(_SourceItemsToCopyToOutputDirectory)"
+          DestinationFolder="$(ExeProjectOutputDir)"
+          SkipUnchangedFiles="true"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
-    <Copy SourceFiles="@(_SourceItemsToCopyToOutputDirectoryAlways)" 
-          DestinationFolder="$(ExeProjectOutputDir)" 
-          SkipUnchangedFiles="false" 
+    <Copy SourceFiles="@(_SourceItemsToCopyToOutputDirectoryAlways)"
+          DestinationFolder="$(ExeProjectOutputDir)"
+          SkipUnchangedFiles="false"
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"/>
 

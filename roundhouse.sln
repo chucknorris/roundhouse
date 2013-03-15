@@ -32,10 +32,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlite
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.postgresql", "product\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj", "{41CE538E-E6F1-4AB6-AB66-508DEF669A39}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bottles", "bottles", "{DF4D94CB-902F-4DCE-B4FD-81542EEB33F1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.bottles.deployers", "product\roundhouse.bottles.deployers\roundhouse.bottles.deployers.csproj", "{50FE3924-D7FD-4AC2-A103-AED685A183CA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{828B1EB9-E0BD-47E4-A553-12E483B7EE9B}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -122,12 +118,6 @@ Global
 		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50FE3924-D7FD-4AC2-A103-AED685A183CA}.Build|Any CPU.ActiveCfg = Release|Any CPU
-		{50FE3924-D7FD-4AC2-A103-AED685A183CA}.Build|Any CPU.Build.0 = Release|Any CPU
-		{50FE3924-D7FD-4AC2-A103-AED685A183CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50FE3924-D7FD-4AC2-A103-AED685A183CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50FE3924-D7FD-4AC2-A103-AED685A183CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50FE3924-D7FD-4AC2-A103-AED685A183CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,6 +132,5 @@ Global
 		{35E058E3-8FEE-4107-AEDC-37A452C588EC} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{1D41D70E-E310-4699-B7CB-C1F77476A685} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{41CE538E-E6F1-4AB6-AB66-508DEF669A39} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
-		{50FE3924-D7FD-4AC2-A103-AED685A183CA} = {DF4D94CB-902F-4DCE-B4FD-81542EEB33F1}
 	EndGlobalSection
 EndGlobal
