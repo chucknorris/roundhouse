@@ -232,6 +232,20 @@ GO
             }
 
             [Observation]
+            public void should_replace_on_go_after_double_dash_comment_with_single_quote_and_single_quote_after_go()
+            {
+                string sql_to_match = words_to_check + @" -- '
+GO
+select ''";
+                string expected_scrubbed = words_to_check + @" -- '
+" + batch_terminator_replacement_string + @"
+select ''";
+                Console.WriteLine(sql_to_match);
+                string sql_statement_scrubbed = script_regex_replace.Replace(sql_to_match, match => StatementSplitter.evaluate_and_replace_batch_split_items(match, script_regex_replace));
+                Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
+            }
+
+            [Observation]
             public void should_not_replace_on_g()
             {
                 const string sql_to_match = @" G
