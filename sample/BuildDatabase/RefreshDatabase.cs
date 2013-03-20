@@ -31,7 +31,7 @@ namespace BuildDatabase
 
         private static string _databaseName = "TestRoundhousE";
         private static string _pathToSqlScripts = @"..\..\..\..\db\SQLServer\TestRoundhousE";
-        private static string _repositoryPath = "http://roundhouse.googlecode.com/svn";
+        private static string _repositoryPath = "https://github.com/chucknorris/roundhouse.git";
 
         private static bool _restoreDuringMaintenance = true;
         private static string _pathToRestore = @"..\..\..\..\code_drop\sample\deployment\TestRoundhousE.bak";
