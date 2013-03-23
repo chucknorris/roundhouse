@@ -16,7 +16,14 @@ namespace roundhouse.databases.sqlserver
 
         public override string sql_statement_separator_regex_pattern
         {
-            get { return @"(?<KEEP1>^\s*--.*$)|(?<KEEP1>/\*[\S\s]*?\*/)|(?<KEEP1>'[^']*')|(?<KEEP1>\s)(?<BATCHSPLITTER>GO)(?<KEEP2>\s|$)"; }
+            get
+            {
+                const string strings = @"(?<KEEP1>'[^']*')";
+                const string dashComments = @"(?<KEEP1>--.*$)";
+                const string starComments = @"(?<KEEP1>/\*[\S\s]*?\*/)";
+                const string separator = @"(?<KEEP1>\s)(?<BATCHSPLITTER>GO)(?<KEEP2>\s|$)";
+                return strings + "|" + dashComments + "|" + starComments + "|" + separator;
+            }
         }
 
         public override void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
