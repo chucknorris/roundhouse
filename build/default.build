@@ -99,6 +99,7 @@
     <nant buildfile="${dirs.current.file}${path.separator}policyChecks.step" inheritall="true" />
     <nant buildfile="${dirs.current.file}${path.separator}versionBuilder.step" inheritall="true" />
     <nant buildfile="${dirs.current.file}${path.separator}generateBuildInfo.step" inheritall="true" />
+    <nant buildfile="${dirs.current.file}${path.separator}manifestBuilder.step" inheritall="true" />
     <nant buildfile="${dirs.current.file}${path.separator}compile.step" inheritall="true" />
     <nant buildfile="${dirs.current.file}${path.separator}environmentBuilder.step" inheritall="true" />
     <nant buildfile="${dirs.current.file}${path.separator}analyze.step" inheritall="true" />

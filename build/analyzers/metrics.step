@@ -30,7 +30,13 @@
   <property name="is.replaced" value="false" />
   <property name="fail.build.on.error" value="false" />
 
-  <target name="go" depends="run_tasks" if="${file::exists(app.metrics)}" />
+  <target name="go" depends="load_uppercut_assemblies, run_tasks" if="${file::exists(app.metrics)}" />
+
+  <property name="file.uppercut.assembly" value="uppercut.tasks.dll" />
+  <property name="path.uppercut.assembly" value="${dirs.current.file}${path.separator}..${path.separator}${file.uppercut.assembly}" />
+  <target name="load_uppercut_assemblies">
+    <loadtasks assembly="${path.uppercut.assembly}" if="${file::exists(path.uppercut.assembly)}" />
+  </target>
 
   <target name="run_tasks" if="${file::exists(app.metrics)}" >
     <echo level="Warning" message="" />
@@ -56,9 +62,9 @@
           if="${file::exists(app.metrics)}" />
 
   <target name="get_regular_dlls">
-    <echo message="Getting output dlls based on name in directory ${path::get-full-path(dirs.build.code)}." />
+    <echo level="warning" message="Getting output dlls based on name in directory ${path::get-full-path(dirs.build.code)}." />
     <property name="dll.names" value="" />
-	<property name="dll.args" value="" />
+    <property name="dll.args" value="" />
     <foreach item="File" property="dll.filename">
       <in>
         <items>
@@ -78,17 +84,17 @@
       </in>
       <do>
         <property name="dll.names" value="${dll.names + ' ' + string::replace(string::replace(dll.filename,path::get-full-path(dirs.build.code) + '\',''),'\',path.separator) + ''}" />
-		<property name="dll.args" value="${dll.args + ' /f:&quot;' + string::replace(string::replace(dll.filename,path::get-full-path(dirs.build.code) + '\',''),'\',path.separator) + '&quot;'}" />
+        <property name="dll.args" value="${dll.args + ' /f:&quot;' + string::replace(string::replace(dll.filename,path::get-full-path(dirs.build.code) + '\',''),'\',path.separator) + '&quot;'}" />
       </do>
     </foreach>
 
-    <property name="dlls.regular" value="${dll.names}" />
-    <echo level="Warning" message="Running Visual Studio Code Metrics against these files - ${dlls.regular}." />
+    <echo level="Warning" message="Running Visual Studio Code Metrics against these files - ${dll.names}." unless="${dll.names == ''}" />
+    <echo level="Warning" message="No dlls to run against." if="${dll.names == ''}" />
 
-    <property name="args.metrics" value=" ${dll.args} ${args.metrics}" />
+      <property name="args.metrics" value=" ${dll.args} ${args.metrics}" />
   </target>
 
-  <target name="metrics" if="${file::exists(app.metrics)}" >
+  <target name="metrics" if="${file::exists(app.metrics) and dll.args != ''}" >
     <echo level="Warning" message="Attempting to run Visual Studio Code Metrics. Creating file at ${file.metrics_results} and logging at ${file.metrics_log}." />
 
     <exec program="${app.metrics}" workingdir="${dirs.build.code}">
@@ -101,6 +107,5 @@
     <echo message="Opening results - ${path::get-full-path(dirs.metrics_results) + path.separator + file.metrics_results}."/>
     <results display="${path::get-full-path(dirs.metrics_results) + path.separator + file.metrics_results}" />
   </target>
- 
 
 </project>

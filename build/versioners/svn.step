@@ -42,7 +42,9 @@
       workingdir="${dirs.current}"
       commandline="info .\ --xml"
       output="_revision.xml"
-      failonerror="false" />
+      failonerror="false"
+      timeout="10000"
+      />
     <xmlpeek
       file="_revision.xml"
       xpath="/info/entry/commit/@revision"
@@ -54,6 +56,7 @@
       output="_revision.xml"
       failonerror="false"
       if="${version.revision == '0'}"
+      timeout="10000"
       />
     <xmlpeek
       file="_revision.xml"
