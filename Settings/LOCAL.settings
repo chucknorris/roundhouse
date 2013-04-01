@@ -17,7 +17,8 @@
 
   <!-- base settings -->
   <property name="project.name" value="RoundhousE" overwrite="false" />
-  <property name="repository.path" value="http://roundhouse.googlecode.com/svn" />
+  <property name="source_control_type" value="git" overwrite="false" />
+  <property name="repository.path" value="https://github.com/chucknorris/roundhouse.git" overwrite="false" />
   <property name="folder.app.drop" value="${project.name}" overwrite="false" />
   <property name="folder.database" value="db" overwrite="false" />
 
