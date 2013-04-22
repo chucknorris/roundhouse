@@ -45,6 +45,7 @@ namespace roundhouse.databases.ravendb.commands
                     case "PUT":
                     case "POST":
                     case "PATCH":
+                    case "EVAL":
                         return _webClient.UploadString(CommandAddress, CommandType, CommandData);
                     case "DELETE":
                         return _webClient.UploadString(CommandAddress, CommandType, "");
