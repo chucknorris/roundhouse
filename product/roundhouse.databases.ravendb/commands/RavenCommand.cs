@@ -47,7 +47,7 @@ namespace roundhouse.databases.ravendb.commands
                     case "PATCH":
                         return _webClient.UploadString(CommandAddress, CommandType, CommandData);
                     case "DELETE":
-                        return _webClient.UploadString(CommandAddress, CommandType, null);
+                        return _webClient.UploadString(CommandAddress, CommandType, "");
                     case "GET":
                         return _webClient.DownloadString(CommandAddress);
                     default:
