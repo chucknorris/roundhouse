@@ -197,13 +197,13 @@ namespace roundhouse.databases.ravendb
                 var data = Serializer.SerializeObject(script_run);
 
                 // put the document as new root (always last run)
-                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", headers, data))
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, null, "PUT", headers, data))
                 {
                     command.Execute();
                 }
 
                 // put the document with version (history of runs)
-                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, string.Format("{0}/{1}", address, version_id), "PUT", headers, data))
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, string.Format("{0}/{1}", address, version_id), null, "PUT", headers, data))
                 {
                     command.Execute();
                 }
@@ -238,7 +238,7 @@ namespace roundhouse.databases.ravendb
                 var address = string.Format("/docs/RoundhousE/ScriptsRunError/{0}/", script_name);
                 var headers = new[] {"Raven-Entity-Name: RoundhousE", "Content-Type: application/json"};
 
-                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "PUT", headers, Serializer.SerializeObject(script_run_error)))
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, null, "PUT", headers, Serializer.SerializeObject(script_run_error)))
                 {
                     command.Execute();
                 }
@@ -262,7 +262,7 @@ namespace roundhouse.databases.ravendb
         {
             string versionsJson;
 
-            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", "GET", null, null))
+            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", null, "GET", null, null))
             {
                 versionsJson = (string) command.Execute();
             }
@@ -276,7 +276,7 @@ namespace roundhouse.databases.ravendb
         {
             var headers = new[] { "Raven-Entity-Name: RoundhousE", "Content-Type: application/json" };
 
-            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", "PUT", headers, Serializer.SerializeObject(versions)))
+            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", null, "PUT", headers, Serializer.SerializeObject(versions)))
             {
                 command.Execute();
             }
@@ -320,7 +320,7 @@ namespace roundhouse.databases.ravendb
                 var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
                 string scriptsRunJson = null;
 
-                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "GET", null, null))
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, null, "GET", null, null))
                 {
                     scriptsRunJson = (string) command.Execute();
                 }
@@ -350,7 +350,7 @@ namespace roundhouse.databases.ravendb
                 var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
 
                 // todo: ?metadata-only=true
-                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, "GET", null, null))
+                using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, null, "GET", null, null))
                 {
                     script_has_run = command.Execute() != null;
                 }

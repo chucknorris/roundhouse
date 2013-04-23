@@ -75,7 +75,9 @@ namespace roundhouse.databases.ravendb.commands
         {
             // parse script_to_run to be able to create the command
             var http_method = Regex.Match(script_to_run, @"^(?<httpmethod>\w*)").Value;
-            var address = Regex.Match(script_to_run, @"\s+https?:\/\/[^/]+(?<address>[^\s]+)").Groups["address"].Value;
+            var match = Regex.Match(script_to_run, @"\s+https?:\/\/[^/]+(?<address>[^?\s]+)(?:\?(?<query>[^\s]*))?");
+            var address = match.Groups["address"].Value;
+            var query = match.Groups["query"].Value;
             var headers = Regex.Matches(script_to_run, @"\s+(?:-H|--header)\s+\""(?<headers>[^\""]*)\""").Cast<Match>()
                                .Where(m => m.Success)
                                .Select(m => m.Groups["headers"])
@@ -83,18 +85,18 @@ namespace roundhouse.databases.ravendb.commands
                                .ToArray();
             var data = Regex.Match(script_to_run, @"\s+(?:-d|--data)\s+""(?<data>(?:[^""\\]+|\\.)*)""").Groups["data"].Value;
 
-            return CreateCommand(connection_string, address, http_method, headers, data);
+            return CreateCommand(connection_string, address, query, http_method, headers, data);
         }
 
-        public static IRavenCommand CreateCommand(string connection_string, string address, string http_method, string[] headers, string data)
+        public static IRavenCommand CreateCommand(string connection_string, string address, string query, string http_method, string[] headers, string data)
         {
-            var regex_result = Regex.Match(connection_string, connection_string_regex);
+            var regexResult = Regex.Match(connection_string, connection_string_regex);
 
-            if (!regex_result.Success)
+            if (!regexResult.Success)
                 throw new ArgumentException("The connectionstring isn't a valid RavenDB connectionstring", "connection_string");
 
-            var url = regex_result.Groups["url"].Value;
-            var database = regex_result.Groups["database"].Value;
+            var url = regexResult.Groups["url"].Value;
+            var database = regexResult.Groups["database"].Value;
 
             var command_address = new UriBuilder(url);
 
@@ -104,7 +106,8 @@ namespace roundhouse.databases.ravendb.commands
             }
 
             command_address.Path += address;
-
+            command_address.Query += query;
+            
             var ravenCommand = new RavenCommand
                 {
                     CommandType = http_method,
