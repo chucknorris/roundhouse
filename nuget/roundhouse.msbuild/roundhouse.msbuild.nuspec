@@ -12,7 +12,7 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>roundhouse db migrations msbuild chucknorris</tags>
-    <iconUrl>http://roundhouse.googlecode.com/svn/trunk/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
+    <iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
     <dependencies>
       <dependency id="log4net" version="[1.2.10]" />
     </dependencies>

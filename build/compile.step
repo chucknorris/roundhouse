@@ -8,7 +8,7 @@
   <property name="file.current.no_extension" value="compile" />
   <property name="dirs.current" value="${directory::get-current-directory()}" />
   <property name="dirs.current.file" value="${directory::get-parent-directory(project::get-buildfile-path())}" />  
-  <property name="W" value="build" overwrite="false" />
+  <property name="folder.build_scripts" value="build" overwrite="false" />
   <property name="folder.build_scripts_custom" value="build.custom" overwrite="false" />
   <property name="dirs.build_scripts_custom" value="${dirs.current}${path.separator}${folder.build_scripts_custom}" />
   <property name="folder.code_build" value="build_output" overwrite="false" />
@@ -77,7 +77,7 @@
   </target>
 
   <target name="run_normal_tasks"
-          depends="error_check, build_code, copy_documentation, copy_db"
+          depends="error_check, set_vars, build_code, copy_documentation, copy_db"
           description="Compiling project." />
 
   <target name="error_check">
@@ -96,6 +96,11 @@
       <property name="framework.multitargeting" value="true" />
       <property name="framework.multitargeting.delimiter" value=";" />
     </if>
+  </target>
+  
+  <target name="set_vars">
+    <echo level="Warning" message="Setting compile variables" />
+    <setenv name="EnableNuGetPackageRestore" value="true"/>
   </target>
   
   <target name="build_code" depends="" description="Building Library">
@@ -286,6 +291,11 @@
     <echo level="Warning" message="Building database files to ${dirs.build}${path.separator}${folder.database}."/>
     <copy todir="${dirs.build}${path.separator}${folder.database}">
       <fileset basedir="${dirs.db}">
+        <exclude name="**/*.csproj" />
+        <exclude name="**/*.csproj.user" />
+        <exclude name="bin/**/*.*" />
+        <exclude name="obj/**/*.*" />
+        <exclude name="Properties/**/*.*" />
         <include name="**/*.*" />
       </fileset>
     </copy>

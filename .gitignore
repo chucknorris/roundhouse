@@ -29,3 +29,7 @@ SolutionVersion.vb
 
 .DS_Store
 Thumbs.db
+
+# Project Specific
+!gems/bin
+
