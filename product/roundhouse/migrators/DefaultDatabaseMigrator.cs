@@ -24,6 +24,8 @@ namespace roundhouse.migrators
         private readonly bool error_on_one_time_script_changes;
         private bool running_in_a_transaction;
         private readonly bool is_running_all_any_time_scripts;
+        private readonly bool is_baseline;
+        private readonly bool is_dryrun;
 
         public DefaultDatabaseMigrator(Database database, CryptographicService crypto_provider, ConfigurationPropertyHolder configuration)
         {
@@ -36,6 +38,8 @@ namespace roundhouse.migrators
             output_path = configuration.OutputPath;
             error_on_one_time_script_changes = !configuration.WarnOnOneTimeScriptChanges;
             is_running_all_any_time_scripts = configuration.RunAllAnyTimeScripts;
+            is_baseline = configuration.Baseline;
+            is_dryrun = configuration.DryRun;
         }
 
         public void initialize_connections()
@@ -179,8 +183,15 @@ namespace roundhouse.migrators
             if (this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment)
                 && this_script_should_run(script_name, sql_to_run, run_this_script_once, run_this_script_every_time))
             {
-                Log.bound_to(this).log_an_info_event_containing(" Running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
-
+                if (!is_dryrun)
+                {
+                    Log.bound_to(this).log_an_info_event_containing(" {3} {0} on {1} - {2}.", script_name, database.server_name, database.database_name,
+                                            is_baseline ? "BASELINING: Recording" : "Running");
+                }
+                if (!is_baseline)
+                {
+                    if (!is_dryrun)
+                    {
                 foreach (var sql_statement in get_statements_to_run(sql_to_run))
                 {
                     try
@@ -189,16 +200,24 @@ namespace roundhouse.migrators
                     }
                     catch (Exception ex)
                     {
-                        Log.bound_to(this).log_an_error_event_containing("Error executing file '{0}': statement running was '{1}'", script_name, sql_statement);
                         database.rollback();
                         
                         record_script_in_scripts_run_errors_table(script_name, sql_to_run, sql_statement, ex.Message, repository_version, repository_path);
                         database.close_connection();
                         throw;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Log.bound_to(this).log_a_warning_event_containing(" DryRun: {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
                     }
                 }
+				if (!is_dryrun)
+                {
                 record_script_in_scripts_run_table(script_name, sql_to_run, run_this_script_once, version_id);
                 this_sql_ran = true;
+				}
             }
             else
             {
