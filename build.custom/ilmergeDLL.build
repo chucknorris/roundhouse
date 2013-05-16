@@ -62,6 +62,7 @@
           <include name="${dirs.merge.from}\MySql.Data.dll" />
           <include name="${dirs.merge.from}\Npgsql.dll" />
           <include name="${dirs.merge.from}\Mono.Security.dll" />
+		  <include name="${dirs.merge.from}\Newtonsoft.Json.dll" />
         </items>
       </in>
       <do>
