@@ -1,18 +1,17 @@
-﻿using System.Data.OracleClient;
-using NHibernate.Driver;
+﻿using NHibernate.Driver;
 using NHibernate.SqlTypes;
-using roundhouse.infrastructure.logging;
+using Oracle.DataAccess.Client;
 
 namespace roundhouse.databases.oracle
 {
-    public class RoundhousEOracleDriver : OracleClientDriver
+    public class RoundhousEOracleDriver : OracleDataClientDriver
     {
         protected override void InitializeParameter(System.Data.IDbDataParameter dbParam, string name, SqlType sqlType)
         {
             base.InitializeParameter(dbParam, name, sqlType);
 
             //http://thebasilet.blogspot.be/2009/07/nhibernate-oracle-clobs.html
-            //System.Data.OracleClient.dll driver generates an exception
+            //MS OracleClient driver generates an exception
             //we set the IDbDataParameter.Value = (string whose length: 4000 > length > 2000 )
             //when we set the IDbDataParameter.DbType = DbType.String
             //when DB Column is of type NCLOB/CLOB
@@ -22,7 +21,7 @@ namespace roundhouse.databases.oracle
             //Mapping file will need to be update to use StringClob as the property type
             if ((sqlType is StringClobSqlType))
             {
-                ((OracleParameter)dbParam).OracleType = OracleType.NClob;
+                ((OracleParameter)dbParam).OracleDbType = OracleDbType.NClob;
             }
         }
     }

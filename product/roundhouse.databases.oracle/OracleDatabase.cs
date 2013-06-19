@@ -1,4 +1,4 @@
-using System.Data.OracleClient;
+using Oracle.DataAccess.Client;
 using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.oracle
@@ -84,10 +84,15 @@ namespace roundhouse.databases.oracle
 
         public override void set_provider()
         {
-            provider = "System.Data.OracleClient";
+            provider = "Oracle.DataAccess";
         }
 
-        protected override void connection_specific_setup(IDbConnection connection)
+	    protected override IDbConnection CreateDbConnection()
+	    {
+		    return new OracleConnection();
+	    }
+
+	    protected override void connection_specific_setup(IDbConnection connection)
         {
             ((OracleConnection)connection).InfoMessage += (sender, e) => Log.bound_to(this).log_a_debug_event_containing("  [SQL PRINT]: {0}{1}", Environment.NewLine, e.Message);
         }
