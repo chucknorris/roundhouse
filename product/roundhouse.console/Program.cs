@@ -261,7 +261,7 @@ namespace roundhouse.console
                      option => configuration.DisableOutput = option != null)
                 //warn on changes
                 .Add("w|warnononetimescriptchanges",
-                     "WarnOnOneTimeScriptChanges - If you do not want RH to error when you change scripts that should not change, you must set this flag. One time scripts are DDL/DML (anything in the upFolder). Defaults to false.",
+                     "WarnOnOneTimeScriptChanges - Instructs RH to execute changed one time scripts (DDL/DML in Up folder) that have previously been run against the database instead of failing. A warning is logged for each one time scripts that is rerun. Defaults to false.",
                      option => configuration.WarnOnOneTimeScriptChanges = option != null)
                 //silent?
                 .Add("silent|ni|noninteractive",
