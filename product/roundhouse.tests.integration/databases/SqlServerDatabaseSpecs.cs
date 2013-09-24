@@ -142,6 +142,56 @@ namespace roundhouse.tests.integration.databases
                     .should_be_equal_to(0);
             }
 
+        }   
+        
+        [Concern(typeof(SqlServerDatabase))]
+        public class when_running_the_migrator_with_sqlserver_in_baseline_mode : concern_for_SqlServerDatabase
+        {
+            protected static object result;
+
+            private context c = () =>
+                                {
+                                    new Migrate().Set(p =>
+                                                    {
+                                                        p.Logger = new ConsoleLogger();
+                                                        p.DatabaseName = database_name;
+                                                        p.SqlFilesDirectory = sql_files_folder_v1;
+                                                        p.Silent = true;
+                                                    }).Run();
+                                };
+
+            private because b = () =>
+                                {
+                                    new Migrate().Set(p =>
+                                                      {
+                                                          p.Logger = new ConsoleLogger();
+                                                          p.DatabaseName = database_name;
+                                                          p.SqlFilesDirectory = sql_files_folder;
+                                                          p.Silent = true;
+                                                          p.Baseline = true;
+                                                      }).Run();
+                                };
+
+            [Observation]
+            public void should_successfully_run()
+            {
+                //nothing needed here
+            }
+
+            [Observation]
+            public void should_not_create_table_timmy()
+            {
+                get_assert_database().run_sql_scalar("SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Timmy'", ConnectionType.Default)
+                    .should_be_equal_to(0);
+            }
+
+            [Observation]
+            public void should_have_18_scripts_in_run_table()
+            {
+                (get_assert_database().run_sql_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun", ConnectionType.Default))
+                    .should_be_equal_to(18);
+            }
+
         }  
         
         [Concern(typeof(SqlServerDatabase))]
