@@ -107,6 +107,7 @@
     <Compile Include="connections\IConnection.cs" />
     <Compile Include="consoles\CommandExecutor.cs" />
     <Compile Include="consoles\InteractivePrompt.cs" />
+    <Compile Include="databases\DatabaseDryRunDecorator.cs" />
     <Compile Include="databases\RecoveryMode.cs" />
     <Compile Include="infrastructure.app\ConnectionType.cs" />
     <Compile Include="databases\DefaultDatabase.cs" />

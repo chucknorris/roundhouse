@@ -1,19 +1,21 @@
 namespace roundhouse.databases
 {
-    using System;
     using infrastructure.app;
-    using infrastructure.logging;
     using infrastructure.persistence;
 
-    public class DatabaseDecoratorBase : Database
+    public abstract class DatabaseDecoratorBase : Database
     {
+        protected readonly Database database;
 
-        private bool database_exists = false;
-        private readonly Database database;
-
-        public DatabaseDecoratorBase(Database database)
+        protected DatabaseDecoratorBase(Database database) 
         {
             this.database = database;
+
+        }
+
+        public void Dispose()
+        {
+            database.Dispose();
         }
 
         public ConfigurationPropertyHolder configuration
@@ -91,8 +93,8 @@ namespace roundhouse.databases
         {
             get { return database.command_timeout; }
             set { database.command_timeout = value; }
-        }        
-        
+        }
+
         public int admin_command_timeout
         {
             get { return database.admin_command_timeout; }
@@ -116,41 +118,29 @@ namespace roundhouse.databases
             get { return database.supports_ddl_transactions; }
         }
 
-        //public IRepository repository
-        //{
-        //    get { return database.repository; }
-        //    set { database.repository = value; }
-        //}
-
         public void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
         {
             database.initialize_connections(configuration_property_holder);
         }
 
-        public void open_connection(bool with_transaction)
+        public virtual void open_connection(bool with_transaction)
         {
-            if (database_exists)
-            {
-                database.open_connection(with_transaction);
-            }
+            database.open_connection(with_transaction);
         }
 
-        public void close_connection()
-        {
-            if (database_exists)
-            {
-                database.close_connection();
-            }
-        }
-
-        public void open_admin_connection()
-        {
-            database.open_connection(false);
-        }
-
-        public void close_admin_connection()
+        public virtual void close_connection()
         {
             database.close_connection();
+        }
+
+        public virtual void open_admin_connection()
+        {
+            database.open_admin_connection();
+        }
+
+        public virtual void close_admin_connection()
+        {
+            database.close_admin_connection();
         }
 
         public void rollback()
@@ -158,45 +148,34 @@ namespace roundhouse.databases
             database.rollback();
         }
 
-        public bool create_database_if_it_doesnt_exist(string custom_create_database_script)
+        public virtual bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
-            database_exists = true; // Pretend that we've created database in mocking mode
-            return true;
-            //TODO: Don't allow creation of the database - record everything from here on out as something that would run
-            //database_exists = database.database_exists
-            //return database.
+            return database.create_database_if_it_doesnt_exist(custom_create_database_script);
         }
 
-        public void set_recovery_mode(bool simple)
+        public virtual void set_recovery_mode(bool simple)
         {
-            Log.bound_to(this).log_an_info_event_containing("Changing the database recovery mode if it has one to {0}", simple ? "simple" : "full");
+            database.set_recovery_mode(simple);
         }
 
-        public void backup_database(string output_path_minus_database)
+        public virtual void backup_database(string output_path_minus_database)
         {
-            Log.bound_to(this).log_an_info_event_containing("Backing up the database to \"{0}\".", output_path_minus_database);
+            database.backup_database(output_path_minus_database);
         }
 
-        public void restore_database(string restore_from_path, string custom_restore_options)
+        public virtual void restore_database(string restore_from_path, string custom_restore_options)
         {
-            string message = "Mocking mode does NOT support what would happen under a restore circumstance, because it would have to actually restore the database to do so.";
-            Log.bound_to(this).log_a_warning_event_containing(message);
-            throw new ApplicationException(message);
+            database.restore_database(restore_from_path, custom_restore_options);
         }
 
-        public void delete_database_if_it_exists()
+        public virtual void delete_database_if_it_exists()
         {
-            //TODO: Determine whether the database exists
-            //database.delete_database_if_it_exists();
+            database.delete_database_if_it_exists();
         }
 
-        public void run_database_specific_tasks()
+        public virtual void run_database_specific_tasks()
         {
-            if (!database_exists)
-            {
-                //TODO: figure out whether we do this or not
-                //database.run_database_specific_tasks();
-            }
+            database.run_database_specific_tasks();
         }
 
         public void create_or_update_roundhouse_tables()
@@ -204,72 +183,46 @@ namespace roundhouse.databases
             database.create_or_update_roundhouse_tables();
         }
 
-        public void run_sql(string sql_to_run,ConnectionType connection_type)
+        public virtual void run_sql(string sql_to_run, ConnectionType connection_type)
         {
-            Log.bound_to(this).log_an_info_event_containing("Running statemtent: {0}{1}", Environment.NewLine, sql_to_run);
-            //database.run_sql(sql_to_run);
-        }
-        
-        public object run_sql_scalar(string sql_to_run,ConnectionType connection_type)
-        {
-            Log.bound_to(this).log_an_info_event_containing("Running statemtent: {0}{1}", Environment.NewLine, sql_to_run);
-            //database.run_sql(sql_to_run);
-            return new object();
+            database.run_sql(sql_to_run, connection_type);
         }
 
-        public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)
+        public virtual object run_sql_scalar(string sql_to_run, ConnectionType connection_type)
         {
-            // database.insert_script_run(script_name, sql_to_run, sql_to_run_hash, run_this_script_once, version_id);
+            return database.run_sql_scalar(sql_to_run, connection_type);
         }
 
-        public void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
+        public virtual void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once,
+                                      long version_id)
         {
-            // database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, repository_version, repository_path);
+            database.insert_script_run(script_name, sql_to_run, sql_to_run_hash, run_this_script_once, version_id);
         }
 
-        public string get_version(string repository_path)
+        public virtual void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message,
+                                            string repository_version, string repository_path)
         {
-            if (database_exists)
-            {
-                return database.get_version(repository_path);
-            }
-
-            return string.Empty;
+            database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, repository_version, repository_path);
         }
 
-        public long insert_version_and_get_version_id(string repository_path, string repository_version)
+        public virtual string get_version(string repository_path)
         {
-            return 0;
+            return database.get_version(repository_path);
         }
 
-        public bool has_run_script_already(string script_name)
+        public virtual long insert_version_and_get_version_id(string repository_path, string repository_version)
         {
-            if (database_exists)
-            {
-                return database.has_run_script_already(script_name);
-            }
-
-            return false;
+            return database.insert_version_and_get_version_id(repository_path, repository_version);
         }
 
-        public string get_current_script_hash(string script_name)
+        public virtual bool has_run_script_already(string script_name)
         {
-            if (database_exists)
-            {
-                return database.get_current_script_hash(script_name);
-            }
-
-            return string.Empty;
+            return database.has_run_script_already(script_name);
         }
 
-        private bool disposing = false;
-        public void Dispose()
+        public virtual string get_current_script_hash(string script_name)
         {
-            if (!disposing)
-            {
-                database.Dispose();
-                disposing = true;
-            }
+            return database.get_current_script_hash(script_name);
         }
     }
 }
