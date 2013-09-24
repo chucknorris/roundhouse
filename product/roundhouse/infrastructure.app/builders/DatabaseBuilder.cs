@@ -39,7 +39,7 @@ namespace roundhouse.infrastructure.app.builders
 
             if (configuration_property_holder.DryRun)
             {
-                database_to_migrate = new MockDatabase(database_to_migrate);
+                database_to_migrate = new DatabaseDecoratorBase(database_to_migrate);
             }
 
             database_to_migrate.configuration = configuration_property_holder;

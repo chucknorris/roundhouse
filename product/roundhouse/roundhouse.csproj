@@ -110,7 +110,7 @@
     <Compile Include="databases\RecoveryMode.cs" />
     <Compile Include="infrastructure.app\ConnectionType.cs" />
     <Compile Include="databases\DefaultDatabase.cs" />
-    <Compile Include="databases\MockDatabase.cs" />
+    <Compile Include="databases\DatabaseDecoratorBase.cs" />
     <Compile Include="DifferenceWithFluentNHibernate.cs" />
     <Compile Include="infrastructure.app\builders\VersionResolverBuilder.cs" />
     <Compile Include="infrastructure.app\DatabaseTypeSynonyms.cs" />
