@@ -1,4 +1,10 @@
-﻿namespace roundhouse.tests.integration.databases
+﻿using System.IO;
+using System.Reflection;
+using developwithpassion.bdd.concerns;
+using roundhouse.databases;
+using roundhouse.infrastructure.containers;
+
+namespace roundhouse.tests.integration.databases
 {
     using bdddoc.core;
     using developwithpassion.bdd.contexts;
@@ -15,7 +21,7 @@
         public abstract class concern_for_SqlServerDatabase : observations_for_a_static_sut
         {
             protected static string database_name = "TestRoundhousE";
-            protected static string sql_files_folder = @"..\..\..\..\db\SqlServer\TestRoundhousE";
+            protected static string sql_files_folder = Path.GetFullPath(Path.Combine(Assembly.GetExecutingAssembly().Location, @"..\..\..\db\SqlServer\TestRoundhousE"));
 
             private after_all_observations after = () =>
                                                    {
@@ -52,6 +58,21 @@
             {
                 //nothing needed here
             }
+
+            [Observation]
+            public void should_create_table_timmy()
+            {
+                Container.get_an_instance_of<Database>().run_sql_scalar("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Timmy'", ConnectionType.Default)
+                    .should_be_equal_to("Timmy");
+            }
+
+            [Observation]
+            public void should_have_at_least_ont_scripts_in_run_table()
+            {
+                Container.get_an_instance_of<Database>().run_sql_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun", ConnectionType.Default)
+                    .should_not_be_equal_to(0);
+            }
+
         }  
         
         [Concern(typeof(SqlServerDatabase))]
