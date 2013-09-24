@@ -24,8 +24,24 @@ namespace roundhouse.tests.integration.databases
         public abstract class concern_for_SqlServerDatabase : observations_for_a_static_sut
         {
             protected static string database_name = "TestRoundhousE";
-            protected static string sql_files_folder = Path.GetFullPath(Path.Combine(Assembly.GetExecutingAssembly().Location, @"..\..\..\db\SqlServer\TestRoundhousE"));
-            protected static string sql_files_folder_v1 = Path.GetFullPath(Path.Combine(Assembly.GetExecutingAssembly().Location, @"..\..\..\db\SqlServer\TestRoundhousE_v1"));
+            protected static string sql_files_folder;
+            protected static string sql_files_folder_v1;
+
+            private static string find_scripts_directory(int iterations, string directory) // Hack to locate diredtory root for command line runner and mbunit.gui runner
+            {
+                if (Directory.Exists(directory))
+                    return directory;
+                if(iterations <= 0)
+                    throw new Exception("Unable to locate db scripts directory at: " +  directory);
+                return find_scripts_directory(iterations - 1, Path.Combine("..", directory));
+            }
+
+            static concern_for_SqlServerDatabase()
+            {
+                var base_directory = find_scripts_directory(6, "db");
+                sql_files_folder = Path.Combine(base_directory, @"SqlServer\TestRoundhousE");
+                sql_files_folder_v1 = Path.Combine(base_directory, @"SqlServer\TestRoundhousE_v1");
+            }
 
             private after_all_observations after = () =>
                                                    {
@@ -240,8 +256,13 @@ namespace roundhouse.tests.integration.databases
             [Observation]
             public void should_have_the_correct_default_restore_options()
             {
-                //NOTE: this is not conclusive since this could vary from system to system depending on where you store stuff. This test needs some work to make it go to the database.
-                result.should_be_equal_to(@", MOVE 'TestRoundhousE' TO 'C:\Program Files (x86)\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\TestRoundhousE.mdf', MOVE 'TestRoundhousE_log' TO 'C:\Program Files (x86)\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\TestRoundhousE_log.LDF'");
+                var server_data_folder_location =
+                    Path.GetDirectoryName(
+                        (string)get_assert_database()
+                            .run_sql_scalar("SELECT top 1 physical_name FROM sys.database_files", ConnectionType.Default));
+
+                var expected = string.Format(@", MOVE 'TestRoundhousE' TO '{0}\TestRoundhousE.mdf', MOVE 'TestRoundhousE_log' TO '{0}\TestRoundhousE_log.LDF'", server_data_folder_location);
+                result.ToLowerInvariant().should_be_equal_to(expected.ToLowerInvariant());
             }
          
         }
