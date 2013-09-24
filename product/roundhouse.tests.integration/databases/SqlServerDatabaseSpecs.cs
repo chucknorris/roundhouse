@@ -38,14 +38,14 @@ namespace roundhouse.tests.integration.databases
 
             protected static Database get_assert_database()
             {
-                var configuration = new consoles.DefaultConfiguration()
+                new Migrate().Set(p =>
                     {
-                        DatabaseName = database_name, DatabaseType = typeof (SqlServerDatabase).AssemblyQualifiedName
-                    };
-                ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
-                var db = DatabaseBuilder.build(Container.get_an_instance_of<FileSystemAccess>(),
-                                               configuration);
-                return db;
+                        p.Logger = new ConsoleLogger();
+                        p.DatabaseName = database_name;
+                        p.SqlFilesDirectory = sql_files_folder;
+                        p.Silent = true;
+                    });
+                return Container.get_an_instance_of<Database>();
             }
         }
 
