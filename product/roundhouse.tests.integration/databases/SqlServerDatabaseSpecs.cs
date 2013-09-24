@@ -2,7 +2,9 @@
 using System.Reflection;
 using developwithpassion.bdd.concerns;
 using roundhouse.databases;
+using roundhouse.infrastructure.app.builders;
 using roundhouse.infrastructure.containers;
+using roundhouse.infrastructure.filesystem;
 
 namespace roundhouse.tests.integration.databases
 {
@@ -33,6 +35,18 @@ namespace roundhouse.tests.integration.databases
                                                                              p.Silent = true;
                                                                          }).Run();
                                                    };
+
+            protected static Database get_assert_database()
+            {
+                var configuration = new consoles.DefaultConfiguration()
+                    {
+                        DatabaseName = database_name, DatabaseType = typeof (SqlServerDatabase).AssemblyQualifiedName
+                    };
+                ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
+                var db = DatabaseBuilder.build(Container.get_an_instance_of<FileSystemAccess>(),
+                                               configuration);
+                return db;
+            }
         }
 
         [Concern(typeof(SqlServerDatabase))]
@@ -62,15 +76,57 @@ namespace roundhouse.tests.integration.databases
             [Observation]
             public void should_create_table_timmy()
             {
-                Container.get_an_instance_of<Database>().run_sql_scalar("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Timmy'", ConnectionType.Default)
+                get_assert_database().run_sql_scalar("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Timmy'", ConnectionType.Default)
                     .should_be_equal_to("Timmy");
             }
 
             [Observation]
-            public void should_have_at_least_ont_scripts_in_run_table()
+            public void should_have_at_least_one_scripts_in_run_table()
             {
-                Container.get_an_instance_of<Database>().run_sql_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun", ConnectionType.Default)
+                get_assert_database().run_sql_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun", ConnectionType.Default)
                     .should_not_be_equal_to(0);
+            }
+
+        } 
+
+        [Concern(typeof(SqlServerDatabase))]
+        public class when_running_the_migrator_with_sqlserver_in_dry_run_mode : concern_for_SqlServerDatabase
+        {
+            protected static object result;
+
+            private context c = () => { };
+
+            private because b = () =>
+                                {
+                                    new Migrate().Set(p =>
+                                                      {
+                                                          p.Logger = new ConsoleLogger();
+                                                          p.DatabaseName = database_name;
+                                                          p.SqlFilesDirectory = sql_files_folder;
+                                                          p.Silent = true;
+                                                          p.DryRun = true;
+                                                      }).Run();
+                                };
+
+            [Observation]
+            public void should_successfully_run()
+            {
+                //nothing needed here
+            }
+
+            [Observation]
+            public void should_not_create_table_timmy()
+            {
+
+                get_assert_database().run_sql_scalar("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Timmy'", ConnectionType.Default)
+                    .should_be_equal_to(null);
+            }
+
+            [Observation]
+            public void should_have_zero_scripts_in_run_table()
+            {
+                get_assert_database().run_sql_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun", ConnectionType.Default)
+                    .should_be_equal_to(0);
             }
 
         }  
