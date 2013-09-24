@@ -1,16 +1,18 @@
+
 namespace roundhouse.databases
 {
     using System;
-    using roundhouse.infrastructure.app;
     using roundhouse.infrastructure.logging;
+    using roundhouse.infrastructure.app;
 
-    public class DatabaseDryRunDecorator : DatabaseDecoratorBase
+    class DatabaseBaselineDecorator : DatabaseDecoratorBase
     {
-        private bool database_exists = false;
-
-        public DatabaseDryRunDecorator(Database database) : base(database)
+        public DatabaseBaselineDecorator(Database database)
+            : base(database)
         {
         }
+
+        private bool database_exists = false;
 
         public override void open_connection(bool with_transaction)
         {
@@ -40,11 +42,8 @@ namespace roundhouse.databases
 
         public override bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
-            database_exists = true; // Pretend that we've created database in mocking mode
+            database_exists = true;
             return true;
-            //TODO: Don't allow creation of the database - record everything from here on out as something that would run
-            //database_exists = database.database_exists
-            //return database.
         }
 
         public override void set_recovery_mode(bool simple)
@@ -83,24 +82,12 @@ namespace roundhouse.databases
         public override void run_sql(string sql_to_run, ConnectionType connection_type)
         {
             Log.bound_to(this).log_an_info_event_containing("Running statemtent: {0}{1}", Environment.NewLine, sql_to_run);
-            //database.run_sql(sql_to_run);
         }
 
         public override object run_sql_scalar(string sql_to_run, ConnectionType connection_type)
         {
             Log.bound_to(this).log_an_info_event_containing("Running statemtent: {0}{1}", Environment.NewLine, sql_to_run);
-            //database.run_sql(sql_to_run);
             return new object();
-        }
-
-        public override void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)
-        {
-            // database.insert_script_run(script_name, sql_to_run, sql_to_run_hash, run_this_script_once, version_id);
-        }
-
-        public override void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
-        {
-            // database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, repository_version, repository_path);
         }
 
         public override string get_version(string repository_path)
@@ -111,11 +98,6 @@ namespace roundhouse.databases
             }
 
             return string.Empty;
-        }
-
-        public override long insert_version_and_get_version_id(string repository_path, string repository_version)
-        {
-            return 0;
         }
 
         public override bool has_run_script_already(string script_name)

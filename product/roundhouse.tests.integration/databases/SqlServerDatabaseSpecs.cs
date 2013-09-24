@@ -186,10 +186,10 @@ namespace roundhouse.tests.integration.databases
             }
 
             [Observation]
-            public void should_have_18_scripts_in_run_table()
+            public void should_have_19_scripts_in_run_table()
             {
                 (get_assert_database().run_sql_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun", ConnectionType.Default))
-                    .should_be_equal_to(18);
+                    .should_be_equal_to(19);
             }
 
         }  
