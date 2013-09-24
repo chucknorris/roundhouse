@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using developwithpassion.bdd.concerns;
 using roundhouse.databases;
@@ -24,6 +25,7 @@ namespace roundhouse.tests.integration.databases
         {
             protected static string database_name = "TestRoundhousE";
             protected static string sql_files_folder = Path.GetFullPath(Path.Combine(Assembly.GetExecutingAssembly().Location, @"..\..\..\db\SqlServer\TestRoundhousE"));
+            protected static string sql_files_folder_v1 = Path.GetFullPath(Path.Combine(Assembly.GetExecutingAssembly().Location, @"..\..\..\db\SqlServer\TestRoundhousE_v1"));
 
             private after_all_observations after = () =>
                                                    {
@@ -38,13 +40,16 @@ namespace roundhouse.tests.integration.databases
 
             protected static Database get_assert_database()
             {
-                new Migrate().Set(p =>
+                var m = new Migrate().Set(p =>
                     {
                         p.Logger = new ConsoleLogger();
                         p.DatabaseName = database_name;
                         p.SqlFilesDirectory = sql_files_folder;
                         p.Silent = true;
+                        p.DryRun = false;
                     });
+                ApplicationConfiguraton.set_defaults_if_properties_are_not_set(m.GetConfiguration());
+                ApplicationConfiguraton.build_the_container(m.GetConfiguration());
                 return Container.get_an_instance_of<Database>();
             }
         }
@@ -94,7 +99,16 @@ namespace roundhouse.tests.integration.databases
         {
             protected static object result;
 
-            private context c = () => { };
+            private context c = () =>
+                                {
+                                    new Migrate().Set(p =>
+                                                    {
+                                                        p.Logger = new ConsoleLogger();
+                                                        p.DatabaseName = database_name;
+                                                        p.SqlFilesDirectory = sql_files_folder_v1;
+                                                        p.Silent = true;
+                                                    }).Run();
+                                };
 
             private because b = () =>
                                 {
@@ -117,15 +131,14 @@ namespace roundhouse.tests.integration.databases
             [Observation]
             public void should_not_create_table_timmy()
             {
-
-                get_assert_database().run_sql_scalar("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Timmy'", ConnectionType.Default)
-                    .should_be_equal_to(null);
+                get_assert_database().run_sql_scalar("SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Timmy'", ConnectionType.Default)
+                    .should_be_equal_to(0);
             }
 
             [Observation]
             public void should_have_zero_scripts_in_run_table()
             {
-                get_assert_database().run_sql_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun", ConnectionType.Default)
+                (get_assert_database().run_sql_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun", ConnectionType.Default))
                     .should_be_equal_to(0);
             }
 

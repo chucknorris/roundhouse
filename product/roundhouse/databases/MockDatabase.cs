@@ -160,9 +160,10 @@ namespace roundhouse.databases
 
         public bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
+            database_exists = true; // Pretend that we've created database in mocking mode
+            return true;
             //TODO: Don't allow creation of the database - record everything from here on out as something that would run
             //database_exists = database.database_exists
-            return true;
             //return database.
         }
 
