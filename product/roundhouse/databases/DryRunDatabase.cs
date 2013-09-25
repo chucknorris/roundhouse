@@ -4,11 +4,11 @@ namespace roundhouse.databases
     using roundhouse.infrastructure.app;
     using roundhouse.infrastructure.logging;
 
-    public class DatabaseDryRunDecorator : DatabaseDecoratorBase
+    public class DryRunDatabase : DatabaseDecoratorBase
     {
         private bool database_exists = false;
 
-        public DatabaseDryRunDecorator(Database database) : base(database)
+        public DryRunDatabase(Database database) : base(database)
         {
         }
 

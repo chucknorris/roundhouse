@@ -5,9 +5,9 @@ namespace roundhouse.databases
     using roundhouse.infrastructure.logging;
     using roundhouse.infrastructure.app;
 
-    class DatabaseBaselineDecorator : DatabaseDecoratorBase
+    class BaselineModeDatabase : DatabaseDecoratorBase
     {
-        public DatabaseBaselineDecorator(Database database)
+        public BaselineModeDatabase(Database database)
             : base(database)
         {
         }
