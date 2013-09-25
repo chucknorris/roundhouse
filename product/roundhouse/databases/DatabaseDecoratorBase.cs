@@ -13,11 +13,6 @@ namespace roundhouse.databases
 
         }
 
-        public void Dispose()
-        {
-            database.Dispose();
-        }
-
         public ConfigurationPropertyHolder configuration
         {
             get { return database.configuration; }
@@ -223,6 +218,16 @@ namespace roundhouse.databases
         public virtual string get_current_script_hash(string script_name)
         {
             return database.get_current_script_hash(script_name);
+        }
+
+        private bool disposing = false;
+        public void Dispose()
+        {
+            if (!disposing)
+            {
+                database.Dispose();
+                disposing = true;
+            }
         }
     }
 }
