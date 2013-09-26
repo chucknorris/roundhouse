@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using NSpec;
 using roundhouse.connections;
 using roundhouse.consoles;
@@ -24,57 +25,41 @@ namespace roundhouse.tests.integration.databases
         }
         public void assert_table_exists(string table_name)
         {
+            exec_scalar("select OBJECT_ID(@0)", table_name).should_not_be(DBNull.Value);
+        }
+
+        private object exec_scalar(string command, params object[] args)
+        {
             var connection = SqlClientFactory.Instance.CreateConnection();
             connection.ConnectionString = "Server=(local);Database=" + database_name + ";Trusted_Connection=True;";
             connection.Open();
             using (connection)
             {
                 var cmd = connection.CreateCommand();
-                cmd.CommandText = "select OBJECT_ID(@id)";
-                var dbParameter = cmd.CreateParameter();
-                dbParameter.ParameterName = "@id";
-                dbParameter.Value = table_name;
-                cmd.Parameters.Add(dbParameter);
+                cmd.CommandText = command;
 
-                var objectId = cmd.ExecuteScalar();
-                objectId.should_not_be_null();
+                if (args.Any())
+                {
+                    cmd.Parameters.AddRange(args.Select((v, i) =>
+                        {
+                            var dbParameter = cmd.CreateParameter();
+                            dbParameter.ParameterName = "@" + i;
+                            dbParameter.Value = v;
+                            return dbParameter;
+                        }).ToArray());
+                }
+                return cmd.ExecuteScalar();
             }
-
         }
 
         public void assert_table_not_exists(string table_name)
         {
-            var connection = SqlClientFactory.Instance.CreateConnection();
-            connection.ConnectionString = "Server=(local);Database=" + database_name + ";Trusted_Connection=True;";
-            connection.Open();
-            using (connection)
-            {
-                var cmd = connection.CreateCommand();
-                cmd.CommandText = "select OBJECT_ID(@id)";
-                var dbParameter = cmd.CreateParameter();
-                dbParameter.ParameterName = "@id";
-                dbParameter.Value = table_name;
-                cmd.Parameters.Add(dbParameter);
-
-                var objectId = cmd.ExecuteScalar();
-                objectId.should_be(DBNull.Value);
-            }
-
+            exec_scalar("select OBJECT_ID(@0)", table_name).should_be(DBNull.Value);
         }
 
         public int scripts_run()
         {
-            var connection = SqlClientFactory.Instance.CreateConnection();
-            connection.ConnectionString = "Server=(local);Database=" + database_name + ";Trusted_Connection=True;";
-            connection.Open();
-            using (connection)
-            {
-                var cmd = connection.CreateCommand();
-                cmd.CommandText = "SELECT count(*) FROM RoundhousE.ScriptsRun";
-
-                return (int)cmd.ExecuteScalar();
-            }
-
+            return (int) exec_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun");
         }
     }
     public class describe_roundhouse_spec : nspec
