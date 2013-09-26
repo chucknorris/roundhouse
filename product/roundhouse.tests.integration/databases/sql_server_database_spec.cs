@@ -1,28 +1,21 @@
 ﻿using System;
-using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using NSpec;
-using roundhouse.connections;
-using roundhouse.consoles;
-using roundhouse.databases;
-using roundhouse.databases.sqlserver;
-using roundhouse.infrastructure.app;
-using roundhouse.infrastructure.containers;
-using roundhouse.infrastructure.logging.custom;
 
 namespace roundhouse.tests.integration.databases
 {
     public class DatabaseAsserts
     {
-        private string database_name;
+        private readonly string database_name;
 
         public DatabaseAsserts(string database_name)
         {
             this.database_name = database_name;
         }
+
         public void assert_table_exists(string table_name)
         {
             exec_scalar("select OBJECT_ID(@0)", table_name).should_not_be(DBNull.Value);
@@ -30,19 +23,19 @@ namespace roundhouse.tests.integration.databases
 
         private object exec_scalar(string command, params object[] args)
         {
-            var connection = SqlClientFactory.Instance.CreateConnection();
+            DbConnection connection = SqlClientFactory.Instance.CreateConnection();
             connection.ConnectionString = "Server=(local);Database=" + database_name + ";Trusted_Connection=True;";
             connection.Open();
             using (connection)
             {
-                var cmd = connection.CreateCommand();
+                DbCommand cmd = connection.CreateCommand();
                 cmd.CommandText = command;
 
                 if (args.Any())
                 {
                     cmd.Parameters.AddRange(args.Select((v, i) =>
                         {
-                            var dbParameter = cmd.CreateParameter();
+                            DbParameter dbParameter = cmd.CreateParameter();
                             dbParameter.ParameterName = "@" + i;
                             dbParameter.Value = v;
                             return dbParameter;
@@ -62,13 +55,15 @@ namespace roundhouse.tests.integration.databases
             return (int) exec_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun");
         }
     }
+
     public class describe_roundhouse_spec : nspec
     {
         protected static string database_name = "TestRoundhousE";
-        protected static string sql_files_folder;
         protected static string sql_files_folder_v1;
+        protected static string sql_files_folder_v2;
 
-        private static string find_scripts_directory(int iterations, string directory) // Hack to locate diredtory root for command line runner and mbunit.gui runner
+        private static string find_scripts_directory(int iterations, string directory)
+            // Hack to locate diredtory root for command line runner and mbunit.gui runner
         {
             if (Directory.Exists(directory))
                 return directory;
@@ -77,92 +72,154 @@ namespace roundhouse.tests.integration.databases
             return find_scripts_directory(iterations - 1, Path.Combine("..", directory));
         }
 
-        void when_there_is_no_database()
+        private void when_there_is_no_database()
         {
-
-
             context["rh executed with v2 scripts"] = () =>
                 {
                     act = () => new Migrate().Set(p =>
                         {
                             p.DatabaseName = database_name;
-                            p.SqlFilesDirectory = sql_files_folder;
+                            p.SqlFilesDirectory = sql_files_folder_v2;
                             p.Silent = true;
                         }).Run();
                     it["should create table timmy"] = () =>
                                                       get_assert_database().assert_table_exists("Timmy");
-                    it["should have at least one scripts in run table"] = () =>
-                                                      get_assert_database().scripts_run().should_not_be(0);
-
+                    it["should create table SampleItems"] = () =>
+                                                            get_assert_database().assert_table_exists("SampleItems");
+                    specify = () =>
+                              get_assert_database()
+                                  .scripts_run()
+                                  .should_not_be(0);
                 };
-            context["have empty database"] = () =>
+            context["have v1 database"] = () =>
                 {
                     act = () => new Migrate().Set(p =>
-                    {
-                        p.DatabaseName = database_name;
-                        p.SqlFilesDirectory = sql_files_folder_v1;
-                        p.Silent = true;
-                    }).Run();
+                        {
+                            p.DatabaseName = database_name;
+                            p.SqlFilesDirectory = sql_files_folder_v1;
+                            p.Silent = true;
+                        }).Run();
+
+                    it["should create table timmy"] = () =>
+                                                      get_assert_database().assert_table_exists("Timmy");
+                    it["should not create table SampleItems"] = () =>
+                                                                get_assert_database()
+                                                                    .assert_table_not_exists("SampleItems");
+                    specify = () =>
+                              get_assert_database().scripts_run().should_be(2);
+
                     context["rh executed v2 in dry run mode"] = () =>
                         {
                             act = () => new Migrate().Set(p =>
                                 {
                                     p.DatabaseName = database_name;
-                                    p.SqlFilesDirectory = sql_files_folder;
+                                    p.SqlFilesDirectory = sql_files_folder_v2;
                                     p.Silent = true;
                                     p.DryRun = true;
                                 }).Run();
 
-                            it["should not create table timmy"] = () =>
-                                                                  get_assert_database().assert_table_not_exists("Timmy");
-                            it["should have zero scripts in run table"] = () =>
-                                                                          get_assert_database().scripts_run().should_be(0);
+                            it["should not create table SampleItems"] = () =>
+                                                                        get_assert_database()
+                                                                            .assert_table_not_exists("SampleItems");
+                            specify = () =>
+                                      get_assert_database().scripts_run().should_be(2);
+
+                            context["rh executed v2 in normal mode"] = () =>
+                                {
+                                    act = () => new Migrate().Set(p =>
+                                        {
+                                            p.DatabaseName = database_name;
+                                            p.SqlFilesDirectory = sql_files_folder_v2;
+                                            p.Silent = true;
+                                        }).Run();
+                                    it["should create table SampleItems"] = () =>
+                                                                            get_assert_database()
+                                                                                .assert_table_exists("SampleItems");
+
+
+                                    specify = () =>
+                                              get_assert_database()
+                                                  .scripts_run().should_be(12);
+                                };
                         };
                     context["rh executed v2 in baseline mode"] = () =>
                         {
                             act = () => new Migrate().Set(p =>
                                 {
                                     p.DatabaseName = database_name;
-                                    p.SqlFilesDirectory = sql_files_folder;
+                                    p.SqlFilesDirectory = sql_files_folder_v2;
                                     p.Silent = true;
                                     p.Baseline = true;
                                 }).Run();
-                            it["should not create table timmy"] = () =>
-                                                                  get_assert_database()
-                                                                      .assert_table_not_exists("Timmy");
+                            it["should not create table SampleItems"] = () =>
+                                                                        get_assert_database()
+                                                                            .assert_table_not_exists("SampleItems");
 
-                            it["should have non zero scripts in run table"] = () =>
-                                                                get_assert_database()
-                                                                      .scripts_run().should_not_be(0);
+                            specify = () =>
+                                      get_assert_database()
+                                          .scripts_run().should_be(13);
 
+                            context["rh executed v2 in normal mode"] = () =>
+                                {
+                                    act = () => new Migrate().Set(p =>
+                                        {
+                                            p.DatabaseName = database_name;
+                                            p.SqlFilesDirectory = sql_files_folder_v2;
+                                            p.Silent = true;
+                                        }).Run();
+                                    it["should not create table SampleItems"] = () =>
+                                                                                get_assert_database()
+                                                                                    .assert_table_not_exists(
+                                                                                        "SampleItems");
+
+
+                                    specify = () =>
+                                              get_assert_database()
+                                                  .scripts_run().should_be(16);
+                                };
                         };
+                    context["rh executed v2 in normal mode"] = () =>
+                        {
+                            act = () => new Migrate().Set(p =>
+                                {
+                                    p.DatabaseName = database_name;
+                                    p.SqlFilesDirectory = sql_files_folder_v2;
+                                    p.Silent = true;
+                                }).Run();
+                            it["should create table SampleItems"] = () =>
+                                                                    get_assert_database()
+                                                                        .assert_table_exists("SampleItems");
 
+
+                            specify = () =>
+                                      get_assert_database()
+                                          .scripts_run().should_be(12);
+                        };
                 };
         }
 
 
         public void before_each()
         {
-            var base_directory = find_scripts_directory(6, "db");
-            sql_files_folder = Path.Combine(base_directory, @"SqlServer\TestRoundhousE");
+            string base_directory = find_scripts_directory(6, "db");
+            sql_files_folder_v2 = Path.Combine(base_directory, @"SqlServer\TestRoundhousE");
             sql_files_folder_v1 = Path.Combine(base_directory, @"SqlServer\TestRoundhousE_v1");
         }
 
         public void after_each()
         {
             new Migrate().Set(p =>
-            {
-                p.DatabaseName = database_name;
-                p.SqlFilesDirectory = sql_files_folder;
-                p.Drop = true;
-                p.Silent = true;
-            }).Run();
+                {
+                    p.DatabaseName = database_name;
+                    p.SqlFilesDirectory = sql_files_folder_v2;
+                    p.Drop = true;
+                    p.Silent = true;
+                }).Run();
         }
 
         protected static DatabaseAsserts get_assert_database()
         {
             return new DatabaseAsserts(database_name);
         }
-
     }
 }
