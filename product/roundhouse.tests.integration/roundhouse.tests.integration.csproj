@@ -96,6 +96,9 @@
     <Reference Include="NHibernate.JetDriver">
       <HintPath>..\..\lib\references\NHibernate.JetDriver\NHibernate.JetDriver.dll</HintPath>
     </Reference>
+    <Reference Include="NSpec">
+      <HintPath>..\..\packages\nspec.0.9.67\lib\NSpec.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -118,6 +121,8 @@
     </Compile>
     <Compile Include="databases\MySqlDatabaseSpecs.cs" />
     <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
+    <Compile Include="databases\sql_server_database_spec.cs" />
+    <Compile Include="DebuggerShim.cs" />
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="infrastructure\persistence\NHibernateSessionFactorySpecs.cs" />
     <Compile Include="MigrateSpecs.cs" />
