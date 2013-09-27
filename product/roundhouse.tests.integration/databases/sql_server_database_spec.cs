@@ -50,9 +50,9 @@ namespace roundhouse.tests.integration.databases
             exec_scalar("select OBJECT_ID(@0)", table_name).should_be(DBNull.Value);
         }
 
-        public int scripts_run()
+        public int one_time_scripts_run()
         {
-            return (int) exec_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun");
+            return (int) exec_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun where one_time_script = 1");
         }
     }
 
@@ -96,7 +96,7 @@ namespace roundhouse.tests.integration.databases
                     it["should create table SampleItems"] = () =>
                                                             get_assert_database().assert_table_exists("SampleItems");
                     specify = 
-                        () => get_assert_database().scripts_run().should_not_be(0);
+                        () => get_assert_database().one_time_scripts_run().should_not_be(0);
                 };
             context["have v1 database"] = () =>
                 {
@@ -108,7 +108,7 @@ namespace roundhouse.tests.integration.databases
                                                                 get_assert_database()
                                                                     .assert_table_not_exists("SampleItems");
                     specify = () =>
-                              get_assert_database().scripts_run().should_be(2);
+                              get_assert_database().one_time_scripts_run().should_be(1);
 
                     context["rh executed v2 in dry run mode"] = () =>
                         {
@@ -118,7 +118,7 @@ namespace roundhouse.tests.integration.databases
                                                                         get_assert_database()
                                                                             .assert_table_not_exists("SampleItems");
                             specify = () =>
-                                      get_assert_database().scripts_run().should_be(2);
+                                      get_assert_database().one_time_scripts_run().should_be(1);
 
                             context["rh executed v2 in normal mode"] = () =>
                                 {
@@ -130,7 +130,7 @@ namespace roundhouse.tests.integration.databases
 
                                     specify = () =>
                                               get_assert_database()
-                                                  .scripts_run().should_be(12);
+                                                  .one_time_scripts_run().should_be(4);
                                 };
                         };
                     context["rh executed v2 in baseline mode"] = () =>
@@ -142,7 +142,7 @@ namespace roundhouse.tests.integration.databases
 
                             specify = () =>
                                       get_assert_database()
-                                          .scripts_run().should_be(13);
+                                          .one_time_scripts_run().should_be(5);
 
                             context["rh executed v2 in normal mode"] = () =>
                                 {
@@ -155,7 +155,7 @@ namespace roundhouse.tests.integration.databases
 
                                     specify = () =>
                                               get_assert_database()
-                                                  .scripts_run().should_be(16);
+                                                  .one_time_scripts_run().should_be(5);
                                 };
                         };
                     context["rh executed v2 in normal mode"] = () =>
@@ -168,7 +168,7 @@ namespace roundhouse.tests.integration.databases
 
                             specify = () =>
                                       get_assert_database()
-                                          .scripts_run().should_be(12);
+                                          .one_time_scripts_run().should_be(4);
                         };
                 };
         }
