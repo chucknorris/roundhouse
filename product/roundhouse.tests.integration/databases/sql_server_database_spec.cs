@@ -72,33 +72,35 @@ namespace roundhouse.tests.integration.databases
             return find_scripts_directory(iterations - 1, Path.Combine("..", directory));
         }
 
+        private void _rh(string db_files, bool dry_run = false, bool baseline = false, bool drop = false)
+        {
+            new Migrate().Set(p =>
+                {
+                    p.DatabaseName = database_name;
+                    p.SqlFilesDirectory = db_files;
+                    p.Silent = true;
+                    p.DryRun = dry_run;
+                    p.Baseline = baseline;
+                    p.Drop = drop;
+                }).Run();
+        }
+
         private void when_there_is_no_database()
         {
             context["rh executed with v2 scripts"] = () =>
                 {
-                    act = () => new Migrate().Set(p =>
-                        {
-                            p.DatabaseName = database_name;
-                            p.SqlFilesDirectory = sql_files_folder_v2;
-                            p.Silent = true;
-                        }).Run();
+                    act = () => _rh(sql_files_folder_v2);
+
                     it["should create table timmy"] = () =>
                                                       get_assert_database().assert_table_exists("Timmy");
                     it["should create table SampleItems"] = () =>
                                                             get_assert_database().assert_table_exists("SampleItems");
-                    specify = () =>
-                              get_assert_database()
-                                  .scripts_run()
-                                  .should_not_be(0);
+                    specify = 
+                        () => get_assert_database().scripts_run().should_not_be(0);
                 };
             context["have v1 database"] = () =>
                 {
-                    act = () => new Migrate().Set(p =>
-                        {
-                            p.DatabaseName = database_name;
-                            p.SqlFilesDirectory = sql_files_folder_v1;
-                            p.Silent = true;
-                        }).Run();
+                    act = () => _rh(sql_files_folder_v1);
 
                     it["should create table timmy"] = () =>
                                                       get_assert_database().assert_table_exists("Timmy");
@@ -110,13 +112,7 @@ namespace roundhouse.tests.integration.databases
 
                     context["rh executed v2 in dry run mode"] = () =>
                         {
-                            act = () => new Migrate().Set(p =>
-                                {
-                                    p.DatabaseName = database_name;
-                                    p.SqlFilesDirectory = sql_files_folder_v2;
-                                    p.Silent = true;
-                                    p.DryRun = true;
-                                }).Run();
+                            act = () => _rh(sql_files_folder_v2, dry_run:true);
 
                             it["should not create table SampleItems"] = () =>
                                                                         get_assert_database()
@@ -126,12 +122,7 @@ namespace roundhouse.tests.integration.databases
 
                             context["rh executed v2 in normal mode"] = () =>
                                 {
-                                    act = () => new Migrate().Set(p =>
-                                        {
-                                            p.DatabaseName = database_name;
-                                            p.SqlFilesDirectory = sql_files_folder_v2;
-                                            p.Silent = true;
-                                        }).Run();
+                                    act = () => _rh(sql_files_folder_v2);
                                     it["should create table SampleItems"] = () =>
                                                                             get_assert_database()
                                                                                 .assert_table_exists("SampleItems");
@@ -144,13 +135,7 @@ namespace roundhouse.tests.integration.databases
                         };
                     context["rh executed v2 in baseline mode"] = () =>
                         {
-                            act = () => new Migrate().Set(p =>
-                                {
-                                    p.DatabaseName = database_name;
-                                    p.SqlFilesDirectory = sql_files_folder_v2;
-                                    p.Silent = true;
-                                    p.Baseline = true;
-                                }).Run();
+                            act = () => _rh(sql_files_folder_v2,baseline:true);
                             it["should not create table SampleItems"] = () =>
                                                                         get_assert_database()
                                                                             .assert_table_not_exists("SampleItems");
@@ -161,12 +146,7 @@ namespace roundhouse.tests.integration.databases
 
                             context["rh executed v2 in normal mode"] = () =>
                                 {
-                                    act = () => new Migrate().Set(p =>
-                                        {
-                                            p.DatabaseName = database_name;
-                                            p.SqlFilesDirectory = sql_files_folder_v2;
-                                            p.Silent = true;
-                                        }).Run();
+                                    act = () => _rh(sql_files_folder_v2);
                                     it["should not create table SampleItems"] = () =>
                                                                                 get_assert_database()
                                                                                     .assert_table_not_exists(
@@ -180,12 +160,7 @@ namespace roundhouse.tests.integration.databases
                         };
                     context["rh executed v2 in normal mode"] = () =>
                         {
-                            act = () => new Migrate().Set(p =>
-                                {
-                                    p.DatabaseName = database_name;
-                                    p.SqlFilesDirectory = sql_files_folder_v2;
-                                    p.Silent = true;
-                                }).Run();
+                            act = () => _rh(sql_files_folder_v2);
                             it["should create table SampleItems"] = () =>
                                                                     get_assert_database()
                                                                         .assert_table_exists("SampleItems");
