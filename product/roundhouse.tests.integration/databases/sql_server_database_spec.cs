@@ -61,6 +61,9 @@ namespace roundhouse.tests.integration.databases
         protected static string database_name = "TestRoundhousE";
         protected static string sql_files_folder_v1;
         protected static string sql_files_folder_v2;
+        private string database_type;
+        private string scripts_folder;
+        private string connection_string;
 
         private static string find_scripts_directory(int iterations, string directory)
             // Hack to locate diredtory root for command line runner and mbunit.gui runner
@@ -82,10 +85,21 @@ namespace roundhouse.tests.integration.databases
                     p.DryRun = dry_run;
                     p.Baseline = baseline;
                     p.Drop = drop;
+                    //p.ConnectionString = connection_string;
+                    //p.DatabaseType = database_type;
                 }).Run();
         }
 
-        private void when_there_is_no_database()
+        private void when_mssql()
+        {
+            database_type = "mssql";
+            scripts_folder = "SqlServer";
+            connection_string = null;
+            //"server=localhost;uid=root;database=TestRoundhousE;"
+            DefaultDatabaseTestSuite();
+        }
+
+        private void DefaultDatabaseTestSuite()
         {
             context["rh executed with v2 scripts"] = () =>
                 {
@@ -95,7 +109,7 @@ namespace roundhouse.tests.integration.databases
                                                       get_assert_database().assert_table_exists("Timmy");
                     it["should create table SampleItems"] = () =>
                                                             get_assert_database().assert_table_exists("SampleItems");
-                    specify = 
+                    specify =
                         () => get_assert_database().one_time_scripts_run().should_not_be(0);
                 };
             context["have v1 database"] = () =>
@@ -112,7 +126,7 @@ namespace roundhouse.tests.integration.databases
 
                     context["rh executed v2 in dry run mode"] = () =>
                         {
-                            act = () => _rh(sql_files_folder_v2, dry_run:true);
+                            act = () => _rh(sql_files_folder_v2, dry_run: true);
 
                             it["should not create table SampleItems"] = () =>
                                                                         get_assert_database()
@@ -135,7 +149,7 @@ namespace roundhouse.tests.integration.databases
                         };
                     context["rh executed v2 in baseline mode"] = () =>
                         {
-                            act = () => _rh(sql_files_folder_v2,baseline:true);
+                            act = () => _rh(sql_files_folder_v2, baseline: true);
                             it["should not create table SampleItems"] = () =>
                                                                         get_assert_database()
                                                                             .assert_table_not_exists("SampleItems");
@@ -177,8 +191,8 @@ namespace roundhouse.tests.integration.databases
         public void before_each()
         {
             string base_directory = find_scripts_directory(6, "db");
-            sql_files_folder_v2 = Path.Combine(base_directory, @"SqlServer\TestRoundhousE");
-            sql_files_folder_v1 = Path.Combine(base_directory, @"SqlServer\TestRoundhousE_v1");
+            sql_files_folder_v2 = Path.Combine(base_directory, Path.Combine(scripts_folder, @"TestRoundhousE"));
+            sql_files_folder_v1 = Path.Combine(base_directory, Path.Combine(scripts_folder, @"TestRoundhousE_v1"));
         }
 
         public void after_each()
