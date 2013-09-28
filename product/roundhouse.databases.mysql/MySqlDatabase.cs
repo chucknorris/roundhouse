@@ -111,10 +111,14 @@ namespace roundhouse.databases.mysql
             if (string.IsNullOrEmpty(sql_to_run)) return;
 
             //TODO Investigate how pass CommandTimeout into commands which will be during MySqlScript execution.
-            var connection = server_connection.underlying_type().downcast_to<MySqlConnection>();
+            MySqlConnection connection;
             if (connection_type == ConnectionType.Admin)
             {
                 connection = admin_connection.underlying_type().downcast_to<MySqlConnection>();
+            }
+            else
+            {
+                connection = server_connection.underlying_type().downcast_to<MySqlConnection>();
             }
             var script = new MySqlScript(connection, sql_to_run);
             script.Execute();

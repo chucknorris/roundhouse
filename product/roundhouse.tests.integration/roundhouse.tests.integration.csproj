@@ -90,6 +90,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\developwithpassion.bdd\MbUnit.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
@@ -119,6 +123,9 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="databases\IDatabaseAsserts.cs" />
+    <Compile Include="databases\MssqlDatabaseAsserts.cs" />
+    <Compile Include="databases\MysqlDatabaseAsserts.cs" />
     <Compile Include="databases\MySqlDatabaseSpecs.cs" />
     <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
     <Compile Include="databases\sql_server_database_spec.cs" />

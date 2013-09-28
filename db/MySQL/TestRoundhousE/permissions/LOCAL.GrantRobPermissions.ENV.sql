@@ -1,3 +1,4 @@
+GRANT USAGE ON *.* TO 'rob'@'%';
 DROP USER 'rob'@'%';
 
 CREATE USER 'rob'@'%' IDENTIFIED BY 'RHr0x0r!';

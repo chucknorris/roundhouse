@@ -1,61 +1,9 @@
 ﻿using System;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
 using NSpec;
 
 namespace roundhouse.tests.integration.databases
 {
-    public class DatabaseAsserts
-    {
-        private readonly string database_name;
-
-        public DatabaseAsserts(string database_name)
-        {
-            this.database_name = database_name;
-        }
-
-        public void assert_table_exists(string table_name)
-        {
-            exec_scalar("select OBJECT_ID(@0)", table_name).should_not_be(DBNull.Value);
-        }
-
-        private object exec_scalar(string command, params object[] args)
-        {
-            DbConnection connection = SqlClientFactory.Instance.CreateConnection();
-            connection.ConnectionString = "Server=(local);Database=" + database_name + ";Trusted_Connection=True;";
-            connection.Open();
-            using (connection)
-            {
-                DbCommand cmd = connection.CreateCommand();
-                cmd.CommandText = command;
-
-                if (args.Any())
-                {
-                    cmd.Parameters.AddRange(args.Select((v, i) =>
-                        {
-                            DbParameter dbParameter = cmd.CreateParameter();
-                            dbParameter.ParameterName = "@" + i;
-                            dbParameter.Value = v;
-                            return dbParameter;
-                        }).ToArray());
-                }
-                return cmd.ExecuteScalar();
-            }
-        }
-
-        public void assert_table_not_exists(string table_name)
-        {
-            exec_scalar("select OBJECT_ID(@0)", table_name).should_be(DBNull.Value);
-        }
-
-        public int one_time_scripts_run()
-        {
-            return (int) exec_scalar("SELECT count(*) FROM RoundhousE.ScriptsRun where one_time_script = 1");
-        }
-    }
-
     public class describe_roundhouse_spec : nspec
     {
         protected static string database_name = "TestRoundhousE";
@@ -64,6 +12,7 @@ namespace roundhouse.tests.integration.databases
         private string database_type;
         private string scripts_folder;
         private string connection_string;
+        private MysqlDatabaseAsserts assert_database;
 
         private static string find_scripts_directory(int iterations, string directory)
             // Hack to locate diredtory root for command line runner and mbunit.gui runner
@@ -85,17 +34,25 @@ namespace roundhouse.tests.integration.databases
                     p.DryRun = dry_run;
                     p.Baseline = baseline;
                     p.Drop = drop;
-                    //p.ConnectionString = connection_string;
-                    //p.DatabaseType = database_type;
+                    p.ConnectionString = connection_string;
+                    p.DatabaseType = database_type;
                 }).Run();
         }
 
-        private void when_mssql()
+        //private void when_mssql()
+        //{
+        //    database_type = "SqlServer";
+        //    scripts_folder = "SqlServer";
+        //    connection_string = null;
+        //    //"server=localhost;uid=root;database=TestRoundhousE;"
+        //    DefaultDatabaseTestSuite();
+        //}
+        private void when_mysql()
         {
-            database_type = "mssql";
-            scripts_folder = "SqlServer";
-            connection_string = null;
-            //"server=localhost;uid=root;database=TestRoundhousE;"
+            database_type = "MySQL";
+            scripts_folder = "MySQL";
+            connection_string = "server=localhost;uid=root;database=TestRoundhousE;";
+            assert_database = new MysqlDatabaseAsserts(database_name);
             DefaultDatabaseTestSuite();
         }
 
@@ -197,18 +154,12 @@ namespace roundhouse.tests.integration.databases
 
         public void after_each()
         {
-            new Migrate().Set(p =>
-                {
-                    p.DatabaseName = database_name;
-                    p.SqlFilesDirectory = sql_files_folder_v2;
-                    p.Drop = true;
-                    p.Silent = true;
-                }).Run();
+            _rh(sql_files_folder_v1, drop:true);
         }
 
-        protected static DatabaseAsserts get_assert_database()
+        protected IDatabaseAsserts get_assert_database()
         {
-            return new DatabaseAsserts(database_name);
+            return assert_database;
         }
     }
 }
