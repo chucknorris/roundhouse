@@ -30,16 +30,6 @@ namespace roundhouse.databases
             }
         }
 
-        public override void open_admin_connection()
-        {
-            database.open_connection(false);
-        }
-
-        public override void close_admin_connection()
-        {
-            database.close_connection();
-        }
-
         public override bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
             database_exists = true;
