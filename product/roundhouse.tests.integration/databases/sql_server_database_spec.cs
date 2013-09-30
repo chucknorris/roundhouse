@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using NSpec;
+using roundhouse.databases;
+using roundhouse.infrastructure.containers;
+using roundhouse.infrastructure.persistence;
 
 namespace roundhouse.tests.integration.databases
 {
@@ -12,7 +15,7 @@ namespace roundhouse.tests.integration.databases
         private string database_type;
         private string scripts_folder;
         private string connection_string;
-        private MysqlDatabaseAsserts assert_database;
+        private IDatabaseAsserts assert_database;
 
         private static string find_scripts_directory(int iterations, string directory)
             // Hack to locate diredtory root for command line runner and mbunit.gui runner
@@ -36,17 +39,21 @@ namespace roundhouse.tests.integration.databases
                     p.Drop = drop;
                     p.ConnectionString = connection_string;
                     p.DatabaseType = database_type;
+                    p.WithTransaction = false;
                 }).Run();
+            Container.get_an_instance_of<Database>().Dispose();
         }
 
-        //private void when_mssql()
-        //{
-        //    database_type = "SqlServer";
-        //    scripts_folder = "SqlServer";
-        //    connection_string = null;
-        //    //"server=localhost;uid=root;database=TestRoundhousE;"
-        //    DefaultDatabaseTestSuite();
-        //}
+        private void when_mssql()
+        {
+            database_type = "SqlServer";
+            scripts_folder = "SqlServer";
+            connection_string = null;
+            assert_database = new MssqlDatabaseAsserts(database_name);
+            //"server=localhost;uid=root;database=TestRoundhousE;"
+            DefaultDatabaseTestSuite();
+        }
+
         private void when_mysql()
         {
             database_type = "MySQL";
@@ -67,7 +74,7 @@ namespace roundhouse.tests.integration.databases
                     it["should create table SampleItems"] = () =>
                                                             get_assert_database().assert_table_exists("SampleItems");
                     specify =
-                        () => get_assert_database().one_time_scripts_run().should_not_be(0);
+                        () => get_assert_database().one_time_scripts_run().should_be(3);
                 };
             context["have v1 database"] = () =>
                 {
@@ -101,7 +108,7 @@ namespace roundhouse.tests.integration.databases
 
                                     specify = () =>
                                               get_assert_database()
-                                                  .one_time_scripts_run().should_be(4);
+                                                  .one_time_scripts_run().should_be(3);
                                 };
                         };
                     context["rh executed v2 in baseline mode"] = () =>
@@ -113,7 +120,7 @@ namespace roundhouse.tests.integration.databases
 
                             specify = () =>
                                       get_assert_database()
-                                          .one_time_scripts_run().should_be(5);
+                                          .one_time_scripts_run().should_be(3);
 
                             context["rh executed v2 in normal mode"] = () =>
                                 {
@@ -126,7 +133,7 @@ namespace roundhouse.tests.integration.databases
 
                                     specify = () =>
                                               get_assert_database()
-                                                  .one_time_scripts_run().should_be(5);
+                                                  .one_time_scripts_run().should_be(3);
                                 };
                         };
                     context["rh executed v2 in normal mode"] = () =>
@@ -139,7 +146,7 @@ namespace roundhouse.tests.integration.databases
 
                             specify = () =>
                                       get_assert_database()
-                                          .one_time_scripts_run().should_be(4);
+                                          .one_time_scripts_run().should_be(3);
                         };
                 };
         }
