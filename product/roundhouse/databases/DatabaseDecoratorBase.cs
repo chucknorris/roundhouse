@@ -7,7 +7,7 @@ namespace roundhouse.databases
     {
         protected readonly Database database;
 
-        protected DatabaseDecoratorBase(Database database) 
+        protected DatabaseDecoratorBase(Database database)
         {
             this.database = database;
 
@@ -220,14 +220,9 @@ namespace roundhouse.databases
             return database.get_current_script_hash(script_name);
         }
 
-        private bool disposing = false;
         public void Dispose()
         {
-            if (!disposing)
-            {
-                database.Dispose();
-                disposing = true;
-            }
+            database.Dispose();
         }
     }
 }
