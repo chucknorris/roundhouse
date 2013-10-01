@@ -6,7 +6,8 @@ obj
 _ReSharper*
 /packages
 App_Data
-
+insert.sql
+update.sql
 
 *.suo
 *.user 

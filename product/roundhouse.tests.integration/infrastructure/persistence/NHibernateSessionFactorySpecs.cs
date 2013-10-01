@@ -1,3 +1,4 @@
+
 namespace roundhouse.tests.integration.infrastructure.persistence
 {
     using System.IO;
@@ -26,11 +27,22 @@ namespace roundhouse.tests.integration.infrastructure.persistence
 
             context c = () =>
                             {
+                                ensure_sample_database_exists();
                                 config = new DefaultConfiguration();
                                 config.DatabaseType = "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
                                 config.ConnectionString = "Server=(local);initial catalog=TestRoundhousE;Integrated Security=SSPI;";
                                 provide_a_basic_sut_constructor_argument(config);
                             };
+
+            private static void ensure_sample_database_exists()
+            {
+                new Migrate().Set(p =>
+                    {
+                        p.DatabaseName = "TestRoundhousE";
+                        p.SqlFilesDirectory = ".";
+                        p.Silent = true;
+                    }).Run();
+            }
 
             because b = () => result = sut.build_session_factory(get_schema_export);
 
