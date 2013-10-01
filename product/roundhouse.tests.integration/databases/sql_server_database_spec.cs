@@ -15,7 +15,7 @@ namespace roundhouse.tests.integration.databases
         private string database_type;
         private string scripts_folder;
         private string connection_string;
-        private IDatabaseAsserts assert_database;
+        private DatabaseAsserts assert_database;
 
         private static string find_scripts_directory(int iterations, string directory)
             // Hack to locate diredtory root for command line runner and mbunit.gui runner
@@ -31,7 +31,7 @@ namespace roundhouse.tests.integration.databases
         {
             new Migrate().Set(p =>
                 {
-                    p.DatabaseName = database_name;
+                    p.DatabaseName = string.IsNullOrEmpty(connection_string) ? database_name : null;
                     p.SqlFilesDirectory = db_files;
                     p.Silent = true;
                     p.DryRun = dry_run;
@@ -62,6 +62,7 @@ namespace roundhouse.tests.integration.databases
             assert_database = new MysqlDatabaseAsserts(database_name);
             DefaultDatabaseTestSuite();
         }
+        
 
         private void DefaultDatabaseTestSuite()
         {
@@ -164,7 +165,7 @@ namespace roundhouse.tests.integration.databases
             _rh(sql_files_folder_v1, drop:true);
         }
 
-        protected IDatabaseAsserts get_assert_database()
+        protected DatabaseAsserts get_assert_database()
         {
             return assert_database;
         }

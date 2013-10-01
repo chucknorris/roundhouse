@@ -90,6 +90,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\developwithpassion.bdd\MbUnit.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\references\PostgreSQL\Mono.Security.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\MySql.Data.dll</HintPath>
@@ -100,8 +104,14 @@
     <Reference Include="NHibernate.JetDriver">
       <HintPath>..\..\lib\references\NHibernate.JetDriver\NHibernate.JetDriver.dll</HintPath>
     </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\..\lib\references\PostgreSQL\Npgsql.dll</HintPath>
+    </Reference>
     <Reference Include="NSpec">
       <HintPath>..\..\packages\nspec.0.9.67\lib\NSpec.dll</HintPath>
+    </Reference>
+    <Reference Include="policy.2.0.Npgsql">
+      <HintPath>..\..\lib\references\PostgreSQL\policy.2.0.Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
@@ -123,10 +133,11 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="databases\IDatabaseAsserts.cs" />
+    <Compile Include="databases\DatabaseAsserts.cs" />
     <Compile Include="databases\MssqlDatabaseAsserts.cs" />
     <Compile Include="databases\MysqlDatabaseAsserts.cs" />
     <Compile Include="databases\MySqlDatabaseSpecs.cs" />
+    <Compile Include="databases\PostgresDatabaseAsserts.cs" />
     <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
     <Compile Include="databases\sql_server_database_spec.cs" />
     <Compile Include="DebuggerShim.cs" />

@@ -7,7 +7,7 @@ using NSpec;
 
 namespace roundhouse.tests.integration.databases
 {
-    class MysqlDatabaseAsserts : IDatabaseAsserts
+    class MysqlDatabaseAsserts : DatabaseAsserts
     {
         private string database_name;
 
