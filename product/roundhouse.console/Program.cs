@@ -128,7 +128,7 @@ namespace roundhouse.console
                          "RepositoryPath - The repository. A string that can be anything. Used to track versioning along with the version. Defaults to null."),
                      option => configuration.RepositoryPath = option)
                 .Add("vf=|versionfile=",
-                     string.Format("VersionFile - Either an XML file or a DLL that a version can be resolved from. Defaults to \"{0}\".",
+                     string.Format("VersionFile - Either a .XML file, a .DLL or a .TXT file that a version can be resolved from. Defaults to \"{0}\".",
                                    ApplicationParameters.default_version_file),
                      option => configuration.VersionFile = option)
                 .Add("vx=|versionxpath=",
@@ -261,7 +261,7 @@ namespace roundhouse.console
                      option => configuration.DisableOutput = option != null)
                 //warn on changes
                 .Add("w|warnononetimescriptchanges",
-                     "WarnOnOneTimeScriptChanges - If you do not want RH to error when you change scripts that should not change, you must set this flag. One time scripts are DDL/DML (anything in the upFolder). Defaults to false.",
+                     "WarnOnOneTimeScriptChanges - Instructs RH to execute changed one time scripts (DDL/DML in Up folder) that have previously been run against the database instead of failing. A warning is logged for each one time scripts that is rerun. Defaults to false.",
                      option => configuration.WarnOnOneTimeScriptChanges = option != null)
                 //silent?
                 .Add("silent|ni|noninteractive",
