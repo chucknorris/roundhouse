@@ -62,6 +62,40 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+## 0.8.6
+
+### Enhancements
+
+  + Use git as official repository. (mpareja)
+  + Upgrade UpperCut to version 1.4.2. (ferventcoder)
+  + Database Restore: use restore specific timeout value. (icetoast - [pull #90](https://github.com/chucknorris/roundhouse/pull/90))
+  + Ignore EOL format changes when detecting script changes. (lahma - [pull #104](https://github.com/chucknorris/roundhouse/pull/104))
+  + Include SQL Print statements in debug log. (ferventcoder - [issue #68](https://github.com/chucknorris/roundhouse/issues/68))
+  + Include statement being run in log when an error occurs. (ferventcoder - [issue #66](https://github.com/chucknorris/roundhouse/issues/66))
+  + Added 'runBeforeUp' anytime directory. (cdrexle - [pull #51](https://github.com/chucknorris/roundhouse/pull/51))
+  + Support resolving version from a text file. (mpareja - [pull #50](https://github.com/chucknorris/roundhouse/pull/50), [pull #55](https://github.com/chucknorris/roundhouse/pull/55))
+  + Add option to turn off copying scripts into 'itemsRan' directory. (lahma - [pull #47](https://github.com/chucknorris/roundhouse/pull/47))
+  + WarnOnOneTimeScriptChange will now cause changed one-time scripts to be re-run. (BiggerNoise - [pull #35](https://github.com/chucknorris/roundhouse/pull/35))
+  + Upgrade NHibernate to version 3.3.2. (drusellers)
+  + Upgrade FubuCore, HtmlTags and StructureMap. (drusellers)
+
+### Bug Fixes
+
+  + SQL Batch Parser: handle training comments, single quotes. (mpareja - [pull #108](https://github.com/chucknorris/roundhouse/pull/108))
+  + SQL Batch Parser: fix hang. (AndersMalmgren - [pull #100](https://github.com/chucknorris/roundhouse/pull/100))
+  + Token Replacer: preserve case for unmatched tokens. (mpareja - [pull #65](https://github.com/chucknorris/roundhouse/pull/65))
+  + SQL scripts no longer truncated to 4000 characters. (charoco, ferventcoder - [pull #61](https://github.com/chucknorris/roundhouse/pull/61))
+  + Oracle: Fix handling of null values. (rdingwall - [pull #59](https://github.com/chucknorris/roundhouse/pull/59), [issue #58](https://github.com/chucknorris/roundhouse/issues/58))
+  + Script File Versioner: fix exception. (Michael Kobaly - [issue #68 on Google Code](https://code.google.com/p/roundhouse/issues/detail?id=68))
+  + Only change DB recovery mode if explicitly told to. (ferventcoder - [issue #69 on Google Code](https://code.google.com/p/roundhouse/issues/detail?id=69))
+  + Fixed the debug command line switch. (ferventcoder - [issue #40](https://github.com/chucknorris/roundhouse/issues/40))
+  + Ensure version 1.2.10 of log4net is used when installing NuGet packages. (ferventcoder - [issue #41](https://github.com/chucknorris/roundhouse/issues/41))
+  + Fix: Improve logging of RH exceptions. (torkelo - [pull #60](https://github.com/chucknorris/roundhouse/pull/60))
+
+### Breaking Changes
+
+  + RoundhousE will change the DB recover mode if the `recoverymode` mode option is explicitly set to `simple` or `full`. In the past, RoundhousE would default to `full` but would only ever set the recovery mode while creating/restoring the database. If you depended on RoundhousE to create/restore the database for you and you don't want the database server default to be used, you should specify the recovery mode option.
+
 ## 0.8.5  
 * FIX: KeyNotFoundException in NHibernateSessionFactoryBuilder. See [issue 59] (http://code.google.com/p/roundhouse/issues/detail?id=59) for details. (r361)  
 * **SQLite Support!**. See details https://github.com/chucknorris/roundhouse/issues/21 (r360)  
