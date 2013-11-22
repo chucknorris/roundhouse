@@ -226,11 +226,11 @@ Copyright (C) 2005 Microsoft Corporation. All rights reserved.
   <Target Name ="_BuiltExeOutputGroupOutput"
           Condition="!$(Disable_CopyExeApplication)"
           Outputs="@(BuiltExeOutputGroupOutput)">
-    <CreateItem Include="$(ExeProjectOutputDir)\bin\**\*.*;@(Content->'%(FullPath)')" Condition="'$(OutDir)' == '$(OutputPath)'">
+    <CreateItem Include="$(ExeProjectOutputDir)\bin\**\*;@(Content->'%(FullPath)')" Condition="'$(OutDir)' == '$(OutputPath)'">
       <Output ItemName="BuiltExeOutputGroupOutput" TaskParameter="Include"/>
     </CreateItem>
 
-    <CreateItem Include="$(ExeProjectOutputDir)\**\*.*" Condition="'$(OutDir)' != '$(OutputPath)'">
+    <CreateItem Include="$(ExeProjectOutputDir)\**\*" Condition="'$(OutDir)' != '$(OutputPath)'">
       <Output ItemName="BuiltExeOutputGroupOutput" TaskParameter="Include"/>
     </CreateItem>
   </Target>

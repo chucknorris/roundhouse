@@ -1,4 +1,4 @@
-Project RoundhousE - Database Change Management done right
+﻿Project RoundhousE - Database Change Management done right
 =======
 <img src="http://github.com/ferventcoder/roundhouse/raw/master/docs/logo/RoundhousE_Logo.jpg" height="200" alt="RoundhousE - Professional Database Management" />  
   
@@ -53,7 +53,7 @@ This is the best way to get to the bleeding edge of what we are doing.
   
   
 # REQUIREMENTS
-* .NET Framework 3.5  
+* .NET Framework 4  
 * SA access to the sql server (for creation or deletion)  
 * change access to the database (for everything else)  
 
