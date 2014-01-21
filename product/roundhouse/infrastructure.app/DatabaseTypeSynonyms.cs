@@ -29,6 +29,10 @@ namespace roundhouse.infrastructure.app
                     database_type_full_name =
                         "roundhouse.databases.sqlserver2000.SqlServerDatabase, roundhouse.databases.sqlserver2000";
                     break;
+                case "sqlserverce":
+                    database_type_full_name =
+                        "roundhouse.databases.sqlserverce.SqlServerCEDatabase, roundhouse.databases.sqlserverce";
+                    break;
                 case "mysql":
                     database_type_full_name =
                         "roundhouse.databases.mysql.MySqlDatabase, roundhouse.databases.mysql";
