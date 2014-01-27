@@ -76,7 +76,7 @@ namespace roundhouse.runners
 
             if (run_in_a_transaction && !database_migrator.database.supports_ddl_transactions)
             {
-                Log.bound_to(this).log_a_warning_event_containing("You asked to run in a transaction, but this dabasetype doesn't support DDL transactions.");
+                Log.bound_to(this).log_a_warning_event_containing("You asked to run in a transaction, but this databasetype doesn't support DDL transactions.");
                 if (!silent)
                 {
                     Log.bound_to(this).log_an_info_event_containing("Please press enter to continue without transaction support...");
