@@ -23,7 +23,7 @@ namespace roundhouse.runners
         private readonly VersionResolver version_resolver;
         public bool silent { get; set; }
         public bool dropping_the_database { get; set; }
-        private readonly bool dont_create_the_database;
+        private readonly bool dont_create_the_database;b
         private bool run_in_a_transaction;
         private readonly bool use_simple_recovery;
         private readonly ConfigurationPropertyHolder configuration;
@@ -76,7 +76,7 @@ namespace roundhouse.runners
 
             if (run_in_a_transaction && !database_migrator.database.supports_ddl_transactions)
             {
-                Log.bound_to(this).log_a_warning_event_containing("You asked to run in a transaction, but this dabasetype doesn't support DDL transactions.");
+                Log.bound_to(this).log_a_warning_event_containing("You asked to run in a transaction, but this databasetype doesn't support DDL transactions.");
                 if (!silent)
                 {
                     Log.bound_to(this).log_an_info_event_containing("Please press enter to continue without transaction support...");
