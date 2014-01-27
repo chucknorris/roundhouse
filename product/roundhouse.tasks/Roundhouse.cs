@@ -66,6 +66,8 @@
 
         public string RepositoryPath { get; set; }
 
+        public string Version { get; set; }
+
         public string VersionFile { get; set; }
 
         public string VersionXPath { get; set; }
