@@ -127,6 +127,9 @@ namespace roundhouse.console
                      string.Format(
                          "RepositoryPath - The repository. A string that can be anything. Used to track versioning along with the version. Defaults to null."),
                      option => configuration.RepositoryPath = option)
+                .Add("v=|version=",
+                     "Version - Specify the version directly instead of looking in a file. If present, ignores file version options.",
+                     option => configuration.Version = option)
                 .Add("vf=|versionfile=",
                      string.Format("VersionFile - Either a .XML file, a .DLL or a .TXT file that a version can be resolved from. Defaults to \"{0}\".",
                                    ApplicationParameters.default_version_file),
@@ -322,7 +325,7 @@ namespace roundhouse.console
                         "/s[ervername] VALUE " +
                         "/c[onnection]s[tring]a[dministration] VALUE " +
                         "/c[ommand]t[imeout] VALUE /c[ommand]t[imeout]a[dmin] VALUE " +
-                        "/r[epositorypath] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
+                        "/r[epositorypath] VALUE /v[ersion] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
                         "/a[lter]d[atabasefoldername] /r[un]a[fter]c[reate]d[atabasefoldername] VALUE VALUE " +
                         "/r[un]b[eforeupfoldername] VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
                         "/r[un]f[irstafterupdatefoldername] VALUE /fu[nctionsfoldername] VALUE /v[ie]w[sfoldername] VALUE " +
