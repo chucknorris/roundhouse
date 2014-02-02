@@ -12,7 +12,19 @@ namespace roundhouse.databases.sqlserverce
     using infrastructure.extensions;
     using infrastructure.logging;
     using roundhouse.connections;
+    using roundhouse.infrastructure.filesystem;
 
+    /// <summary>
+    /// Provider for SqlServer CE databases. 
+    /// 
+    /// These don't have a master database so if you perform operations under 
+    /// the admin connection it is the same as the default. 
+    /// 
+    /// Additionally, the RoundhousE tables use "Roundhouse_" 
+    /// as a prefix instead of a schema as there are none in SQL CE.
+    /// 
+    /// Use the filename as the server parameter in the command-line console.
+    /// </summary>
     public class SqlServerCEDatabase : AdoNetDatabase
     {
         private string connect_options = "Persist Security Info=False";
@@ -131,8 +143,6 @@ namespace roundhouse.databases.sqlserverce
 
         public override bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {
-            delete_database_if_it_exists();
-
             try
             {
                 SqlCeEngine engine = new SqlCeEngine(this.connection_string);
@@ -140,7 +150,7 @@ namespace roundhouse.databases.sqlserverce
             }
             catch (Exception ex)
             {
-                throw new ApplicationException(string.Format("Unable to create file at {0}, error was: {1}", server_name, ex.Message));
+                throw new ApplicationException(string.Format("Unable to open file at {0}, error was: {1}", server_name, ex.Message));
             }
 
             return true;
@@ -148,8 +158,13 @@ namespace roundhouse.databases.sqlserverce
 
         public override void delete_database_if_it_exists()
         {
-            if (File.Exists(server_name))
+            WindowsFileSystemAccess windowsFileSystem = new WindowsFileSystemAccess();
+
+            if (windowsFileSystem.file_exists(server_name))
+            {
+                // No delete_file in WindowsFileSystemAccess - add it or just use File.Delete?
                 File.Delete(server_name);
+            }
         }
 
         public override string set_recovery_mode_script(bool simple)
@@ -173,47 +188,47 @@ namespace roundhouse.databases.sqlserverce
 
             try
             {
-                conn = new SqlCeConnection(connection_string);
-                conn.Open();
+                using (conn = new SqlCeConnection(connection_string))
+                {
+                    conn.Open();
 
-                DateTime now = DateTime.Now;
+                    DateTime now = DateTime.Now;
 
-                SqlCeCommand cmd = conn.CreateCommand();
-                cmd.Parameters.AddWithValue("version_id", version_id);
-                cmd.Parameters.AddWithValue("script_name", script_name);
-                cmd.Parameters.AddWithValue("sql_to_run", ((object)sql_to_run) ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("sql_to_run_hash", ((object)sql_to_run_hash) ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("run_this_script_once", run_this_script_once);
-                cmd.Parameters.AddWithValue("now", now);
-                cmd.Parameters.AddWithValue("me", WindowsIdentity.GetCurrent().Name);
+                    using (SqlCeCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.Parameters.AddWithValue("version_id", version_id);
+                        cmd.Parameters.AddWithValue("script_name", script_name);
+                        cmd.Parameters.AddWithValue("sql_to_run", ((object)sql_to_run) ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("sql_to_run_hash", ((object)sql_to_run_hash) ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("run_this_script_once", run_this_script_once);
+                        cmd.Parameters.AddWithValue("now", now);
+                        cmd.Parameters.AddWithValue("currentUser", GetCurrentUser());
 
-                cmd.CommandText = "INSERT INTO [RoundhousE_ScriptsRun]" +
-                                  "([version_id]" +
-                                  ",[script_name]" +
-                                  ",[text_of_script]" +
-                                  ",[text_hash]" +
-                                  ",[one_time_script]" +
-                                  ",[entry_date]" +
-                                  ",[modified_date]" +
-                                  ",[entered_by])" +
-                                  " VALUES(" +
-                                  " @version_id " +
-                                  ", @script_name " +
-                                  ", @sql_to_run " +
-                                  ", @sql_to_run_hash " +
-                                  ", @run_this_script_once " +
-                                  ", @now " +
-                                  ", @now " +
-                                  ", @me)";
-                cmd.ExecuteNonQuery();
+                        cmd.CommandText = "INSERT INTO [RoundhousE_ScriptsRun]" +
+                                          "([version_id]" +
+                                          ",[script_name]" +
+                                          ",[text_of_script]" +
+                                          ",[text_hash]" +
+                                          ",[one_time_script]" +
+                                          ",[entry_date]" +
+                                          ",[modified_date]" +
+                                          ",[entered_by])" +
+                                          " VALUES(" +
+                                          " @version_id " +
+                                          ", @script_name " +
+                                          ", @sql_to_run " +
+                                          ", @sql_to_run_hash " +
+                                          ", @run_this_script_once " +
+                                          ", @now " +
+                                          ", @now " +
+                                          ", @currentUser)";
+                        cmd.ExecuteNonQuery();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 throw new ApplicationException(string.Format("Unable to insert row in RoundhousE_ScriptsRun table. Error was {0}", ex.Message));
-            }
-            finally
-            {
-                conn.Close();
             }
         }
 
@@ -224,50 +239,50 @@ namespace roundhouse.databases.sqlserverce
 
             try
             {
-                conn = new SqlCeConnection(connection_string);
-                conn.Open();
+                using (conn = new SqlCeConnection(connection_string))
+                {
+                    conn.Open();
 
-                DateTime now = DateTime.Now;
+                    DateTime now = DateTime.Now;
 
-                SqlCeCommand cmd = conn.CreateCommand();
-                cmd.Parameters.AddWithValue("script_name", script_name);
-                cmd.Parameters.AddWithValue("sql_to_run", ((object)sql_to_run) ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("sql_erroneous_part", ((object)sql_erroneous_part) ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("error_message", error_message);
-                cmd.Parameters.AddWithValue("repository_version", repository_version);
-                cmd.Parameters.AddWithValue("repository_path", ((object)repository_path) ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("now", now);
-                cmd.Parameters.AddWithValue("me", WindowsIdentity.GetCurrent().Name);
+                    using (SqlCeCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.Parameters.AddWithValue("script_name", script_name);
+                        cmd.Parameters.AddWithValue("sql_to_run", ((object)sql_to_run) ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("sql_erroneous_part", ((object)sql_erroneous_part) ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("error_message", error_message);
+                        cmd.Parameters.AddWithValue("repository_version", repository_version);
+                        cmd.Parameters.AddWithValue("repository_path", ((object)repository_path) ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("now", now);
+                        cmd.Parameters.AddWithValue("currentUser", GetCurrentUser());
 
-                cmd.CommandText = "INSERT INTO [RoundhousE_ScriptsRunErrors]" +
-                                  "([repository_path]" +
-                                  ",[version]" +
-                                  ",[script_name]" +
-                                  ",[text_of_script]" +
-                                  ",[erroneous_part_of_script]" +
-                                  ",[error_message]" +
-                                  ",[entry_date]" +
-                                  ",[modified_date]" +
-                                  ",[entered_by])" +
-                                  " VALUES(" +
-                                  "@repository_path " +
-                                  ", @repository_version " +
-                                  ", @script_name " +
-                                  ", @sql_to_run " +
-                                  ", @sql_erroneous_part " +
-                                  ", @error_message " +
-                                  ", @now " +
-                                  ", @now " +
-                                  ", @me)";
-                cmd.ExecuteNonQuery();
+                        cmd.CommandText = "INSERT INTO [RoundhousE_ScriptsRunErrors]" +
+                                          "([repository_path]" +
+                                          ",[version]" +
+                                          ",[script_name]" +
+                                          ",[text_of_script]" +
+                                          ",[erroneous_part_of_script]" +
+                                          ",[error_message]" +
+                                          ",[entry_date]" +
+                                          ",[modified_date]" +
+                                          ",[entered_by])" +
+                                          " VALUES(" +
+                                          "@repository_path " +
+                                          ", @repository_version " +
+                                          ", @script_name " +
+                                          ", @sql_to_run " +
+                                          ", @sql_erroneous_part " +
+                                          ", @error_message " +
+                                          ", @now " +
+                                          ", @now " +
+                                          ", @currentUser)";
+                        cmd.ExecuteNonQuery();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 throw new ApplicationException(string.Format("Unable to insert row in RoundhousE_ScriptsRunErrors table. Error was {0}", ex.Message));
-            }
-            finally
-            {
-                conn.Close();
             }
         }
 
@@ -277,30 +292,28 @@ namespace roundhouse.databases.sqlserverce
 
             try
             {
-                conn = new SqlCeConnection(connection_string);
-                conn.Open();
+                using (conn = new SqlCeConnection(connection_string))
+                {
+                    conn.Open();
 
-                DateTime now = DateTime.Now;
+                    DateTime now = DateTime.Now;
 
-                SqlCeCommand cmd = conn.CreateCommand();
+                    using (SqlCeCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT TOP 1 [Version] FROM [RoundhousE_Version] ORDER BY entry_date DESC";
 
-                cmd.CommandText = "SELECT TOP 1 [Version] FROM [RoundhousE_Version] ORDER BY entry_date DESC";
-                
-                object version = cmd.ExecuteScalar();
+                        object version = cmd.ExecuteScalar();
 
-                return version == null ? null : version.ToString();
+                        return version == null ? null : version.ToString();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 throw new ApplicationException(string.Format("Unable to get version from RoundhousE_Version table. Error was {0}", ex.Message));
             }
-            finally
-            {
-                conn.Close();
-            }
         }
 
-        //get rid of the virtual
         public override long insert_version_and_get_version_id(string repository_path, string repository_version)
         {
             string version = get_version(null);
@@ -313,48 +326,49 @@ namespace roundhouse.databases.sqlserverce
 
             try
             {
-                conn = new SqlCeConnection(connection_string);
-                conn.Open();
-
-                DateTime now = DateTime.Now;
-
-                if (lNewVersion > lVersion)
+                using (conn = new SqlCeConnection(connection_string))
                 {
-                    SqlCeCommand cmd = conn.CreateCommand();
-                    cmd.Parameters.AddWithValue("repository_version", repository_version);
-                    cmd.Parameters.AddWithValue("repository_path", ((object)repository_path) ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("now", now);
-                    cmd.Parameters.AddWithValue("me", WindowsIdentity.GetCurrent().Name);
+                    conn.Open();
 
-                    cmd.CommandText = "INSERT INTO [RoundhousE_Version]" +
-                                        "([repository_path]" +
-                                        ",[version]" +
-                                        ",[entry_date]" +
-                                        ",[modified_date]" +
-                                        ",[entered_by])" +
-                                        " VALUES(" +
-                                        "@repository_path " +
-                                        ", @repository_version " +
-                                        ", @now " +
-                                        ", @now " +
-                                        ", @me)";
-                    cmd.ExecuteNonQuery();
+                    DateTime now = DateTime.Now;
+
+                    if (lNewVersion > lVersion)
+                    {
+                        using (SqlCeCommand cmd = conn.CreateCommand())
+                        {
+                            cmd.Parameters.AddWithValue("repository_version", repository_version);
+                            cmd.Parameters.AddWithValue("repository_path", ((object)repository_path) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("now", now);
+                            cmd.Parameters.AddWithValue("currentUser", GetCurrentUser());
+
+                            cmd.CommandText = "INSERT INTO [RoundhousE_Version]" +
+                                                "([repository_path]" +
+                                                ",[version]" +
+                                                ",[entry_date]" +
+                                                ",[modified_date]" +
+                                                ",[entered_by])" +
+                                                " VALUES(" +
+                                                "@repository_path " +
+                                                ", @repository_version " +
+                                                ", @now " +
+                                                ", @now " +
+                                                ", @currentUser)";
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    using (SqlCeCommand cmdLatestVersionId = conn.CreateCommand())
+                    {
+                        cmdLatestVersionId.CommandText = "SELECT TOP 1 [id] FROM [RoundhousE_Version] ORDER BY entry_date DESC";
+
+                        return Int64.Parse(cmdLatestVersionId.ExecuteScalar().ToString());
+                    }
                 }
-
-                SqlCeCommand cmdLatestVersionId = conn.CreateCommand();
-
-                cmdLatestVersionId.CommandText = "SELECT TOP 1 [id] FROM [RoundhousE_Version] ORDER BY entry_date DESC";
-
-                return Int64.Parse(cmdLatestVersionId.ExecuteScalar().ToString());
             }
             catch (Exception ex)
             {
                 throw new ApplicationException(string.Format("Unable to insert new version in RoundhousE_Version table. Error was {0}", ex.Message));
             }
-            finally
-            {
-                conn.Close();
-            }           
         }
 
         public override string get_current_script_hash(string script_name)
@@ -363,27 +377,27 @@ namespace roundhouse.databases.sqlserverce
 
             try
             {
-                conn = new SqlCeConnection(connection_string);
-                conn.Open();
+                using (conn = new SqlCeConnection(connection_string))
+                {
+                    conn.Open();
 
-                DateTime now = DateTime.Now;
+                    DateTime now = DateTime.Now;
 
-                SqlCeCommand cmd = conn.CreateCommand();
-                cmd.Parameters.AddWithValue("script_name", script_name);
+                    using (SqlCeCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.Parameters.AddWithValue("script_name", script_name);
 
-                cmd.CommandText = "SELECT [text_hash] FROM [RoundhousE_ScriptsRun] WHERE script_name = @script_name";
+                        cmd.CommandText = "SELECT [text_hash] FROM [RoundhousE_ScriptsRun] WHERE script_name = @script_name";
 
-                object text_hash = cmd.ExecuteScalar();
+                        object text_hash = cmd.ExecuteScalar();
 
-                return text_hash == null ? null : text_hash.ToString();
+                        return text_hash == null ? null : text_hash.ToString();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 throw new ApplicationException(string.Format("Unable to retrieve script_hash from RoundhousE_ScriptsRun table. Error was {0}", ex.Message));
-            }
-            finally
-            {
-                conn.Close();
             }
         }
 
@@ -458,5 +472,13 @@ namespace roundhouse.databases.sqlserverce
             return result.Tables.Count == 0 ? null : result.Tables[0];
         }
 
+        /// <summary>
+        /// Returns the currently logged in Windows user.
+        /// </summary>
+        /// <returns>The current user or an empty string if not available.</returns>
+        private string GetCurrentUser()
+        {
+            return WindowsIdentity.GetCurrent() != null ? WindowsIdentity.GetCurrent().Name : string.Empty;
+        }
     }
 }

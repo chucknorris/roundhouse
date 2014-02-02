@@ -2,5 +2,5 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("52796298-9e1f-47fd-9253-d3b2fcf4feda")]
+[assembly: Guid("00C68829-B216-4CFC-B0C0-4DB304D8F753")]
 [assembly: AssemblyKeyFile("..\\..\\RoundhousE.snk")]
