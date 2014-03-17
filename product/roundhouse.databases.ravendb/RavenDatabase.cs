@@ -192,7 +192,7 @@ namespace roundhouse.databases.ravendb
             try
             {
 
-                var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
+                var address = string.Format("/docs/Raven/RoundhousE/ScriptsRun/{0}", script_name);
                 var headers = new[] { "Raven-Entity-Name: RoundhousE", "Content-Type: application/json" };
                 var data = Serializer.SerializeObject(script_run);
 
@@ -235,7 +235,7 @@ namespace roundhouse.databases.ravendb
 
             try
             {
-                var address = string.Format("/docs/RoundhousE/ScriptsRunError/{0}/", script_name);
+                var address = string.Format("/docs/Raven/RoundhousE/ScriptsRunError/{0}/", script_name);
                 var headers = new[] {"Raven-Entity-Name: RoundhousE", "Content-Type: application/json"};
 
                 using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, null, "PUT", headers, Serializer.SerializeObject(script_run_error)))
@@ -262,7 +262,7 @@ namespace roundhouse.databases.ravendb
         {
             string versionsJson;
 
-            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", null, "GET", null, null))
+            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/Raven/RoundhousE/Versions", null, "GET", null, null))
             {
                 versionsJson = (string) command.Execute();
             }
@@ -276,7 +276,7 @@ namespace roundhouse.databases.ravendb
         {
             var headers = new[] { "Raven-Entity-Name: RoundhousE", "Content-Type: application/json" };
 
-            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/RoundhousE/Versions", null, "PUT", headers, Serializer.SerializeObject(versions)))
+            using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, "/docs/Raven/RoundhousE/Versions", null, "PUT", headers, Serializer.SerializeObject(versions)))
             {
                 command.Execute();
             }
@@ -317,7 +317,7 @@ namespace roundhouse.databases.ravendb
 
             try
             {
-                var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
+                var address = string.Format("/docs/Raven/RoundhousE/ScriptsRun/{0}", script_name);
                 string scriptsRunJson = null;
 
                 using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, null, "GET", null, null))
@@ -347,7 +347,7 @@ namespace roundhouse.databases.ravendb
 
             try
             {
-                var address = string.Format("/docs/RoundhousE/ScriptsRun/{0}", script_name);
+                var address = string.Format("/docs/Raven/RoundhousE/ScriptsRun/{0}", script_name);
 
                 // todo: ?metadata-only=true
                 using (IRavenCommand command = RavenCommand.CreateCommand(connection_string, address, null, "GET", null, null))
