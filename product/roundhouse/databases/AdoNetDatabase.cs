@@ -192,5 +192,59 @@ namespace roundhouse.databases
 
             return command;
         }
+
+        public override List<string> get_dependent_schemabound_views(string object_name)
+        {
+            var sql = string.Format(@"
+                select distinct v.name as [object] from sys.sysdepends 
+	                dep
+	                inner join sys.views v on v.object_id = dep.id
+	                inner join sys.views v2 on v2.object_id = dep.depid
+                where v2.name = '{0}' and deptype = 1", object_name);
+            List<string> resultSet = new List<string>();
+            DataTable dt = execute_datatable(sql);
+            if (dt != null && dt.Rows.Count != 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    resultSet.Add(row["object"].ToString());
+                }
+            }
+            return resultSet;
+        }
+
+        public override string get_object_definition(string object_name)
+        {
+            var sql = string.Format(@"
+                select [definition] from sys.sysobjects so
+	                inner join sys.sql_modules sm on sm.object_id = so.id
+                where so.name = '{0}'", object_name);
+
+            return (string)run_sql_scalar(sql, ConnectionType.Default, null);
+        }
+
+        /// <summary>
+        /// Low level hit to query the database for a restore
+        /// </summary>
+        protected DataTable execute_datatable(string sql_to_run)
+        {
+            DataSet result = new DataSet();
+
+            using (IDbCommand command = setup_database_command(sql_to_run, ConnectionType.Default, null))
+            {
+                using (IDataReader data_reader = command.ExecuteReader())
+                {
+                    DataTable data_table = new DataTable();
+                    data_table.Load(data_reader);
+                    data_reader.Close();
+                    data_reader.Dispose();
+
+                    result.Tables.Add(data_table);
+                }
+                command.Dispose();
+            }
+
+            return result.Tables.Count == 0 ? null : result.Tables[0];
+        }
     }
 }

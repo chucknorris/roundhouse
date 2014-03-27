@@ -12,6 +12,9 @@ namespace roundhouse.runners
     using migrators;
     using resolvers;
     using Environment = environments.Environment;
+    using System.Text.RegularExpressions;
+    using System.Collections.Generic;
+    using roundhouse.infrastructure.app.schemabinding;
 
     public sealed class RoundhouseMigrationRunner : IRunner
     {
@@ -264,10 +267,12 @@ namespace roundhouse.runners
             {
                 string sql_file_text = replace_tokens(get_file_text(sql_file));
                 Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
+                sql_file_text = pre_process(sql_file_text, migration_folder); 
                 bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file),
                                                              migration_folder.should_run_items_in_folder_once,
                                                              migration_folder.should_run_items_in_folder_every_time,
                                                              version_id, migrating_environment, repository_version, repository_path, connection_type);
+                
                 if (the_sql_ran)
                 {
                     try
@@ -303,6 +308,18 @@ namespace roundhouse.runners
 
             return TokenReplacer.replace_tokens(configuration, sql_text);
         }
+
+        private string pre_process(string sql_text, MigrationsFolder folder)
+        {
+            if (folder == known_folders.views)
+            {
+                SchemaBindResolver resolver = new SchemaBindResolver(database_migrator.database);
+                sql_text = resolver.resolve(sql_text);
+            }
+            return sql_text;
+        }
+
+
 
         private void copy_to_change_drop_folder(string sql_file_ran, Folder migration_folder)
         {

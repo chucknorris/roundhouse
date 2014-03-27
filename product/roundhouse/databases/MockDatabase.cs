@@ -270,5 +270,16 @@ namespace roundhouse.databases
                 disposing = true;
             }
         }
+
+
+        public string get_object_definition(string object_name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.Collections.Generic.List<string> get_dependent_schemabound_views(string object_name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

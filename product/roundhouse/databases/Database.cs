@@ -60,6 +60,8 @@
 // t##K#       i,                                j       
 //      ;i                                           
 
+using System.Collections.Generic;
+
 namespace roundhouse.databases
 {
     using System;
@@ -108,6 +110,8 @@ namespace roundhouse.databases
         long insert_version_and_get_version_id(string repository_path, string repository_version);
         bool has_run_script_already(string script_name);
         string get_current_script_hash(string script_name);
+        string get_object_definition(string object_name);
+        List<string> get_dependent_schemabound_views(string object_name);
         //object run_sql_scalar(string sql_to_run);
     }
 }

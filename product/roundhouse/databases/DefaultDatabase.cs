@@ -404,5 +404,15 @@ namespace roundhouse.databases
                 connection.Dispose();
             }
         }
+
+        public virtual List<string> get_dependent_schemabound_views(string object_name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual string get_object_definition(string object_name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
