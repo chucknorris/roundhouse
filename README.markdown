@@ -36,7 +36,7 @@ With NuGet you can get the current release of RoundhousE to your application qui
 2. There is also `roundhouse.lib`, `roundhouse.msbuild`, and `roundhouse.refreshdatabase`  
   
 ### Chocolatey  
-Chocolatey like apt-get, but for Windows! This is an alternative method to get the current release of RoundhousE to your machine quickly!  
+Chocolatey is like apt-get, but for Windows! This is an alternative method to get the current release of RoundhousE to your machine quickly!  
   
 1. Type `cinst roundhouse`  
 2. Then from anywhere you can type `rh [options]`  
