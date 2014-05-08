@@ -34,7 +34,7 @@ namespace roundhouse.databases.ravendb.commands
                 if (CommandHeaders != null)
                 {
                     _webClient.Headers.Clear();
-                    foreach (var header in CommandHeaders)
+                    foreach (string header in CommandHeaders)
                     {
                         _webClient.Headers.Add(header);
                     }
@@ -63,40 +63,47 @@ namespace roundhouse.databases.ravendb.commands
 
                     if (resp.StatusCode == HttpStatusCode.NotFound) // HTTP 404
                     {
+                        if (CommandType.ToUpper() != "GET")
+                        {
+                            throw;
+                        }
                         return null;
                     }
                 }
-
                 throw;
             }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("CommandAddress: {1}{0}CommandData:{2}{0}CommandType:{3}{0}CommandHeaders:{4}{0}", Environment.NewLine, CommandAddress, CommandData, CommandType, CommandHeaders);
         }
 
         public static IRavenCommand CreateCommand(string connection_string, string script_to_run)
         {
             // parse script_to_run to be able to create the command
-            var http_method = Regex.Match(script_to_run, @"^(?<httpmethod>\w*)").Value;
-            var match = Regex.Match(script_to_run, @"\s+https?:\/\/[^/]+(?<address>[^?\s]+)(?:\?(?<query>[^\s]*))?");
-            var address = match.Groups["address"].Value;
-            var query = match.Groups["query"].Value;
-            var headers = Regex.Matches(script_to_run, @"\s+(?:-H|--header)\s+\""(?<headers>[^\""]*)\""").Cast<Match>()
-                               .Where(m => m.Success)
-                               .Select(m => m.Groups["headers"])
-                               .Select(g => g.Value)
-                               .ToArray();
-            var data = Regex.Match(script_to_run, @"\s+(?:-d|--data)\s+""(?<data>(?:[^""\\]+|\\.)*)""").Groups["data"].Value;
+            string http_method = Regex.Match(script_to_run, @"^(?<httpmethod>\w*)").Value;
+            Match match = Regex.Match(script_to_run, @"\s+https?:\/\/[^/]+(?<address>[^?\s]+)(?:\?(?<query>[^\s]*))?");
+            string address = match.Groups["address"].Value;
+            string query = match.Groups["query"].Value;
+            string[] headers = Regex.Matches(script_to_run, @"\s+(?:-H|--header)\s+\""(?<headers>[^\""]*)\""").Cast<Match>()
+                .Where(m => m.Success)
+                .Select(m => m.Groups["headers"])
+                .Select(g => g.Value)
+                .ToArray();
+            string data = Regex.Match(script_to_run, @"\s+(?:-d|--data)\s+""(?<data>(?:[^""\\]+|\\.)*)""").Groups["data"].Value;
 
             return CreateCommand(connection_string, address, query, http_method, headers, data);
         }
 
         public static IRavenCommand CreateCommand(string connection_string, string address, string query, string http_method, string[] headers, string data)
         {
-            var regexResult = Regex.Match(connection_string, connection_string_regex);
+            Match regexResult = Regex.Match(connection_string, connection_string_regex);
 
-            if (!regexResult.Success)
-                throw new ArgumentException("The connectionstring isn't a valid RavenDB connectionstring", "connection_string");
+            if (!regexResult.Success) throw new ArgumentException("The connectionstring isn't a valid RavenDB connectionstring", "connection_string");
 
-            var url = regexResult.Groups["url"].Value;
-            var database = regexResult.Groups["database"].Value;
+            string url = regexResult.Groups["url"].Value;
+            string database = regexResult.Groups["database"].Value;
 
             var command_address = new UriBuilder(url);
 
@@ -107,14 +114,14 @@ namespace roundhouse.databases.ravendb.commands
 
             command_address.Path += address;
             command_address.Query += query;
-            
+
             var ravenCommand = new RavenCommand
-                {
-                    CommandType = http_method,
-                    CommandAddress = command_address.Uri,
-                    CommandHeaders = headers,
-                    CommandData = data
-                };
+            {
+                CommandType = http_method,
+                CommandAddress = command_address.Uri,
+                CommandHeaders = headers,
+                CommandData = data
+            };
 
             return ravenCommand;
         }
