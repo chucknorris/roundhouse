@@ -82,6 +82,10 @@
       <HintPath>..\..\packages\log4net.2.0.0\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>

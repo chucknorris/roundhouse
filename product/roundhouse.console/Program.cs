@@ -17,6 +17,8 @@ using roundhouse.infrastructure.filesystem;
 using roundhouse.migrators;
 using roundhouse.resolvers;
 using roundhouse.runners;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace roundhouse.console
 {
@@ -300,11 +302,19 @@ namespace roundhouse.console
                 .Add("searchallinsteadoftraverse=|searchallsubdirectoriesinsteadoftraverse=",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
-                ;
+				//load configuration from file
+				.Add("cf=|configfile=|configurationfile=",
+					"Loads configuration options from a JSON file",
+					option => configuration.ConfigurationFile = option)
+				;
 
             try
             {
                 option_set.Parse(args);
+				if(!string.IsNullOrEmpty(configuration.ConfigurationFile))
+				{
+					merge_configuration_file(configuration.ConfigurationFile, configuration, option_set);
+				}
             }
             catch (OptionException)
             {
@@ -364,7 +374,45 @@ namespace roundhouse.console
             }
         }
 
-        public static void show_help(string message, OptionSet option_set)
+		private static void merge_configuration_file(string configurationFile, ConfigurationPropertyHolder configuration, OptionSet option_set)
+		{
+			try 
+			{
+				if(!System.IO.File.Exists(configurationFile))
+				{
+					throw new Exception("Configuration File does not exist: " + configurationFile);
+				}
+				var jsonData = System.IO.File.ReadAllText(configurationFile);
+				var fileValues = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonData);
+				foreach(string key in fileValues.Keys)
+				{
+					if(!string.IsNullOrEmpty(fileValues[key]))
+					{
+						var propInfo = configuration.GetType().GetProperty(key);
+						if(propInfo != null)
+						{
+							object convertedValue;
+							try 
+							{
+								convertedValue = Convert.ChangeType(fileValues[key], propInfo.PropertyType);
+								propInfo.SetValue(configuration, convertedValue, null);
+							}
+							catch
+							{
+								show_help(string.Format("Config File {0}: Failed to convert field {1} to type {2}, value: {3}", configurationFile, key, propInfo.PropertyType.Name, fileValues[key]), option_set);
+							}
+
+						}
+					}
+				}
+			} 
+			catch(Exception err)
+			{
+				show_help(err.Message, option_set);
+			}
+		}
+		
+		public static void show_help(string message, OptionSet option_set)
         {
             //Console.Error.WriteLine(message);
             the_logger.Info(message);
