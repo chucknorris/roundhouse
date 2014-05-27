@@ -134,7 +134,7 @@
 
         public bool DisableOutput { get; set; }
 
-		public string ConfigurationFile { get; set; }
+        public string ConfigurationFile { get; set; }
 
         #endregion
 

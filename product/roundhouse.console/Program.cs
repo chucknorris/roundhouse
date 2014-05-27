@@ -302,19 +302,15 @@ namespace roundhouse.console
                 .Add("searchallinsteadoftraverse=|searchallsubdirectoriesinsteadoftraverse=",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
-				//load configuration from file
-				.Add("cf=|configfile=|configurationfile=",
-					"Loads configuration options from a JSON file",
-					option => configuration.ConfigurationFile = option)
-				;
+                //load configuration from file
+                .Add("cf=|configfile=|configurationfile=",
+                    "Loads configuration options from a JSON file",
+                    option => configuration.ConfigurationFile = option)
+                ;
 
             try
             {
-                option_set.Parse(args);
-				if(!string.IsNullOrEmpty(configuration.ConfigurationFile))
-				{
-					merge_configuration_file(configuration.ConfigurationFile, configuration, option_set);
-				}
+                option_set = merge_configuration_file(args, option_set, configuration);
             }
             catch (OptionException)
             {
@@ -374,43 +370,91 @@ namespace roundhouse.console
             }
         }
 
-		private static void merge_configuration_file(string configurationFile, ConfigurationPropertyHolder configuration, OptionSet option_set)
-		{
-			try 
-			{
-				if(!System.IO.File.Exists(configurationFile))
-				{
-					throw new Exception("Configuration File does not exist: " + configurationFile);
-				}
-				var jsonData = System.IO.File.ReadAllText(configurationFile);
-				var fileValues = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonData);
-				foreach(string key in fileValues.Keys)
-				{
-					if(!string.IsNullOrEmpty(fileValues[key]))
-					{
-						var propInfo = configuration.GetType().GetProperty(key);
-						if(propInfo != null)
-						{
-							object convertedValue;
-							try 
-							{
-								convertedValue = Convert.ChangeType(fileValues[key], propInfo.PropertyType);
-								propInfo.SetValue(configuration, convertedValue, null);
-							}
-							catch
-							{
-								show_help(string.Format("Config File {0}: Failed to convert field {1} to type {2}, value: {3}", configurationFile, key, propInfo.PropertyType.Name, fileValues[key]), option_set);
-							}
-
-						}
-					}
-				}
-			} 
-			catch(Exception err)
-			{
-				show_help(err.Message, option_set);
-			}
+        private static OptionSet merge_configuration_file(string[] args, OptionSet option_set, ConfigurationPropertyHolder configuration)
+        {
+            option_set.Parse(args);
+            if(!string.IsNullOrEmpty(configuration.ConfigurationFile))
+            {
+                bool any_update = false;
+                List<string> new_args = new List<string>(args);
+                try 
+                {
+                    if(!System.IO.File.Exists(configuration.ConfigurationFile))
+                    {
+                        throw new Exception("Configuration File does not exist: " + configuration.ConfigurationFile);
+                    }
+                    var json_Data = System.IO.File.ReadAllText(configuration.ConfigurationFile);
+                    var file_values = JsonConvert.DeserializeObject<Dictionary<string, string>>(json_Data);
+                    foreach(var key in file_values.Keys)
+                    {
+                        if(!string.IsNullOrEmpty(file_values[key]))
+                        {
+                            var matched_option = find_option_by_prototype(option_set, key);
+                            if(matched_option != null)
+                            {
+                                if(add_arg_if_not_exist(new_args, option_set, matched_option, file_values[key]))
+                                {
+                                    any_update = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    show_help(ex.Message, option_set);
+                }
+                if(any_update)
+                {
+                    option_set.Parse(new_args);
+                }
+            }
+            return option_set;
 		}
+
+        private static bool add_arg_if_not_exist(List<string> args, OptionSet option_set, Option option_to_replace, string new_value)
+        {
+            for(int i = 0; i < args.Count; i++)
+            {
+                var arg = args[i];
+                if(!string.IsNullOrEmpty(arg))
+                {
+                    string arg_flag;
+                    string arg_name;
+                    string arg_sep;
+                    string arg_value;
+                    if(option_set.GetOptionParts(arg, out arg_flag, out arg_name, out arg_sep, out arg_value))
+                    {
+                        foreach(var name in option_to_replace.GetNames())
+                        {
+                            if(!string.IsNullOrEmpty(name) && name.Equals(arg_name, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                //Value already exists, skip this, command line should take precedence.
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            string new_arg = "/" + option_to_replace.GetNames()[0]  + "=" + new_value;
+            args.Add(new_arg);
+            return true;
+        }
+
+        private static Option find_option_by_prototype(OptionSet option_set, string key)
+        {
+            foreach(var option in option_set)
+            {
+                foreach(var name in option.GetNames())
+                {
+                    if(!string.IsNullOrEmpty(name)  && name.StartsWith(key, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return option;
+                    }
+                }
+            }
+            return null;
+        }
 		
 		public static void show_help(string message, OptionSet option_set)
         {
