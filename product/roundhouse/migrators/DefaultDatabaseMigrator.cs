@@ -185,7 +185,10 @@ namespace roundhouse.migrators
                 {
                     try
                     {
-                        database.run_sql(sql_statement, connection_type);
+                        if (!configuration.DryRun)
+                        {
+                            database.run_sql(sql_statement, connection_type);
+                        }
                     }
                     catch (Exception ex)
                     {
