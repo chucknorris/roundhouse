@@ -109,14 +109,11 @@ namespace roundhouse.databases.mysql
         public override void run_sql(string sql_to_run, ConnectionType connection_type)
         {
             if (string.IsNullOrEmpty(sql_to_run)) return;
-
-            //TODO Investigate how pass CommandTimeout into commands which will be during MySqlScript execution.
-            var connection = connection_type == ConnectionType.Admin
-                ? admin_connection.underlying_type().downcast_to<MySqlConnection>()
-                : server_connection.underlying_type().downcast_to<MySqlConnection>();
-            
-            var script = new MySqlScript(connection, sql_to_run);
-            script.Execute();
+                        
+            // Changed to use the Regular IDbCommand so the Passed in Command Timeouts can be utilized
+            var command = setup_database_command(sql_to_run, connection_type, null);
+            command.CommandText = sql_to_run;
+            command.ExecuteNonQuery();            
         }
 
         public override string set_recovery_mode_script(bool simple)
