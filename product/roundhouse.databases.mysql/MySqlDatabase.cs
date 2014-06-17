@@ -109,11 +109,21 @@ namespace roundhouse.databases.mysql
         public override void run_sql(string sql_to_run, ConnectionType connection_type)
         {
             if (string.IsNullOrEmpty(sql_to_run)) return;
-                        
-            // Changed to use the Regular IDbCommand so the Passed in Command Timeouts can be utilized
-            var command = setup_database_command(sql_to_run, connection_type, null);
-            command.CommandText = sql_to_run;
-            command.ExecuteNonQuery();            
+
+            try
+            {
+                // Changed to use the Regular IDbCommand so the Passed in Command Timeouts can be utilized
+                using (var command = setup_database_command(sql_to_run, connection_type, null))
+                {
+                    command.CommandText = sql_to_run;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.bound_to(this).log_a_debug_event_containing("Failure executing command. {0}{1}", Environment.NewLine, ex.ToString());
+                throw ex;
+            }
         }
 
         public override string set_recovery_mode_script(bool simple)
