@@ -261,6 +261,11 @@ namespace roundhouse.databases
             return string.Empty;
         }
 
+        public string create_object_script(string object_type, string object_name)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool disposing = false;
         public void Dispose()
         {

@@ -256,6 +256,10 @@ namespace roundhouse.databases
             }
         }
 
+        public string create_object_script(string object_type, string object_name)
+        {
+            throw new NotImplementedException();
+        }
 
         public string get_object_definition(string object_name)
         {

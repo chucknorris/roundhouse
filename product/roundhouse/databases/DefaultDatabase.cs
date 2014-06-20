@@ -83,6 +83,7 @@ namespace roundhouse.databases
         public abstract string set_recovery_mode_script(bool simple);
         public abstract string restore_database_script(string restore_from_path, string custom_restore_options);
         public abstract string delete_database_script();
+        public abstract string create_object_script(string object_type, string object_name);
 
         public virtual bool create_database_if_it_doesnt_exist(string custom_create_database_script)
         {

@@ -264,5 +264,10 @@ namespace roundhouse.databases.oracle
                 END;",
             database_name.to_upper());
         }
+
+        public override string create_object_script(string object_type, string object_name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -129,5 +129,10 @@
         {
             throw new NotImplementedException();
         }
+
+        public override string create_object_script(string object_type, string object_name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

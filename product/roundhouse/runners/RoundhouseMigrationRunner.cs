@@ -311,15 +311,40 @@ namespace roundhouse.runners
 
         private string pre_process(string sql_text, MigrationsFolder folder)
         {
-            if (folder == known_folders.views)
+            if (folder == known_folders.views || folder == known_folders.sprocs || folder == known_folders.functions)
             {
-                SchemaBindResolver resolver = new SchemaBindResolver(database_migrator.database);
-                sql_text = resolver.resolve(sql_text);
+                if (configuration.UsingVSDBProjectScripts)
+                {
+                    sql_text = change_create_to_alter(sql_text);
+                }
+
+                if (folder == known_folders.views)
+                {
+                    SchemaBindResolver resolver = new SchemaBindResolver(database_migrator.database);
+                    sql_text = resolver.resolve(sql_text);
+                }
             }
             return sql_text;
         }
 
-
+        private string change_create_to_alter(string sql_text)
+        {
+            var findPattern = @"create\s+(view|function|aggregate|procedure|proc)\s+(?:\[?(\w*\b)\]?\.)?\[?(\w*\b)\]?";
+            var matchDeclaration = Regex.Match(sql_text, findPattern, RegexOptions.IgnoreCase);
+             
+            var objectType = matchDeclaration.Groups[1].Value;
+            var schema = matchDeclaration.Groups[2].Value;
+            var objectName = matchDeclaration.Groups[3].Value;
+            
+            if (matchDeclaration != null)
+            {
+                var replacePattern = @"(create)(\s+(?:view|function|aggregate|procedure|proc)\s+\[?\w*\b\]?\.?\[?(?:\w*\b)\]?)";
+                sql_text = Regex.Replace(sql_text, replacePattern, m => String.Format("{0}{1}", m.Groups[1], "ALTER"), RegexOptions.IgnoreCase);
+                var create_object_script = this.database_migrator.database.create_object_script(objectType, objectName);
+                sql_text = create_object_script + sql_text;
+            }
+            return sql_text;     
+        }
 
         private void copy_to_change_drop_folder(string sql_file_ran, Folder migration_folder)
         {

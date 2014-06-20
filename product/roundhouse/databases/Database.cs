@@ -106,6 +106,7 @@ namespace roundhouse.databases
         void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id);
         void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path);
 
+        string create_object_script(string object_type, string object_name);
         string get_version(string repository_path);
         long insert_version_and_get_version_id(string repository_path, string repository_version);
         bool has_run_script_already(string script_name);

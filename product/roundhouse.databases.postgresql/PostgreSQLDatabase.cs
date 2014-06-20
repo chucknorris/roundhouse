@@ -134,6 +134,11 @@ namespace roundhouse.databases.postgresql
             return string.Format(@"DROP DATABASE IF EXISTS {0};", database_name);
         }
 
+        public override string create_object_script(string object_type, string object_name)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void create_or_update_roundhouse_tables()
         {
             //Log.bound_to(this).log_an_info_event_containing("Creating schema [{0}].", roundhouse_schema_name);
