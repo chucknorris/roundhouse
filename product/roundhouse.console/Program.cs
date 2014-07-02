@@ -128,7 +128,7 @@ namespace roundhouse.console
                          "RepositoryPath - The repository. A string that can be anything. Used to track versioning along with the version. Defaults to null."),
                      option => configuration.RepositoryPath = option)
                 .Add("vf=|versionfile=",
-                     string.Format("VersionFile - Either a .XML file, a .DLL or a .TXT file that a version can be resolved from. Defaults to \"{0}\".",
+                     string.Format("VersionFile - Either a .XML file, a .DLL or a .TXT or a .json file that a version can be resolved from. Defaults to \"{0}\".",
                                    ApplicationParameters.default_version_file),
                      option => configuration.VersionFile = option)
                 .Add("vx=|versionxpath=",
