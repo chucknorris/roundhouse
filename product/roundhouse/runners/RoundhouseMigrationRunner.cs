@@ -339,7 +339,7 @@ namespace roundhouse.runners
             if (matchDeclaration != null)
             {
                 var replacePattern = @"(create)(\s+(?:view|function|aggregate|procedure|proc)\s+\[?\w*\b\]?\.?\[?(?:\w*\b)\]?)";
-                sql_text = Regex.Replace(sql_text, replacePattern, m => String.Format("{0}{1}", m.Groups[1], "ALTER"), RegexOptions.IgnoreCase);
+                sql_text = Regex.Replace(sql_text, replacePattern, m => String.Format("{0}{1}", "ALTER", m.Groups[2]), RegexOptions.IgnoreCase);
                 var create_object_script = this.database_migrator.database.create_object_script(objectType, objectName);
                 sql_text = create_object_script + sql_text;
             }

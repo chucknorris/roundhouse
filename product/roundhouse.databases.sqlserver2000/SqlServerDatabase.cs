@@ -170,7 +170,8 @@ namespace roundhouse.databases.sqlserver2000
 	                    EXECUTE(@SQL)
                       END
                     Print 'Updating ' + @Type + ' ' + @Name
-                    GO", object_type, object_name);
+                    GO 
+                ", object_type, object_name);
         }
     }
 }

@@ -161,7 +161,8 @@ namespace roundhouse.databases.sqlserver
 	                    EXECUTE(@SQL)
                       END
                     Print 'Updating ' + @Type + ' ' + @Name
-                    GO", object_type, object_name);
+                    GO 
+                ", object_type, object_name);
         }
 
         public override string set_recovery_mode_script(bool simple)
