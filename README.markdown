@@ -13,7 +13,7 @@ NOTE: If you are looking at the source - please run build.bat before opening the
 
 # INFO
 ## Overview
-RoundhousE is an automated database deployment (change management) system that allows you to use your current idioms and gain much more. Currently it only supports Microsoft SQL Server, but there are future plans for other databases.  
+RoundhousE is an automated database deployment (change management) system that allows you to use your current idioms and gain much more. Currently works with Oracle, SQL Server (2000/2005/2008/Express), Access, MySQL, SQLite and PostgreSQL.There are future plans for other databases.  
   
 It seeks to solve both maintenance concerns and ease of deployment. We follow some of the same idioms as other database management systems (SQL scripts), but we are different in that we think about future maintenance concerns. We want to always apply certain scripts (anything stateless like functions, views, stored procedures, and permissions), so we don't have to throw everything into our change scripts. This seeks to solves future source control concerns. How sweet is it when you can version the database according to your current source control version?  
   
