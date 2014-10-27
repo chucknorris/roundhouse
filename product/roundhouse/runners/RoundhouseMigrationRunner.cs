@@ -98,7 +98,7 @@ namespace roundhouse.runners
                 //database_migrator.backup_database_if_it_exists();
                 remove_share_from_change_drop_folder();
 
-                bool database_was_created = false;
+                var database_was_created = false;
 
                 if (!dropping_the_database)
                 {
@@ -239,13 +239,13 @@ namespace roundhouse.runners
             file_system.create_directory(known_folders.change_drop.folder_full_path);
         }
 
-        private void create_share_and_set_permissions_for_change_drop_folder()
+        private static void create_share_and_set_permissions_for_change_drop_folder()
         {
             //todo: implement creating share with change permissions
             //todo: implement setting Everyone to full acess to this folder
         }
 
-        private void remove_share_from_change_drop_folder()
+        private static void remove_share_from_change_drop_folder()
         {
             //todo: implement removal of the file share
         }
@@ -257,10 +257,10 @@ namespace roundhouse.runners
         {
             if (!file_system.directory_exists(directory)) return;
 
-            var fileNames = configuration.SearchAllSubdirectoriesInsteadOfTraverse
+            var file_names = configuration.SearchAllSubdirectoriesInsteadOfTraverse
                                 ? file_system.get_all_file_name_strings_recurevly_in(directory, SQL_EXTENSION)
                                 : file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION);
-            foreach (string sql_file in fileNames)
+            foreach (string sql_file in file_names)
             {
                 string sql_file_text = replace_tokens(get_file_text(sql_file));
                 Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
