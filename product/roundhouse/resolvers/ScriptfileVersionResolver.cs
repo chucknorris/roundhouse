@@ -1,49 +1,50 @@
 using System;
+using System.IO;
+using System.Linq;
+using roundhouse.infrastructure.app;
 using roundhouse.infrastructure.filesystem;
 using roundhouse.infrastructure.logging;
-using System.Linq;
 
 namespace roundhouse.resolvers
 {
-    using infrastructure.app;
-    using System.IO;
-
     public class ScriptfileVersionResolver : VersionResolver
     {
-        private string version_file;
-        private FileSystemAccess file_system;
-        private string up_folder;
-        private string extension = "sql";
+        private readonly string version_file;
+        private readonly FileSystemAccess file_system;
+        private readonly string up_folder;
+        private const string EXTENSION = "sql";
 
-        public ScriptfileVersionResolver(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
+        public ScriptfileVersionResolver(FileSystemAccess file_system,
+            ConfigurationPropertyHolder configuration_property_holder)
         {
             this.file_system = file_system;
-            this.version_file = configuration_property_holder.VersionFile;
-            this.up_folder = file_system.combine_paths(configuration_property_holder.SqlFilesDirectory, configuration_property_holder.UpFolderName);
+            version_file = configuration_property_holder.VersionFile;
+            up_folder = file_system.combine_paths(configuration_property_holder.SqlFilesDirectory,
+                configuration_property_holder.UpFolderName);
         }
 
         public bool meets_criteria()
         {
-            return version_file.Equals(extension, StringComparison.InvariantCultureIgnoreCase);
+            return version_file.Equals(EXTENSION, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public string resolve_version()
         {
-            string version = "0";
-            Version ver = new Version();
-            
+            var version = "0";
+            var ver = new Version();
+
             if (file_system.directory_exists(up_folder))
             {
                 var files = file_system.get_directory_info_from(up_folder)
-                    .GetFiles("*." + extension).OrderBy(x => x.Name);
+                    .GetFiles("*." + EXTENSION).OrderBy(x => x.Name);
                 long max = 0;
                 foreach (var file in files)
                 {
-                    string fileName = Path.GetFileNameWithoutExtension(file.Name);
-                    if (fileName.Contains("_")) fileName = fileName.Substring(0, fileName.IndexOf("_"));
-                    if (fileName.Contains(".")) //using ##.##.##_description.sql format
+                    string file_name = Path.GetFileNameWithoutExtension(file.Name);
+                    if (file_name.Contains("_")) file_name = file_name.Substring(0, file_name.IndexOf("_"));
+                    if (file_name.Contains(".")) //using ##.##.##_description.sql format
                     {
-                        Version tmp = new Version(fileName);
+                        var tmp = new Version(file_name);
                         if (tmp > ver)
                         {
                             ver = tmp;
@@ -53,7 +54,7 @@ namespace roundhouse.resolvers
                     else //using ###_description.sql format
                     {
                         long fileNumber = 0;
-                        long.TryParse(fileName, out fileNumber);
+                        long.TryParse(file_name, out fileNumber);
                         max = Math.Max(max, fileNumber);
                         version = max.ToString();
                     }
