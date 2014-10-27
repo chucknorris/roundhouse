@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Reflection;
 using log4net;
-using log4net.Core;
-using log4net.Repository;
-using log4net.Repository.Hierarchy;
 using roundhouse.consoles;
 using roundhouse.databases;
 using roundhouse.folders;
@@ -14,12 +10,14 @@ using roundhouse.infrastructure.commandline.options;
 using roundhouse.infrastructure.containers;
 using roundhouse.infrastructure.extensions;
 using roundhouse.infrastructure.filesystem;
+using roundhouse.init;
 using roundhouse.migrators;
 using roundhouse.resolvers;
 using roundhouse.runners;
 
 namespace roundhouse.console
 {
+
     public class Program
     {
         private static readonly ILog the_logger = LogManager.GetLogger(typeof(Program));
@@ -300,6 +298,9 @@ namespace roundhouse.console
                 .Add("searchallinsteadoftraverse=|searchallsubdirectoriesinsteadoftraverse=",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
+                .Add("init",
+                     "Initialize",
+                     option => configuration.Initialize = option != null)
                 ;
 
             try
@@ -347,8 +348,14 @@ namespace roundhouse.console
                         "/baseline " +
                         "/dryrun " +
                         "/search[allsubdirectories]insteadoftraverse" +
+                        "/init" +
                         "]", Environment.NewLine);
                 show_help(usage_message, option_set);
+            }
+
+            if (configuration.Initialize)
+            {
+                return;
             }
 
             if (string.IsNullOrEmpty(configuration.DatabaseName) && string.IsNullOrEmpty(configuration.ConnectionString))
@@ -372,8 +379,21 @@ namespace roundhouse.console
             Environment.Exit(-1);
         }
 
+        public static void init_folder(ConfigurationPropertyHolder configuration)
+        {
+            the_logger.Info("Initializing folder for roundhouse");
+            Container.get_an_instance_of<Initializer>().Initialize(configuration,".");
+            Environment.Exit(0);
+        }
+
         public static void run_migrator(ConfigurationPropertyHolder configuration)
         {
+            if (configuration.Initialize)
+            {
+                init_folder(configuration);
+                return;
+            }
+
             RoundhouseMigrationRunner migration_runner = get_migration_runner(configuration);
             migration_runner.run();
 

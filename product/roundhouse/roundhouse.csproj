@@ -123,6 +123,7 @@
     <Compile Include="infrastructure\persistence\NHibernateSessionFactoryBuilder.cs" />
     <Compile Include="infrastructure\persistence\Repository.cs" />
     <Compile Include="infrastructure.app\tokens\TokenReplacer.cs" />
+    <Compile Include="init\Initializer.cs" />
     <Compile Include="model\Auditable.cs" />
     <Compile Include="model\ScriptsRun.cs" />
     <Compile Include="model\ScriptsRunError.cs" />
