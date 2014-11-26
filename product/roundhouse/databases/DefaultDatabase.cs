@@ -167,9 +167,9 @@ namespace roundhouse.databases
             try
             {
                 int current_connection_timeout = command_timeout;
-                command_timeout = restore_timeout;
+                admin_command_timeout = restore_timeout;
                 run_sql(restore_database_script(restore_from_path, custom_restore_options), ConnectionType.Admin);
-                command_timeout = current_connection_timeout;
+                admin_command_timeout = current_connection_timeout;
             }
             catch (Exception ex)
             {

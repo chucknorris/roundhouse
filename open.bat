@@ -8,4 +8,4 @@ SET BUILD_DIR=%~d0%~p0%
 SET NANT="%BUILD_DIR%lib\Nant\nant.exe"
 SET build.config.settings="%DIR%\settings\UppercuT.config"
 
-%NANT% -logger:NAnt.Core.DefaultLogger -quiet /f:%BUILD_DIR%build\open.build -D:build.config.settings=%build.config.settings%
+%NANT% -logger:NAnt.Core.DefaultLogger -quiet /f:"%BUILD_DIR%build\open.build" -D:build.config.settings=%build.config.settings%
