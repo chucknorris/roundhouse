@@ -195,16 +195,12 @@ namespace roundhouse.console
                          "PermissionsFolderName - The name of the folder where you keep your permissions scripts. Will recurse through subfolders. Defaults to \"{0}\".",
                          ApplicationParameters.default_permissions_folder_name),
                      option => configuration.PermissionsFolderName = option)
-                .Add("btr=|beforetran=|beforetransaction=|beforetransactionfoldername=",
-                     string.Format(
-                         "BeforeTransactionFolderName - The name of the folder where you keep your scripts that needs to run before transaction scope begins. Will recurse through subfolders. Defaults to \"{0}\".",
-                         ApplicationParameters.default_before_transaction_folder_name),
-                     option => configuration.BeforeTransactionFolderName = option)
-                .Add("atr=|aftertran=|aftertransaction=|aftertransactionfoldername=",
-                     string.Format(
-                         "AfterTransactionFolderName - The name of the folder where you keep your scripts that needs to run after transaction scope ends. Will recurse through subfolders. Defaults to \"{0}\".",
-                         ApplicationParameters.default_after_transaction_folder_name),
-                     option => configuration.AfterTransactionFolderName = option)
+                .Add("bmg=|beforemig=|beforemigrationfolder=|beforemigrationfoldername=",
+                         "BeforeMigrationFolderName - The name of the folder where you keep your scripts that needs to run before migration. Script will run outside of transaction. Will recurse through subfolders.",
+                     option => configuration.BeforeMigrationFolderName = option)
+                .Add("amg=|aftermig=|aftermigrationfolder=|aftermigrationfoldername=",
+                         "AfterMigrationFolderName - The name of the folder where you keep your scripts that needs to run after migration. Script will run outside of transaction. Will recurse through subfolders.",
+                     option => configuration.AfterMigrationFolderName = option)
                 // roundhouse items
                 .Add("sc=|schema=|schemaname=",
                      string.Format(

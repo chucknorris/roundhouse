@@ -15,8 +15,8 @@ namespace roundhouse.folders
                                    MigrationsFolder indexes,
                                    MigrationsFolder runAfterOtherAnyTimeScripts,        
                                    MigrationsFolder permissions,
-                                   MigrationsFolder before_transaction,
-                                   MigrationsFolder after_transaction,
+                                   MigrationsFolder before_migration,
+                                   MigrationsFolder after_migration,
                                    Folder change_drop
             )
         {
@@ -33,8 +33,8 @@ namespace roundhouse.folders
             this.run_after_other_any_time_scripts = runAfterOtherAnyTimeScripts;
             this.permissions = permissions;
             this.change_drop = change_drop;
-            this.before_transaction = before_transaction;
-            this.after_transaction = after_transaction;
+            this.before_migration = before_migration;
+            this.after_migration = after_migration;
         }
 
         public MigrationsFolder alter_database { get; private set; }
@@ -49,8 +49,8 @@ namespace roundhouse.folders
         public MigrationsFolder indexes { get; private set; }
         public MigrationsFolder run_after_other_any_time_scripts { get; private set; }
         public MigrationsFolder permissions { get; private set; }
-        public MigrationsFolder before_transaction { get; private set; }
-        public MigrationsFolder after_transaction { get; private set; }
+        public MigrationsFolder before_migration { get; private set; }
+        public MigrationsFolder after_migration { get; private set; }
 
         public Folder change_drop{get; private set;}
        
