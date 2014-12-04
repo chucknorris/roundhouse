@@ -30,6 +30,8 @@ namespace roundhouse.infrastructure.app
         string IndexesFolderName { get; set; }
         string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
         string PermissionsFolderName { get; set; }
+        string BeforeMigrationFolderName { get; set; }
+        string AfterMigrationFolderName { get; set; }
         string SchemaName { get; set; }
         string VersionTableName { get; set; }
         string ScriptsRunTableName { get; set; }
