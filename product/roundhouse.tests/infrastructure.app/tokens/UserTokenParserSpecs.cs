@@ -21,19 +21,10 @@ namespace roundhouse.tests.infrastructure.app.tokens
             { };
 
             [Observation]
-            public void if_given_keyvalues_should_parse_to_dictionary()
-            {
-                var dictionary = UserTokenParser.Parse("UserId=123&UserName=Some Name");
-                dictionary.should_not_be_an_instance_of<Dictionary<string, string>>();
-                dictionary.should_only_contain(
-                    new KeyValuePair<string, string>("UserId", "123"),
-                    new KeyValuePair<string, string>("UserName", "Some Name"));
-            }
-            [Observation]
             public void if_given_filepath_with_keyvalues_should_parse_to_dictionary()
             {
                 var filename = Guid.NewGuid().ToString("N") + ".txt";
-                File.WriteAllText(filename, "UserId=123&UserName=Some Name");
+                File.WriteAllText(filename, "UserId=123" + Environment.NewLine + "UserName=Some Name");
                 try
                 {
                     var dictionary = UserTokenParser.Parse(filename);
@@ -46,15 +37,6 @@ namespace roundhouse.tests.infrastructure.app.tokens
                 {
                     File.Delete(filename);
                 }
-            }
-            [Observation]
-            public void if_given_wrong_syntax_text_without_equals_sign_should_throw_format_exception()
-            {
-                Action action = () =>
-                {
-                    var dictionary = UserTokenParser.Parse("UserId123User&NameSome Name");
-                };
-                action.should_throw_an<FormatException>();
             }
             [Observation]
             public void if_given_empty_text_should_throw_argument_null_exception()
