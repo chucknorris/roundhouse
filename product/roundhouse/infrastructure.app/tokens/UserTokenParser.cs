@@ -11,20 +11,22 @@ namespace roundhouse.infrastructure.app.tokens
         public static Dictionary<string, string> Parse(string option)
         {
             if (String.IsNullOrEmpty(option)) throw new ArgumentNullException("option");
-            
-            var textToParse = option;
-            var pairs = textToParse.Split(new string[] { "&" }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (pairs.Length == 1 && File.Exists(textToParse))
+            if (!File.Exists(option)) throw new FileNotFoundException("File not found", option);
+
+            var dictionary = new Dictionary<string, string>();
+            using (var reader = File.OpenText(option))
             {
-                textToParse = File.ReadAllText(textToParse);
-                pairs = textToParse.Split(new string[] { "&" }, StringSplitOptions.RemoveEmptyEntries);
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if(String.IsNullOrEmpty(line)) continue;
+                    var keyvalue = line.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                    if(keyvalue.Length != 2) continue;
+                    dictionary[keyvalue[0]] = keyvalue[1];
+                }
             }
-            
-            if (pairs.Any(p => !p.Contains("="))) throw new FormatException("Wrong format");
-
-            return pairs.ToDictionary(p => p.Split(new string[] {"="}, StringSplitOptions.RemoveEmptyEntries)[0],
-                p => p.Split(new string[] {"="}, StringSplitOptions.RemoveEmptyEntries)[1]);
+            return dictionary;
         }
     }
 }
