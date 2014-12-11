@@ -13,6 +13,7 @@
     using resolvers;
     using runners;
     using Environment = environments.Environment;
+    using System.Collections.Generic;
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
@@ -137,6 +138,8 @@
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
 
         public bool DisableOutput { get; set; }
+
+        public Dictionary<string, string> UserTokens { get; set; }
 
         #endregion
 
