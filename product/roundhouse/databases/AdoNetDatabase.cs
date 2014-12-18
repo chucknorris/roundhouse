@@ -53,6 +53,7 @@ namespace roundhouse.databases
                 admin_connection.clear_pool();
                 admin_connection.close();
                 admin_connection.Dispose();
+                admin_connection = null;
             }
 
         }
@@ -92,6 +93,7 @@ namespace roundhouse.databases
                 server_connection.clear_pool();
                 server_connection.close();
                 server_connection.Dispose();
+                server_connection = null;
             }
         }
 
