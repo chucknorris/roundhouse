@@ -197,7 +197,7 @@ namespace roundhouse.infrastructure.filesystem
 		/// <param name="directory">Path to the directory</param>
 		/// <param name="pattern">Pattern or extension</param>
 		/// <returns>A list of files inside of an existing directory</returns>
-		string[] get_all_file_name_strings_recurevly_in(string directory, string pattern);
+		string[] get_all_file_name_strings_recursively_in(string directory, string pattern);
 
         #endregion
 
