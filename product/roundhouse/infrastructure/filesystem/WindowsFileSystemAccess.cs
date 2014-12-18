@@ -357,7 +357,7 @@ namespace roundhouse.infrastructure.filesystem
         public string[] get_all_file_name_strings_in(string directory, string pattern)
         {
             string[] returnList = Directory.GetFiles(directory, pattern);
-			return returnList.OrderBy(get_file_name_from).ToArray();
+			return returnList.OrderBy(get_file_name_from, new NaturalStringComparer()).ToArray();
         }
 
 		/// <summary>
@@ -369,7 +369,7 @@ namespace roundhouse.infrastructure.filesystem
 		public string[] get_all_file_name_strings_recursively_in(string directory, string pattern)
 		{
 			string[] returnList = Directory.GetFiles(directory, pattern, SearchOption.AllDirectories);
-			return returnList.OrderBy(get_file_name_from).ToArray();
+			return returnList.OrderBy(get_file_name_from, new NaturalStringComparer()).ToArray();
 		}
 
         #endregion
