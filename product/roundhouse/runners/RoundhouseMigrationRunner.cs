@@ -12,6 +12,9 @@ namespace roundhouse.runners
     using migrators;
     using resolvers;
     using Environment = environments.Environment;
+    using System.Text.RegularExpressions;
+    using System.Collections.Generic;
+    using roundhouse.infrastructure.app.schemabinding;
 
     public sealed class RoundhouseMigrationRunner : IRunner
     {
@@ -286,10 +289,12 @@ namespace roundhouse.runners
             {
                 string sql_file_text = replace_tokens(get_file_text(sql_file));
                 Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
+                sql_file_text = pre_process(sql_file_text, migration_folder); 
                 bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file),
                                                              migration_folder.should_run_items_in_folder_once,
                                                              migration_folder.should_run_items_in_folder_every_time,
                                                              version_id, migrating_environment, repository_version, repository_path, connection_type);
+                
                 if (the_sql_ran)
                 {
                     try
@@ -324,6 +329,43 @@ namespace roundhouse.runners
             }
 
             return TokenReplacer.replace_tokens(configuration, sql_text);
+        }
+
+        private string pre_process(string sql_text, MigrationsFolder folder)
+        {
+            if (folder == known_folders.views || folder == known_folders.sprocs || folder == known_folders.functions)
+            {
+                if (configuration.UsingVSDBProjectScripts)
+                {
+                    sql_text = change_create_to_alter(sql_text);
+                }
+
+                if (folder == known_folders.views)
+                {
+                    SchemaBindResolver resolver = new SchemaBindResolver(database_migrator.database);
+                    sql_text = resolver.resolve(sql_text);
+                }
+            }
+            return sql_text;
+        }
+
+        private string change_create_to_alter(string sql_text)
+        {
+            var findPattern = @"create\s+(view|function|aggregate|procedure|proc)\s+(?:\[?(\w*\b)\]?\.)?\[?(\w*\b)\]?";
+            var matchDeclaration = Regex.Match(sql_text, findPattern, RegexOptions.IgnoreCase);
+             
+            var objectType = matchDeclaration.Groups[1].Value;
+            var schema = matchDeclaration.Groups[2].Value;
+            var objectName = matchDeclaration.Groups[3].Value;
+            
+            if (matchDeclaration != null)
+            {
+                var replacePattern = @"(create)(\s+(?:view|function|aggregate|procedure|proc)\s+\[?\w*\b\]?\.?\[?(?:\w*\b)\]?)";
+                sql_text = Regex.Replace(sql_text, replacePattern, m => String.Format("{0}{1}", "ALTER", m.Groups[2]), RegexOptions.IgnoreCase);
+                var create_object_script = this.database_migrator.database.create_object_script(objectType, objectName);
+                sql_text = create_object_script + sql_text;
+            }
+            return sql_text;     
         }
 
         private void copy_to_change_drop_folder(string sql_file_ran, Folder migration_folder)

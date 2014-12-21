@@ -15,7 +15,7 @@
         public abstract class concern_for_SqlServerDatabase : observations_for_a_static_sut
         {
             protected static string database_name = "TestRoundhousE";
-            protected static string sql_files_folder = @"..\..\..\..\db\SqlServer\TestRoundhousE";
+            protected static string sql_files_folder = System.Environment.CurrentDirectory + @"\db\SqlServer\TestRoundhousE";
 
             private after_all_observations after = () =>
                                                    {

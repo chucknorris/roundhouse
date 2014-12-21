@@ -7,13 +7,14 @@ namespace roundhouse.tests.integration.databases
     using roundhouse.databases.mysql;
     using roundhouse.infrastructure.logging;
     using roundhouse.infrastructure.logging.custom;
+using System;
 
     public class MigrateSpecs
     {
         public abstract class concern_for_Migrate : observations_for_a_static_sut
         {
             protected static string database_name = "TestRoundhousE";
-            protected static string sql_files_folder = @"..\..\..\..\db\SqlServer\TestRoundhousE";
+            protected static string sql_files_folder = Environment.CurrentDirectory + @"\db\SqlServer\TestRoundhousE";
 
             private after_all_observations after = () =>
             {

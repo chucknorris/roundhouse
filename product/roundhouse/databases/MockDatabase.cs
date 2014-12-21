@@ -261,6 +261,11 @@ namespace roundhouse.databases
             return string.Empty;
         }
 
+        public string create_object_script(string object_type, string object_name)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool disposing = false;
         public void Dispose()
         {
@@ -269,6 +274,17 @@ namespace roundhouse.databases
                 database.Dispose();
                 disposing = true;
             }
+        }
+
+
+        public string get_object_definition(string object_name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.Collections.Generic.List<string> get_dependent_schemabound_views(string object_name)
+        {
+            throw new NotImplementedException();
         }
     }
 }

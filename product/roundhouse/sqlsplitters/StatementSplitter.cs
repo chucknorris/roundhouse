@@ -21,7 +21,7 @@ namespace roundhouse.sqlsplitters
             {
                 if (script_has_text_to_run(sql_statement, sql_statement_separator_regex_pattern))
                 {
-                    return_sql_list.Add(sql_statement);
+                    return_sql_list.Add(sql_statement.Trim());
                 }
             }
 

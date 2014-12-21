@@ -155,5 +155,23 @@ namespace roundhouse.databases.sqlserver2000
                         END",
                 database_name);
         }
+
+        public override string create_object_script(string object_type, string object_name)
+        {
+            return string.Format(
+                @"DECLARE @Name VarChar(100)
+                    DECLARE @Type VarChar(20)
+                    SET @Name = '{1}'
+                    SET @Type = '{0}'
+                    IF NOT EXISTS(SELECT * FROM dbo.sysobjects WHERE [name] = @Name)
+                      BEGIN
+	                    DECLARE @SQL varchar(1000)
+	                    SET @SQL = 'CREATE ' + @Type + ' ' + @Name + ' AS SELECT * FROM sysobjects'
+	                    EXECUTE(@SQL)
+                      END
+                    Print 'Updating ' + @Type + ' ' + @Name
+                    GO 
+                ", object_type, object_name);
+        }
     }
 }
