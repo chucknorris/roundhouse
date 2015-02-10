@@ -138,6 +138,8 @@
 
         public bool DisableOutput { get; set; }
 
+        public bool StoreScriptRelativePath { get; set; }
+
         #endregion
 
         public void run_the_task()

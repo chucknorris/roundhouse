@@ -286,7 +286,7 @@ namespace roundhouse.runners
             {
                 string sql_file_text = replace_tokens(get_file_text(sql_file));
                 Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
-                bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file),
+                bool the_sql_ran = database_migrator.run_sql(sql_file_text, file_system.get_file_name_from(sql_file, migration_folder),
                                                              migration_folder.should_run_items_in_folder_once,
                                                              migration_folder.should_run_items_in_folder_every_time,
                                                              version_id, migrating_environment, repository_version, repository_path, connection_type);
@@ -333,7 +333,7 @@ namespace roundhouse.runners
                 string destination_file = file_system.combine_paths(known_folders.change_drop.folder_full_path, "itemsRan",
                                                                     sql_file_ran.Replace(migration_folder.folder_path + "\\", string.Empty));
                 file_system.verify_or_create_directory(file_system.get_directory_name_from(destination_file));
-                Log.bound_to(this).log_a_debug_event_containing("Copying file {0} to {1}.", file_system.get_file_name_from(sql_file_ran), destination_file);
+                Log.bound_to(this).log_a_debug_event_containing("Copying file {0} to {1}.", file_system.get_file_name_from(sql_file_ran, migration_folder), destination_file);
                 file_system.file_copy_unsafe(sql_file_ran, destination_file, true);
             }
         }
