@@ -1,3 +1,5 @@
+using roundhouse.infrastructure.filesystem.filelocators;
+
 namespace roundhouse.runners
 {
     using System.Collections.Generic;
@@ -15,15 +17,17 @@ namespace roundhouse.runners
         private readonly FileSystemAccess file_system;
         private readonly ConfigurationPropertyHolder configuration;
         private readonly RoundhouseMigrationRunner migration_runner;
+        private readonly FileLocator file_locator;
         private readonly string redgate_install_location = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + @"\Red Gate\SQL Compare 8";
         private const string redgate_compare_tool = @"sqlcompare.exe";
 
-        public RoundhouseRedGateCompareRunner(KnownFolders known_folders, FileSystemAccess file_system, ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner)
+        public RoundhouseRedGateCompareRunner(KnownFolders known_folders, FileSystemAccess file_system, ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner, FileLocator file_locator)
         {
             this.known_folders = known_folders;
             this.file_system = file_system;
             this.configuration = configuration;
             this.migration_runner = migration_runner;
+            this.file_locator = file_locator;
         }
 
 
@@ -55,7 +59,7 @@ namespace roundhouse.runners
 
         public string get_new_change_number()
         {
-            string[] files = file_system.get_all_file_name_strings_in(known_folders.up.folder_full_path);
+            string[] files = file_locator.locate_all_files_in(known_folders.up.folder_full_path, "*.*");
             IList<string> file_numbers = files.Select(file => file_system.get_file_name_from(file).Substring(0, file_system.get_file_name_from(file).IndexOf('_'))).ToList();
 
             int length_of_number_format = 0;

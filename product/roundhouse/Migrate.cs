@@ -13,6 +13,7 @@ namespace roundhouse
     using resolvers;
     using runners;
     using Environment = roundhouse.environments.Environment;
+    using roundhouse.infrastructure.filesystem.filelocators;
 
     public class Migrate
     {
@@ -69,7 +70,8 @@ namespace roundhouse
                configuration.DoNotCreateDatabase,
                configuration.WithTransaction,
                configuration.RecoveryModeSimple,
-               configuration);
+               configuration,
+               Container.get_an_instance_of<FileLocator>());
 
             migrator.run();
         }

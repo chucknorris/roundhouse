@@ -13,6 +13,7 @@
     using resolvers;
     using runners;
     using Environment = environments.Environment;
+    using roundhouse.infrastructure.filesystem.filelocators;
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
@@ -134,9 +135,17 @@
 
         public bool DisableTokenReplacement { get; set; }
 
-        public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
+        public bool SearchAllSubdirectoriesInsteadOfTraverse
+        {
+            get { return ScriptOrder == "recurse"; }
+            set { ScriptOrder = value ? "recurse" : "traverse"; }
+        }
 
         public bool DisableOutput { get; set; }
+
+        public string ScriptOrder { get; set; }
+
+        public string SpecifiedOrderFile { get; set; }
 
         #endregion
 
@@ -166,7 +175,8 @@
                 DoNotCreateDatabase,
                 WithTransaction,
                 RecoveryModeSimple,
-                this);
+                this,
+                Container.get_an_instance_of<FileLocator>());
 
             roundhouse_runner.run();
         }

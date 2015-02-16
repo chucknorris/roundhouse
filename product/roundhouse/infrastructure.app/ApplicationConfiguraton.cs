@@ -27,6 +27,7 @@ namespace roundhouse.infrastructure.app
     using StructureMap;
     using Container = roundhouse.infrastructure.containers.Container;
     using Environment = roundhouse.environments.Environment;
+    using roundhouse.infrastructure.filesystem.filelocators;
 
     public static class ApplicationConfiguraton
     {
@@ -144,6 +145,14 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.RecoveryMode = RecoveryMode.Simple;
             }
+            if(string.IsNullOrEmpty(configuration_property_holder.ScriptOrder))
+            {
+                configuration_property_holder.ScriptOrder = ApplicationParameters.default_script_order;
+            }
+            if(string.IsNullOrEmpty(configuration_property_holder.SpecifiedOrderFile))
+            {
+                configuration_property_holder.SpecifiedOrderFile = ApplicationParameters.default_specified_order_file;
+            }
         }
 
         private static void set_up_current_mappings(ConfigurationPropertyHolder configuration_property_holder)
@@ -185,6 +194,25 @@ namespace roundhouse.infrastructure.app
                                             cfg.For<VersionResolver>().Singleton().Use(
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<Environment>().Singleton().Use(new DefaultEnvironment(configuration_property_holder));
+                                            cfg.For<FileLocator>().Singleton().Use(() =>
+                                                   {
+                                                       switch (configuration_property_holder.ScriptOrder)
+                                                       {
+                                                           case "traverse":
+                                                               return new Traverse();
+                                                           case "recurse":
+                                                               return new Recurse();
+                                                           case "specified":
+                                                               return
+                                                                   new SpecifiedOrdering (
+                                                                       configuration_property_holder.SpecifiedOrderFile);
+                                                       }
+                                                       throw new ArgumentOutOfRangeException
+                                                           ("ScriptOrder",
+                                                            configuration_property_holder
+                                                                .ScriptOrder,
+                                                            "Unknown ScriptOrder");
+                                                   });
                                         });
 
             // forcing a build of database to initialize connections so we can be sure server/database have values

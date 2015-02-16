@@ -113,6 +113,7 @@
     <Compile Include="infrastructure\extensions\StringExtensionsSpecs.cs" />
     <Compile Include="infrastructure\extensions\TypeCastingSpecs.cs" />
     <Compile Include="infrastructure\extensions\TypeExtensionsSpecs.cs" />
+    <Compile Include="infrastructure\filesystem\filelocators\SpecifiedOrderingSpecs.cs" />
     <Compile Include="infrastructure\logging\custom\Log4NetLogFactorySpecs.cs" />
     <Compile Include="infrastructure\logging\custom\Log4NetLoggerSpecs.cs" />
     <Compile Include="infrastructure\logging\LogSpecs.cs" />

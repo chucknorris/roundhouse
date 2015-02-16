@@ -328,50 +328,6 @@ namespace roundhouse.infrastructure.filesystem
             Directory.Delete(directory, recursive);
         }
 
-        /// <summary>
-        /// Gets a list of directories inside of an existing directory
-        /// </summary>
-        /// <param name="directory">Directory to look for subdirectories in</param>
-        /// <returns>A list of subdirectories inside of the existing directory</returns>
-        public string[] get_all_directory_name_strings_in(string directory)
-        {
-            return Directory.GetDirectories(directory);
-        }
-
-        /// <summary>
-        /// Gets a list of files inside of an existing directory
-        /// </summary>
-        /// <param name="directory">Path to the directory</param>
-        /// <returns>A list of files inside of an existing directory</returns>
-        public string[] get_all_file_name_strings_in(string directory)
-        {
-            return get_all_file_name_strings_in(directory, "*.*");
-        }
-
-        /// <summary>
-        /// Gets a list of files inside of an existing directory
-        /// </summary>
-        /// <param name="directory">Path to the directory</param>
-        /// <param name="pattern">Pattern or extension</param>
-        /// <returns>A list of files inside of an existing directory</returns>
-        public string[] get_all_file_name_strings_in(string directory, string pattern)
-        {
-            string[] returnList = Directory.GetFiles(directory, pattern);
-			return returnList.OrderBy(get_file_name_from).ToArray();
-        }
-
-		/// <summary>
-		/// Gets a list of all files inside of an existing directory, includes files in subdirectories also
-		/// </summary>
-		/// <param name="directory">Path to the directory</param>
-		/// <param name="pattern">Pattern or extension</param>
-		/// <returns>A list of files inside of an existing directory</returns>
-		public string[] get_all_file_name_strings_recurevly_in(string directory, string pattern)
-		{
-			string[] returnList = Directory.GetFiles(directory, pattern, SearchOption.AllDirectories);
-			return returnList.OrderBy(get_file_name_from).ToArray();
-		}
-
         #endregion
 
         /// <summary>

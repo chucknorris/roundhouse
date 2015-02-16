@@ -12,6 +12,7 @@ namespace roundhouse.runners
     using migrators;
     using resolvers;
     using Environment = environments.Environment;
+using roundhouse.infrastructure.filesystem.filelocators;
 
     public sealed class RoundhouseMigrationRunner : IRunner
     {
@@ -27,6 +28,7 @@ namespace roundhouse.runners
         private bool run_in_a_transaction;
         private readonly bool use_simple_recovery;
         private readonly ConfigurationPropertyHolder configuration;
+        private readonly FileLocator file_locator;
         private const string SQL_EXTENSION = "*.sql";
 
         public RoundhouseMigrationRunner(
@@ -41,7 +43,8 @@ namespace roundhouse.runners
             bool dont_create_the_database,
             bool run_in_a_transaction,
             bool use_simple_recovery,
-            ConfigurationPropertyHolder configuration)
+            ConfigurationPropertyHolder configuration,
+            FileLocator file_locator)
         {
             this.known_folders = known_folders;
             this.repository_path = repository_path;
@@ -55,6 +58,7 @@ namespace roundhouse.runners
             this.run_in_a_transaction = run_in_a_transaction;
             this.use_simple_recovery = use_simple_recovery;
             this.configuration = configuration;
+            this.file_locator = file_locator;
         }
 
         public void run()
@@ -87,7 +91,7 @@ namespace roundhouse.runners
 
             create_change_drop_folder();
             Log.bound_to(this).log_a_debug_event_containing("The change_drop (output) folder is: {0}", known_folders.change_drop.folder_full_path);
-            Log.bound_to(this).log_a_debug_event_containing("Using SearchAllSubdirectoriesInsteadOfTraverse execution: {0}", configuration.SearchAllSubdirectoriesInsteadOfTraverse);
+            Log.bound_to(this).log_a_debug_event_containing("Using ScriptOrder execution: {0}", configuration.ScriptOrder);
 
             try
             {
@@ -279,10 +283,7 @@ namespace roundhouse.runners
         {
             if (!file_system.directory_exists(directory)) return;
 
-            var fileNames = configuration.SearchAllSubdirectoriesInsteadOfTraverse
-                                ? file_system.get_all_file_name_strings_recurevly_in(directory, SQL_EXTENSION)
-                                : file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION);
-            foreach (string sql_file in fileNames)
+            foreach (string sql_file in file_locator.locate_all_files_in(directory, SQL_EXTENSION))
             {
                 string sql_file_text = replace_tokens(get_file_text(sql_file));
                 Log.bound_to(this).log_a_debug_event_containing(" Found and running {0}.", sql_file);
@@ -302,12 +303,6 @@ namespace roundhouse.runners
                                                                           System.Environment.NewLine, ex.to_string());
                     }
                 }
-            }
-
-            if (configuration.SearchAllSubdirectoriesInsteadOfTraverse) return;
-            foreach (string child_directory in file_system.get_all_directory_name_strings_in(directory))
-            {
-                traverse_files_and_run_sql(child_directory, version_id, migration_folder, migrating_environment, repository_version, connection_type);
             }
         }
 

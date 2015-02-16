@@ -44,6 +44,8 @@ namespace roundhouse.infrastructure
         public static readonly int default_admin_command_timeout = 300;
         public static readonly int default_restore_timeout = 900;
         public static readonly bool default_disable_output = false;
+        public static readonly string default_script_order = "traverse";
+        public static readonly string default_specified_order_file = "scriptorder.txt";
 
         public static string get_merged_assembly_name()
         {
