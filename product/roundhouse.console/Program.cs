@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using log4net;
 using roundhouse.consoles;
 using roundhouse.databases;
@@ -30,7 +31,7 @@ namespace roundhouse.console
 
             try
             {
-                // determine if this a call to the diff or the migrator
+                // determine if this a call to the diff, the migrator, or the init
                 if (string.Join("|", args).to_lower().Contains("version") && args.Length == 1)
                 {
                     report_version();
@@ -39,9 +40,15 @@ namespace roundhouse.console
                 {
                     run_diff_utility(set_up_configuration_and_build_the_container(args));
                 }
+                else if (args.Any() && args[0] == "init")
+                {
+                    var cf = set_up_configuration_and_build_the_container(args, Mode.Init);
+                    init_folder(cf);
+                }
                 else
                 {
-                    run_migrator(set_up_configuration_and_build_the_container(args));
+                    var cf = set_up_configuration_and_build_the_container(args);
+                    run_migrator(cf);
                 }
             }
             catch (Exception ex)
@@ -65,10 +72,16 @@ namespace roundhouse.console
             the_logger.InfoFormat("{0} - version {1} from http://projectroundhouse.org.", ApplicationParameters.name, version);
         }
 
-        public static ConfigurationPropertyHolder set_up_configuration_and_build_the_container(string[] args)
+        public enum Mode
+        {
+            Normal,
+            Init
+        }
+
+        public static ConfigurationPropertyHolder set_up_configuration_and_build_the_container(string[] args, Mode mode = Mode.Normal)
         {
             ConfigurationPropertyHolder configuration = new DefaultConfiguration();
-            parse_arguments_and_set_up_configuration(configuration, args);
+            parse_arguments_and_set_up_configuration(configuration, args, mode);
 
             ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
             ApplicationConfiguraton.build_the_container(configuration);
@@ -76,7 +89,7 @@ namespace roundhouse.console
             return configuration;
         }
 
-        private static void parse_arguments_and_set_up_configuration(ConfigurationPropertyHolder configuration, string[] args)
+        private static void parse_arguments_and_set_up_configuration(ConfigurationPropertyHolder configuration, string[] args, Mode mode)
         {
             bool help = false;
 
@@ -298,9 +311,6 @@ namespace roundhouse.console
                 .Add("searchallinsteadoftraverse=|searchallsubdirectoriesinsteadoftraverse=",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
-                .Add("init",
-                     "Initialize",
-                     option => configuration.Initialize = option != null)
                 ;
 
             try
@@ -348,17 +358,11 @@ namespace roundhouse.console
                         "/baseline " +
                         "/dryrun " +
                         "/search[allsubdirectories]insteadoftraverse" +
-                        "/init" +
                         "]", Environment.NewLine);
                 show_help(usage_message, option_set);
             }
 
-            if (configuration.Initialize)
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(configuration.DatabaseName) && string.IsNullOrEmpty(configuration.ConnectionString))
+            if (string.IsNullOrEmpty(configuration.DatabaseName) && string.IsNullOrEmpty(configuration.ConnectionString) && mode == Mode.Normal)
             {
                 show_help("Error: You must specify Database Name (/d) OR Connection String (/cs) at a minimum to use RoundhousE.", option_set);
             }
@@ -388,12 +392,6 @@ namespace roundhouse.console
 
         public static void run_migrator(ConfigurationPropertyHolder configuration)
         {
-            if (configuration.Initialize)
-            {
-                init_folder(configuration);
-                return;
-            }
-
             RoundhouseMigrationRunner migration_runner = get_migration_runner(configuration);
             migration_runner.run();
 
