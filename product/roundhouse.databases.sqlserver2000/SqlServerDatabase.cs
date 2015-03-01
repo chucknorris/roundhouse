@@ -93,15 +93,19 @@ namespace roundhouse.databases.sqlserver2000
 
         public override string create_database_script()
         {
+            //Using global variable @@VERSION to get the information about current MS SQL Server instance.
             return string.Format(
                 @"
                         DECLARE @Created bit
                         SET @Created = 0
-                        IF NOT EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
-                         BEGIN 
-                            CREATE DATABASE [{0}] 
-                            SET @Created = 1
-                         END
+                        IF(PATINDEX('%Microsoft SQL Server 2000%',@@VERSION) > 0)
+                        BEGIN
+	                        IF NOT EXISTS(SELECT * FROM sysdatabases WHERE [name] = '{0}')
+	                        BEGIN 
+		                        CREATE DATABASE [{0}] 
+		                        SET @Created = 1
+	                        END
+                        END
 
                         SELECT @Created 
                         ",
