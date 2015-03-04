@@ -314,7 +314,7 @@ namespace roundhouse.console
                 .Add("dryrun",
                      "DryRun - This instructs RH to log what would have run, but not to actually run anything against the database. Use this option if you are trying to figure out what RH is going to do.",
                      option => configuration.DryRun = option != null)
-                .Add("searchallinsteadoftraverse=|searchallsubdirectoriesinsteadoftraverse=",
+                .Add("searchallinsteadoftraverse|searchallsubdirectoriesinsteadoftraverse",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
                 ;
