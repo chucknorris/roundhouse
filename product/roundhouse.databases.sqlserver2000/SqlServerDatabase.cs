@@ -93,7 +93,6 @@ namespace roundhouse.databases.sqlserver2000
 
         public override string create_database_script()
         {
-            //Using global variable @@VERSION to get the information about current MS SQL Server instance.
             return string.Format(
                 @"
                         DECLARE @Created bit
