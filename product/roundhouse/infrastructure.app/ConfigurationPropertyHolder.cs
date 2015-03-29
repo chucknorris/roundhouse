@@ -48,6 +48,7 @@ namespace roundhouse.infrastructure.app
         string DatabaseType { get; set; }
         bool Drop { get; set; }
         bool DoNotCreateDatabase { get; set; }
+        bool DoNotAlterDatabase { get; set; }
         bool WithTransaction { get; set; }
         RecoveryMode RecoveryMode { get; set; }
         [Obsolete("Use RecoveryMode = Simple")]
