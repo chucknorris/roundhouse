@@ -166,7 +166,7 @@
     <Compile Include="infrastructure\extensions\TypeCasting.cs" />
     <Compile Include="infrastructure\extensions\TypeExtensions.cs" />
     <Compile Include="infrastructure\filesystem\FileSystemAccess.cs" />
-    <Compile Include="infrastructure\filesystem\WindowsFileSystemAccess.cs" />
+    <Compile Include="infrastructure\filesystem\DotNetFileSystemAccess.cs" />
     <Compile Include="infrastructure.app\builders\KnownFoldersBuilder.cs" />
     <Compile Include="infrastructure\loaders\DefaultAssemblyLoader.cs" />
     <Compile Include="infrastructure\loaders\DefaultInstanceCreator.cs" />
