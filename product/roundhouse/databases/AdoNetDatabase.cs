@@ -28,15 +28,21 @@ namespace roundhouse.databases
 
         private AdoNetConnection GetAdoNetConnection(string conn_string)
         {
-            provider_factory = DbProviderFactories.GetFactory(provider);
-            IDbConnection connection = provider_factory.CreateConnection();
-            connection_specific_setup(connection);
+            var connection = CreateDbConnection();
+	        connection_specific_setup(connection);
             
             connection.ConnectionString = conn_string;
             return new AdoNetConnection(connection);
         }
 
-        protected virtual void connection_specific_setup(IDbConnection connection)
+	    protected virtual IDbConnection CreateDbConnection()
+	    {
+		    provider_factory = DbProviderFactories.GetFactory(provider);
+		    IDbConnection connection = provider_factory.CreateConnection();
+		    return connection;
+	    }
+
+	    protected virtual void connection_specific_setup(IDbConnection connection)
         {
         }
 

@@ -1,4 +1,4 @@
-using System.Data.OracleClient;
+using Oracle.ManagedDataAccess.Client;
 using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.oracle
@@ -17,7 +17,7 @@ namespace roundhouse.databases.oracle
 
         public override string sql_statement_separator_regex_pattern
         {
-            get { return @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>\s)(?<BATCHSPLITTER>;)(?<KEEP2>\s)|(?<KEEP1>\s)(?<BATCHSPLITTER>;)(?<KEEP2>$)"; }
+            get { return @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>\s)(?<BATCHSPLITTER>[;|/])(?<KEEP2>\s)|(?<KEEP1>\s)(?<BATCHSPLITTER>[;|/])(?<KEEP2>$)"; }
         }
 
         public override bool supports_ddl_transactions
@@ -84,10 +84,15 @@ namespace roundhouse.databases.oracle
 
         public override void set_provider()
         {
-            provider = "System.Data.OracleClient";
+            provider = "Oracle.DataAccess";
         }
 
-        protected override void connection_specific_setup(IDbConnection connection)
+	    protected override IDbConnection CreateDbConnection()
+	    {
+		    return new OracleConnection();
+	    }
+
+	    protected override void connection_specific_setup(IDbConnection connection)
         {
             ((OracleConnection)connection).InfoMessage += (sender, e) => Log.bound_to(this).log_a_debug_event_containing("  [SQL PRINT]: {0}{1}", Environment.NewLine, e.Message);
         }
@@ -141,18 +146,30 @@ namespace roundhouse.databases.oracle
             return Convert.ToInt64(run_sql_scalar(get_version_id_script(), ConnectionType.Default, select_parameters));
         }
 
+		private static readonly Regex promptReplacer = new Regex("^PROMPT\\s", RegexOptions.Multiline | RegexOptions.Compiled);
+		private string CommentOutPromptStatements(string sql)
+		{
+			return promptReplacer.Replace(sql, "--PROMPT ");
+		}
+
+		private static string FixEol(string sql)
+		{
+			// http://www.barrydobson.com/2009/02/17/pls-00103-encountered-the-symbol-when-expecting-one-of-the-following/
+			return sql.Replace("\r\n", "\n");
+		}
+
         public override void run_sql(string sql_to_run, ConnectionType connection_type)
         {
             Log.bound_to(this).log_a_debug_event_containing("Replacing script text \r\n with \n to be compliant with Oracle.");
-            // http://www.barrydobson.com/2009/02/17/pls-00103-encountered-the-symbol-when-expecting-one-of-the-following/
-            base.run_sql(sql_to_run.Replace("\r\n", "\n"), connection_type);
+            sql_to_run = FixEol(sql_to_run);
+	        sql_to_run = CommentOutPromptStatements(sql_to_run);
+            base.run_sql(sql_to_run, connection_type);
         }
 
-        protected override object run_sql_scalar(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
+	    protected override object run_sql_scalar(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
         {
             Log.bound_to(this).log_a_debug_event_containing("Replacing \r\n with \n to be compliant with Oracle.");
-            //http://www.barrydobson.com/2009/02/17/pls-00103-encountered-the-symbol-when-expecting-one-of-the-following/
-            sql_to_run = sql_to_run.Replace("\r\n", "\n");
+		    sql_to_run = FixEol(sql_to_run);
             object return_value = new object();
 
             if (string.IsNullOrEmpty(sql_to_run)) return return_value;
