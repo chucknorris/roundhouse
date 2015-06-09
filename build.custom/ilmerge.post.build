@@ -20,7 +20,7 @@
   <target name="go" depends="copy_roundhouse_files_to_deploy_console, merge_the_dll, merge_the_msbuild" />
  
   <target name="sign_merged_exe">
-    <al output="${dirs.app.drop}\console\rh.exe" target="exe">
+    <al output="${dirs.app.drop}\console\rh.exe" keyfile="${file.key}" target="exe">
       <sources>
         <include name="${dirs.app.drop}\console\rh.exe" />
       </sources>

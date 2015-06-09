@@ -11,12 +11,12 @@ namespace roundhouse.infrastructure.persistence
         void rollback();
         void finish();
 
-        IList<T> get_all<T>();
-        IList<T> get_with_criteria<T>(DetachedCriteria detachedCriteria);
-        IList<T> get_transformation_with_criteria<T>(DetachedCriteria detachedCriteria);
-        void save_or_update<T>(IList<T> list);
-        void save_or_update<T>(T item);
-        void delete<T>(IList<T> list);
+        IList<T> get_all<T>() where T : class;
+        IList<T> get_with_criteria<T>(QueryOver<T> detachedCriteria) where T : class;
+        IList<T> get_transformation_with_criteria<T>(QueryOver<T> detachedCriteria) where T : class;
+        void save_or_update<T>(IList<T> list) where T : class;
+        void save_or_update<T>(T item) where T : class;
+        void delete<T>(IList<T> list) where T : class;
 
         ITransaction transaction { get;}
         ISessionFactory session_factory { get; }

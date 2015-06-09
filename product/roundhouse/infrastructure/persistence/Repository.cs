@@ -71,15 +71,14 @@ namespace roundhouse.infrastructure.persistence
             session = null;
         }
 
-        public IList<T> get_all<T>()
+        public IList<T> get_all<T>() where T : class
         {
             IList<T> list;
-            Type persistentClass = typeof(T);
 
             bool not_running_outside_session = session == null;
             if (not_running_outside_session) start(false);
 
-            ICriteria criteria = session.CreateCriteria(persistentClass);
+            IQueryOver<T, T> criteria = session.QueryOver<T>();
             list = criteria.List<T>();
 
             if (not_running_outside_session) finish();
@@ -89,7 +88,7 @@ namespace roundhouse.infrastructure.persistence
             return list;
         }
 
-        public IList<T> get_with_criteria<T>(DetachedCriteria detachedCriteria)
+        public IList<T> get_with_criteria<T>(QueryOver<T> detachedCriteria) where T : class
         {
             if (detachedCriteria == null)
             {
@@ -102,7 +101,7 @@ namespace roundhouse.infrastructure.persistence
             bool not_running_outside_session = session == null;
             if (not_running_outside_session) start(false);
 
-            ICriteria criteria = detachedCriteria.GetExecutableCriteria(session);
+            IQueryOver<T, T> criteria = detachedCriteria.GetExecutableQueryOver(session);
             list = criteria.List<T>();
 
             if (not_running_outside_session) finish();
@@ -112,7 +111,7 @@ namespace roundhouse.infrastructure.persistence
             return list;
         }
 
-        public IList<T> get_transformation_with_criteria<T>(DetachedCriteria detachedCriteria)
+        public IList<T> get_transformation_with_criteria<T>(QueryOver<T> detachedCriteria) where T : class
         {
             if (detachedCriteria == null)
             {
@@ -125,9 +124,9 @@ namespace roundhouse.infrastructure.persistence
             bool running_long_session = session == null;
             if (!running_long_session) start(false);
 
-            ICriteria criteria = detachedCriteria.GetExecutableCriteria(session);
+            IQueryOver<T, T> criteria = detachedCriteria.GetExecutableQueryOver(session);
             list = criteria
-                .SetResultTransformer(new AliasToBeanResultTransformer(typeof(T)))
+                .TransformUsing(Transformers.AliasToBean<T>())
                 .List<T>();
 
             if (!running_long_session) finish();
@@ -137,7 +136,7 @@ namespace roundhouse.infrastructure.persistence
             return list;
         }
 
-        public void save_or_update<T>(IList<T> list)
+        public void save_or_update<T>(IList<T> list) where T : class
         {
             if (list == null || list.Count == 0)
             {
@@ -159,7 +158,7 @@ namespace roundhouse.infrastructure.persistence
             Log.bound_to(this).log_a_debug_event_containing("Saved {0} records of type {1} successfully.", list.Count, typeof(T).Name);
         }
 
-        public void save_or_update<T>(T item)
+        public void save_or_update<T>(T item) where T : class
         {
             if (item == null)
             {
@@ -178,7 +177,7 @@ namespace roundhouse.infrastructure.persistence
             Log.bound_to(this).log_a_debug_event_containing("Saved item of type {0} successfully.", typeof(T).Name);
         }
 
-        public void delete<T>(IList<T> list)
+        public void delete<T>(IList<T> list) where T : class
         {
             if (list == null || list.Count == 0)
             {

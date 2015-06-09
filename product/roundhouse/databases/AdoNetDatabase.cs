@@ -7,11 +7,13 @@ namespace roundhouse.databases
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
+    using System.Data.SqlClient;
     using connections;
     using parameters;
 
     public abstract class AdoNetDatabase : DefaultDatabase<IDbConnection>
     {
+        private const int sql_connection_exception_number = 233;
         private bool split_batches_in_ado = true;
 
         public override bool split_batch_statements
@@ -59,6 +61,7 @@ namespace roundhouse.databases
                 admin_connection.clear_pool();
                 admin_connection.close();
                 admin_connection.Dispose();
+                admin_connection = null;
             }
 
         }
@@ -98,6 +101,7 @@ namespace roundhouse.databases
                 server_connection.clear_pool();
                 server_connection.close();
                 server_connection.Dispose();
+                server_connection = null;
             }
         }
 
@@ -130,10 +134,18 @@ namespace roundhouse.databases
             {
                 run_command_with(sql_to_run, connection_type, parameters);
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                Log.bound_to(this).log_a_debug_event_containing("Failure executing command, trying again. {0}{1}", Environment.NewLine, ex.ToString());
-                run_command_with(sql_to_run, connection_type, parameters);
+                if (ex.Number == sql_connection_exception_number)
+                {
+                    Log.bound_to(this).log_a_debug_event_containing("Failure executing command, trying again. {0}{1}", Environment.NewLine, ex.ToString());
+                    run_command_with(sql_to_run, connection_type, parameters);
+                }
+                else
+                {
+                    //Re-throw the original exception.
+                    throw;
+                }
             }
         }
 

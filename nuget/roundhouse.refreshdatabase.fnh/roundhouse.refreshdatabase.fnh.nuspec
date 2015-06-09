@@ -11,7 +11,7 @@
     <projectUrl>http://projectroundhouse.org</projectUrl>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <tags>roundhouse db migrations chucknorris</tags>
+    <tags>roundhouse db migration database migrator chucknorris fluent nhibernate</tags>
     <iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
     <dependencies>
       <dependency id="roundhouse.lib" version="0.7.0.282" />

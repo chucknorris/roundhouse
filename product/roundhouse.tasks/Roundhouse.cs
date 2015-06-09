@@ -81,6 +81,10 @@
 
         public string PermissionsFolderName { get; set; }
 
+        public string BeforeMigrationFolderName { get; set; }
+
+        public string AfterMigrationFolderName { get; set; }
+
         public string SchemaName { get; set; }
 
         public string VersionTableName { get; set; }
@@ -133,6 +137,8 @@
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
 
         public bool DisableOutput { get; set; }
+
+        public bool Initialize { get; set; }
 
         #endregion
 
