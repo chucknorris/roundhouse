@@ -205,15 +205,20 @@ namespace roundhouse.databases.sqlserver
         public override string delete_database_script()
         {
             return string.Format(
-                @"USE master 
-                        IF EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}' AND source_database_id is NULL) 
-                        BEGIN 
+                @"USE master
+                        DECLARE @azure_engine INT = 5
+                        IF EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}' AND source_database_id is NULL) AND ISNULL(SERVERPROPERTY('EngineEdition'), 0) <> @azure_engine
+                        BEGIN
                             ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
                         END
 
                         IF EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
                         BEGIN
-                            EXEC msdb.dbo.sp_delete_database_backuphistory @database_name = '{0}' 
+                            IF ISNULL(SERVERPROPERTY('EngineEdition'), 0) <> @azure_engine
+                            BEGIN
+                                EXEC sp_executesql N'EXEC msdb.dbo.sp_delete_database_backuphistory @database_name = ''{0}'''
+                            END
+
                             DROP DATABASE [{0}] 
                         END",
                 database_name);
