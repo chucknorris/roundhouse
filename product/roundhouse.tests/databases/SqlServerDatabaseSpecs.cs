@@ -131,5 +131,30 @@ namespace roundhouse.tests.databases
                 sut.connection_string.should_contain("(local)");
             }
         }
+
+        [Concern(typeof (SqlServerDatabase))]
+        public class when_initializing_a_connection_to_a_sql_azure_database :
+            concern_for_SqlServerDatabase
+        {
+            private because b = () =>
+            {
+                sut.connection_string =
+                    "Server=randomsymbols.database.windows.net;Database=bob;User ID=admin@randomsymbols;Password=password;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+                sut.initialize_connections(configuration_property_holder);
+            };
+
+            [Observation]
+            public void should_have_the_original_server_and_databse_to_connect_to()
+            {
+                sut.server_name.should_be_equal_to("randomsymbols.database.windows.net");
+                sut.database_name.should_be_equal_to("bob");
+            }
+
+            [Observation]
+            public void should_have_master_as_the_admin_database_to_connect_to()
+            {
+                sut.admin_connection_string.should_contain("master");
+            }
+        }
     }
 }
