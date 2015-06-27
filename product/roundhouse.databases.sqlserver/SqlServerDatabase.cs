@@ -12,7 +12,7 @@ namespace roundhouse.databases.sqlserver
 
     public class SqlServerDatabase : AdoNetDatabase
     {
-        private string connect_options = "Integrated Security";
+        private string connect_options = "Integrated Security=SSPI;";
 
         public override string sql_statement_separator_regex_pattern
         {
@@ -30,37 +30,9 @@ namespace roundhouse.databases.sqlserver
         {
             if (!string.IsNullOrEmpty(connection_string))
             {
-                string[] parts = connection_string.Split(';');
-                foreach (string part in parts)
-                {
-                    if (string.IsNullOrEmpty(server_name) && (part.to_lower().Contains("server") || part.to_lower().Contains("data source")))
-                    {
-                        server_name = part.Substring(part.IndexOf("=") + 1);
-                    }
-
-                    if (string.IsNullOrEmpty(database_name) && (part.to_lower().Contains("initial catalog") || part.to_lower().Contains("database")))
-                    {
-                        database_name = part.Substring(part.IndexOf("=") + 1);
-                    }
-                }
-
-                if (!connection_string.to_lower().Contains(connect_options.to_lower()))
-                {
-                    connect_options = string.Empty;
-                    foreach (string part in parts)
-                    {
-                        if (!part.to_lower().Contains("server") && !part.to_lower().Contains("data source") && !part.to_lower().Contains("initial catalog") &&
-                            !part.to_lower().Contains("database"))
-                        {
-                            connect_options += part + ";";
-                        }
-                    }
-                }
-            }
-
-            if (connect_options == "Integrated Security")
-            {
-                connect_options = "Integrated Security=SSPI;";
+                var connection_string_builder = new SqlConnectionStringBuilder(connection_string);
+                server_name = connection_string_builder.DataSource;
+                database_name = connection_string_builder.InitialCatalog;
             }
 
             if (string.IsNullOrEmpty(connection_string))
