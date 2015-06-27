@@ -280,7 +280,7 @@ namespace roundhouse.runners
             if (!file_system.directory_exists(directory)) return;
 
             var fileNames = configuration.SearchAllSubdirectoriesInsteadOfTraverse
-                                ? file_system.get_all_file_name_strings_recurevly_in(directory, SQL_EXTENSION)
+                                ? file_system.get_all_file_name_strings_recursively_in(directory, SQL_EXTENSION)
                                 : file_system.get_all_file_name_strings_in(directory, SQL_EXTENSION);
             foreach (string sql_file in fileNames)
             {
