@@ -219,7 +219,7 @@ namespace roundhouse.databases
         protected abstract void run_sql(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters);
         protected abstract object run_sql_scalar(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters);
 
-        public void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)
+        public virtual void insert_script_run(string script_name, string sql_to_run, string sql_to_run_hash, bool run_this_script_once, long version_id)
         {
             ScriptsRun script_run = new ScriptsRun
                                         {
@@ -243,7 +243,7 @@ namespace roundhouse.databases
             }
         }
 
-        public void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version,
+        public virtual void insert_script_run_error(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version,
                                             string repository_path)
         {
             ScriptsRunError script_run_error = new ScriptsRunError
@@ -269,7 +269,7 @@ namespace roundhouse.databases
             }
         }
 
-        public string get_version(string repository_path)
+        public virtual string get_version(string repository_path)
         {
             string version = "0";
 
@@ -321,7 +321,7 @@ namespace roundhouse.databases
             return version_id;
         }
 
-        public string get_current_script_hash(string script_name)
+        public virtual string get_current_script_hash(string script_name)
         {
             ScriptsRun script = get_from_script_cache(script_name);
 
@@ -356,7 +356,7 @@ namespace roundhouse.databases
             return hash;
         }
 
-        public bool has_run_script_already(string script_name)
+        public virtual bool has_run_script_already(string script_name)
         {
             ScriptsRun script = get_from_script_cache(script_name);
 
