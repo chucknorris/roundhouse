@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "databases", "databases", "{BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}"
@@ -8,6 +10,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse", "product\roundhouse\roundhouse.csproj", "{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.tests", "product\roundhouse.tests\roundhouse.tests.csproj", "{0726928C-FDAC-4C79-B423-841C7E0DF5B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1D41D70E-E310-4699-B7CB-C1F77476A685} = {1D41D70E-E310-4699-B7CB-C1F77476A685}
+		{F02B7642-3EC4-4374-BBBE-7857A93EA5D9} = {F02B7642-3EC4-4374-BBBE-7857A93EA5D9}
+		{3828D379-C96A-49C8-8BC9-0182CC8C55B1} = {3828D379-C96A-49C8-8BC9-0182CC8C55B1}
+		{4CF5718B-9C74-4590-9848-A81360AE1D22} = {4CF5718B-9C74-4590-9848-A81360AE1D22}
+		{41CE538E-E6F1-4AB6-AB66-508DEF669A39} = {41CE538E-E6F1-4AB6-AB66-508DEF669A39}
+		{71419DBB-4809-4102-A002-D484242FCFC9} = {71419DBB-4809-4102-A002-D484242FCFC9}
+		{35E058E3-8FEE-4107-AEDC-37A452C588EC} = {35E058E3-8FEE-4107-AEDC-37A452C588EC}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.tasks", "product\roundhouse.tasks\roundhouse.tasks.csproj", "{7CC86537-E4F4-42F0-973F-39F38E43E347}"
 	ProjectSection(ProjectDependencies) = postProject
