@@ -97,11 +97,11 @@ namespace roundhouse.databases.sqlserver2000
                 @"
                         DECLARE @Created bit
                         SET @Created = 0
-                        IF NOT EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
-                         BEGIN 
-                            CREATE DATABASE [{0}] 
-                            SET @Created = 1
-                         END
+                        IF NOT EXISTS(SELECT * FROM sysdatabases WHERE [name] = '{0}')
+	                    BEGIN 
+		                   CREATE DATABASE [{0}] 
+		                   SET @Created = 1
+	                    END
 
                         SELECT @Created 
                         ",
