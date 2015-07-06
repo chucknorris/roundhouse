@@ -16,6 +16,8 @@
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
+        private RecoveryMode recoveryMode;
+
         #region MSBuild
 
         public IBuildEngine BuildEngine { get; set; }
@@ -119,7 +121,35 @@
 
         public bool WithTransaction { get; set; }
 
-        public RecoveryMode RecoveryMode { get; set; }
+        RecoveryMode ConfigurationPropertyHolder.RecoveryMode
+        {
+            get
+            {
+                return this.recoveryMode;
+            }
+            set
+            {
+                this.recoveryMode = value;
+            }
+        }
+
+        public string RecoveryMode
+        {
+            get
+            {
+                return this.recoveryMode.ToString();
+            }
+            set
+            {
+                RecoveryMode result;
+                if (!Enum.TryParse(value, true, out result))
+                {
+                    throw new ArgumentOutOfRangeException("value", value, "The value of 'RecoveryMode' must be one of these values: 'NoChange', 'Simple' or 'Full'.");
+                }
+
+                this.recoveryMode = result;
+            }
+        }
 
         [Obsolete("Use RecoverMode=Simple now")]
         public bool RecoveryModeSimple { get; set; }
