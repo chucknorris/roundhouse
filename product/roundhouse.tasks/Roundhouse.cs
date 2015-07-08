@@ -7,16 +7,27 @@
     using infrastructure.app.logging;
     using infrastructure.containers;
     using infrastructure.filesystem;
-    using infrastructure.logging;
+
     using Microsoft.Build.Framework;
     using migrators;
+
+    using Microsoft.Build.Utilities;
+
     using resolvers;
     using runners;
     using Environment = environments.Environment;
+    using Logger = roundhouse.infrastructure.logging.Logger;
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
         private RecoveryMode recoveryMode;
+
+        private readonly TaskLoggingHelper loggingHelper;
+
+        public Roundhouse()
+        {
+            this.loggingHelper = new TaskLoggingHelper(this);
+        }
 
         #region MSBuild
 
@@ -30,7 +41,7 @@
         bool ITask.Execute()
         {
             run_the_task();
-            return true;
+            return !this.loggingHelper.HasLoggedErrors;
         }
 
         #endregion
@@ -148,7 +159,7 @@
                 }
                 else
                 {
-                    this.Logger.log_an_error_event_containing("The value of 'RecoveryMode' must be one of these values: 'NoChange', 'Simple' or 'Full'. Actual value was '{0}'.", value);
+                    this.loggingHelper.LogError("The value of 'RecoveryMode' must be one of these values: 'NoChange', 'Simple' or 'Full'. Actual value was '{0}'.", value);
                 }
             }
         }
@@ -176,6 +187,11 @@
 
         public void run_the_task()
         {
+            if (this.loggingHelper.HasLoggedErrors)
+            {
+                return;
+            }
+
             Log4NetAppender.configure_without_console();
             ApplicationConfiguraton.set_defaults_if_properties_are_not_set(this);
 
