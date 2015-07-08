@@ -63,7 +63,7 @@
 
         public string RunAfterCreateDatabaseFolderName { get; set; }
 
-		public string RunBeforeUpFolderName { get; set; }
+        public string RunBeforeUpFolderName { get; set; }
 
         public string UpFolderName { get; set; }
 
@@ -142,12 +142,14 @@
             set
             {
                 RecoveryMode result;
-                if (!Enum.TryParse(value, true, out result))
+                if (Enum.TryParse(value, true, out result))
                 {
-                    throw new ArgumentOutOfRangeException("value", value, "The value of 'RecoveryMode' must be one of these values: 'NoChange', 'Simple' or 'Full'.");
+                    this.recoveryMode = result;
                 }
-
-                this.recoveryMode = result;
+                else
+                {
+                    this.Logger.log_an_error_event_containing("The value of 'RecoveryMode' must be one of these values: 'NoChange', 'Simple' or 'Full'. Actual value was '{0}'.", value);
+                }
             }
         }
 
