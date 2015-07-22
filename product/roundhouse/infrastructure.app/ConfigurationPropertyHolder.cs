@@ -16,6 +16,7 @@ namespace roundhouse.infrastructure.app
         int CommandTimeoutAdmin { get; set; }
         string SqlFilesDirectory { get; set; }
         string RepositoryPath { get; set; }
+        string Version { get; set; }
         string VersionFile { get; set; }
         string VersionXPath { get; set; }
         string AlterDatabaseFolderName { get; set; }
