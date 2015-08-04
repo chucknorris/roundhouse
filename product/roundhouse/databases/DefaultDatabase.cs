@@ -391,7 +391,7 @@ namespace roundhouse.databases
             return script_has_run;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (!disposing)
             {

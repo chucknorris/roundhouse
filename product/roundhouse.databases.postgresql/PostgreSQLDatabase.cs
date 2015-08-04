@@ -152,5 +152,17 @@ namespace roundhouse.databases.postgresql
         {
             Log.bound_to(this).log_a_debug_event_containing("PostgreSQL has no database specific tasks. Moving along now...");
         }
+
+        public override void Dispose()
+        {
+            try
+            {
+                base.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+                //absorb this error. npgsql throws this error when reading state of disposed connection
+            }
+        }
     }
 }
