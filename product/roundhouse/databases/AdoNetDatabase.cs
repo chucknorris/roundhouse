@@ -130,16 +130,32 @@ namespace roundhouse.databases
             }
             catch (SqlException ex)
             {
-                if (ex.Number == sql_connection_exception_number)
+              // If we are not running inside a transaction, then we can continue to the next command.
+              if (transaction == null)
+              {
+                // But only if it's a connection failure AND connection failure is the only error reported.
+                if (ex.Errors.Count == 1 && ex.Number == sql_connection_exception_number)
                 {
-                    Log.bound_to(this).log_a_debug_event_containing("Failure executing command, trying again. {0}{1}", Environment.NewLine, ex.ToString());
-                    run_command_with(sql_to_run, connection_type, parameters);
+                  Log.bound_to(this).log_a_debug_event_containing("Failure executing command, trying again. {0}{1}", Environment.NewLine, ex.ToString());
+                  run_command_with(sql_to_run, connection_type, parameters);
                 }
                 else
                 {
-                    //Re-throw the original exception.
-                    throw;
+                  //Re-throw the original exception.
+                  throw;
                 }
+              }
+              else
+              {
+                // Re-throw the exception, which will delegate handling of the rollback to DatabaseMigrator calling class,
+                // e.g. DefaultDatabaseMigrator.run_sql(...) method catches exceptions from run_sql and rolls back the transaction.
+                throw;
+              }
+            }
+            catch (Exception ex)
+            {
+              // If the Exception is not due to a SqlException, which is the case for any non-SqlServer database, then also delegate handling of the rollback to DatabaseMigrator calling class.
+              throw;
             }
         }
 
