@@ -4,13 +4,13 @@ namespace roundhouse.cryptography
     using System.Security.Cryptography;
     using System.Text;
 
-    public sealed class MD5CryptographicService : CryptographicService
+    public sealed class SHA1CryptographicService : CryptographicService
     {
-        private readonly MD5 crypto_provider;
+        private readonly SHA1 crypto_provider;
 
-        public MD5CryptographicService()
+        public SHA1CryptographicService()
         {
-            crypto_provider = MD5.Create();
+            crypto_provider = SHA1.Create();
         }
 
         public string hash(string clear_text_of_what_to_hash)

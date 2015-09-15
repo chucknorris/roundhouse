@@ -15,35 +15,35 @@ namespace roundhouse.tests.cryptography
             [Test]
             public void this_is_me_learning_hashing()
             {
-                MD5 dude = MD5.Create();
+                SHA1 dude = SHA1.Create();
                 string text_to_hash = "I want to see what the freak is going on here";
                 byte[] clear_text_bytes = Encoding.UTF8.GetBytes(text_to_hash);
                 byte[] cypher_bytes = dude.ComputeHash(clear_text_bytes);
-                Assert.AreEqual(16, cypher_bytes.Length);
+                Assert.AreEqual(20, cypher_bytes.Length);
                 Debug.WriteLine(cypher_bytes);
                 string base_64_cypher = Convert.ToBase64String(cypher_bytes);
-                Assert.AreEqual(24, base_64_cypher.Length);
+                Assert.AreEqual(28, base_64_cypher.Length);
                 Debug.WriteLine(base_64_cypher);
             }
         }
 
         [TestFixture]
-        public class when_using_MD5_to_do_cryptography
+        public class when_using_SHA1_to_do_cryptography
         {
-            private CryptographicService md5_crypto;
+            private CryptographicService sha1_crypto;
 
             [SetUp]
             public void we_set_the_context()
             {
-                md5_crypto = new MD5CryptographicService();
+                sha1_crypto = new SHA1CryptographicService();
             }
 
             [Test]
             public void should_be_able_to_pass_text_and_get_back_a_base_64_hash_of_the_text()
             {
                 string text_to_hash = "I want to see what the freak is going on here";
-                string expected_hash = "TMGPZJmBhSO5uYbf/TBqNA==";
-                Assert.AreEqual(expected_hash, md5_crypto.hash(text_to_hash));
+                string expected_hash = "HD9I1wspfgyzkm6z9eZaGKhVLuA=";
+                Assert.AreEqual(expected_hash, sha1_crypto.hash(text_to_hash));
             }
         }
     }
