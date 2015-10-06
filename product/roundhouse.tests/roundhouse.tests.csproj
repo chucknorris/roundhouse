@@ -43,7 +43,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -83,6 +83,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\developwithpassion.bdd\MbUnit.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -107,6 +110,8 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="databases\ravendb\commands\EvalCommandTestFixture.cs" />
+    <Compile Include="databases\ravendb\RavenDatabaseTestFixture.cs" />
     <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="cryptography\CryptographicServiceSpecs.cs" />
@@ -135,6 +140,10 @@
     <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj">
       <Project>{3828D379-C96A-49C8-8BC9-0182CC8C55B1}</Project>
       <Name>roundhouse.databases.oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\roundhouse.databases.ravendb\roundhouse.databases.ravendb.csproj">
+      <Project>{57ead027-d5c6-4f81-b4ec-4da926471ca2}</Project>
+      <Name>roundhouse.databases.ravendb</Name>
     </ProjectReference>
     <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj">
       <Project>{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}</Project>
@@ -167,6 +176,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="databases\ravendb\commands\EvalCommand.sql" />
     <Content Include="infrastructure\filesystem\ansiencoded.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

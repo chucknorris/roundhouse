@@ -27,7 +27,7 @@ namespace roundhouse.runners
         private bool run_in_a_transaction;
         private readonly bool use_simple_recovery;
         private readonly ConfigurationPropertyHolder configuration;
-        private const string SQL_EXTENSION = "*.sql";
+        private const string SQL_EXTENSION = "*.sql"; // todo: should be made configurable, so that *.raven files are also accepted
 
         public RoundhouseMigrationRunner(
             string repository_path,
