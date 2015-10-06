@@ -12,7 +12,7 @@ namespace roundhouse.databases.sqlserver2000
 
         public override string sql_statement_separator_regex_pattern
         {
-            get { return @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>'{1}(?:[^']|\n[^'])*?'{1})|(?<KEEP1>\s)(?<BATCHSPLITTER>GO)(?<KEEP2>\s)|(?<KEEP1>\s)(?<BATCHSPLITTER>GO)(?<KEEP2>$)"; }
+            get { return @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>'{1}(?:[^']|\n[^'])*?'{1})|(?<KEEP1>^|\s)(?<BATCHSPLITTER>GO)(?<KEEP2>\s|$)"; }
         }
 
         public override void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
@@ -97,11 +97,11 @@ namespace roundhouse.databases.sqlserver2000
                 @"
                         DECLARE @Created bit
                         SET @Created = 0
-                        IF NOT EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
-                         BEGIN 
-                            CREATE DATABASE [{0}] 
-                            SET @Created = 1
-                         END
+                        IF NOT EXISTS(SELECT * FROM sysdatabases WHERE [name] = '{0}')
+	                    BEGIN 
+		                   CREATE DATABASE [{0}] 
+		                   SET @Created = 1
+	                    END
 
                         SELECT @Created 
                         ",

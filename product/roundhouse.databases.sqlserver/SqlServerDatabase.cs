@@ -12,48 +12,27 @@ namespace roundhouse.databases.sqlserver
 
     public class SqlServerDatabase : AdoNetDatabase
     {
-        private string connect_options = "Integrated Security";
+        private string connect_options = "Integrated Security=SSPI;";
 
         public override string sql_statement_separator_regex_pattern
         {
-            get { return @"(?<KEEP1>^(?:[\s\t])*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>'{1}(?:[^']|\n[^'])*?'{1})|(?<KEEP1>\s)(?<BATCHSPLITTER>GO)(?<KEEP2>\s)|(?<KEEP1>\s)(?<BATCHSPLITTER>GO)(?<KEEP2>$)"; }
+            get
+            {
+                const string strings = @"(?<KEEP1>'[^']*')";
+                const string dashComments = @"(?<KEEP1>--.*$)";
+                const string starComments = @"(?<KEEP1>/\*[\S\s]*?\*/)";
+                const string separator = @"(?<KEEP1>^|\s)(?<BATCHSPLITTER>GO)(?<KEEP2>\s|$)";
+                return strings + "|" + dashComments + "|" + starComments + "|" + separator;
+            }
         }
 
         public override void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
         {
             if (!string.IsNullOrEmpty(connection_string))
             {
-                string[] parts = connection_string.Split(';');
-                foreach (string part in parts)
-                {
-                    if (string.IsNullOrEmpty(server_name) && (part.to_lower().Contains("server") || part.to_lower().Contains("data source")))
-                    {
-                        server_name = part.Substring(part.IndexOf("=") + 1);
-                    }
-
-                    if (string.IsNullOrEmpty(database_name) && (part.to_lower().Contains("initial catalog") || part.to_lower().Contains("database")))
-                    {
-                        database_name = part.Substring(part.IndexOf("=") + 1);
-                    }
-                }
-
-                if (!connection_string.to_lower().Contains(connect_options.to_lower()))
-                {
-                    connect_options = string.Empty;
-                    foreach (string part in parts)
-                    {
-                        if (!part.to_lower().Contains("server") && !part.to_lower().Contains("data source") && !part.to_lower().Contains("initial catalog") &&
-                            !part.to_lower().Contains("database"))
-                        {
-                            connect_options += part + ";";
-                        }
-                    }
-                }
-            }
-
-            if (connect_options == "Integrated Security")
-            {
-                connect_options = "Integrated Security=SSPI;";
+                var connection_string_builder = new SqlConnectionStringBuilder(connection_string);
+                server_name = connection_string_builder.DataSource;
+                database_name = connection_string_builder.InitialCatalog;
             }
 
             if (string.IsNullOrEmpty(connection_string))
@@ -83,7 +62,7 @@ namespace roundhouse.databases.sqlserver
 
         protected override void connection_specific_setup(IDbConnection connection)
         {
-            ((SqlConnection)connection).InfoMessage += (sender, e) => Log.bound_to(this).log_an_info_event_containing("  [SQL PRINT]: {0}{1}", Environment.NewLine, e.Message);
+            ((SqlConnection)connection).InfoMessage += (sender, e) => Log.bound_to(this).log_a_debug_event_containing("  [SQL PRINT]: {0}{1}", Environment.NewLine, e.Message);
         }
 
         public override void run_database_specific_tasks()
@@ -198,15 +177,20 @@ namespace roundhouse.databases.sqlserver
         public override string delete_database_script()
         {
             return string.Format(
-                @"USE master 
-                        IF EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}' AND source_database_id is NULL) 
-                        BEGIN 
+                @"USE master
+                        DECLARE @azure_engine INT = 5
+                        IF EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}' AND source_database_id is NULL) AND ISNULL(SERVERPROPERTY('EngineEdition'), 0) <> @azure_engine
+                        BEGIN
                             ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
                         END
 
                         IF EXISTS(SELECT * FROM sys.databases WHERE [name] = '{0}') 
                         BEGIN
-                            EXEC msdb.dbo.sp_delete_database_backuphistory @database_name = '{0}' 
+                            IF ISNULL(SERVERPROPERTY('EngineEdition'), 0) <> @azure_engine
+                            BEGIN
+                                EXEC sp_executesql N'EXEC msdb.dbo.sp_delete_database_backuphistory @database_name = ''{0}'''
+                            END
+
                             DROP DATABASE [{0}] 
                         END",
                 database_name);

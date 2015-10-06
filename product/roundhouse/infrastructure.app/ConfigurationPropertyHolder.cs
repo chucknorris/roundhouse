@@ -16,6 +16,7 @@ namespace roundhouse.infrastructure.app
         int CommandTimeoutAdmin { get; set; }
         string SqlFilesDirectory { get; set; }
         string RepositoryPath { get; set; }
+        string Version { get; set; }
         string VersionFile { get; set; }
         string VersionXPath { get; set; }
         string AlterDatabaseFolderName { get; set; }
@@ -30,6 +31,8 @@ namespace roundhouse.infrastructure.app
         string IndexesFolderName { get; set; }
         string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
         string PermissionsFolderName { get; set; }
+        string BeforeMigrationFolderName { get; set; }
+        string AfterMigrationFolderName { get; set; }
         string SchemaName { get; set; }
         string VersionTableName { get; set; }
         string ScriptsRunTableName { get; set; }

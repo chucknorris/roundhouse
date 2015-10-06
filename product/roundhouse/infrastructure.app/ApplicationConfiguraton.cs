@@ -1,6 +1,10 @@
 using System.Collections.Generic;
+using System.Reflection;
 using log4net;
 using Microsoft.Build.Framework;
+using log4net.Core;
+using log4net.Repository;
+using ILogger = Microsoft.Build.Framework.ILogger;
 
 namespace roundhouse.infrastructure.app
 {
@@ -17,6 +21,7 @@ namespace roundhouse.infrastructure.app
     using folders;
     using infrastructure.logging;
     using infrastructure.logging.custom;
+    using init;
     using logging;
     using migrators;
     using resolvers;
@@ -156,6 +161,7 @@ namespace roundhouse.infrastructure.app
             Container.initialize_with(null);
             Container.initialize_with(build_items_for_container(configuration_property_holder));
             initialize_file_log_appender();
+            set_logging_level_debug_when_debug(configuration_property_holder);
         }
 
         private static InversionContainer build_items_for_container(ConfigurationPropertyHolder configuration_property_holder)
@@ -180,6 +186,7 @@ namespace roundhouse.infrastructure.app
                                             cfg.For<VersionResolver>().Singleton().Use(
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<Environment>().Singleton().Use(new DefaultEnvironment(configuration_property_holder));
+                                            cfg.For<Initializer>().Singleton().Use<FileSystemInitializer>();
                                         });
 
             // forcing a build of database to initialize connections so we can be sure server/database have values
@@ -219,6 +226,23 @@ namespace roundhouse.infrastructure.app
             var known_folders = Container.get_an_instance_of<KnownFolders>();
 
             Log4NetAppender.set_file_appender(known_folders.change_drop.folder_full_path);
+        }
+
+        private static void set_logging_level_debug_when_debug(ConfigurationPropertyHolder configuration_property_holder)
+        {
+            if (configuration_property_holder.Debug)
+            {
+                ILoggerRepository log_repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
+                log_repository.Threshold = Level.Debug;
+                foreach (log4net.Core.ILogger log in log_repository.GetCurrentLoggers())
+                {
+                    var logger = log as log4net.Repository.Hierarchy.Logger;
+                    if (logger != null)
+                    {
+                        logger.Level = Level.Debug;
+                    }
+                }
+            }
         }
     }
 }

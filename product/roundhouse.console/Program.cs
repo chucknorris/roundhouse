@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Reflection;
+using System.Linq;
 using log4net;
-using log4net.Core;
-using log4net.Repository;
-using log4net.Repository.Hierarchy;
 using roundhouse.consoles;
 using roundhouse.databases;
 using roundhouse.folders;
@@ -14,12 +11,14 @@ using roundhouse.infrastructure.commandline.options;
 using roundhouse.infrastructure.containers;
 using roundhouse.infrastructure.extensions;
 using roundhouse.infrastructure.filesystem;
+using roundhouse.init;
 using roundhouse.migrators;
 using roundhouse.resolvers;
 using roundhouse.runners;
 
 namespace roundhouse.console
 {
+
     public class Program
     {
         private static readonly ILog the_logger = LogManager.GetLogger(typeof(Program));
@@ -32,7 +31,7 @@ namespace roundhouse.console
 
             try
             {
-                // determine if this a call to the diff or the migrator
+                // determine if this a call to the diff, the migrator, or the init
                 if (string.Join("|", args).to_lower().Contains("version") && args.Length == 1)
                 {
                     report_version();
@@ -41,9 +40,15 @@ namespace roundhouse.console
                 {
                     run_diff_utility(set_up_configuration_and_build_the_container(args));
                 }
+                else if (args.Any() && args[0] == "init")
+                {
+                    var cf = set_up_configuration_and_build_the_container(args, Mode.Init);
+                    init_folder(cf);
+                }
                 else
                 {
-                    run_migrator(set_up_configuration_and_build_the_container(args));
+                    var cf = set_up_configuration_and_build_the_container(args);
+                    run_migrator(cf);
                 }
             }
             catch (Exception ex)
@@ -67,23 +72,24 @@ namespace roundhouse.console
             the_logger.InfoFormat("{0} - version {1} from http://projectroundhouse.org.", ApplicationParameters.name, version);
         }
 
-        public static ConfigurationPropertyHolder set_up_configuration_and_build_the_container(string[] args)
+        public enum Mode
+        {
+            Normal,
+            Init
+        }
+
+        public static ConfigurationPropertyHolder set_up_configuration_and_build_the_container(string[] args, Mode mode = Mode.Normal)
         {
             ConfigurationPropertyHolder configuration = new DefaultConfiguration();
-            parse_arguments_and_set_up_configuration(configuration, args);
+            parse_arguments_and_set_up_configuration(configuration, args, mode);
 
             ApplicationConfiguraton.set_defaults_if_properties_are_not_set(configuration);
             ApplicationConfiguraton.build_the_container(configuration);
 
-            if (configuration.Debug)
-            {
-                change_log_to_debug_level();
-            }
-
             return configuration;
         }
 
-        private static void parse_arguments_and_set_up_configuration(ConfigurationPropertyHolder configuration, string[] args)
+        private static void parse_arguments_and_set_up_configuration(ConfigurationPropertyHolder configuration, string[] args, Mode mode)
         {
             bool help = false;
 
@@ -132,8 +138,11 @@ namespace roundhouse.console
                      string.Format(
                          "RepositoryPath - The repository. A string that can be anything. Used to track versioning along with the version. Defaults to null."),
                      option => configuration.RepositoryPath = option)
+                .Add("v=|version=",
+                     "Version - Specify the version directly instead of looking in a file. If present, ignores file version options.",
+                     option => configuration.Version = option)
                 .Add("vf=|versionfile=",
-                     string.Format("VersionFile - Either an XML file or a DLL that a version can be resolved from. Defaults to \"{0}\".",
+                     string.Format("VersionFile - Either a .XML file, a .DLL or a .TXT file that a version can be resolved from. Defaults to \"{0}\".",
                                    ApplicationParameters.default_version_file),
                      option => configuration.VersionFile = option)
                 .Add("vx=|versionxpath=",
@@ -200,6 +209,12 @@ namespace roundhouse.console
                          "PermissionsFolderName - The name of the folder where you keep your permissions scripts. Will recurse through subfolders. Defaults to \"{0}\".",
                          ApplicationParameters.default_permissions_folder_name),
                      option => configuration.PermissionsFolderName = option)
+                .Add("bmg=|beforemig=|beforemigrationfolder=|beforemigrationfoldername=",
+                         "BeforeMigrationFolderName - The name of the folder where you keep your scripts that needs to run before migration. Script will run outside of transaction. Will recurse through subfolders.",
+                     option => configuration.BeforeMigrationFolderName = option)
+                .Add("amg=|aftermig=|aftermigrationfolder=|aftermigrationfoldername=",
+                         "AfterMigrationFolderName - The name of the folder where you keep your scripts that needs to run after migration. Script will run outside of transaction. Will recurse through subfolders.",
+                     option => configuration.AfterMigrationFolderName = option)
                 // roundhouse items
                 .Add("sc=|schema=|schemaname=",
                      string.Format(
@@ -266,7 +281,7 @@ namespace roundhouse.console
                      option => configuration.DisableOutput = option != null)
                 //warn on changes
                 .Add("w|warnononetimescriptchanges",
-                     "WarnOnOneTimeScriptChanges - If you do not want RH to error when you change scripts that should not change, you must set this flag. One time scripts are DDL/DML (anything in the upFolder). Defaults to false.",
+                     "WarnOnOneTimeScriptChanges - Instructs RH to execute changed one time scripts (DDL/DML in Up folder) that have previously been run against the database instead of failing. A warning is logged for each one time scripts that is rerun. Defaults to false.",
                      option => configuration.WarnOnOneTimeScriptChanges = option != null)
                 //silent?
                 .Add("silent|ni|noninteractive",
@@ -302,7 +317,7 @@ namespace roundhouse.console
                 .Add("dryrun",
                      "DryRun - This instructs RH to log what would have run, but not to actually run anything against the database. Use this option if you are trying to figure out what RH is going to do.",
                      option => configuration.DryRun = option != null)
-                .Add("searchallinsteadoftraverse=|searchallsubdirectoriesinsteadoftraverse=",
+                .Add("searchallinsteadoftraverse|searchallsubdirectoriesinsteadoftraverse",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
                 ;
@@ -327,7 +342,7 @@ namespace roundhouse.console
                         "/s[ervername] VALUE " +
                         "/c[onnection]s[tring]a[dministration] VALUE " +
                         "/c[ommand]t[imeout] VALUE /c[ommand]t[imeout]a[dmin] VALUE " +
-                        "/r[epositorypath] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
+                        "/r[epositorypath] VALUE /v[ersion] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
                         "/a[lter]d[atabasefoldername] /r[un]a[fter]c[reate]d[atabasefoldername] VALUE VALUE " +
                         "/r[un]b[eforeupfoldername] VALUE /u[pfoldername] VALUE /do[wnfoldername] VALUE " +
                         "/r[un]f[irstafterupdatefoldername] VALUE /fu[nctionsfoldername] VALUE /v[ie]w[sfoldername] VALUE " +
@@ -356,7 +371,7 @@ namespace roundhouse.console
                 show_help(usage_message, option_set);
             }
 
-            if (string.IsNullOrEmpty(configuration.DatabaseName) && string.IsNullOrEmpty(configuration.ConnectionString))
+            if (string.IsNullOrEmpty(configuration.DatabaseName) && string.IsNullOrEmpty(configuration.ConnectionString) && mode == Mode.Normal)
             {
                 show_help("Error: You must specify Database Name (/d) OR Connection String (/cs) at a minimum to use RoundhousE.", option_set);
             }
@@ -377,18 +392,11 @@ namespace roundhouse.console
             Environment.Exit(-1);
         }
 
-        public static void change_log_to_debug_level()
+        public static void init_folder(ConfigurationPropertyHolder configuration)
         {
-            ILoggerRepository log_repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
-            log_repository.Threshold = Level.Debug;
-            foreach (ILogger log in log_repository.GetCurrentLoggers())
-            {
-                var logger = log as Logger;
-                if (logger != null)
-                {
-                    logger.Level = Level.Debug;
-                }
-            }
+            the_logger.Info("Initializing folder for roundhouse");
+            Container.get_an_instance_of<Initializer>().Initialize(configuration,".");
+            Environment.Exit(0);
         }
 
         public static void run_migrator(ConfigurationPropertyHolder configuration)

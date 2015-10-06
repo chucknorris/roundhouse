@@ -24,6 +24,8 @@ namespace roundhouse.migrators
         private readonly bool error_on_one_time_script_changes;
         private bool running_in_a_transaction;
         private readonly bool is_running_all_any_time_scripts;
+        private readonly bool is_baseline;
+        private readonly bool is_dryrun;
 
         public DefaultDatabaseMigrator(Database database, CryptographicService crypto_provider, ConfigurationPropertyHolder configuration)
         {
@@ -36,6 +38,8 @@ namespace roundhouse.migrators
             output_path = configuration.OutputPath;
             error_on_one_time_script_changes = !configuration.WarnOnOneTimeScriptChanges;
             is_running_all_any_time_scripts = configuration.RunAllAnyTimeScripts;
+            is_baseline = configuration.Baseline;
+            is_dryrun = configuration.DryRun;
         }
 
         public void initialize_connections()
@@ -179,8 +183,15 @@ namespace roundhouse.migrators
             if (this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment)
                 && this_script_should_run(script_name, sql_to_run, run_this_script_once, run_this_script_every_time))
             {
-                Log.bound_to(this).log_an_info_event_containing(" Running {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
-
+                if (!is_dryrun)
+                {
+                    Log.bound_to(this).log_an_info_event_containing(" {3} {0} on {1} - {2}.", script_name, database.server_name, database.database_name,
+                                            is_baseline ? "BASELINING: Recording" : "Running");
+                }
+                if (!is_baseline)
+                {
+                    if (!is_dryrun)
+                    {
                 foreach (var sql_statement in get_statements_to_run(sql_to_run))
                 {
                     try
@@ -189,16 +200,24 @@ namespace roundhouse.migrators
                     }
                     catch (Exception ex)
                     {
-                        Log.bound_to(this).log_an_error_event_containing("Error executing file '{0}': statement running was '{1}'", script_name, sql_statement);
                         database.rollback();
                         
                         record_script_in_scripts_run_errors_table(script_name, sql_to_run, sql_statement, ex.Message, repository_version, repository_path);
                         database.close_connection();
                         throw;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Log.bound_to(this).log_a_warning_event_containing(" DryRun: {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
                     }
                 }
+				if (!is_dryrun)
+                {
                 record_script_in_scripts_run_table(script_name, sql_to_run, run_this_script_once, version_id);
                 this_sql_ran = true;
+				}
             }
             else
             {
@@ -278,8 +297,6 @@ namespace roundhouse.migrators
 
         private bool this_script_has_changed_since_last_run(string script_name, string sql_to_run)
         {
-            bool hash_is_same = false;
-
             string old_text_hash = string.Empty;
             try
             {
@@ -294,12 +311,42 @@ namespace roundhouse.migrators
 
             string new_text_hash = create_hash(sql_to_run);
 
-            if (string.Compare(old_text_hash, new_text_hash, true) == 0)
+            bool hash_is_same = hashes_are_equal(new_text_hash, old_text_hash);
+
+            if (!hash_is_same)
             {
-                hash_is_same = true;
+                // extra checks if only line endings have changed
+                hash_is_same = have_same_hash_ignoring_platform(sql_to_run, old_text_hash);
+                if (hash_is_same)
+                {
+                    Log.bound_to(this).log_a_warning_event_containing("Script {0} had different line endings than before but equal content", script_name);
+                }
             }
 
             return !hash_is_same;
+        }
+
+        private bool hashes_are_equal(string new_text_hash, string old_text_hash)
+        {
+            return string.Compare(old_text_hash, new_text_hash, true) == 0;
+        }
+
+        private bool have_same_hash_ignoring_platform(string sql_to_run, string old_text_hash)
+        {
+            // check with unix and windows line endings
+            const string line_ending_windows = "\r\n";
+            const string line_ending_unix = "\n";
+            string new_text_hash = create_hash(sql_to_run.Replace(line_ending_windows, line_ending_unix));
+            bool hash_is_same = hashes_are_equal(new_text_hash, old_text_hash);
+
+            if (!hash_is_same)
+            {
+                // try other way around
+                new_text_hash = create_hash(sql_to_run.Replace(line_ending_unix, line_ending_windows));
+                hash_is_same = hashes_are_equal(new_text_hash, old_text_hash);
+            }
+
+            return hash_is_same;
         }
 
         private bool this_script_should_run(string script_name, string sql_to_run, bool run_this_script_once, bool run_this_script_every_time)

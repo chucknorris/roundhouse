@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using roundhouse.infrastructure.app;
 using roundhouse.infrastructure.logging;
 
@@ -8,11 +7,13 @@ namespace roundhouse.databases
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
+    using System.Data.SqlClient;
     using connections;
     using parameters;
 
     public abstract class AdoNetDatabase : DefaultDatabase<IDbConnection>
     {
+        private const int sql_connection_exception_number = 233;
         private bool split_batches_in_ado = true;
 
         public override bool split_batch_statements
@@ -54,6 +55,7 @@ namespace roundhouse.databases
                 admin_connection.clear_pool();
                 admin_connection.close();
                 admin_connection.Dispose();
+                admin_connection = null;
             }
 
         }
@@ -93,6 +95,7 @@ namespace roundhouse.databases
                 server_connection.clear_pool();
                 server_connection.close();
                 server_connection.Dispose();
+                server_connection = null;
             }
         }
 
@@ -127,34 +130,33 @@ namespace roundhouse.databases
             }
             catch (SqlException ex)
             {
-                // If we are not running inside a transaction, then we can continue to the next command.
-                if (transaction == null)
+              // If we are not running inside a transaction, then we can continue to the next command.
+              if (transaction == null)
+              {
+                // But only if it's a connection failure AND connection failure is the only error reported.
+                if (ex.Errors.Count == 1 && ex.Number == sql_connection_exception_number)
                 {
-                    // But only if it's a connection failure AND connection failure is the only error reported.
-                    if (ex.Errors.Count == 1 && ex.Number == 233)
-                    {
-                        Log.bound_to(this).log_a_debug_event_containing("Failure executing command, trying again. {0}{1}", Environment.NewLine, ex.ToString());
-                        run_command_with(sql_to_run, connection_type, parameters);
-                    }
-                    else
-                    {
-                        //Re-throw the original exception.
-                        throw;
-                    }
+                  Log.bound_to(this).log_a_debug_event_containing("Failure executing command, trying again. {0}{1}", Environment.NewLine, ex.ToString());
+                  run_command_with(sql_to_run, connection_type, parameters);
                 }
                 else
                 {
-                    // Re-throw the exception, which will delegate handling of the rollback to DatabaseMigrator calling class,
-                    // e.g. DefaultDatabaseMigrator.run_sql(...) method catches exceptions from run_sql and rolls back the transaction.
-                    throw;
+                  //Re-throw the original exception.
+                  throw;
                 }
+              }
+              else
+              {
+                // Re-throw the exception, which will delegate handling of the rollback to DatabaseMigrator calling class,
+                // e.g. DefaultDatabaseMigrator.run_sql(...) method catches exceptions from run_sql and rolls back the transaction.
+                throw;
+              }
             }
             catch (Exception ex)
             {
-                // If the Exception is not due to a SqlException, which is the case for any non-SqlServer database, then also delegate handling of the rollback to DatabaseMigrator calling class.
-                throw;
+              // If the Exception is not due to a SqlException, which is the case for any non-SqlServer database, then also delegate handling of the rollback to DatabaseMigrator calling class.
+              throw;
             }
-
         }
 
         private void run_command_with(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)

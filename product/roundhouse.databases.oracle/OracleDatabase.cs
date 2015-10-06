@@ -17,7 +17,7 @@ namespace roundhouse.databases.oracle
 
         public override string sql_statement_separator_regex_pattern
         {
-            get { return @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>\s)(?<BATCHSPLITTER>;)(?<KEEP2>\s)|(?<KEEP1>\s)(?<BATCHSPLITTER>;)(?<KEEP2>$)"; }
+            get { return @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>^|\s)(?<BATCHSPLITTER>;)(?<KEEP2>\s|$)"; }
         }
 
         public override bool supports_ddl_transactions
@@ -89,7 +89,7 @@ namespace roundhouse.databases.oracle
 
         protected override void connection_specific_setup(IDbConnection connection)
         {
-            ((OracleConnection)connection).InfoMessage += (sender, e) => Log.bound_to(this).log_an_info_event_containing("  [SQL PRINT]: {0}{1}",Environment.NewLine, e.Message);
+            ((OracleConnection)connection).InfoMessage += (sender, e) => Log.bound_to(this).log_a_debug_event_containing("  [SQL PRINT]: {0}{1}", Environment.NewLine, e.Message);
         }
 
         public override void run_database_specific_tasks()
