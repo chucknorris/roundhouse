@@ -88,7 +88,15 @@ namespace roundhouse.databases.postgresql
 
         private static string build_connection_string(string server_name, string database_name, string user_name, string password)
         {
-            return string.Format("Server={0};Database={1};Port=5432;UserId={2};Password={3};", server_name, database_name, user_name, password);
+            var csb = new NpgsqlConnectionStringBuilder();
+            
+            csb.Host = server_name;
+            csb.Database = database_name;
+            csb.UserName = user_name;
+            csb.Password = password;
+            csb.Port = 5432;
+
+            return csb.ToString();
         }
 
         public override string create_database_script()
