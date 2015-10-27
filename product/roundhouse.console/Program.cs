@@ -283,6 +283,10 @@ namespace roundhouse.console
                 .Add("w|warnononetimescriptchanges",
                      "WarnOnOneTimeScriptChanges - Instructs RH to execute changed one time scripts (DDL/DML in Up folder) that have previously been run against the database instead of failing. A warning is logged for each one time scripts that is rerun. Defaults to false.",
                      option => configuration.WarnOnOneTimeScriptChanges = option != null)
+                //warn on changes
+                .Add("warnandignoreononetimescriptchanges",
+                     "WarnAndIgnoreOnOneTimeScriptChanges - Instructs RH to ignore and update the hash of changed one time scripts (DDL/DML in Up folder) that have previously been run against the database instead of failing. A warning is logged for each one time scripts that is rerun. Defaults to false.",
+                     option => configuration.WarnAndIgnoreOnOneTimeScriptChanges = option != null)
                 //silent?
                 .Add("silent|ni|noninteractive",
                      "Silent - tells RH not to ask for any input when it runs. Defaults to false.",
@@ -395,7 +399,7 @@ namespace roundhouse.console
         public static void init_folder(ConfigurationPropertyHolder configuration)
         {
             the_logger.Info("Initializing folder for roundhouse");
-            Container.get_an_instance_of<Initializer>().Initialize(configuration,".");
+            Container.get_an_instance_of<Initializer>().Initialize(configuration, ".");
             Environment.Exit(0);
         }
 
