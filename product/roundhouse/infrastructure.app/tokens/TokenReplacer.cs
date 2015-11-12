@@ -1,3 +1,5 @@
+using log4net.Layout;
+
 namespace roundhouse.infrastructure.app.tokens
 {
     using System;
@@ -36,7 +38,16 @@ namespace roundhouse.infrastructure.app.tokens
             Dictionary<string, string> property_dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (var property in configuration.GetType().GetProperties())
             {
-                property_dictionary.Add(property.Name, property.GetValue(configuration, null).to_string());
+                if (property.Name == "UserTokens")
+                {
+                    var userTokens = property.GetValue(configuration, null) as Dictionary<string, string>;
+                    if (userTokens != null)
+                        foreach (var userToken in userTokens)
+                        {
+                            property_dictionary[userToken.Key] = userToken.Value;
+                        }
+                }
+                else property_dictionary.Add(property.Name, property.GetValue(configuration, null).to_string());
             }
 
             return property_dictionary;

@@ -4,6 +4,7 @@ namespace roundhouse.infrastructure.app
 {
     using System;
     using databases;
+    using System.Collections.Generic;
 
     public interface ConfigurationPropertyHolder
     {
@@ -60,5 +61,6 @@ namespace roundhouse.infrastructure.app
         bool DisableTokenReplacement { get; set; }
         bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         bool DisableOutput { get; set; }
+        Dictionary<string, string> UserTokens { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using roundhouse.folders;
 using roundhouse.infrastructure;
 using roundhouse.infrastructure.app;
 using roundhouse.infrastructure.app.logging;
+using roundhouse.infrastructure.app.tokens;
 using roundhouse.infrastructure.commandline.options;
 using roundhouse.infrastructure.containers;
 using roundhouse.infrastructure.extensions;
@@ -298,6 +299,10 @@ namespace roundhouse.console
                 .Add("rcm=|recoverymode=",
                      "RecoveryMode - This instructs RH to set the database recovery mode to Simple|Full|NoChange. Defaults to NoChange.",
                      option => configuration.RecoveryMode = (RecoveryMode)Enum.Parse(typeof(RecoveryMode), option, true))
+                //user tokens
+                .Add("ut=|usertokens=",
+                    "UserTokens - This is a list of key/value pars used in scripts: the token '{{SomeToken}}' will be replace by 'value123' if 'ut=SomeToken=value123' is provide.",
+                    option => configuration.UserTokens = UserTokenParser.Parse(option))
                 //debug
                 .Add("debug",
                      "Debug - This instructs RH to write out all messages. Defaults to false.",
