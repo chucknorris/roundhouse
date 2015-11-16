@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using roundhouse.environments;
 
 namespace roundhouse.migrators
 {
@@ -163,7 +165,7 @@ namespace roundhouse.migrators
             return database.insert_version_and_get_version_id(repository_path, repository_version);
         }
 
-        public bool run_sql(string sql_to_run, string script_name, bool run_this_script_once, bool run_this_script_every_time, long version_id, Environment environment, string repository_version, string repository_path, ConnectionType connection_type)
+        public bool run_sql(string sql_to_run, string script_name, bool run_this_script_once, bool run_this_script_every_time, long version_id, EnvironmentSet environment_set, string repository_version, string repository_path, ConnectionType connection_type)
         {
             bool this_sql_ran = false;
 
@@ -180,7 +182,7 @@ namespace roundhouse.migrators
                 Log.bound_to(this).log_a_warning_event_containing("{0} is a one time script that has changed since it was run.", script_name);
             }
 
-            if (this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment)
+            if (this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment_set)
                 && this_script_should_run(script_name, sql_to_run, run_this_script_once, run_this_script_every_time))
             {
                 if (!is_dryrun)
@@ -370,29 +372,22 @@ namespace roundhouse.migrators
             return true;
         }
 
-        public bool this_is_an_environment_file_and_its_in_the_right_environment(string script_name, Environment environment)
+        public bool this_is_an_environment_file_and_its_in_the_right_environment(string script_name, EnvironmentSet environment_set)
         {
-            Log.bound_to(this).log_a_debug_event_containing("Checking to see if {0} is an environment file. We are in the {1} environment.", script_name, environment.name);
+            string environment_set_names = string.Join(", ", environment_set.set_items.Select(x => x.name));
+
+            Log.bound_to(this).log_a_debug_event_containing("Checking to see if {0} is an environment file. We have an environment set containing: .", script_name, environment_set_names);
+
             if (!script_name.to_lower().Contains(".env."))
             {
                 // return true because this is NOT an environment file for the next check
                 return true;
             }
 
-            bool environment_file_is_in_the_right_environment = false;
+            bool environment_file_is_in_the_right_environment = environment_set.item_is_for_this_environment_set(script_name);
 
-            if (script_name.to_lower().StartsWith(environment.name.to_lower() + "."))
-            {
-                environment_file_is_in_the_right_environment = true;
-            }
-
-            if (script_name.to_lower().Contains("." + environment.name.to_lower() + "."))
-            {
-                environment_file_is_in_the_right_environment = true;
-            }
-
-            Log.bound_to(this).log_an_info_event_containing(" {0} is an environment file. We are in the {1} environment. This will{2} run based on this check.",
-                                                            script_name, environment.name, environment_file_is_in_the_right_environment ? string.Empty : " NOT");
+            Log.bound_to(this).log_an_info_event_containing(" {0} is an environment file. We have an environment set containing: {1}. This will{2} run based on this check.",
+                                                            script_name, environment_set_names, environment_file_is_in_the_right_environment ? string.Empty : " NOT");
 
             return environment_file_is_in_the_right_environment;
         }

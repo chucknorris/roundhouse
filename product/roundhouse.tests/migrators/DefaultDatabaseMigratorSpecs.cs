@@ -22,10 +22,10 @@ namespace roundhouse.tests.infrastructure.containers
         public abstract class concern_for_database_migrator : observations_for_a_sut_without_a_contract<DefaultDatabaseMigrator>
         {
             protected static object result;
-            protected static DefaultEnvironment environment;
+            protected static DefaultEnvironmentSet environment_set;
 
             context c = () => {
-                            environment = new DefaultEnvironment(new DefaultConfiguration {EnvironmentName = "TEST"});
+                            environment_set = new DefaultEnvironmentSet(new DefaultConfiguration {EnvironmentNames = "TEST"});
                         };
         }
         
@@ -37,31 +37,31 @@ namespace roundhouse.tests.infrastructure.containers
             [Observation]
             public void if_given_TEST_at_the_front_and_in_TEST_should_return_true()
             {
-                sut.this_is_an_environment_file_and_its_in_the_right_environment("TEST.something.ENV.sql", environment).should_be_true();
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("TEST.something.ENV.sql", environment_set).should_be_true();
             } 
             
             [Observation]
             public void if_given_TEST_in_the_middle_and_in_TEST_should_return_true()
             {
-                sut.this_is_an_environment_file_and_its_in_the_right_environment("something.TEST.ENV.sql", environment).should_be_true();
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("something.TEST.ENV.sql", environment_set).should_be_true();
             } 
             
             [Observation]
             public void if_given_PROD_and_in_TEST_should_return_false()
             {
-                sut.this_is_an_environment_file_and_its_in_the_right_environment("PROD.something.ENV.sql", environment).should_be_false();
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("PROD.something.ENV.sql", environment_set).should_be_false();
             }
             
             [Observation]
             public void if_given_BOBTEST_at_the_front_and_in_TEST_should_return_false()
             {
-                sut.this_is_an_environment_file_and_its_in_the_right_environment("BOBTEST.something.ENV.sql", environment).should_be_false();
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("BOBTEST.something.ENV.sql", environment_set).should_be_false();
             }  
             
             [Observation]
             public void if_given_BOBTEST_in_the_middle_and_in_TEST_should_return_false()
             {
-                sut.this_is_an_environment_file_and_its_in_the_right_environment("something.BOBTEST.ENV.sql", environment).should_be_false();
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("something.BOBTEST.ENV.sql", environment_set).should_be_false();
             }
         }
     
@@ -96,6 +96,87 @@ namespace roundhouse.tests.infrastructure.containers
             
         }
 
-     
+        public abstract class concern_for_database_migrator_with_multiple_environments : observations_for_a_sut_without_a_contract<DefaultDatabaseMigrator>
+        {
+            protected static object result;
+            protected static DefaultEnvironmentSet environment_set;
+
+            context c = () =>
+            {
+                environment_set = new DefaultEnvironmentSet(new DefaultConfiguration { EnvironmentNames = "TEST,SPECIAL" });
+            };
+        }
+
+        [Concern(typeof(DefaultDatabaseMigrator))]
+        public class when_determining_if_we_are_in_the_right_environment_with_multiple_environments : concern_for_database_migrator_with_multiple_environments
+        {
+            because b = () => { };
+
+            [Observation]
+            public void if_given_TEST_at_the_front_and_in_TEST_SPECIAL_should_return_true()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("TEST.something.ENV.sql", environment_set).should_be_true();
+            }
+
+            [Observation]
+            public void if_given_SPECIAL_at_the_front_and_in_TEST_SPECIAL_should_return_true()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("SPECIAL.something.ENV.sql", environment_set).should_be_true();
+            }
+
+            [Observation]
+            public void if_given_TEST_SPECIAL_at_the_front_and_in_TEST_SPECIAL_should_return_true()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("TEST.SPECIAL.something.ENV.sql", environment_set).should_be_true();
+            }
+
+            [Observation]
+            public void if_given_SPECIAL_TEST_at_the_front_and_in_TEST_SPECIAL_should_return_true()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("SPECIAL.TEST.something.ENV.sql", environment_set).should_be_true();
+            }
+
+            [Observation]
+            public void if_given_TEST_in_the_middle_and_in_TEST_SPECIAL_should_return_true()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("something.TEST.ENV.sql", environment_set).should_be_true();
+            }
+
+            [Observation]
+            public void if_given_SPECIAL_in_the_middle_and_in_TEST_SPECIAL_should_return_true()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("something.SPECIAL.ENV.sql", environment_set).should_be_true();
+            }
+
+            [Observation]
+            public void if_given_TEST_SPECIAL_in_the_middle_and_in_TEST_SPECIAL_should_return_true()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("something.TEST.SPECIAL.ENV.sql", environment_set).should_be_true();
+            }
+
+            [Observation]
+            public void if_given_SPECIAL_TEST_in_the_middle_and_in_TEST_SPECIAL_should_return_true()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("something.SPECIAL.TEST.ENV.sql", environment_set).should_be_true();
+            }
+
+            [Observation]
+            public void if_given_PROD_and_in_TEST_SPECIAL_should_return_false()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("PROD.something.ENV.sql", environment_set).should_be_false();
+            }
+
+            [Observation]
+            public void if_given_BOBTEST_at_the_front_and_in_TEST_SPECIAL_should_return_false()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("BOBTEST.something.ENV.sql", environment_set).should_be_false();
+            }
+
+            [Observation]
+            public void if_given_BOBTEST_in_the_middle_and_in_TEST_SPECIAL_should_return_false()
+            {
+                sut.this_is_an_environment_file_and_its_in_the_right_environment("something.BOBTEST.ENV.sql", environment_set).should_be_false();
+            }
+        }
     }
 }

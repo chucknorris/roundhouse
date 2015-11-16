@@ -13,9 +13,9 @@
 
     using Microsoft.Build.Utilities;
 
+    using environments;
     using resolvers;
     using runners;
-    using Environment = environments.Environment;
     using Logger = roundhouse.infrastructure.logging.Logger;
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
@@ -108,7 +108,10 @@
 
         public string ScriptsRunErrorsTableName { get; set; }
 
+        [Obsolete("Use EnvironmentNames")]
         public string EnvironmentName { get; set; }
+
+        public string EnvironmentNames { get; set; }
 
         public bool Restore { get; set; }
 
@@ -208,7 +211,7 @@
 
             IRunner roundhouse_runner = new RoundhouseMigrationRunner(
                 RepositoryPath,
-                Container.get_an_instance_of<Environment>(),
+                Container.get_an_instance_of<EnvironmentSet>(),
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
                 Container.get_an_instance_of<DatabaseMigrator>(),

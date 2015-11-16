@@ -112,6 +112,8 @@
     <Compile Include="consoles\CommandExecutor.cs" />
     <Compile Include="consoles\InteractivePrompt.cs" />
     <Compile Include="databases\RecoveryMode.cs" />
+    <Compile Include="environments\DefaultEnvironmentSet.cs" />
+    <Compile Include="environments\EnvironmentSet.cs" />
     <Compile Include="infrastructure.app\ConnectionType.cs" />
     <Compile Include="databases\DefaultDatabase.cs" />
     <Compile Include="databases\MockDatabase.cs" />

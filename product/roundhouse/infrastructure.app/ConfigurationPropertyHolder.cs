@@ -37,7 +37,9 @@ namespace roundhouse.infrastructure.app
         string VersionTableName { get; set; }
         string ScriptsRunTableName { get; set; }
         string ScriptsRunErrorsTableName { get; set; }
+        [Obsolete("Use EnvironmentNames")]
         string EnvironmentName { get; set; }
+        string EnvironmentNames { get; set; }
         bool Restore { get; set; }
         string RestoreFromPath { get; set; }
         string RestoreCustomOptions { get; set; }
