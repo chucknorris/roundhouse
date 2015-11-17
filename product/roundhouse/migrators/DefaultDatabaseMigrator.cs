@@ -302,9 +302,9 @@ namespace roundhouse.migrators
             {
                 old_text_hash = database.get_current_script_hash(script_name);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Log.bound_to(this).log_a_warning_event_containing("{0} - I didn't find this script executed before.", script_name);
+                Log.bound_to(this).log_a_warning_event_containing("{0} - I didn't find this script executed before.{1}{2}", script_name, System.Environment.NewLine, ex.to_string());
             }
 
             if (string.IsNullOrEmpty(old_text_hash)) return true;
