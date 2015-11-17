@@ -7,6 +7,7 @@ namespace roundhouse.databases
     using connections;
     using infrastructure.app;
     using infrastructure.app.tokens;
+    using infrastructure.extensions;
     using infrastructure.logging;
     using infrastructure.persistence;
     using model;
@@ -286,10 +287,10 @@ namespace roundhouse.databases
                     version = items[0].version;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Log.bound_to(this).log_a_warning_event_containing("{0} with provider {1} does not provide a facility for retrieving versions at this time.",
-                                                                  GetType(), provider);
+                Log.bound_to(this).log_a_warning_event_containing("{0} with provider {1} does not provide a facility for retrieving versions at this time.{2}{3}",
+                                                                  GetType(), provider, Environment.NewLine, ex.to_string());
             }
 
             return version;
