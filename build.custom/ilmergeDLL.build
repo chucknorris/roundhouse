@@ -62,6 +62,8 @@
           <include name="${dirs.merge.from}\MySql.Data.dll" />
           <include name="${dirs.merge.from}\Npgsql.dll" />
           <include name="${dirs.merge.from}\Mono.Security.dll" />
+          <include name="${dirs.merge.from}\Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll" />
+          <include name="${dirs.merge.from}\Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.Data.dll" />
         </items>
       </in>
       <do>
@@ -106,6 +108,8 @@
         <include name="Npgsql.dll" />
         <include name="Mono.Security.dll" />
         <include name="System.Data.SQLite.dll" />
+        <include name="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll" />
+        <include name="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.Data.dll" />
       </fileset>
     </delete>
   </target>
