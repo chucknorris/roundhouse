@@ -1,4 +1,7 @@
-﻿namespace roundhouse.databases.sqlserver
+﻿using System.ComponentModel;
+using System.Data.SqlClient;
+
+namespace roundhouse.databases.sqlserver
 {
     using System;
     using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
@@ -30,7 +33,38 @@
                 return false;
 
             // Unwrap exception to handle exceptions wrapped by NHibernate GenericAdoException
-            return inner_strategy.IsTransient(ex) || IsTransientException(ex.InnerException);
+            var inner = ex.InnerException;
+            return inner_strategy.IsTransient(ex) || IsCustomTransientException(ex) || IsTransientException(inner);
+        }
+
+        private bool IsCustomTransientException(Exception ex)
+        {
+            var sql_exception = ex as SqlException;
+            if (sql_exception == null)
+            {
+                return false;
+            }
+
+            // Borrowed from https://github.com/Azure/elastic-db-tools/blob/master/Src/ElasticScale.Client/ElasticScale.Common/TransientFaultHandling/Implementation/SqlDatabaseTransientErrorDetectionStrategy.cs#L167
+            // Prelogin failure can happen due to waits expiring on windows handles. Or
+            // due to a bug in the gateway code, a dropped database with a pooled connection
+            // when reset results in a timeout error instead of immediate failure.
+            Win32Exception wex = sql_exception.InnerException as Win32Exception;
+            if (wex != null)
+            {
+                switch (wex.NativeErrorCode)
+                {
+                    // Timeout expired
+                    case 0x102:
+                        return true;
+
+                    // Semaphore timeout expired
+                    case 0x121:
+                        return true;
+                }
+            }
+
+            return false;
         }
     }
 }
