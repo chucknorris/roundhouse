@@ -2,6 +2,7 @@ namespace roundhouse.infrastructure.persistence
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Reflection;
     using app;
     using FluentNHibernate.Cfg;
@@ -11,7 +12,6 @@ namespace roundhouse.infrastructure.persistence
     using NHibernate;
     using NHibernate.Cfg;
     using NHibernate.Event;
-    using Environment = NHibernate.Cfg.Environment;
 
     public class NHibernateSessionFactoryBuilder
     {
@@ -104,6 +104,7 @@ namespace roundhouse.infrastructure.persistence
 
                     cfg.SetListener(ListenerType.PreInsert, new AuditEventListener());
                     cfg.SetListener(ListenerType.PreUpdate, new AuditEventListener());
+                    cfg.SetProperty("command_timeout", TimeSpan.FromMinutes(5).TotalSeconds.ToString(CultureInfo.InvariantCulture));
                 })
                 .ExposeConfiguration(additional_function);
 
