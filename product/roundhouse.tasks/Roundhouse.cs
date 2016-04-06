@@ -1,22 +1,20 @@
 ﻿namespace roundhouse.tasks
 {
-    using System;
-    using databases;
-    using folders;
-    using infrastructure.app;
-    using infrastructure.app.logging;
-    using infrastructure.containers;
-    using infrastructure.filesystem;
-
-    using Microsoft.Build.Framework;
-    using migrators;
-
-    using Microsoft.Build.Utilities;
-
-    using resolvers;
-    using runners;
-    using Environment = environments.Environment;
-    using Logger = roundhouse.infrastructure.logging.Logger;
+	using databases;
+	using folders;
+	using infrastructure.app;
+	using infrastructure.app.logging;
+	using infrastructure.containers;
+	using infrastructure.filesystem;
+	using Microsoft.Build.Framework;
+	using Microsoft.Build.Utilities;
+	using migrators;
+	using resolvers;
+	using runners;
+	using System;
+	using System.Collections.Generic;
+	using Environment = environments.Environment;
+	using Logger = roundhouse.infrastructure.logging.Logger;
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
@@ -76,7 +74,7 @@
 
         public string RunAfterCreateDatabaseFolderName { get; set; }
 
-        public string RunBeforeUpFolderName { get; set; }
+		public string RunBeforeUpFolderName { get; set; }
 
         public string UpFolderName { get; set; }
 
@@ -182,6 +180,8 @@
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
 
         public bool DisableOutput { get; set; }
+
+        public Dictionary<string, string> UserTokens { get; set; }
 
         public bool Initialize { get; set; }
 

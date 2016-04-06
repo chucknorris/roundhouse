@@ -1,9 +1,10 @@
 namespace roundhouse.consoles
 {
-    using System;
-    using databases;
-    using infrastructure.app;
-    using infrastructure.logging;
+	using databases;
+	using infrastructure.app;
+	using infrastructure.logging;
+	using System;
+	using System.Collections.Generic;
 
     public sealed class DefaultConfiguration : ConfigurationPropertyHolder
     {
@@ -60,6 +61,7 @@ namespace roundhouse.consoles
         public bool DisableTokenReplacement { get; set; }
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         public bool DisableOutput { get; set; }
+        public Dictionary<string, string> UserTokens { get; set; }
         public bool Initialize { get; set; }
     }
 }
