@@ -7,12 +7,9 @@
     using infrastructure.app.logging;
     using infrastructure.containers;
     using infrastructure.filesystem;
-
     using Microsoft.Build.Framework;
-    using migrators;
-
     using Microsoft.Build.Utilities;
-
+    using migrators;
     using resolvers;
     using runners;
     using Environment = environments.Environment;
@@ -127,6 +124,8 @@
         public string OutputPath { get; set; }
 
         public bool WarnOnOneTimeScriptChanges { get; set; }
+
+        public bool WarnAndIgnoreOnOneTimeScriptChanges { get; set; }
 
         public bool Silent { get; set; }
 

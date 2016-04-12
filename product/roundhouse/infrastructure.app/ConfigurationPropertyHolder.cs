@@ -21,7 +21,7 @@ namespace roundhouse.infrastructure.app
         string VersionXPath { get; set; }
         string AlterDatabaseFolderName { get; set; }
         string RunAfterCreateDatabaseFolderName { get; set; }
-		string RunBeforeUpFolderName { get; set; }
+        string RunBeforeUpFolderName { get; set; }
         string UpFolderName { get; set; }
         string DownFolderName { get; set; }
         string RunFirstAfterUpFolderName { get; set; }
@@ -45,6 +45,7 @@ namespace roundhouse.infrastructure.app
         string CreateDatabaseCustomScript { get; set; }
         string OutputPath { get; set; }
         bool WarnOnOneTimeScriptChanges { get; set; }
+        bool WarnAndIgnoreOnOneTimeScriptChanges { get; set; }
         bool Silent { get; set; }
         string DatabaseType { get; set; }
         bool Drop { get; set; }
