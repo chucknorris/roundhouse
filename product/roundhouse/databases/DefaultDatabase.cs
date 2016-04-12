@@ -125,7 +125,7 @@ namespace roundhouse.databases
             {
                 Log.bound_to(this).log_a_warning_event_containing(
                     "{0} with provider {1} does not provide a facility for creating a database at this time.{2}{3}",
-                    GetType(), provider, Environment.NewLine, ex.Message);
+                    GetType(), provider, Environment.NewLine, ex.to_string());
             }
 
             return database_was_created;
