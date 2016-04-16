@@ -1,4 +1,5 @@
-using System.IO;
+ï»¿using System.IO;
+using System.Text;
 
 namespace roundhouse.tests.infrastructure.filesystem
 {
@@ -49,13 +50,20 @@ namespace roundhouse.tests.infrastructure.filesystem
             [Observation]
             public void utf8_encoded_file_should_read_correctly()
             {
-                utf8_file.should_be_equal_to("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')");
+                utf8_file.should_be_equal_to("INSERT INTO [dbo].[timmy]([value]) VALUES('GÃ£')");
             }
 
             [Observation]
             public void ansi_encoded_file_should_read_correctly()
+            {   
+                ansi_file.should_be_equal_to(to_default_code_page("INSERT INTO [dbo].[timmy]([value]) VALUES('GÃ£')"));
+            }
+
+            private string to_default_code_page(string english_code_page_text)
             {
-                ansi_file.should_be_equal_to("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')");
+                var bytes = Encoding.GetEncoding(1252).GetBytes(english_code_page_text);
+
+                return Encoding.Default.GetString(bytes);
             }
         }
     }
