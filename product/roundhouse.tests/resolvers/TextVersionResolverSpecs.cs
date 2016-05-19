@@ -40,7 +40,7 @@ namespace roundhouse.tests.resolvers
 			private context c = () =>
 									{
 										the_filesystem = an<FileSystemAccess>();
-										the_versionfile = @"Version.txt";
+										the_versionfile = string.Format(@"{0}.txt", Guid.NewGuid());
 										provide_a_basic_sut_constructor_argument(the_filesystem);
 										provide_a_basic_sut_constructor_argument(the_versionfile);
 									};
@@ -61,7 +61,6 @@ namespace roundhouse.tests.resolvers
 			private because b = () => { result = sut.resolve_version(); };
 
 			[Observation]
-			
 			public void untrimmed_version_from_file_is_trimmed_when_resolved()
 			{
 				result.should_be_equal_to(trimmed);
