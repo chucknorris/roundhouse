@@ -92,7 +92,7 @@ namespace roundhouse.databases.postgresql
             
             csb.Host = server_name;
             csb.Database = database_name;
-            csb.UserName = user_name;
+            csb.Username = user_name;
             csb.Password = password;
             csb.Port = 5432;
 
