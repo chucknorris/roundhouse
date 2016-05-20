@@ -9,16 +9,16 @@ namespace roundhouse.tests.infrastructure.filesystem
     using developwithpassion.bdd.mbunit.standard;
     using developwithpassion.bdd.mbunit.standard.observations;
 
-    public class WindowsFileSystemAccessSpecs
+    public class DotNetFileSystemAccessSpecs
     {
-        public abstract class concern_for_file_system : observations_for_a_sut_with_a_contract<FileSystemAccess, WindowsFileSystemAccess>
+        public abstract class concern_for_file_system : observations_for_a_sut_with_a_contract<FileSystemAccess, DotNetFileSystemAccess>
         {
             protected static object result;
 
             context c = () => { };
         }
 
-        [Concern(typeof(WindowsFileSystemAccess))]
+        [Concern(typeof(DotNetFileSystemAccess))]
         public class when_reading_files_with_different_formats : concern_for_file_system
         {
             protected static string utf8_file;

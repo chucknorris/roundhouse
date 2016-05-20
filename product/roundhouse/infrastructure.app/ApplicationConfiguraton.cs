@@ -175,7 +175,7 @@ namespace roundhouse.infrastructure.app
             ObjectFactory.Configure(cfg =>
                                         {
                                             cfg.For<ConfigurationPropertyHolder>().Singleton().Use(configuration_property_holder);
-                                            cfg.For<FileSystemAccess>().Singleton().Use<WindowsFileSystemAccess>();
+                                            cfg.For<FileSystemAccess>().Singleton().Use<DotNetFileSystemAccess>();
                                             cfg.For<Database>().Singleton().Use(context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<KnownFolders>().Singleton().Use(context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<LogFactory>().Singleton().Use<MultipleLoggerLogFactory>();
