@@ -13,8 +13,10 @@ namespace roundhouse.infrastructure.filesystem
     /// <summary>
     /// All file system access code comes through here
     /// </summary>
-    public sealed class WindowsFileSystemAccess : FileSystemAccess
+    public sealed class DotNetFileSystemAccess : FileSystemAccess
     {
+        private static readonly bool is_running_on_mono = Type.GetType("Mono.Runtime") != null;
+
         #region File
 
         /// <summary>
@@ -108,9 +110,13 @@ namespace roundhouse.infrastructure.filesystem
         {
             Log.bound_to(this).log_a_debug_event_containing("Attempting to copy from \"{0}\" to \"{1}\".", source_file_name, destination_file_name);
             //Private Declare Function apiCopyFile Lib "kernel32" Alias "CopyFileA" _
-            int success = CopyFileA(source_file_name, destination_file_name, overwrite_the_existing_file ? 0 : 1);
-
-            //File.Copy(source_file_name, destination_file_name, overwrite_the_existing_file);
+            if (is_running_on_mono)
+            {
+                File.Copy(source_file_name, destination_file_name, overwrite_the_existing_file);
+            }
+            else {
+                int success = CopyFileA(source_file_name, destination_file_name, overwrite_the_existing_file ? 0 : 1);
+            }
         }
 
         [DllImport("kernel32")]
@@ -357,20 +363,20 @@ namespace roundhouse.infrastructure.filesystem
         public string[] get_all_file_name_strings_in(string directory, string pattern)
         {
             string[] returnList = Directory.GetFiles(directory, pattern);
-			return returnList.OrderBy(get_file_name_from).ToArray();
+            return returnList.OrderBy(get_file_name_from).ToArray();
         }
 
-		/// <summary>
-		/// Gets a list of all files inside of an existing directory, includes files in subdirectories also
-		/// </summary>
-		/// <param name="directory">Path to the directory</param>
-		/// <param name="pattern">Pattern or extension</param>
-		/// <returns>A list of files inside of an existing directory</returns>
-		public string[] get_all_file_name_strings_recurevly_in(string directory, string pattern)
-		{
-			string[] returnList = Directory.GetFiles(directory, pattern, SearchOption.AllDirectories);
-			return returnList.OrderBy(get_file_name_from).ToArray();
-		}
+        /// <summary>
+        /// Gets a list of all files inside of an existing directory, includes files in subdirectories also
+        /// </summary>
+        /// <param name="directory">Path to the directory</param>
+        /// <param name="pattern">Pattern or extension</param>
+        /// <returns>A list of files inside of an existing directory</returns>
+        public string[] get_all_file_name_strings_recurevly_in(string directory, string pattern)
+        {
+            string[] returnList = Directory.GetFiles(directory, pattern, SearchOption.AllDirectories);
+            return returnList.OrderBy(get_file_name_from).ToArray();
+        }
 
         #endregion
 
@@ -399,6 +405,5 @@ namespace roundhouse.infrastructure.filesystem
 
             return combined_path;
         }
-
     }
 }
