@@ -32,7 +32,7 @@ namespace roundhouse.resolvers
                 try
                 {
                     version = file_system.read_file_text(version_file).Trim();
-					Log.bound_to(this).log_an_info_event_containing(" Found version {0} from {1}.", version, version_file);
+                    Log.bound_to(this).log_an_info_event_containing(" Found version {0} from {1}.", version, version_file);
                 }
                 catch (Exception e)
                 {
