@@ -123,6 +123,7 @@
     <Compile Include="migrators\DefaultDatabaseMigratorSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="infrastructure\filesystem\DotNetFileSystemAccessSpecs.cs" />
+    <Compile Include="resolvers\TextVersionResolverSpecs.cs" />
     <Compile Include="sqlsplitters\SplitterContext.cs" />
     <Compile Include="sqlsplitters\StatementSplitterSpecs.cs" />
     <Compile Include="TestExtensions.cs" />
