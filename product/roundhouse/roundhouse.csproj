@@ -145,7 +145,7 @@
     <Compile Include="sqlsplitters\StatementSplitter.cs" />
     <Compile Include="consoles\DefaultConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />
-    <Compile Include="cryptography\MD5CryptographicService.cs" />
+    <Compile Include="cryptography\ManagedMD5CryptographicService.cs" />
     <Compile Include="databases\AdoNetDatabase.cs" />
     <Compile Include="environments\DefaultEnvironment.cs" />
     <Compile Include="environments\Environment.cs" />

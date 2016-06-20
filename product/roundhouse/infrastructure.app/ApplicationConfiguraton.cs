@@ -181,7 +181,7 @@ namespace roundhouse.infrastructure.app
                                             cfg.For<LogFactory>().Singleton().Use<MultipleLoggerLogFactory>();
                                             //cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<Logger>().Use(multiLogger);
-                                            cfg.For<CryptographicService>().Singleton().Use<MD5CryptographicService>();
+                                            cfg.For<CryptographicService>().Singleton().Use<ManagedMD5CryptographicService>();
                                             cfg.For<DatabaseMigrator>().Singleton().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
                                             cfg.For<VersionResolver>().Singleton().Use(
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));

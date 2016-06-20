@@ -35,7 +35,7 @@ namespace roundhouse.tests.cryptography
             [SetUp]
             public void we_set_the_context()
             {
-                md5_crypto = new MD5CryptographicService();
+                md5_crypto = new ManagedMD5CryptographicService();
             }
 
             [Test]
