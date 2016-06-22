@@ -180,7 +180,7 @@ namespace roundhouse.cryptography
             byte[] buffer = new byte[64];
             #endregion
 
-            internal MD5()
+            public MD5()
             {
                 Initialize();
             }
