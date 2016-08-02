@@ -10,7 +10,7 @@
         {
             //HibernateMapping.Schema(ApplicationParameters.CurrentMappings.roundhouse_schema_name);
             //Table(ApplicationParameters.CurrentMappings.version_table_name);
-            Table(ApplicationParameters.CurrentMappings.roundhouse_schema_name + "_" + ApplicationParameters.CurrentMappings.version_table_name);
+            Table(ApplicationParameters.CurrentMappings.roundhouse_schema_name + "." + ApplicationParameters.CurrentMappings.version_table_name);
             Not.LazyLoad();
             HibernateMapping.DefaultAccess.Property();
             HibernateMapping.DefaultCascade.SaveUpdate();
