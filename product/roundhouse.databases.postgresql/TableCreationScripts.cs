@@ -2,24 +2,25 @@
 {
 	public sealed class TableCreationScripts
 	{
-//        public static string create_roundhouse_schema(string roundhouse_schema_name)
-//        {
-//            return string.Format(@"
-//CREATE FUNCTION CreateRoundHouseSchema(in schemaName varchar) RETURNS void AS $$
-//DECLARE t_exists integer;
-//BEGIN
-//	SELECT INTO t_exists COUNT(*) FROM information_schema.schemata WHERE schema_name = lower($1);
-//	IF t_exists = 0 THEN
-//		EXECUTE 'CREATE SCHEMA ' || lower(schemaName);
-//	END IF;
-//END;
-//$$ LANGUAGE 'plpgsql';
-//SELECT CreateRoundHouseSchema('{0}');
-//DROP FUNCTION CreateRoundHouseSchema(in schemaName varchar);
-//", roundhouse_schema_name);
-//        }
+        public static string create_roundhouse_schema(string roundhouse_schema_name)
+        {
+            return string.Format(@"
+CREATE OR REPLACE FUNCTION CreateRoundHouseSchema(in schemaName varchar) RETURNS void AS $$
+DECLARE t_exists integer;
+BEGIN
+	SELECT INTO t_exists COUNT(*) FROM information_schema.schemata WHERE schema_name = lower(schemaName);
 
-		 public static string create_roundhouse_version_table(string roundhouse_schema_name, string version_table_name)
+	IF t_exists = 0 THEN
+		EXECUTE 'CREATE SCHEMA ' || lower(schemaName);
+	END IF;
+END;
+$$ LANGUAGE 'plpgsql';
+SELECT CreateRoundHouseSchema('{0}');
+DROP FUNCTION CreateRoundHouseSchema(in schemaName varchar);
+", roundhouse_schema_name);
+        }
+
+        public static string create_roundhouse_version_table(string roundhouse_schema_name, string version_table_name)
 		 {
 		 	return string.Format(@"
 CREATE OR REPLACE FUNCTION CreateRoundHouseVersionTable(in schName varchar, in tblName varchar) RETURNS void AS $$

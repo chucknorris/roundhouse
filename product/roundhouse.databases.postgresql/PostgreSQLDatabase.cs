@@ -136,13 +136,16 @@ namespace roundhouse.databases.postgresql
 
         public override void create_or_update_roundhouse_tables()
         {
-            //Log.bound_to(this).log_an_info_event_containing("Creating schema [{0}].", roundhouse_schema_name);
-            //run_sql(TableCreationScripts.create_roundhouse_schema(roundhouse_schema_name), ConnectionType.Default);
+            Log.bound_to(this).log_an_info_event_containing("Creating schema [{0}].", roundhouse_schema_name);
+            run_sql(TableCreationScripts.create_roundhouse_schema(roundhouse_schema_name), ConnectionType.Default);
+
             Log.bound_to(this).log_an_info_event_containing("Creating table [{0}].[{1}].", roundhouse_schema_name, version_table_name);
             run_sql(TableCreationScripts.create_roundhouse_version_table(roundhouse_schema_name, version_table_name), ConnectionType.Default);
+
             Log.bound_to(this).log_an_info_event_containing("Creating table [{0}].[{1}].", roundhouse_schema_name, scripts_run_table_name);
             run_sql(TableCreationScripts.create_roundhouse_scripts_run_table(roundhouse_schema_name, version_table_name, scripts_run_table_name),
                     ConnectionType.Default);
+
             Log.bound_to(this).log_an_info_event_containing("Creating table [{0}].[{1}].", roundhouse_schema_name, scripts_run_errors_table_name);
             run_sql(TableCreationScripts.create_roundhouse_scripts_run_errors_table(roundhouse_schema_name, scripts_run_errors_table_name),
                     ConnectionType.Default);
