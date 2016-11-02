@@ -1,11 +1,13 @@
 ﻿using roundhouse.consoles;
+using System.IO;
+
 namespace roundhouse.databases.mysql
 {
-    using System;
     using infrastructure.app;
     using infrastructure.extensions;
     using infrastructure.logging;
     using MySql.Data.MySqlClient;
+    using System;
 
     public class MySqlDatabase : AdoNetDatabase
     {
@@ -58,7 +60,7 @@ namespace roundhouse.databases.mysql
                 var user_name = InteractivePrompt.get_user("root", configuration_property_holder);
                 var password = InteractivePrompt.get_password("root", configuration_property_holder);
                 InteractivePrompt.write_footer();
-                
+
                 connection_string = build_connection_string(server_name, database_name, user_name, password);
             }
 
@@ -114,7 +116,7 @@ namespace roundhouse.databases.mysql
             var connection = connection_type == ConnectionType.Admin
                 ? admin_connection.underlying_type().downcast_to<MySqlConnection>()
                 : server_connection.underlying_type().downcast_to<MySqlConnection>();
-            
+
             var script = new MySqlScript(connection, sql_to_run);
             script.Execute();
         }
@@ -126,7 +128,12 @@ namespace roundhouse.databases.mysql
 
         public override string restore_database_script(string restore_from_path, string custom_restore_options)
         {
-            throw new NotImplementedException();
+            if (restore_from_path == null)
+                return string.Empty;
+            Log.bound_to(this).log_an_info_event_containing("Restoring from path " + restore_from_path);
+            if (!File.Exists(restore_from_path))
+                return string.Empty;
+            return File.ReadAllText(restore_from_path);
         }
     }
 }
