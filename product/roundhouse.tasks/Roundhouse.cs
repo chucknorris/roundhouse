@@ -61,6 +61,10 @@
 
         public string SqlFilesDirectory { get; set; }
 
+        public string SqlDataFileDirectory { get; set; }
+
+        public string SqlLogFileDirectory { get; set; }
+
         public string RepositoryPath { get; set; }
 
         public string Version { get; set; }
