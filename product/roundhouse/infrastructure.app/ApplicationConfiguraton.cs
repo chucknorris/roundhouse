@@ -4,11 +4,9 @@ using log4net;
 using Microsoft.Build.Framework;
 using log4net.Core;
 using log4net.Repository;
-using ILogger = Microsoft.Build.Framework.ILogger;
 
 namespace roundhouse.infrastructure.app
 {
-    using System;
     using System.IO;
     using builders;
     using containers;
@@ -16,7 +14,6 @@ namespace roundhouse.infrastructure.app
     using cryptography;
     using databases;
     using environments;
-    using extensions;
     using filesystem;
     using folders;
     using infrastructure.logging;

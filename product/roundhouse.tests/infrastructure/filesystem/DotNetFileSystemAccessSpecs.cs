@@ -1,30 +1,31 @@
 using System.IO;
+using FluentAssertions;
+using Xunit;
 
 namespace roundhouse.tests.infrastructure.filesystem
 {
     using roundhouse.infrastructure.filesystem;
-    using bdddoc.core;
-    using developwithpassion.bdd.contexts;
-    using developwithpassion.bdd.mbunit;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
 
     public class DotNetFileSystemAccessSpecs
     {
-        public abstract class concern_for_file_system : observations_for_a_sut_with_a_contract<FileSystemAccess, DotNetFileSystemAccess>
+        public abstract class concern_for_file_system 
         {
-            protected static object result;
+            protected object result;
 
-            context c = () => { };
+            protected FileSystemAccess sut;
+
+            protected concern_for_file_system()
+            {
+                sut = new DotNetFileSystemAccess();
+            }
         }
 
-        [Concern(typeof(DotNetFileSystemAccess))]
         public class when_reading_files_with_different_formats : concern_for_file_system
         {
-            protected static string utf8_file;
-            protected static string ansi_file;
+            protected string utf8_file;
+            protected string ansi_file;
 
-            because b = () =>
+            public when_reading_files_with_different_formats()
             {
                 if (File.Exists(@".\infrastructure\filesystem\utf8encoded.txt"))
                 {
@@ -43,19 +44,18 @@ namespace roundhouse.tests.infrastructure.filesystem
                 {
                     ansi_file = sut.read_file_text(@".\build_output\RoundhousE\infrastructure\filesystem\ansiencoded.txt");
                 }
-
-            };
-
-            [Observation]
-            public void utf8_encoded_file_should_read_correctly()
-            {
-                utf8_file.should_be_equal_to("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')");
             }
 
-            [Observation]
+            [Fact]
+            public void utf8_encoded_file_should_read_correctly()
+            {
+                utf8_file.Should().Be("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')");
+            }
+
+            [Fact]
             public void ansi_encoded_file_should_read_correctly()
             {
-                ansi_file.should_be_equal_to("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')");
+                ansi_file.Should().Be("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')");
             }
         }
     }

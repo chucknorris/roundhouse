@@ -17,7 +17,6 @@ namespace roundhouse.infrastructure.extensions
         public static string to_upper(this string input)
         {
             if (string.IsNullOrEmpty(input)) return string.Empty;
-
             return input.ToUpper();
         }
     }

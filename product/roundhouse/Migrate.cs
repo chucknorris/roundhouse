@@ -1,11 +1,8 @@
-using System.Threading;
-
 namespace roundhouse
 {
     using System;
     using folders;
     using infrastructure.app;
-    using infrastructure.app.logging;
     using infrastructure.containers;
     using infrastructure.filesystem;
     using infrastructure.logging;

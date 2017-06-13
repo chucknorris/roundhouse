@@ -3,7 +3,6 @@ namespace roundhouse.databases
     using System;
     using infrastructure.app;
     using infrastructure.logging;
-    using infrastructure.persistence;
 
     public class MockDatabase : Database
     {

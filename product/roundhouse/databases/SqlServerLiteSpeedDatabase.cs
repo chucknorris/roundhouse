@@ -1,8 +1,6 @@
 namespace roundhouse.databases
 {
-    using System;
     using infrastructure.app;
-    using infrastructure.persistence;
 
     public sealed class SqlServerLiteSpeedDatabase : Database
     {

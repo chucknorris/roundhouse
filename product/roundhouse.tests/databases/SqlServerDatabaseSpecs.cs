@@ -1,156 +1,152 @@
+using FluentAssertions;
 using roundhouse.infrastructure.logging.custom;
+using Xunit;
 
 namespace roundhouse.tests.databases
 {
-    using bdddoc.core;
     using consoles;
-    using developwithpassion.bdd.contexts;
-    using developwithpassion.bdd.mbunit;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
-    using log4net;
     using roundhouse.databases;
     using roundhouse.databases.sqlserver;
     using roundhouse.infrastructure.app;
 
     public class SqlServerDatabaseSpecs
     {
-        public abstract class concern_for_SqlServerDatabase : observations_for_a_sut_with_a_contract<Database, SqlServerDatabase>
+        public abstract class concern_for_SqlServerDatabase 
         {
-            protected static ConfigurationPropertyHolder configuration_property_holder;
+            protected ConfigurationPropertyHolder configuration_property_holder;
+            protected Database sut;
 
-            private context c = () =>
+            protected concern_for_SqlServerDatabase()
             {
+                sut = new SqlServerDatabase();
                 configuration_property_holder = new DefaultConfiguration
                 {
-                    Logger = new Log4NetLogFactory().create_logger_bound_to(typeof (SqlServerDatabaseSpecs))
+                    Logger = new Log4NetLogFactory().create_logger_bound_to(typeof(SqlServerDatabaseSpecs))
                 };
-            };
+                sut.initialize_connections(configuration_property_holder);
+            }
         }
 
-        [Concern(typeof (SqlServerDatabase))]
         public class when_initializing_a_connection_to_a_sql_server_without_a_connection_string_provided : concern_for_SqlServerDatabase
         {
-            private because b = () =>
-                                    {
-                                        sut.connection_string = "";
-                                        sut.database_name = "bob";
-                                        sut.server_name = "(local)";
-                                        sut.initialize_connections(configuration_property_holder);
-                                    };
 
-            [Observation]
+            public when_initializing_a_connection_to_a_sql_server_without_a_connection_string_provided()
+            {
+                sut.connection_string = "";
+                sut.database_name = "bob";
+                sut.server_name = "(local)";
+                sut.initialize_connections(configuration_property_holder);
+            }
+
+            [Fact]
             public void should_have_the_original_database_as_the_database_to_connect_to()
             {
                 sut.connection_string.should_contain("bob");
             }
 
-            [Observation]
+            [Fact]
             public void should_have_master_as_the_admin_database_to_connect_to()
             {
                 sut.admin_connection_string.should_contain("master");
             }
 
-            [Observation]
+            [Fact]
             public void should_have_local_as_the_server_to_connect_to()
             {
                 sut.connection_string.should_contain("(local)");
             }
 
-            [Observation]
+            [Fact]
             public void should_use_integrated_security_when_a_connection_string_is_not_provided()
             {
                 sut.connection_string.should_contain("Integrated Security=SSPI");
             }
         }
 
-        [Concern(typeof (SqlServerDatabase))]
         public class when_initializing_a_connection_to_a_sql_server_with_a_connection_string_provided : concern_for_SqlServerDatabase
         {
-            private because b = () =>
-                                    {
-                                        sut.connection_string = "Server=(local);initial catalog=bob;uid=dude;pwd=123";
-                                        sut.database_name = "bob";
-                                        sut.server_name = "(local)";
-                                        sut.initialize_connections(configuration_property_holder);
-                                    };
+            public when_initializing_a_connection_to_a_sql_server_with_a_connection_string_provided()
+            {
+                sut.connection_string = "Server=(local);initial catalog=bob;uid=dude;pwd=123";
+                sut.database_name = "bob";
+                sut.server_name = "(local)";
+                sut.initialize_connections(configuration_property_holder);
+            }
 
-            [Observation]
+            [Fact]
             public void should_have_the_original_database_as_the_database_to_connect_to()
             {
                 sut.connection_string.should_contain("bob");
             }
-            
-            [Observation]
+
+            [Fact]
             public void should_have_master_as_the_admin_database_to_connect_to()
             {
                 sut.admin_connection_string.should_contain("master");
             }
 
-            [Observation]
+            [Fact]
             public void should_have_local_as_the_server_to_connect_to()
             {
                 sut.connection_string.should_contain("(local)");
             }
 
-            [Observation]
+            [Fact]
             public void should_use_connection_string_user_name_password_items_when_provided_in_connection_string()
             {
-                sut.connection_string.should_contain("uid=dude");
+                Assert.Contains("uid=dude", sut.connection_string);
             }
         }
 
 
-        [Concern(typeof (SqlServerDatabase))]
         public class when_initializing_a_connection_to_a_sql_server_with_a_database_cased_differently_than_in_the_connection_string :
             concern_for_SqlServerDatabase
         {
-            private because b = () =>
-                                    {
-                                        sut.connection_string = "Server=(local);initial catalog=[boB ad];uid=dude;pwd=123";
-                                        sut.database_name = "Bob";
-                                        sut.server_name = "(local)";
-                                        sut.initialize_connections(configuration_property_holder);
-                                    };
+            public when_initializing_a_connection_to_a_sql_server_with_a_database_cased_differently_than_in_the_connection_string()
+            {
+                sut.connection_string = "Server=(local);initial catalog=[boB ad];uid=dude;pwd=123";
+                sut.database_name = "Bob";
+                sut.server_name = "(local)";
+                sut.initialize_connections(configuration_property_holder);
+            }
 
-            [Observation]
+            [Fact]
             public void should_have_the_original_database_as_the_database_to_connect_to()
             {
-                sut.connection_string.should_contain("boB ad");
+                Assert.Contains("boB ad", sut.connection_string);
             }
 
-            [Observation]
+            [Fact]
             public void should_have_master_as_the_admin_database_to_connect_to()
             {
-                sut.admin_connection_string.should_contain("master");
+                Assert.Contains("master", sut.admin_connection_string);
             }
 
-            [Observation]
+            [Fact]
             public void should_have_local_as_the_server_to_connect_to()
             {
-                sut.connection_string.should_contain("(local)");
+                Assert.Contains("(local)", sut.connection_string);
             }
         }
 
-        [Concern(typeof (SqlServerDatabase))]
         public class when_initializing_a_connection_to_a_sql_azure_database :
             concern_for_SqlServerDatabase
         {
-            private because b = () =>
+            public when_initializing_a_connection_to_a_sql_azure_database()
             {
                 sut.connection_string =
                     "Server=randomsymbols.database.windows.net;Database=bob;User ID=admin@randomsymbols;Password=password;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
                 sut.initialize_connections(configuration_property_holder);
-            };
-
-            [Observation]
-            public void should_have_the_original_server_and_databse_to_connect_to()
-            {
-                sut.server_name.should_be_equal_to("randomsymbols.database.windows.net");
-                sut.database_name.should_be_equal_to("bob");
             }
 
-            [Observation]
+            [Fact]
+            public void should_have_the_original_server_and_databse_to_connect_to()
+            {
+                sut.server_name.Should().Be("randomsymbols.database.windows.net");
+                sut.database_name.Should().Be("bob");
+            }
+
+            [Fact]
             public void should_have_master_as_the_admin_database_to_connect_to()
             {
                 sut.admin_connection_string.should_contain("master");

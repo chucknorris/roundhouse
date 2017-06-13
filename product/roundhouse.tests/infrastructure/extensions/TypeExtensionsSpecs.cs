@@ -1,35 +1,30 @@
+using FluentAssertions;
+using Xunit;
+
 namespace roundhouse.tests.infrastructure.extensions
 {
     using System.Data;
-    using System.Linq;
     using System.Reflection;
-    using bdddoc.core;
-    using developwithpassion.bdd.contexts;
-    using developwithpassion.bdd.mbunit;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
     using roundhouse.infrastructure.extensions;
 
-    public abstract class concern_for_type_extensions : observations_for_a_static_sut
+    public abstract class concern_for_type_extensions 
     {
     }
 
-    [Concern(typeof(TypeExtensions))]
-    public class when_a_type_is_told_to_find_its_greediest_constructor : observations_for_a_static_sut
+    public class when_a_type_is_told_to_find_its_greediest_constructor
     {
-        static ConstructorInfo result;
+        ConstructorInfo result;
+
+        public when_a_type_is_told_to_find_its_greediest_constructor()
+        {
+            result = typeof(SomethingWithConstructors).greediest_constructor();
+        }
 
 
-        because b = () =>
-                        {
-                            result = typeof(SomethingWithConstructors).greediest_constructor();
-                        };
-
-
-        [Observation]
+        [Fact]
         public void should_return_the_constructor_that_takes_the_most_arguments()
         {
-            result.GetParameters().Count().should_be_equal_to(2);
+            result.GetParameters().Length.Should().Be(2);
         }
     }
 
