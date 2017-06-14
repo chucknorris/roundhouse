@@ -1,6 +1,7 @@
 namespace roundhouse.runners
 {
     using System;
+    using System.IO;
     using databases;
     using folders;
     using infrastructure;
@@ -302,6 +303,20 @@ namespace roundhouse.runners
                                                                           System.Environment.NewLine, ex.to_string());
                     }
                 }
+                else if (configuration.DryRun)
+                {
+                    try
+                    {
+                        append_to_change_drop_dry_run_file(sql_file, migration_folder);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.bound_to(this)
+                            .log_a_warning_event_containing("Unable to append {0} to {1}. {2}{3}", sql_file,
+                                migration_folder.folder_full_path,
+                                System.Environment.NewLine, ex.to_string());
+                    }
+                }
             }
 
             if (configuration.SearchAllSubdirectoriesInsteadOfTraverse) return;
@@ -336,6 +351,24 @@ namespace roundhouse.runners
                 Log.bound_to(this).log_a_debug_event_containing("Copying file {0} to {1}.", file_system.get_file_name_from(sql_file_ran), destination_file);
                 file_system.file_copy_unsafe(sql_file_ran, destination_file, true);
             }
+        }
+        
+        private void append_to_change_drop_dry_run_file(string sql_file, Folder migration_folder)
+        {
+            if (configuration.DisableOutput) return;
+
+            var destination_file = file_system.combine_paths(known_folders.change_drop.folder_full_path, "dryRunItems.sql");
+            var rel_file_name = sql_file.Replace(migration_folder.folder_path + "\\", string.Empty);
+
+            Log.bound_to(this).log_a_debug_event_containing("Appending file {0} to {1}.", file_system.get_file_name_from(sql_file), destination_file);
+            
+            var nl = System.Environment.NewLine;
+            Func<string, string> format_comment = s => string.Format("/*{0}*/{1}", s, nl);
+            var separator = format_comment(new string('-', 100));
+            var file_name_comment = format_comment(string.Format("\t{0}\t", rel_file_name));
+
+            File.AppendAllText(destination_file,
+                string.Format("{0}{1}{2}{3}", separator, file_name_comment, File.ReadAllText(sql_file), nl));
         }
     }
 }
