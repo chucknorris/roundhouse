@@ -1,17 +1,13 @@
 namespace roundhouse.tests.infrastructure.logging.custom
 {
-    using bdddoc.core;
-    using developwithpassion.bdd.contexts;
-    using developwithpassion.bdd.mbunit;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
     using roundhouse.infrastructure.logging;
     using roundhouse.infrastructure.logging.custom;
 
     public class Log4NetLogFactorySpecs
     {
-        public abstract class concern_for_Log4NetLogFactory : observations_for_a_sut_with_a_contract<LogFactory, Log4NetLogFactory>
+        public abstract class concern_for_Log4NetLogFactory : TinySpec<Log4NetLogFactory>
         {
+            protected override Log4NetLogFactory sut => new Log4NetLogFactory();
         }
 
         [Concern(typeof(Log4NetLogFactory))]
@@ -19,9 +15,9 @@ namespace roundhouse.tests.infrastructure.logging.custom
         {
             protected static object result;
 
-            context c = () => { };
+            public override void Context() {}
 
-            because b = () => result = sut.create_logger_bound_to(typeof(when_creating_a_log4netfactory));
+            public override void Because() => result = sut.create_logger_bound_to(typeof(when_creating_a_log4netfactory));
 
             [Observation]
             public void should_create_an_object_of_type_Logger()

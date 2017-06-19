@@ -1,21 +1,18 @@
 using System.IO;
+using NUnit.Framework;
 
 namespace roundhouse.tests.infrastructure.filesystem
 {
     using roundhouse.infrastructure.filesystem;
-    using bdddoc.core;
-    using developwithpassion.bdd.contexts;
-    using developwithpassion.bdd.mbunit;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
 
     public class DotNetFileSystemAccessSpecs
     {
-        public abstract class concern_for_file_system : observations_for_a_sut_with_a_contract<FileSystemAccess, DotNetFileSystemAccess>
+        public abstract class concern_for_file_system : TinySpec<DotNetFileSystemAccess>
         {
-            protected static object result;
+            protected object result;
 
-            context c = () => { };
+            public override void Context() { }
+            protected override DotNetFileSystemAccess sut => new DotNetFileSystemAccess();
         }
 
         [Concern(typeof(DotNetFileSystemAccess))]
@@ -24,27 +21,11 @@ namespace roundhouse.tests.infrastructure.filesystem
             protected static string utf8_file;
             protected static string ansi_file;
 
-            because b = () =>
+            public override void Because()
             {
-                if (File.Exists(@".\infrastructure\filesystem\utf8encoded.txt"))
-                {
-                    utf8_file = sut.read_file_text(@".\infrastructure\filesystem\utf8encoded.txt");
-                }
-                else
-                {
-                    utf8_file = sut.read_file_text(@".\\build_output\RoundhousE\infrastructure\filesystem\utf8encoded.txt");
-                }
-
-                if (File.Exists(@".\infrastructure\filesystem\ansiencoded.txt"))
-                {
-                    ansi_file = sut.read_file_text(@".\infrastructure\filesystem\ansiencoded.txt");
-                }
-                else
-                {
-                    ansi_file = sut.read_file_text(@".\build_output\RoundhousE\infrastructure\filesystem\ansiencoded.txt");
-                }
-
-            };
+                utf8_file = sut.read_file_text(Path.Combine(TestContext.CurrentContext.TestDirectory, @"infrastructure\filesystem\utf8encoded.txt"));
+                ansi_file = sut.read_file_text(Path.Combine(TestContext.CurrentContext.TestDirectory, @"infrastructure\filesystem\ansiencoded.txt"));
+            }
 
             [Observation]
             public void utf8_encoded_file_should_read_correctly()

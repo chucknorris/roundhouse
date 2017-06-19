@@ -1,9 +1,3 @@
-using bdddoc.core;
-using developwithpassion.bdd.contexts;
-using developwithpassion.bdd.mbunit;
-using developwithpassion.bdd.mbunit.standard;
-using developwithpassion.bdd.mbunit.standard.observations;
-
 namespace roundhouse.tests.infrastructure.app.tokens
 {
     using System;
@@ -13,23 +7,23 @@ namespace roundhouse.tests.infrastructure.app.tokens
 
     public class TokenReplacerSpecs
     {
-        public abstract class concern_for_TokenReplacer : observations_for_a_static_sut
+        public abstract class concern_for_TokenReplacer : TinySpec
         {
             protected static object result;
             protected static ConfigurationPropertyHolder configuration;
             protected static string database_name = "BOB";
 
-            context c = () =>
+            public override void Context()
             {
                 configuration = new DefaultConfiguration { DatabaseName = database_name };
-            };
+            }
         }
 
         [Concern(typeof(TokenReplacer))]
         public class when_replacing_tokens_in_sql_files_using_the_configuration : concern_for_TokenReplacer
         {
+            public override void Because() {}
 
-            because b = () => { };
 
             [Observation]
             public void if_given_bracket_bracket_DatabaseName_bracket_bracket_should_replace_with_the_DatabaseName_from_the_configuration()

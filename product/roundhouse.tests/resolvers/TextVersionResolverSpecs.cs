@@ -1,34 +1,30 @@
 namespace roundhouse.tests.resolvers
 {
     using System;
-    using bdddoc.core;
-    using developwithpassion.bdd.contexts;
-    using developwithpassion.bdd.mbunit;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
     using roundhouse.infrastructure.filesystem;
     using roundhouse.resolvers;
-    using Rhino.Mocks;
+    using Moq;
 
     public class TextVersionResolverSpecs
     {
-        public abstract class concern_for_textversion_resolver : observations_for_a_sut_with_a_contract<VersionResolver, TextVersionResolver>
+        public abstract class concern_for_textversion_resolver : TinySpec<TextVersionResolver>
         {
-            [CLSCompliant(false)]
-            protected static VersionResolver the_resolver;
+            protected Mock<FileSystemAccess> filesystem_mock;
+            protected FileSystemAccess the_filesystem;
+            protected string the_versionfile;
+            protected override TextVersionResolver sut => new TextVersionResolver(the_filesystem, the_versionfile);
+
+            public concern_for_textversion_resolver()
+            {
+                filesystem_mock = new Mock<FileSystemAccess>();
+                the_filesystem = filesystem_mock.Object;
+                the_versionfile = string.Format(@"{0}.txt", Guid.NewGuid());
+            }
         }
 
         public abstract class concerns_using_a_fake_filesystem : concern_for_textversion_resolver
         {
-            protected static FileSystemAccess the_filesystem;
-            protected static string the_versionfile;
-            private context c = () =>
-            {
-                the_filesystem = an<FileSystemAccess>();
-                the_versionfile = string.Format(@"{0}.txt", Guid.NewGuid());
-                provide_a_basic_sut_constructor_argument(the_filesystem);
-                provide_a_basic_sut_constructor_argument(the_versionfile);
-            };
+
         }
 
         [Concern(typeof(TextVersionResolver))]
@@ -37,15 +33,15 @@ namespace roundhouse.tests.resolvers
             private const string untrimmed = " 1.3.837.1342 \r\n";
             private const string trimmed = "1.3.837.1342";
             private static string result;
-            private context c =
-                () =>
-                {
-                    the_filesystem.Stub(x => x.file_exists(the_versionfile)).Return(true);
-                    the_filesystem.Stub(x => x.read_file_text(the_versionfile)).Return(untrimmed);
-                    the_filesystem.Stub(x => x.get_full_path(the_versionfile)).Return(the_versionfile);
-                };
 
-            private because b = () => { result = sut.resolve_version(); };
+            public override void Context()
+            {
+                filesystem_mock.Setup(x => x.file_exists(the_versionfile)).Returns(true);
+                filesystem_mock.Setup(x => x.read_file_text(the_versionfile)).Returns(untrimmed);
+                filesystem_mock.Setup(x => x.get_full_path(the_versionfile)).Returns(the_versionfile);
+            }
+
+            public override void Because() => result = sut.resolve_version();
 
             [Observation]
             public void untrimmed_version_from_file_is_trimmed_when_resolved()
@@ -54,4 +50,4 @@ namespace roundhouse.tests.resolvers
             }
         }
     }
-} 
+}

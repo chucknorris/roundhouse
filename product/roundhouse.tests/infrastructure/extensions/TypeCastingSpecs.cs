@@ -1,15 +1,13 @@
+using Should;
+
 namespace roundhouse.tests.infrastructure.extensions
 {
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
-    using bdddoc.core;
-    using developwithpassion.bdd.mbunit;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
     using roundhouse.infrastructure.extensions;
 
-    public abstract class concern_for_type_casting : observations_for_a_static_sut
+    public abstract class concern_for_type_casting 
     {
     }
 
@@ -30,13 +28,13 @@ namespace roundhouse.tests.infrastructure.extensions
         [Observation]
         public void Should_be_true_if_the_object_is_not_an_instance_of_the_specified_type()
         {
-            new SqlConnection().is_not_a<IDbCommand>().should_be_true();
+            new SqlConnection().is_not_a<IDbCommand>().ShouldBeTrue();
         }
 
         [Observation]
         public void Should_be_false_if_the_object_is_an_instance_of_the_specified_type()
         {
-            new SqlConnection().is_not_a<IDbConnection>().should_be_false();
+            new SqlConnection().is_not_a<IDbConnection>().ShouldBeFalse();
         }
     }
 }
