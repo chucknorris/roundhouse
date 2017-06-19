@@ -32,9 +32,9 @@ namespace roundhouse.tests.integration.infrastructure.persistence
 
             public override void Context(){}
 
-            protected override NHibernateSessionFactoryBuilder sut { get; }
+            protected override NHibernateSessionFactoryBuilder sut { get; set; }
 
-            public override void Because() => result = sut.build_session_factory(get_schema_export);
+            public override void Because() { result = sut.build_session_factory(get_schema_export); }
 
             private static void get_schema_export(Configuration cfg)
             {

@@ -8,7 +8,7 @@ namespace roundhouse.tests.infrastructure.extensions
         string result;
 
         public override void Context() {}
-        public override void Because() => result = "this is the {0}".format_using(1);
+        public override void Because() { result = "this is the {0}".format_using(1); }
 
         [Observation]
         public void should_return_the_string_formatted_with_the_arguments()
@@ -24,7 +24,7 @@ namespace roundhouse.tests.infrastructure.extensions
         private static string test = "BILL1";
 
         public override void Context() {}
-        public override void Because() => result = test.to_lower();
+        public override void Because() { result = test.to_lower(); }
 
         [Observation]
         public void should_not_error_out()
@@ -40,7 +40,7 @@ namespace roundhouse.tests.infrastructure.extensions
         private static string test = string.Empty;
 
         public override void Context() {}
-        public override void Because() => result = test.to_lower();
+        public override void Because() { result = test.to_lower(); }
 
         [Observation]
         public void should_not_error_out()
@@ -56,7 +56,7 @@ namespace roundhouse.tests.infrastructure.extensions
         private static string test = null;
 
         public override void Context() {}
-        public override void Because() => result = test.to_lower();
+        public override void Because() { result = test.to_lower(); }
 
         [Observation]
         public void should_not_error_out()
@@ -73,7 +73,7 @@ namespace roundhouse.tests.infrastructure.extensions
 
 
         public override void Context() {}
-        public override void Because() => result = test.to_upper();
+        public override void Because() { result = test.to_upper(); }
 
         [Observation]
         public void should_not_error_out()
@@ -89,7 +89,7 @@ namespace roundhouse.tests.infrastructure.extensions
         static string result;
 
         public override void Context() {}
-        public override void Because() => result = string.Empty.to_upper();
+        public override void Because() { result = string.Empty.to_upper(); }
 
         [Observation]
         public void should_not_error_out()
@@ -105,7 +105,7 @@ namespace roundhouse.tests.infrastructure.extensions
         private static string test = null;
 
         public override void Context() {}
-        public override void Because() => result = test.to_upper();
+        public override void Because() { result = test.to_upper(); }
 
         [Observation]
         public void should_not_error_out()

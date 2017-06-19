@@ -25,7 +25,10 @@ namespace roundhouse.tests.infrastructure.containers
                 Container.initialize_with(the_container);
             }
 
-            public override void AfterEachSpec() => Container.initialize_with(null);
+            public override void AfterEachSpec()
+            {
+                Container.initialize_with(null);
+            }
         }
 
         [Concern(typeof(Container))]
@@ -44,7 +47,10 @@ namespace roundhouse.tests.infrastructure.containers
         [Concern(typeof(Container))]
         public class when_asking_the_container_to_resolve_an_item_and_it_has_the_item_registered : concern_for_container
         {
-            public override void Context() => container_mock.Setup(x => x.Resolve<LogFactory>()).Returns(new Log4NetLogFactory());
+            public override void Context()
+            {
+                container_mock.Setup(x => x.Resolve<LogFactory>()).Returns(new Log4NetLogFactory());
+            }
 
             public override void Because() { result = Container.get_an_instance_of<LogFactory>(); }
 
@@ -66,8 +72,11 @@ namespace roundhouse.tests.infrastructure.containers
         {
             static Action attempting_to_get_an_unregistered_item;
 
-            public override void Context() => container_mock.Setup(x => x.Resolve<LogFactory>()).Throws(
-                                  new Exception(string.Format("Had an error finding components registered for {0}.", typeof(LogFactory))));
+            public override void Context()
+            {
+                container_mock.Setup(x => x.Resolve<LogFactory>()).Throws(
+      new Exception(string.Format("Had an error finding components registered for {0}.", typeof(LogFactory))));
+            }
 
             public override void Because() { attempting_to_get_an_unregistered_item = () => the_container.Resolve<LogFactory>(); }
 

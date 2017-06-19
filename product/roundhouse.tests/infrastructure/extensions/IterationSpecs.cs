@@ -8,7 +8,7 @@ namespace roundhouse.tests.infrastructure.extensions
     {
     }
 
-    [ConcernFor(nameof(Iteration))]
+    [Concern(typeof(Iteration))]
     public class when_iterating_through_a_range_of_numbers : concern_for_iteration_extensions
     {
         [Observation]

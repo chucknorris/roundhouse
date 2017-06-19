@@ -25,7 +25,10 @@ namespace roundhouse.tests.infrastructure.logging
                 Container.initialize_with(the_container);
             }
 
-            public override void AfterEachSpec() => Container.initialize_with(null);
+            public override void AfterEachSpec()
+            {
+                Container.initialize_with(null);
+            }
         }
 
         [Concern(typeof(Log))]
@@ -51,7 +54,10 @@ namespace roundhouse.tests.infrastructure.logging
                 //    .Return(mock_logger);
             }
 
-            public override void Because() =>  result = Log.bound_to(typeof(StructureMapContainer)); 
+            public override void Because()
+            {
+                result = Log.bound_to(typeof(StructureMapContainer));
+            }
 
             [Observation]
             public void should_have_called_the_container_to_resolve_a_registered_logger()

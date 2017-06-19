@@ -1,5 +1,4 @@
 using log4net;
-using log4net.Core;
 using Moq;
 
 namespace roundhouse.tests.infrastructure.logging.custom
@@ -13,7 +12,11 @@ namespace roundhouse.tests.infrastructure.logging.custom
         {
             protected log4net.ILog log4net_logger;
             protected Mock<ILog> mock_logger = new Mock<log4net.ILog>();
-            protected override Log4NetLogger sut => new Log4NetLogger(log4net_logger);
+            protected override Log4NetLogger sut
+            {
+                get { return new Log4NetLogger(log4net_logger); }
+                set { throw new System.NotImplementedException(); }
+            }
 
             public override void Context()
             {
@@ -47,7 +50,10 @@ namespace roundhouse.tests.infrastructure.logging.custom
                 log4net_logger = mock_logger.Object;
             }
 
-            public override void Because() => sut.log_a_debug_event_containing("dude");
+            public override void Because()
+            {
+                sut.log_a_debug_event_containing("dude");
+            }
 
             [Observation]
             public void should_have_called_debug_format_on_the_internal_logger()
@@ -66,7 +72,10 @@ namespace roundhouse.tests.infrastructure.logging.custom
                 log4net_logger = mock_logger.Object;
             }
 
-            public override void Because() => sut.log_an_info_event_containing("dude");
+            public override void Because()
+            {
+                sut.log_an_info_event_containing("dude");
+            }
 
             [Observation]
             public void should_have_called_info_format_on_the_internal_logger()
@@ -85,7 +94,10 @@ namespace roundhouse.tests.infrastructure.logging.custom
                                         log4net_logger = mock_logger.Object;
                                     }
 
-            public override void Because() => sut.log_a_warning_event_containing("dude");
+            public override void Because()
+            {
+                sut.log_a_warning_event_containing("dude");
+            }
 
             [Observation]
             public void should_have_called_warn_format_on_the_internal_logger()
@@ -103,7 +115,10 @@ namespace roundhouse.tests.infrastructure.logging.custom
                                         log4net_logger = mock_logger.Object;
                                     }
 
-            public override void Because() => sut.log_an_error_event_containing("dude");
+            public override void Because()
+            {
+                sut.log_an_error_event_containing("dude");
+            }
 
             [Observation]
             public void should_have_called_error_format_on_the_internal_logger()
@@ -122,7 +137,10 @@ namespace roundhouse.tests.infrastructure.logging.custom
                                         log4net_logger = mock_logger.Object;
                                     }
 
-            public override void Because() => sut.log_a_fatal_event_containing("dude");
+            public override void Because()
+            {
+                sut.log_a_fatal_event_containing("dude");
+            }
 
             [Observation]
             public void should_have_called_fatal_format_on_the_internal_logger()

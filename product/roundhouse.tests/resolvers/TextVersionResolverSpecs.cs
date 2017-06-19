@@ -12,7 +12,11 @@ namespace roundhouse.tests.resolvers
             protected Mock<FileSystemAccess> filesystem_mock;
             protected FileSystemAccess the_filesystem;
             protected string the_versionfile;
-            protected override TextVersionResolver sut => new TextVersionResolver(the_filesystem, the_versionfile);
+            protected override TextVersionResolver sut
+            {
+                get { return new TextVersionResolver(the_filesystem, the_versionfile); }
+                set { throw new NotImplementedException(); }
+            }
 
             public concern_for_textversion_resolver()
             {
@@ -41,7 +45,10 @@ namespace roundhouse.tests.resolvers
                 filesystem_mock.Setup(x => x.get_full_path(the_versionfile)).Returns(the_versionfile);
             }
 
-            public override void Because() => result = sut.resolve_version();
+            public override void Because()
+            {
+                result = sut.resolve_version();
+            }
 
             [Observation]
             public void untrimmed_version_from_file_is_trimmed_when_resolved()

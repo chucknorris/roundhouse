@@ -10,9 +10,14 @@ namespace roundhouse.tests.infrastructure.filesystem
         public abstract class concern_for_file_system : TinySpec<DotNetFileSystemAccess>
         {
             protected object result;
+            private DotNetFileSystemAccess dot_net_file_system_access = new DotNetFileSystemAccess();
 
             public override void Context() { }
-            protected override DotNetFileSystemAccess sut => new DotNetFileSystemAccess();
+            protected override DotNetFileSystemAccess sut
+            {
+                get { return dot_net_file_system_access; }
+                set { dot_net_file_system_access = value; }
+            }
         }
 
         [Concern(typeof(DotNetFileSystemAccess))]

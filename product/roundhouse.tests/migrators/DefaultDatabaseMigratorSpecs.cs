@@ -1,36 +1,38 @@
 using roundhouse.databases;
-using roundhouse.databases.sqlserver;
 using Should;
 
 namespace roundhouse.tests.infrastructure.containers
 {
-    using System;
     using consoles;
 
     using environments;
     using migrators;
-    using roundhouse.infrastructure.app;
-    using roundhouse.infrastructure.containers;
-    using roundhouse.infrastructure.logging;
-    using roundhouse.infrastructure.logging.custom;
-    using StructureMap;
-    using Container = roundhouse.infrastructure.containers.Container;
 
     public class DefaultDatabaseMigratorSpecs
     {
         public abstract class concern_for_database_migrator : TinySpec<DefaultDatabaseMigrator>
         {
-            protected static object result;
-            protected static DefaultEnvironment environment;
-            private DefaultConfiguration default_configuration;
+            protected object result;
+            protected DefaultEnvironment environment;
+            private readonly DefaultConfiguration default_configuration;
+            private DefaultDatabaseMigrator default_database_migrator;
+
+            protected concern_for_database_migrator()
+            {
+                default_configuration = new DefaultConfiguration { EnvironmentName = "TEST" };
+                default_database_migrator = new DefaultDatabaseMigrator(new MockDatabase(null), null, default_configuration);
+            }
 
             public override void Context()
             {
-                default_configuration = new DefaultConfiguration { EnvironmentName = "TEST" };
                 environment = new DefaultEnvironment(default_configuration);
             }
 
-            protected override DefaultDatabaseMigrator sut => new DefaultDatabaseMigrator(new MockDatabase(null), null, default_configuration);
+            protected override DefaultDatabaseMigrator sut
+            {
+                get { return default_database_migrator;}
+                set { default_database_migrator = value; }
+            }
         }
 
         [Concern(typeof(DefaultDatabaseMigrator))]

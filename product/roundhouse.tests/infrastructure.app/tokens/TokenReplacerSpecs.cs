@@ -1,6 +1,5 @@
 namespace roundhouse.tests.infrastructure.app.tokens
 {
-    using System;
     using consoles;
     using roundhouse.infrastructure.app;
     using roundhouse.infrastructure.app.tokens;

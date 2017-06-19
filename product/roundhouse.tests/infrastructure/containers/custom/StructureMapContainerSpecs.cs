@@ -18,12 +18,15 @@ namespace roundhouse.tests.infrastructure.containers.custom
             protected Mock<IContainer> container_mock = new Mock<IContainer>();
 
 
-            public override void AfterEachSpec() => Container.initialize_with(null);
+            public override void AfterEachSpec()
+            {
+                Container.initialize_with(null);
+            }
         }
 
         public abstract class concerns_using_a_fake_container : concern_for_structuremap_container
         {
-            protected override StructureMapContainer sut { get; }
+            protected override StructureMapContainer sut { get; set; }
 
             protected concerns_using_a_fake_container()
             {
@@ -34,7 +37,8 @@ namespace roundhouse.tests.infrastructure.containers.custom
 
         public abstract class concerns_using_a_real_container : concern_for_structuremap_container
         {
-            protected override StructureMapContainer sut { get; }
+            protected override StructureMapContainer sut { get; set; }
+
             public concerns_using_a_real_container()
             {
                 the_container = ObjectFactory.Container;

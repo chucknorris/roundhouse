@@ -13,8 +13,12 @@ namespace roundhouse.tests.databases
         public abstract class concern_for_SqlServerDatabase : TinySpec<SqlServerDatabase>
         {
             protected static ConfigurationPropertyHolder configuration_property_holder;
+            protected override SqlServerDatabase sut { get; set; }
 
-            protected override SqlServerDatabase sut { get; } = new SqlServerDatabase();
+            protected concern_for_SqlServerDatabase()
+            {
+                sut = new SqlServerDatabase();
+            }
 
             public override void Context() 
             {
