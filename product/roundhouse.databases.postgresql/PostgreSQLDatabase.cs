@@ -7,7 +7,6 @@ namespace roundhouse.databases.postgresql
     using infrastructure.app;
     using infrastructure.extensions;
     using infrastructure.logging;
-    using Npgsql;
 
     public class PostgreSQLDatabase : AdoNetDatabase
     {

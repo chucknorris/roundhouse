@@ -7,7 +7,6 @@ namespace roundhouse.runners
     using infrastructure.app;
     using infrastructure.extensions;
     using infrastructure.filesystem;
-    using Environment = environments.Environment;
 
     public class RoundhouseRedGateCompareRunner : IRunner
     {

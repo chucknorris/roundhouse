@@ -2,7 +2,6 @@ using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.access
 {
-    using System;
     using System.Data.OleDb;
     using connections;
     using infrastructure.app;

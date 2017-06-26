@@ -1,5 +1,3 @@
-using System;
-
 namespace roundhouse.infrastructure.logging.custom
 {
     using log4net;

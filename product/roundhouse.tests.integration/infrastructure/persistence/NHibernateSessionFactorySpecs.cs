@@ -1,12 +1,10 @@
+using Xunit;
+
 namespace roundhouse.tests.integration.infrastructure.persistence
 {
     using System.IO;
     using System.Text;
-    using bdddoc.core;
     using consoles;
-    using developwithpassion.bdd.contexts;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
     using NHibernate.Cfg;
     using NHibernate.Tool.hbm2ddl;
     using roundhouse.infrastructure.app;
@@ -14,25 +12,28 @@ namespace roundhouse.tests.integration.infrastructure.persistence
 
     public class NHibernateSessionFactorySpecs
     {
-        public abstract class concern_for_NHibernateSessionFactory : observations_for_a_sut_without_a_contract<NHibernateSessionFactoryBuilder>
+        public abstract class concern_for_NHibernateSessionFactory 
         {
             protected static ConfigurationPropertyHolder config;
+            protected NHibernateSessionFactoryBuilder sut;
         }
 
-        [Concern(typeof(NHibernateSessionFactoryBuilder))]
         public class when_nhibernate_session_factory_is_created_for_sql_server : concern_for_NHibernateSessionFactory
         {
             protected static object result;
 
-            context c = () =>
-                            {
-                                config = new DefaultConfiguration();
-                                config.DatabaseType = "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
-                                config.ConnectionString = "Server=(local);initial catalog=TestRoundhousE;Integrated Security=SSPI;";
-                                provide_a_basic_sut_constructor_argument(config);
-                            };
+            public when_nhibernate_session_factory_is_created_for_sql_server()
 
-            because b = () => result = sut.build_session_factory(get_schema_export);
+            {
+                config = new DefaultConfiguration();
+                config.DatabaseType = "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
+                config.ConnectionString = "Server=(local);initial catalog=TestRoundhousE;Integrated Security=SSPI;";
+
+                sut = new NHibernateSessionFactoryBuilder(config);
+
+                result = sut.build_session_factory(get_schema_export);
+            }
+
 
             private static void get_schema_export(Configuration cfg)
             {
@@ -40,7 +41,7 @@ namespace roundhouse.tests.integration.infrastructure.persistence
                 int i = 0;
             }
 
-            [Observation]
+            [Fact]
             public void should_build_the_session_correctly()
             {
                 //
