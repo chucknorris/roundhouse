@@ -20,30 +20,39 @@
   <property name="folder.app.drop" value="${project.name}" overwrite="false" />
   <property name="dirs.build.code" value="${dirs.build}${path.separator}${folder.app.drop}" overwrite="false" />
   <property name="folder.references" value="lib" overwrite="false" />
+  <property name="folder.packages" value="packages" overwrite="false" />
   <property name="dirs.lib" value="${dirs.current.file}${path.separator}${folder.references}" overwrite="false" />
+  <property name="dirs.packages" value="${dirs.current.file}${path.separator}${folder.packages}" overwrite="false" />
   <property name="microsoft.framework" value="net-3.5" overwrite="false" />
   <property name="folder.build_artifacts" value="build_artifacts" overwrite="false" />
   <property name="dirs.build_artifacts" value="${path::get-full-path(dirs.build)}${path.separator}${folder.build_artifacts}" />
   <property name="dirs.test_results" value="${dirs.build_artifacts}${path.separator}nunit" overwrite="false" />
   <property name="file.test_results" value="index" overwrite="false" />
-  <property name="tests.excluded_categories.comma_separated" value="Database,Integration,Slow,NotWorking,Ignore,database,integration,slow,notworking,ignore" overwrite="false" />
-  <property name="nunit.separator" value="--" if="${platform::is-unix()}" />
-  <property name="nunit.separator" value="/" if="${platform::is-windows()}" />
+  <property name="tests.excluded_categories.comma_separated" value="cat != Database and cat != Integration and cat != Slow and cat != NotWorking and cat != Ignore and cat != database and cat!= integration and cat != slow and cat != notworking and cat != ignore" overwrite="false" />
+  <property name="nunit.separator" value="--" />
   <property name="test.args.framework" value="" if="${platform::is-unix()}" />
   <property name="test.args.framework" value="${nunit.separator}framework=${microsoft.framework}" if="${platform::is-windows()}" />
   <!--property name="test.args" value="${nunit.separator}xml=&quot;${dirs.test_results}${path.separator}nunit-results.xml&quot; ${nunit.separator}nologo " /-->
-  <property name="test.args" value="${nunit.separator}xml=&quot;${dirs.test_results}${path.separator}nunit-results.xml&quot; ${nunit.separator}nologo ${test.args.framework}" />
-  <property name="test.args.exclude" value="${nunit.separator}exclude=&quot;${tests.excluded_categories.comma_separated}&quot;" />
-  <property name="app.nunit.console" value="${path::get-full-path(dirs.lib)}${path.separator}NUnit${path.separator}nunit-console.exe" overwrite="false" if="${platform::is-windows()}" />
-  <property name="app.nunit.console" value="${path::get-full-path(dirs.lib)}${path.separator}NUnit${path.separator}nunit-console-x86.exe" overwrite="false" if="${platform::is-windows() and uppercut::is-os64bit() and msbuild.platform=='x86'}" />
-  <property name="app.nunit.console" value="nunit-console" overwrite="false" if="${platform::is-unix()}"/>
+  <property name="test.args" value="${nunit.separator}x86 ${nunit.separator}result=&quot;${dirs.test_results}${path.separator}nunit-results.xml;format=nunit3&quot; ${nunit.separator}noheader ${test.args.framework}" />
+  <property name="test.args.exclude" value="${nunit.separator}where &quot;${tests.excluded_categories.comma_separated}&quot;" />
+
+  <property name="app.nunit.console" value="${path::get-full-path(dirs.packages)}${path.separator}NUnit.ConsoleRunner.3.6.1${path.separator}tools${path.separator}nunit3-console.exe" overwrite="false" if="${platform::is-windows()}" />
+  <property name="app.nunit.console" value="${path::get-full-path(dirs.packages)}${path.separator}NUnit.ConsoleRunner.3.6.1${path.separator}tools${path.separator}nunit3-console.exe" overwrite="false" if="${platform::is-windows() and uppercut::is-os64bit() and msbuild.platform=='x86'}" />
+  <property name="app.nunit.console" value="nunit3-console" overwrite="false" if="${platform::is-unix()}"/>
+
+
+
   <property name="dlls.test" value="" />
   <property name="tests.ran" value="false" />
   
   <property name="is.replaced" value="false" />
   <property name="fail.build.on.error" value="true" />
  
-  <target name="go" depends="run_tasks" if="${file::exists(app.nunit.console)}" />
+  <target name="go" depends="echo, run_tasks" if="${file::exists(app.nunit.console)}" />
+
+  <target name="echo"> 
+    <echo level="Warning" message="nunit: ${app.nunit.console}" />
+  </target>
 
   <target name="run_all_tests" depends="prepare, set_nunit_failure_mode, get_test_dlls_all, run_tests, generate_report" description="Like go but runs all tests" />
   
@@ -83,7 +92,7 @@
           <exclude name="${dirs.build.code}${path.separator}**${path.separator}*Database*dll" />
           <exclude name="${dirs.build.code}${path.separator}**${path.separator}*.Integration*dll" />
           <exclude name="${dirs.build.code}${path.separator}**${path.separator}TestFu.dll" />
-          <include name="${dirs.build.code}${path.separator}**${path.separator}*Test*dll" />
+		 +    <include name="${dirs.build.code}${path.separator}**${path.separator}*.Tests.*dll" />
           <include name="${dirs.build.code}${path.separator}**${path.separator}*Spec*dll" />
         </items>
       </in>
@@ -106,7 +115,7 @@
         <items>
           <exclude name="${dirs.build.code}${path.separator}lib${path.separator}**" />
           <exclude name="${dirs.build.code}${path.separator}**${path.separator}TestFu.dll" />
-          <include name="${dirs.build.code}${path.separator}**${path.separator}*Test*dll" />
+		 +    <include name="${dirs.build.code}${path.separator}**${path.separator}*.Tests.*dll" />
           <include name="${dirs.build.code}${path.separator}**${path.separator}*Spec*dll" />
         </items>
       </in>

@@ -1,66 +1,74 @@
+using Moq;
+using Should;
+
 namespace roundhouse.tests.infrastructure.logging
 {
-    using bdddoc.core;
-    using developwithpassion.bdd;
-    using developwithpassion.bdd.contexts;
-    using developwithpassion.bdd.mbunit;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
-    using Rhino.Mocks;
     using roundhouse.infrastructure.containers;
     using roundhouse.infrastructure.containers.custom;
     using roundhouse.infrastructure.logging;
 
     public class LogSpecs
     {
-        public abstract class concern_for_logging : observations_for_a_static_sut
+        public abstract class concern_for_logging : TinySpec
         {
-            protected static Logger result;
+            protected Mock<InversionContainer> container_mock;
+            protected Logger result;
 
-            protected static InversionContainer the_container;
-            protected static LogFactory mock_log_factory;
-            protected static Logger mock_logger;
+            protected InversionContainer the_container;
+            protected Mock<LogFactory> mock_log_factory;
+            protected Mock<Logger> mock_logger;
 
-            private context c = () =>
-                                    {
-                                        the_container = an<InversionContainer>();
-                                        Container.initialize_with(the_container);
-                                    };
+            public override void Context()
+            {
+                container_mock = new Mock<InversionContainer>();
+                the_container = container_mock.Object;
+                Container.initialize_with(the_container);
+            }
 
-            private after_each_observation after = () => { Container.initialize_with(null); };
+            public override void AfterEachSpec()
+            {
+                Container.initialize_with(null);
+            }
         }
 
-        [Concern(typeof (Log))]
+        [Concern(typeof(Log))]
         public class when_asking_for_a_logger_and_one_has_been_registered : concern_for_logging
         {
-            private context c = () =>
-                                    {
-                                        mock_log_factory = an<LogFactory>();
-                                        mock_logger = an<Logger>();
-                                        the_container.Stub(x => x.Resolve<LogFactory>())
-                                            .Return(mock_log_factory);
-                                        mock_log_factory.Stub(x => x.create_logger_bound_to(typeof (StructureMapContainer)))
-                                            .IgnoreArguments()
-                                            .Return(mock_logger);
-                                        //when(the_container).is_told_to(x => x.Resolve<LogFactory>())
-                                        //    .Return(mock_log_factory);
-                                        //when_the(mock_log_factory).is_told_to(x => x.create_logger_bound_to(typeof(StructureMapContainer)))
-                                        //    .IgnoreArguments()
-                                        //    .Return(mock_logger);
-                                    };
+            public override void Context()
+            {
+                base.Context();
 
-            private because b = () => { result = Log.bound_to(typeof (StructureMapContainer)); };
+                mock_log_factory = new Mock<LogFactory>();
+                mock_logger = new Mock<Logger>();
+
+                mock_log_factory.Setup(x => x.create_logger_bound_to(typeof(StructureMapContainer)))
+                    .Returns(mock_logger.Object);
+
+                container_mock.Setup(x => x.Resolve<LogFactory>())
+                    .Returns(mock_log_factory.Object);
+
+                //when(the_container).is_told_to(x => x.Resolve<LogFactory>())
+                //    .Return(mock_log_factory);
+                //when_the(mock_log_factory).is_told_to(x => x.create_logger_bound_to(typeof(StructureMapContainer)))
+                //    .IgnoreArguments()
+                //    .Return(mock_logger);
+            }
+
+            public override void Because()
+            {
+                result = Log.bound_to(typeof(StructureMapContainer));
+            }
 
             [Observation]
             public void should_have_called_the_container_to_resolve_a_registered_logger()
             {
-                the_container.was_told_to(x_ => x_.Resolve<LogFactory>());
+                container_mock.Verify(x_ => x_.Resolve<LogFactory>());
             }
 
             [Observation]
             public void should_not_be_null()
             {
-                result.should_not_be_null();
+                result.ShouldNotBeNull();
             }
 
             [Observation]
