@@ -316,7 +316,7 @@ namespace roundhouse.runners
             return file_system.read_file_text(file_location);
         }
 
-        private string replace_tokens(string sql_text)
+        public string replace_tokens(string sql_text)
         {
             if (configuration.DisableTokenReplacement)
             {
