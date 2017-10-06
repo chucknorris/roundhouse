@@ -5,6 +5,8 @@ using System.Text;
 
 using NUnit.Framework;
 using roundhouse.cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace roundhouse.tests.cryptography
 {
@@ -36,7 +38,7 @@ namespace roundhouse.tests.cryptography
             [SetUp]
             public void we_set_the_context()
             {
-                md5_crypto = new MD5CryptographicService();
+                md5_crypto = new ManagedMD5CryptographicService();
             }
 
             [Test]
@@ -45,6 +47,40 @@ namespace roundhouse.tests.cryptography
                 string text_to_hash = "I want to see what the freak is going on here";
                 string expected_hash = "TMGPZJmBhSO5uYbf/TBqNA==";
                 Assert.AreEqual(expected_hash, md5_crypto.hash(text_to_hash));
+            }
+        }
+
+
+
+        [TestFixture]
+        public class when_using_an_unofficial_md5_implementation
+        {
+            const int passes = 1000000;
+            const int max_len = 10240;
+
+            private int seed = Environment.TickCount;
+
+            private ThreadLocal<Random> _rng;
+            private ThreadLocal<byte[]> _bytes = new ThreadLocal<byte[]>(() => new byte[max_len]);
+            private ThreadLocal<ManagedMD5CryptographicService.MD5> _unofficial = new ThreadLocal<ManagedMD5CryptographicService.MD5>(() => new ManagedMD5CryptographicService.MD5());
+            private ThreadLocal<MD5> _official = new ThreadLocal<MD5>(() => MD5.Create());
+
+            [SetUp]
+            public void we_set_the_context()
+            {
+                _rng = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref seed)));
+            }
+
+            [Test]
+            public void should_have_parity_with_official_implementation()
+            {
+                Parallel.For(0, passes, i => {
+                    _rng.Value.NextBytes(_bytes.Value);
+                    var len = _rng.Value.Next(1, max_len + 1);
+                    var h1 = _official.Value.ComputeHash(_bytes.Value, 0, len);
+                    var h2 = _unofficial.Value.ComputeHash(_bytes.Value, 0, len);
+                    CollectionAssert.AreEqual(h1, h2);
+                });
             }
         }
     }
