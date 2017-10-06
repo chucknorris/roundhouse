@@ -15,6 +15,9 @@ using roundhouse.init;
 using roundhouse.migrators;
 using roundhouse.resolvers;
 using roundhouse.runners;
+using System.Reflection;
+using log4net.Repository;
+using log4net.Core;
 
 namespace roundhouse.console
 {
@@ -409,12 +412,8 @@ namespace roundhouse.console
             the_logger.Info("Initializing folder for roundhouse");
             Container.get_an_instance_of<Initializer>().Initialize(configuration, ".");
             Environment.Exit(0);
-	}
+        }
         
-        public static void change_log_to_debug_level()
-        {
-            change_log_level(Level.Debug);
-        }        
         private static void change_log_level(Level level)
         {
             ILoggerRepository log_repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
@@ -427,8 +426,7 @@ namespace roundhouse.console
                     logger.Level = level;
                 }
             }
-        }        }
-
+        }
 
         public static void run_migrator(ConfigurationPropertyHolder configuration)
         {
