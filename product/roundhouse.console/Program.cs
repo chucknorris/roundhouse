@@ -40,6 +40,10 @@ namespace roundhouse.console
                 {
                     run_diff_utility(set_up_configuration_and_build_the_container(args));
                 }
+                else if (string.Join("|", args).to_lower().Contains("isuptodate"))
+                {
+                    run_update_check(set_up_configuration_and_build_the_container(args));
+                }
                 else if (args.Any() && args[0] == "init")
                 {
                     var cf = set_up_configuration_and_build_the_container(args, Mode.Init);
@@ -324,6 +328,9 @@ namespace roundhouse.console
                 .Add("searchallinsteadoftraverse|searchallsubdirectoriesinsteadoftraverse",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
+                .Add("isuptodate",
+                     "This option prints whether there are any database updates or not, whithout actually running them. Other output except errors is disabled, to make it easy to use in scripts.",
+                     option => { })
                 ;
 
             try
@@ -370,7 +377,8 @@ namespace roundhouse.console
                         "/disabletokenreplacement " +
                         "/baseline " +
                         "/dryrun " +
-                        "/search[allsubdirectories]insteadoftraverse" +
+                        "/search[allsubdirectories]insteadoftraverse " +
+                        "/isuptodate" +
                         "]", Environment.NewLine);
                 show_help(usage_message, option_set);
             }
@@ -401,7 +409,26 @@ namespace roundhouse.console
             the_logger.Info("Initializing folder for roundhouse");
             Container.get_an_instance_of<Initializer>().Initialize(configuration, ".");
             Environment.Exit(0);
-        }
+	}
+        
+        public static void change_log_to_debug_level()
+        {
+            change_log_level(Level.Debug);
+        }        
+        private static void change_log_level(Level level)
+        {
+            ILoggerRepository log_repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
+            log_repository.Threshold = level;
+            foreach (ILogger log in log_repository.GetCurrentLoggers())
+            {
+                var logger = log as log4net.Repository.Hierarchy.Logger;
+                if (logger != null)
+                {
+                    logger.Level = level;
+                }
+            }
+        }        }
+
 
         public static void run_migrator(ConfigurationPropertyHolder configuration)
         {
@@ -423,6 +450,28 @@ namespace roundhouse.console
             diff_runner.run();
 
             if (!silent)
+            {
+                Console.WriteLine("{0}Please press enter to continue...", Environment.NewLine);
+                Console.Read();
+            }
+        }
+
+        private static void run_update_check(ConfigurationPropertyHolder configuration)
+        {
+            if (!configuration.Silent)
+            {
+                Console.WriteLine("NOTE: Running this command will create the Roundhouse tables, if they don't exist.");
+                Console.WriteLine("Please press enter when ready to kick...");
+                Console.ReadLine();
+            }
+
+            // Info and warn level logging is turned off, in order to make it easy to use the output of this command.
+            change_log_level(Level.Error);
+
+            RoundhouseUpdateCheckRunner update_check_runner = get_update_check_runner(configuration, get_migration_runner(configuration));
+            update_check_runner.run();
+
+            if (!configuration.Silent)
             {
                 Console.WriteLine("{0}Please press enter to continue...", Environment.NewLine);
                 Console.Read();
@@ -452,6 +501,17 @@ namespace roundhouse.console
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
                 configuration, migration_runner);
+        }
+
+        private static RoundhouseUpdateCheckRunner get_update_check_runner(ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner)
+        {
+            return new RoundhouseUpdateCheckRunner(
+                Container.get_an_instance_of<environments.Environment>(),
+                Container.get_an_instance_of<KnownFolders>(),
+                Container.get_an_instance_of<FileSystemAccess>(),
+                Container.get_an_instance_of<DatabaseMigrator>(), 
+                configuration,
+                migration_runner);
         }
     }
 }
