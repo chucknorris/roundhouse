@@ -51,6 +51,7 @@ namespace roundhouse.consoles
         public string DatabaseType { get; set; }
         public bool Drop { get; set; }
         public bool DoNotCreateDatabase { get; set; }
+        public bool DoNotAlterDatabase { get; set; }
         public bool WithTransaction { get; set; }
         public RecoveryMode RecoveryMode { get; set; }
         [Obsolete("Use RecoveryMode = Simple")]
