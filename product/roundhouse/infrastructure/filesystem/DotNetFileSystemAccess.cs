@@ -9,6 +9,7 @@ namespace roundhouse.infrastructure.filesystem
     using System.Runtime.InteropServices;
     using logging;
     using extensions;
+    using roundhouse.infrastructure.app;
 
     /// <summary>
     /// All file system access code comes through here
@@ -16,6 +17,14 @@ namespace roundhouse.infrastructure.filesystem
     public sealed class DotNetFileSystemAccess : FileSystemAccess
     {
         private static readonly bool is_running_on_mono = Type.GetType("Mono.Runtime") != null;
+
+        public DotNetFileSystemAccess(ConfigurationPropertyHolder configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        private ConfigurationPropertyHolder configuration;
+
 
         #region File
 
@@ -65,8 +74,12 @@ namespace roundhouse.infrastructure.filesystem
         /// <param name="file_path">Path to the file name</param>
         /// <returns>A best guess at the encoding of the file</returns>
         /// <remarks>http://www.west-wind.com/WebLog/posts/197245.aspx</remarks>
-        public static Encoding get_file_encoding(string file_path)
+        public Encoding get_file_encoding(string file_path)
         {
+            if(configuration.FileEncoding != null)
+            {
+                return configuration.FileEncoding;
+            }
             // *** Use Default of Encoding.Default (Ansi CodePage)
             Encoding enc = Encoding.Default;
 

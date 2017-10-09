@@ -62,5 +62,6 @@ namespace roundhouse.consoles
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         public bool DisableOutput { get; set; }
         public bool Initialize { get; set; }
+        public System.Text.Encoding FileEncoding { get; set; }
     }
 }
