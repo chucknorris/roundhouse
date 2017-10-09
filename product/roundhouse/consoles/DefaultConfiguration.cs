@@ -28,6 +28,7 @@ namespace roundhouse.consoles
         public string FunctionsFolderName { get; set; }
         public string ViewsFolderName { get; set; }
         public string SprocsFolderName { get; set; }
+        public string TriggersFolderName { get; set; }
         public string IndexesFolderName { get; set; }
         public string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
         public string PermissionsFolderName { get; set; }

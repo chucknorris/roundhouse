@@ -87,6 +87,8 @@
 
         public string SprocsFolderName { get; set; }
 
+        public string TriggersFolderName { get; set; }
+
         public string IndexesFolderName { get; set; }
 
         public string RunAfterOtherAnyTimeScriptsFolderName { get; set; }

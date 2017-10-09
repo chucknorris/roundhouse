@@ -17,6 +17,7 @@ namespace roundhouse.infrastructure.app.builders
             MigrationsFolder functions_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.FunctionsFolderName, false, false, "Function");
             MigrationsFolder views_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.ViewsFolderName, false, false, "View");
             MigrationsFolder sprocs_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.SprocsFolderName, false, false, "Stored Procedure");
+            MigrationsFolder triggers_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.TriggersFolderName, false, false, "Triggers");
             MigrationsFolder indexes_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.IndexesFolderName, false, false, "Index");
             MigrationsFolder runAfterOtherAnyTimeScripts_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.RunAfterOtherAnyTimeScriptsFolderName, false, false, "Run after Other Anytime Scripts");
             MigrationsFolder permissions_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.PermissionsFolderName, false, true, "Permission");
@@ -30,7 +31,22 @@ namespace roundhouse.infrastructure.app.builders
                                                                                                    remove_paths_from(configuration_property_holder.ServerName,file_system)),
                                                           get_run_date_time_string());
 
-			return new DefaultKnownFolders(alter_database_folder, run_after_create_database_folder, run_before_up_folder, up_folder, down_folder, run_first_folder, functions_folder, views_folder, sprocs_folder, indexes_folder, runAfterOtherAnyTimeScripts_folder, permissions_folder, before_migration_folder, after_migration_folder, change_drop_folder);
+			return new DefaultKnownFolders(
+                alter_database_folder, 
+                run_after_create_database_folder, 
+                run_before_up_folder, up_folder, 
+                down_folder, 
+                run_first_folder, 
+                functions_folder, 
+                views_folder, 
+                sprocs_folder, 
+                triggers_folder, 
+                indexes_folder, 
+                runAfterOtherAnyTimeScripts_folder, 
+                permissions_folder, 
+                before_migration_folder, 
+                after_migration_folder, 
+                change_drop_folder);
         }
 
         private static string combine_items_into_one_path(FileSystemAccess file_system, params string[] paths)

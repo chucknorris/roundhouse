@@ -85,6 +85,10 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.SprocsFolderName = ApplicationParameters.default_sprocs_folder_name;
             }
+            if (string.IsNullOrEmpty(configuration_property_holder.TriggersFolderName))
+            {
+                configuration_property_holder.TriggersFolderName = ApplicationParameters.default_triggers_folder_name;
+            }
             if (string.IsNullOrEmpty(configuration_property_holder.IndexesFolderName))
             {
                 configuration_property_holder.IndexesFolderName = ApplicationParameters.default_indexes_folder_name;
