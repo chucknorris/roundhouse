@@ -111,6 +111,7 @@
     <Compile Include="connections\IConnection.cs" />
     <Compile Include="consoles\CommandExecutor.cs" />
     <Compile Include="consoles\InteractivePrompt.cs" />
+    <Compile Include="cryptography\LocalMD5Implementation.cs" />
     <Compile Include="databases\RecoveryMode.cs" />
     <Compile Include="infrastructure.app\ConnectionType.cs" />
     <Compile Include="databases\DefaultDatabase.cs" />
@@ -146,7 +147,7 @@
     <Compile Include="sqlsplitters\StatementSplitter.cs" />
     <Compile Include="consoles\DefaultConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />
-    <Compile Include="cryptography\ManagedMD5CryptographicService.cs" />
+    <Compile Include="cryptography\MD5CryptographicService.cs" />
     <Compile Include="databases\AdoNetDatabase.cs" />
     <Compile Include="environments\DefaultEnvironment.cs" />
     <Compile Include="environments\Environment.cs" />

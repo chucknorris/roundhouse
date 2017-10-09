@@ -38,7 +38,7 @@ namespace roundhouse.tests.cryptography
             [SetUp]
             public void we_set_the_context()
             {
-                md5_crypto = new ManagedMD5CryptographicService();
+                md5_crypto = new MD5CryptographicService();
             }
 
             [Test]
@@ -62,7 +62,7 @@ namespace roundhouse.tests.cryptography
 
             private ThreadLocal<Random> _rng;
             private ThreadLocal<byte[]> _bytes = new ThreadLocal<byte[]>(() => new byte[max_len]);
-            private ThreadLocal<ManagedMD5CryptographicService.MD5> _unofficial = new ThreadLocal<ManagedMD5CryptographicService.MD5>(() => new ManagedMD5CryptographicService.MD5());
+            private ThreadLocal<LocalMD5Implementation> _unofficial = new ThreadLocal<LocalMD5Implementation>(() => new LocalMD5Implementation());
             private ThreadLocal<MD5> _official = new ThreadLocal<MD5>(() => MD5.Create());
 
             [SetUp]
