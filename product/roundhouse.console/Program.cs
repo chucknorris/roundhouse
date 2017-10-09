@@ -334,6 +334,15 @@ namespace roundhouse.console
                 .Add("isuptodate",
                      "This option prints whether there are any database updates or not, whithout actually running them. Other output except errors is disabled, to make it easy to use in scripts.",
                      option => { })
+                .Add("fileencoding=",
+                     "File Encoding - Explicitly specify the file encoding of all files",
+                     option =>
+                         {
+                             if(option != null)
+                             {
+                                 configuration.FileEncoding = System.Text.Encoding.GetEncoding(option);
+                             }
+                         })
                 ;
 
             try

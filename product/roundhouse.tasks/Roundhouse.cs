@@ -180,6 +180,8 @@
 
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
 
+        public System.Text.Encoding FileEncoding { get; set; }
+
         public bool DisableOutput { get; set; }
 
         public bool Initialize { get; set; }
