@@ -9,6 +9,7 @@ namespace roundhouse.infrastructure.filesystem
     using System.Runtime.InteropServices;
     using logging;
     using extensions;
+    using roundhouse.infrastructure.app;
 
     /// <summary>
     /// All file system access code comes through here
@@ -16,6 +17,14 @@ namespace roundhouse.infrastructure.filesystem
     public sealed class DotNetFileSystemAccess : FileSystemAccess
     {
         private static readonly bool is_running_on_mono = Type.GetType("Mono.Runtime") != null;
+
+        public DotNetFileSystemAccess(ConfigurationPropertyHolder configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        private ConfigurationPropertyHolder configuration;
+
 
         #region File
 

@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace roundhouse.tests.infrastructure.filesystem
 {
+    using roundhouse.consoles;
     using roundhouse.infrastructure.filesystem;
 
     public class DotNetFileSystemAccessSpecs
@@ -10,7 +11,7 @@ namespace roundhouse.tests.infrastructure.filesystem
         public abstract class concern_for_file_system : TinySpec<DotNetFileSystemAccess>
         {
             protected object result;
-            private DotNetFileSystemAccess dot_net_file_system_access = new DotNetFileSystemAccess();
+            private DotNetFileSystemAccess dot_net_file_system_access = new DotNetFileSystemAccess(new DefaultConfiguration());
 
             public override void Context() { }
             protected override DotNetFileSystemAccess sut
