@@ -760,7 +760,7 @@ namespace roundhouse.infrastructure.commandline.options {
 		private readonly Regex ValueOption = new Regex (
 			@"^(?<flag>--|-|/)(?<name>[^:=]+)((?<sep>[:=])(?<value>.*))?$");
 
-		protected bool GetOptionParts (string argument, out string flag, out string name, out string sep, out string value)
+		public bool GetOptionParts (string argument, out string flag, out string name, out string sep, out string value)
 		{
 			if (argument == null)
 				throw new ArgumentNullException ("argument");

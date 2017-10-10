@@ -63,5 +63,6 @@ namespace roundhouse.infrastructure.app
         bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         bool DisableOutput { get; set; }
         System.Text.Encoding FileEncoding { get; set; }
-    }
+        string ConfigurationFile { get; set; }
+	}
 }
