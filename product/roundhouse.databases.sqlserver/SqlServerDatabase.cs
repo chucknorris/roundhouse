@@ -1,17 +1,32 @@
-using System.Data.SqlClient;
-
 namespace roundhouse.databases.sqlserver
 {
     using System;
     using System.Data;
+    using System.Data.SqlClient;
     using System.Text;
     using System.Text.RegularExpressions;
+    using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
+
     using infrastructure.app;
+    using connections;
     using infrastructure.extensions;
     using infrastructure.logging;
 
     public class SqlServerDatabase : AdoNetDatabase
     {
+        public SqlServerDatabase()
+        {
+            // Retry upto 5 times with exponential backoff before giving up
+            retry_policy = new RetryPolicy(
+                new TransientErrorDetectionStrategy(),
+                5,
+                minBackoff: TimeSpan.FromSeconds(5),
+                maxBackoff: TimeSpan.FromMinutes(2),
+                deltaBackoff: TimeSpan.FromSeconds(5));
+
+            retry_policy.Retrying += (sender, args) => log_command_retrying(args);
+        }
+
         private string connect_options = "Integrated Security=SSPI;";
 
         public override string sql_statement_separator_regex_pattern
@@ -60,9 +75,25 @@ namespace roundhouse.databases.sqlserver
             return string.Format("data source={0};initial catalog={1};{2}", server_name, database_name, connection_options);
         }
 
+        protected override AdoNetConnection GetAdoNetConnection(string conn_string)
+        {
+            var connection_retry_policy = new RetryPolicy<TransientErrorDetectionStrategy>(
+                5, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+            connection_retry_policy.Retrying += (sender, args) => log_connection_retrying(args);
+
+            // Command retry policy is only used when ReliableSqlConnection.ExecuteCommand helper methods are explicitly invoked.
+            // This is not our case, as those method are not used.
+            var command_retry_policy = RetryPolicy.NoRetry;
+
+            var connection = new ReliableSqlConnection(conn_string, connection_retry_policy, command_retry_policy);
+
+            connection_specific_setup(connection);
+            return new AdoNetConnection(connection);
+        }
+
         protected override void connection_specific_setup(IDbConnection connection)
         {
-            ((SqlConnection)connection).InfoMessage += (sender, e) => Log.bound_to(this).log_a_debug_event_containing("  [SQL PRINT]: {0}{1}", Environment.NewLine, e.Message);
+            ((ReliableSqlConnection)connection).Current.InfoMessage += (sender, e) => Log.bound_to(this).log_a_debug_event_containing("  [SQL PRINT]: {0}{1}", Environment.NewLine, e.Message);
         }
 
         public override void run_database_specific_tasks()
@@ -219,6 +250,23 @@ namespace roundhouse.databases.sqlserver
 
             return result.Tables.Count == 0 ? null : result.Tables[0];
         }
+        
+        private void log_connection_retrying(RetryingEventArgs args)
+        {
+            Log.bound_to(this).log_a_warning_event_containing(
+                "Failure opening connection, trying again (current retry count:{0}){1}{2}",
+                args.CurrentRetryCount,
+                Environment.NewLine,
+                args.LastException.to_string());
+        }
 
+        private void log_command_retrying(RetryingEventArgs args)
+        {
+            Log.bound_to(this).log_a_warning_event_containing(
+                "Failure executing command, trying again (current retry count:{0}){1}{2}",
+                args.CurrentRetryCount,
+                Environment.NewLine,
+                args.LastException.to_string());
+        }
     }
 }
