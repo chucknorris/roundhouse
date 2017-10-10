@@ -82,6 +82,10 @@
     <Reference Include="Microsoft.Build.Framework">
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8\Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll</HintPath>
       <Private>True</Private>
@@ -145,6 +149,7 @@
     <Compile Include="parameters\IParameter.cs" />
     <Compile Include="Migrate.cs" />
     <Compile Include="resolvers\CommandLineVersionResolver.cs" />
+    <Compile Include="resolvers\JsonVersionResolver.cs" />
     <Compile Include="resolvers\ScriptfileVersionResolver.cs" />
     <Compile Include="resolvers\TextVersionResolver.cs" />
     <Compile Include="RoundhousEFluentNHibernateDiffingType.cs" />
