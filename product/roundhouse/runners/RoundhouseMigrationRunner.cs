@@ -40,7 +40,6 @@ namespace roundhouse.runners
             bool silent,
             bool dropping_the_database,
             bool dont_create_the_database,
-            bool dont_alter_the_database,
             bool run_in_a_transaction,
             bool use_simple_recovery,
             ConfigurationPropertyHolder configuration)
@@ -54,7 +53,6 @@ namespace roundhouse.runners
             this.silent = silent;
             this.dropping_the_database = dropping_the_database;
             this.dont_create_the_database = dont_create_the_database;
-            this.dont_alter_the_database = dont_alter_the_database;
             this.run_in_a_transaction = run_in_a_transaction;
             this.use_simple_recovery = use_simple_recovery;
             this.configuration = configuration;
@@ -135,7 +133,7 @@ namespace roundhouse.runners
 
                     run_out_side_of_transaction_folder(known_folders.before_migration, version_id, new_version);
 
-                    if (!dont_alter_the_database)
+                    if (!configuration.DoNotAlterDatabase)
                     {
                         database_migrator.open_admin_connection();
                         log_and_traverse(known_folders.alter_database, version_id, new_version, ConnectionType.Admin);

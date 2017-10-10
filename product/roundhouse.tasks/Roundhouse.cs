@@ -222,7 +222,6 @@
                 Silent,
                 Drop,
                 DoNotCreateDatabase,
-                DoNotAlterDatabase,
                 WithTransaction,
                 RecoveryModeSimple,
                 this);
