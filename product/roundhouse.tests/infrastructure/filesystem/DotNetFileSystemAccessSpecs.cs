@@ -5,6 +5,7 @@ namespace roundhouse.tests.infrastructure.filesystem
 {
     using roundhouse.consoles;
     using roundhouse.infrastructure.filesystem;
+    using System.Text;
 
     public class DotNetFileSystemAccessSpecs
     {
@@ -42,7 +43,13 @@ namespace roundhouse.tests.infrastructure.filesystem
             [Observation]
             public void ansi_encoded_file_should_read_correctly()
             {
-                ansi_file.should_be_equal_to("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')");
+                ansi_file.should_be_equal_to(to_default_code_page("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')"));
+            }
+
+            private string to_default_code_page(string english_code_page_text)
+            {
+                var bytes = Encoding.GetEncoding(1252).GetBytes(english_code_page_text);
+                return Encoding.Default.GetString(bytes);
             }
         }
     }
