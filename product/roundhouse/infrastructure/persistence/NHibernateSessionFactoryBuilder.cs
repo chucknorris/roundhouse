@@ -27,6 +27,8 @@ namespace roundhouse.infrastructure.persistence
                                 () => MsSqlConfiguration.MsSql2005.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.sqlserver2000.SqlServerDatabase, roundhouse.databases.sqlserver2000",
                                 () => MsSqlConfiguration.MsSql2000.ConnectionString(configuration_holder.ConnectionString));
+            func_dictionary.Add("roundhouse.databases.sqlserverce.SqlServerCEDatabase, roundhouse.databases.sqlserverce",
+                                () => MsSqlCeConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.mysql.MySqlDatabase, roundhouse.databases.mysql",
                                 () => MySQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.oracle.OracleDatabase, roundhouse.databases.oracle",
@@ -44,6 +46,8 @@ namespace roundhouse.infrastructure.persistence
                                 () => MsSqlConfiguration.MsSql2005.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.sqlserver2000.SqlServerDatabase, " + merged_assembly_name,
                                 () => MsSqlConfiguration.MsSql2000.ConnectionString(configuration_holder.ConnectionString));
+            func_dictionary.Add("roundhouse.databases.sqlserverce.SqlServerCEDatabase, " + merged_assembly_name,
+                                () => MsSqlCeConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.mysql.MySqlDatabase, " + merged_assembly_name,
                                 () => MySQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.oracle.OracleDatabase, " + merged_assembly_name,
