@@ -75,13 +75,11 @@ namespace roundhouse.infrastructure.persistence
         {
             IList<T> list;
 
-            bool not_running_outside_session = session == null;
-            if (not_running_outside_session) start(false);
-
-            IQueryOver<T, T> criteria = session.QueryOver<T>();
-            list = criteria.List<T>();
-
-            if (not_running_outside_session) finish();
+            using (ensure_session_started())
+            {
+                IQueryOver<T, T> criteria = session.QueryOver<T>();
+                list = criteria.List<T>();
+            }
 
             Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1}.", list.Count, typeof(T).Name);
 
@@ -98,13 +96,11 @@ namespace roundhouse.infrastructure.persistence
 
             IList<T> list;
 
-            bool not_running_outside_session = session == null;
-            if (not_running_outside_session) start(false);
-
-            IQueryOver<T, T> criteria = detachedCriteria.GetExecutableQueryOver(session);
-            list = criteria.List<T>();
-
-            if (not_running_outside_session) finish();
+            using (ensure_session_started())
+            {
+                IQueryOver<T, T> criteria = detachedCriteria.GetExecutableQueryOver(session);
+                list = criteria.List<T>();
+            }
 
             Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof(T).Name, detachedCriteria.to_string());
 
@@ -121,21 +117,19 @@ namespace roundhouse.infrastructure.persistence
 
             IList<T> list;
 
-            bool running_long_session = session == null;
-            if (!running_long_session) start(false);
-
-            IQueryOver<T, T> criteria = detachedCriteria.GetExecutableQueryOver(session);
-            list = criteria
-                .TransformUsing(Transformers.AliasToBean<T>())
-                .List<T>();
-
-            if (!running_long_session) finish();
+            using (ensure_session_started())
+            {
+                IQueryOver<T, T> criteria = detachedCriteria.GetExecutableQueryOver(session);
+                list = criteria
+                    .TransformUsing(Transformers.AliasToBean<T>())
+                    .List<T>();
+            }
 
             Log.bound_to(this).log_a_debug_event_containing("Repository found {0} records of type {1} with criteria {2}.", list.Count, typeof(T).Name, detachedCriteria.to_string());
 
             return list;
         }
-
+        
         public void save_or_update<T>(IList<T> list) where T : class
         {
             if (list == null || list.Count == 0)
@@ -145,15 +139,13 @@ namespace roundhouse.infrastructure.persistence
             }
             Log.bound_to(this).log_a_debug_event_containing("Received {0} records of type {1} marked for save/update.", list.Count, typeof(T).Name);
 
-            bool not_running_outside_session = session == null;
-            if (not_running_outside_session) start(true);
-
-            foreach (T item in list)
+            using (ensure_session_started())
             {
-                save_or_update(item);
+                foreach (T item in list)
+                {
+                    save_or_update(item);
+                }
             }
-
-            if (not_running_outside_session) finish();
 
             Log.bound_to(this).log_a_debug_event_containing("Saved {0} records of type {1} successfully.", list.Count, typeof(T).Name);
         }
@@ -166,13 +158,11 @@ namespace roundhouse.infrastructure.persistence
                 return;
             }
 
-            bool not_running_outside_session = session == null;
-            if (not_running_outside_session) start(false);
-
-            session.SaveOrUpdate(item);
-            session.Flush();
-
-            if (not_running_outside_session) finish();
+            using (ensure_session_started())
+            {
+                session.SaveOrUpdate(item);
+                session.Flush();
+            }
 
             Log.bound_to(this).log_a_debug_event_containing("Saved item of type {0} successfully.", typeof(T).Name);
         }
@@ -187,19 +177,50 @@ namespace roundhouse.infrastructure.persistence
 
             Log.bound_to(this).log_an_info_event_containing("Received {0} records of type {1} marked for deletion.", list.Count, typeof(T).Name);
 
-            bool not_running_outside_session = session == null;
-            if (not_running_outside_session) start(true);
-
-            foreach (T item in list)
+            using (ensure_session_started())
             {
-                session.Delete(item);
-                session.Flush();
+                foreach (T item in list)
+                {
+                    session.Delete(item);
+                    session.Flush();
+                }
             }
-
-            if (not_running_outside_session) finish();
 
             Log.bound_to(this).log_an_info_event_containing("Removed {0} records of type {1} successfully.", list.Count, typeof(T).Name);
         }
 
+        private IDisposable ensure_session_started()
+        {
+            bool running_long_session = session != null;
+            if (running_long_session)
+            {
+                return null;
+            }
+
+            start(using_transaction: false);
+            return new Cleanup(finish);
+        }
+
+        private class Cleanup : IDisposable
+        {
+            private readonly Action cleanupAction;
+            private bool disposed;
+
+            public Cleanup(Action cleanupAction)
+            {
+                this.cleanupAction = cleanupAction;
+            }
+
+            public void Dispose()
+            {
+                if (disposed) return;
+
+                disposed = true;
+                if (cleanupAction != null)
+                {
+                    cleanupAction();
+                }
+            }
+        }
     }
 }

@@ -82,6 +82,18 @@
     <Reference Include="Microsoft.Build.Framework">
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8\Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.Data, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45\Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
@@ -111,6 +123,7 @@
     <Compile Include="connections\IConnection.cs" />
     <Compile Include="consoles\CommandExecutor.cs" />
     <Compile Include="consoles\InteractivePrompt.cs" />
+    <Compile Include="cryptography\LocalMD5Implementation.cs" />
     <Compile Include="databases\RecoveryMode.cs" />
     <Compile Include="infrastructure.app\ConnectionType.cs" />
     <Compile Include="databases\DefaultDatabase.cs" />
@@ -136,12 +149,14 @@
     <Compile Include="parameters\IParameter.cs" />
     <Compile Include="Migrate.cs" />
     <Compile Include="resolvers\CommandLineVersionResolver.cs" />
+    <Compile Include="resolvers\JsonVersionResolver.cs" />
     <Compile Include="resolvers\ScriptfileVersionResolver.cs" />
     <Compile Include="resolvers\TextVersionResolver.cs" />
     <Compile Include="RoundhousEFluentNHibernateDiffingType.cs" />
     <Compile Include="RoundhouseMode.cs" />
     <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
     <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
+    <Compile Include="runners\RoundhouseUpdateCheckRunner.cs" />
     <Compile Include="sqlsplitters\StatementSplitter.cs" />
     <Compile Include="consoles\DefaultConfiguration.cs" />
     <Compile Include="cryptography\CryptographicService.cs" />
@@ -171,7 +186,7 @@
     <Compile Include="infrastructure\extensions\TypeCasting.cs" />
     <Compile Include="infrastructure\extensions\TypeExtensions.cs" />
     <Compile Include="infrastructure\filesystem\FileSystemAccess.cs" />
-    <Compile Include="infrastructure\filesystem\WindowsFileSystemAccess.cs" />
+    <Compile Include="infrastructure\filesystem\DotNetFileSystemAccess.cs" />
     <Compile Include="infrastructure.app\builders\KnownFoldersBuilder.cs" />
     <Compile Include="infrastructure\loaders\DefaultAssemblyLoader.cs" />
     <Compile Include="infrastructure\loaders\DefaultInstanceCreator.cs" />
@@ -229,7 +244,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project=".\targets\Microsoft.Application.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
-  <Import Project=".\targets\Microsoft.Application.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

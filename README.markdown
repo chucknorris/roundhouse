@@ -62,6 +62,27 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+## 0.8.7
+ **OMG!! It's a RoundhousE release!!**
+
+ *It's been a long time coming. I didn't want to get bogged down into writing 
+ the perfect release notes, so I am summarizing the last four years of commit 
+ history. I hope that no one that contributed feels slighted by my failure to 
+ specifically acknowledge your contribution. I intend to do better in the 
+ future.*
+
+### Enhancements
+ + Added option to run scripts outside of transaction scope
+ + Handle Azure connection strings
+ + Properly split files that start with a splitter
+ + Respect Transaction flag
+ + Improved Logging
+ + Added switch --warnandignoreononetimescriptchanges
+
+### Bug Fixes
+ + Only retry on SQL Connection errors
+ + Correctly handle postgres connection disposed error
+
 ## 0.8.6
 
 ### Enhancements

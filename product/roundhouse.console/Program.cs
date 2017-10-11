@@ -15,6 +15,11 @@ using roundhouse.init;
 using roundhouse.migrators;
 using roundhouse.resolvers;
 using roundhouse.runners;
+using System.Reflection;
+using log4net.Repository;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using log4net.Core;
 
 namespace roundhouse.console
 {
@@ -39,6 +44,10 @@ namespace roundhouse.console
                 else if (string.Join("|", args).to_lower().Contains("rh.redgate.diff"))
                 {
                     run_diff_utility(set_up_configuration_and_build_the_container(args));
+                }
+                else if (string.Join("|", args).to_lower().Contains("isuptodate"))
+                {
+                    run_update_check(set_up_configuration_and_build_the_container(args));
                 }
                 else if (args.Any() && args[0] == "init")
                 {
@@ -142,7 +151,7 @@ namespace roundhouse.console
                      "Version - Specify the version directly instead of looking in a file. If present, ignores file version options.",
                      option => configuration.Version = option)
                 .Add("vf=|versionfile=",
-                     string.Format("VersionFile - Either a .XML file, a .DLL or a .TXT file that a version can be resolved from. Defaults to \"{0}\".",
+                     string.Format("VersionFile - Either a .XML file, a .DLL or a .TXT or a .json file that a version can be resolved from. Defaults to \"{0}\".",
                                    ApplicationParameters.default_version_file),
                      option => configuration.VersionFile = option)
                 .Add("vx=|versionxpath=",
@@ -194,6 +203,11 @@ namespace roundhouse.console
                          "SprocsFolderName - The name of the folder where you keep your stored procedures. Will recurse through subfolders. Defaults to \"{0}\".",
                          ApplicationParameters.default_sprocs_folder_name),
                      option => configuration.SprocsFolderName = option)
+                .Add("trg=|triggers=|triggersfolder=|triggersfoldername=",
+                     string.Format(
+                         "TriggersFolderName - The name of the folder where you keep your triggers. Will recurse through subfolders. Defaults to \"{0}\".",
+                         ApplicationParameters.default_triggers_folder_name),
+                     option => configuration.TriggersFolderName = option)
                 .Add("ix=|indexes=|indexesfolder=|indexesfoldername=",
                      string.Format(
                          "IndexesFolderName - The name of the folder where you keep your indexes. Will recurse through subfolders. Defaults to \"{0}\".",
@@ -324,11 +338,27 @@ namespace roundhouse.console
                 .Add("searchallinsteadoftraverse|searchallsubdirectoriesinsteadoftraverse",
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
+                .Add("isuptodate",
+                     "This option prints whether there are any database updates or not, whithout actually running them. Other output except errors is disabled, to make it easy to use in scripts.",
+                     option => { })
+                .Add("fileencoding=",
+                     "File Encoding - Explicitly specify the file encoding of all files",
+                     option =>
+                         {
+                             if(option != null)
+                             {
+                                 configuration.FileEncoding = System.Text.Encoding.GetEncoding(option);
+                             }
+                         })
+                //load configuration from file
+                .Add("cf=|configfile=|configurationfile=",
+                    "Loads configuration options from a JSON file",
+                    option => configuration.ConfigurationFile = option)
                 ;
 
             try
             {
-                option_set.Parse(args);
+                option_set = merge_configuration_file(args, option_set, configuration);
             }
             catch (OptionException)
             {
@@ -370,7 +400,8 @@ namespace roundhouse.console
                         "/disabletokenreplacement " +
                         "/baseline " +
                         "/dryrun " +
-                        "/search[allsubdirectories]insteadoftraverse" +
+                        "/search[allsubdirectories]insteadoftraverse " +
+                        "/isuptodate" +
                         "]", Environment.NewLine);
                 show_help(usage_message, option_set);
             }
@@ -388,7 +419,93 @@ namespace roundhouse.console
             }
         }
 
-        public static void show_help(string message, OptionSet option_set)
+        private static OptionSet merge_configuration_file(string[] args, OptionSet option_set, ConfigurationPropertyHolder configuration)
+        {
+            option_set.Parse(args);
+            if(!string.IsNullOrEmpty(configuration.ConfigurationFile))
+            {
+                bool any_update = false;
+                List<string> new_args = new List<string>(args);
+                try 
+                {
+                    if(!System.IO.File.Exists(configuration.ConfigurationFile))
+                    {
+                        throw new Exception("Configuration File does not exist: " + configuration.ConfigurationFile);
+                    }
+                    var json_Data = System.IO.File.ReadAllText(configuration.ConfigurationFile);
+                    var file_values = JsonConvert.DeserializeObject<Dictionary<string, string>>(json_Data);
+                    foreach(var key in file_values.Keys)
+                    {
+                        if(!string.IsNullOrEmpty(file_values[key]))
+                        {
+                            var matched_option = find_option_by_prototype(option_set, key);
+                            if(matched_option != null)
+                            {
+                                if(add_arg_if_not_exist(new_args, option_set, matched_option, file_values[key]))
+                                {
+                                    any_update = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    show_help(ex.Message, option_set);
+                }
+                if(any_update)
+                {
+                    option_set.Parse(new_args);
+                }
+            }
+            return option_set;
+		}
+
+        private static bool add_arg_if_not_exist(List<string> args, OptionSet option_set, Option option_to_replace, string new_value)
+        {
+            for(int i = 0; i < args.Count; i++)
+            {
+                var arg = args[i];
+                if(!string.IsNullOrEmpty(arg))
+                {
+                    string arg_flag;
+                    string arg_name;
+                    string arg_sep;
+                    string arg_value;
+                    if(option_set.GetOptionParts(arg, out arg_flag, out arg_name, out arg_sep, out arg_value))
+                    {
+                        foreach(var name in option_to_replace.GetNames())
+                        {
+                            if(!string.IsNullOrEmpty(name) && name.Equals(arg_name, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                //Value already exists, skip this, command line should take precedence.
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            string new_arg = "/" + option_to_replace.GetNames()[0]  + "=" + new_value;
+            args.Add(new_arg);
+            return true;
+        }
+
+        private static Option find_option_by_prototype(OptionSet option_set, string key)
+        {
+            foreach(var option in option_set)
+            {
+                foreach(var name in option.GetNames())
+                {
+                    if(!string.IsNullOrEmpty(name)  && name.StartsWith(key, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return option;
+                    }
+                }
+            }
+            return null;
+        }
+		
+		public static void show_help(string message, OptionSet option_set)
         {
             //Console.Error.WriteLine(message);
             the_logger.Info(message);
@@ -401,6 +518,20 @@ namespace roundhouse.console
             the_logger.Info("Initializing folder for roundhouse");
             Container.get_an_instance_of<Initializer>().Initialize(configuration, ".");
             Environment.Exit(0);
+        }
+        
+        private static void change_log_level(Level level)
+        {
+            ILoggerRepository log_repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
+            log_repository.Threshold = level;
+            foreach (ILogger log in log_repository.GetCurrentLoggers())
+            {
+                var logger = log as log4net.Repository.Hierarchy.Logger;
+                if (logger != null)
+                {
+                    logger.Level = level;
+                }
+            }
         }
 
         public static void run_migrator(ConfigurationPropertyHolder configuration)
@@ -423,6 +554,28 @@ namespace roundhouse.console
             diff_runner.run();
 
             if (!silent)
+            {
+                Console.WriteLine("{0}Please press enter to continue...", Environment.NewLine);
+                Console.Read();
+            }
+        }
+
+        private static void run_update_check(ConfigurationPropertyHolder configuration)
+        {
+            if (!configuration.Silent)
+            {
+                Console.WriteLine("NOTE: Running this command will create the Roundhouse tables, if they don't exist.");
+                Console.WriteLine("Please press enter when ready to kick...");
+                Console.ReadLine();
+            }
+
+            // Info and warn level logging is turned off, in order to make it easy to use the output of this command.
+            change_log_level(Level.Error);
+
+            RoundhouseUpdateCheckRunner update_check_runner = get_update_check_runner(configuration, get_migration_runner(configuration));
+            update_check_runner.run();
+
+            if (!configuration.Silent)
             {
                 Console.WriteLine("{0}Please press enter to continue...", Environment.NewLine);
                 Console.Read();
@@ -452,6 +605,17 @@ namespace roundhouse.console
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
                 configuration, migration_runner);
+        }
+
+        private static RoundhouseUpdateCheckRunner get_update_check_runner(ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner)
+        {
+            return new RoundhouseUpdateCheckRunner(
+                Container.get_an_instance_of<environments.Environment>(),
+                Container.get_an_instance_of<KnownFolders>(),
+                Container.get_an_instance_of<FileSystemAccess>(),
+                Container.get_an_instance_of<DatabaseMigrator>(), 
+                configuration,
+                migration_runner);
         }
     }
 }

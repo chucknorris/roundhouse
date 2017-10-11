@@ -87,6 +87,8 @@
 
         public string SprocsFolderName { get; set; }
 
+        public string TriggersFolderName { get; set; }
+
         public string IndexesFolderName { get; set; }
 
         public string RunAfterOtherAnyTimeScriptsFolderName { get; set; }
@@ -180,9 +182,12 @@
 
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
 
+        public System.Text.Encoding FileEncoding { get; set; }
+
         public bool DisableOutput { get; set; }
 
         public bool Initialize { get; set; }
+        public string ConfigurationFile { get; set; }
 
         #endregion
 

@@ -1,16 +1,15 @@
 namespace roundhouse.cryptography
 {
     using System;
-    using System.Security.Cryptography;
     using System.Text;
 
-    public sealed class MD5CryptographicService : CryptographicService
+    public sealed partial class MD5CryptographicService : CryptographicService
     {
-        private readonly MD5 crypto_provider;
+        private readonly LocalMD5Implementation crypto_provider;
 
         public MD5CryptographicService()
         {
-            crypto_provider = MD5.Create();
+            crypto_provider = new LocalMD5Implementation();
         }
 
         public string hash(string clear_text_of_what_to_hash)
@@ -21,3 +20,4 @@ namespace roundhouse.cryptography
         }
     }
 }
+

@@ -1,21 +1,19 @@
+using System;
+
 namespace roundhouse.tests.integration.databases
 {
-    using bdddoc.core;
-    using developwithpassion.bdd.contexts;
-    using developwithpassion.bdd.mbunit.standard;
-    using developwithpassion.bdd.mbunit.standard.observations;
     using roundhouse.databases.mysql;
     using roundhouse.infrastructure.logging;
     using roundhouse.infrastructure.logging.custom;
 
     public class MySqlDatabaseSpecs
     {
-        public abstract class concern_for_MySqlDatabase : observations_for_a_static_sut
+        public abstract class concern_for_MySqlDatabase :  TinySpec, IDisposable
         {
             protected static string database_name = "TestRoundhousE";
             protected static string sql_files_folder = @"..\..\..\..\db\MySQL\TestRoundhousE";
-
-            private after_all_observations after = () =>
+            
+            public void Dispose()
             {
                 new Migrate().Set(p =>
                 {
@@ -25,7 +23,7 @@ namespace roundhouse.tests.integration.databases
                     p.Drop = true;
                     p.Silent = true;
                 }).Run();
-            };
+            }
         }
 
         [Concern(typeof(MySqlDatabase))]
@@ -33,9 +31,8 @@ namespace roundhouse.tests.integration.databases
         {
             protected static object result;
 
-            private context c = () => { };
-
-            private because b = () =>
+            public override void Context() { }
+            public override void Because() 
             {
                 new Migrate().Set(p =>
                 {
@@ -45,7 +42,7 @@ namespace roundhouse.tests.integration.databases
                     p.DatabaseType = "mysql";
                     p.Silent = true;
                 }).Run();
-            };
+            }
 
             [Observation]
             public void should_successfully_run()

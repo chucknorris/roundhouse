@@ -85,6 +85,10 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.SprocsFolderName = ApplicationParameters.default_sprocs_folder_name;
             }
+            if (string.IsNullOrEmpty(configuration_property_holder.TriggersFolderName))
+            {
+                configuration_property_holder.TriggersFolderName = ApplicationParameters.default_triggers_folder_name;
+            }
             if (string.IsNullOrEmpty(configuration_property_holder.IndexesFolderName))
             {
                 configuration_property_holder.IndexesFolderName = ApplicationParameters.default_indexes_folder_name;
@@ -175,7 +179,7 @@ namespace roundhouse.infrastructure.app
             ObjectFactory.Configure(cfg =>
                                         {
                                             cfg.For<ConfigurationPropertyHolder>().Singleton().Use(configuration_property_holder);
-                                            cfg.For<FileSystemAccess>().Singleton().Use<WindowsFileSystemAccess>();
+                                            cfg.For<FileSystemAccess>().Singleton().Use(context => new DotNetFileSystemAccess(configuration_property_holder));
                                             cfg.For<Database>().Singleton().Use(context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<KnownFolders>().Singleton().Use(context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
                                             cfg.For<LogFactory>().Singleton().Use<MultipleLoggerLogFactory>();

@@ -154,6 +154,7 @@ namespace roundhouse.runners
                     log_and_traverse(known_folders.functions, version_id, new_version, ConnectionType.Default);
                     log_and_traverse(known_folders.views, version_id, new_version, ConnectionType.Default);
                     log_and_traverse(known_folders.sprocs, version_id, new_version, ConnectionType.Default);
+                    log_and_traverse(known_folders.triggers, version_id, new_version, ConnectionType.Default);
                     log_and_traverse(known_folders.indexes, version_id, new_version, ConnectionType.Default);
                     log_and_traverse(known_folders.run_after_other_any_time_scripts, version_id, new_version, ConnectionType.Default);
 
@@ -316,7 +317,7 @@ namespace roundhouse.runners
             return file_system.read_file_text(file_location);
         }
 
-        private string replace_tokens(string sql_text)
+        public string replace_tokens(string sql_text)
         {
             if (configuration.DisableTokenReplacement)
             {

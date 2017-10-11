@@ -11,6 +11,7 @@ namespace roundhouse.migrators
     using infrastructure.logging;
     using sqlsplitters;
     using Environment = roundhouse.environments.Environment;
+    using System.Linq;
 
     public sealed class DefaultDatabaseMigrator : DatabaseMigrator
     {
@@ -256,7 +257,7 @@ namespace roundhouse.migrators
         public void record_script_in_scripts_run_table(string script_name, string sql_to_run, bool run_this_script_once, long version_id)
         {
             Log.bound_to(this).log_a_debug_event_containing("Recording {0} script ran on {1} - {2}.", script_name, database.server_name, database.database_name);
-            database.insert_script_run(script_name, sql_to_run, create_hash(sql_to_run), run_this_script_once, version_id);
+            database.insert_script_run(script_name, sql_to_run, create_hash(sql_to_run, true), run_this_script_once, version_id);
         }
 
         public void record_script_in_scripts_run_errors_table(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
@@ -265,9 +266,12 @@ namespace roundhouse.migrators
             database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, repository_version, repository_path);
         }
 
-        private string create_hash(string sql_to_run)
+        private string create_hash(string sql_to_run, bool normalizeEndings)
         {
-            return crypto_provider.hash(sql_to_run.Replace(@"'", @"''"));
+            var input = sql_to_run.Replace(@"'", @"''");
+            if (normalizeEndings)
+                input = input.Replace(WindowsLineEnding, UnixLineEnding).Replace(MacLineEnding, UnixLineEnding);
+            return crypto_provider.hash(input);
         }
 
         public bool this_is_an_every_time_script(string script_name, bool run_this_script_every_time)
@@ -316,9 +320,13 @@ namespace roundhouse.migrators
 
             if (string.IsNullOrEmpty(old_text_hash)) return true;
 
-            string new_text_hash = create_hash(sql_to_run);
 
-            bool hash_is_same = hashes_are_equal(new_text_hash, old_text_hash);
+            // These check hashes from before the normalization change and after
+            // The change does result in a different hash that will not be the result of
+            // any sore of file change and therefore should not be logged.
+            bool hash_is_same = 
+                hashes_are_equal(create_hash(sql_to_run, true), old_text_hash) ||   // New hash
+                hashes_are_equal(create_hash(sql_to_run, false), old_text_hash);    // Old hash
 
             if (!hash_is_same)
             {
@@ -338,22 +346,18 @@ namespace roundhouse.migrators
             return string.Compare(old_text_hash, new_text_hash, true) == 0;
         }
 
+        private const string WindowsLineEnding = "\r\n";
+        private const string UnixLineEnding = "\n";
+        private const string MacLineEnding = "\r";
+
         private bool have_same_hash_ignoring_platform(string sql_to_run, string old_text_hash)
         {
-            // check with unix and windows line endings
-            const string line_ending_windows = "\r\n";
-            const string line_ending_unix = "\n";
-            string new_text_hash = create_hash(sql_to_run.Replace(line_ending_windows, line_ending_unix));
-            bool hash_is_same = hashes_are_equal(new_text_hash, old_text_hash);
+            var lineEndingVariations = new List<string> {WindowsLineEnding, UnixLineEnding, MacLineEnding};
 
-            if (!hash_is_same)
-            {
-                // try other way around
-                new_text_hash = create_hash(sql_to_run.Replace(line_ending_unix, line_ending_windows));
-                hash_is_same = hashes_are_equal(new_text_hash, old_text_hash);
-            }
-
-            return hash_is_same;
+            return lineEndingVariations.Any(variation => {
+                var normalized_sql = lineEndingVariations.Aggregate(sql_to_run, (norm, ending) => norm.Replace(ending, variation));
+                return hashes_are_equal(create_hash(normalized_sql, false), old_text_hash);
+            });
         }
 
         private bool this_script_should_run(string script_name, string sql_to_run, bool run_this_script_once, bool run_this_script_every_time)
@@ -373,6 +377,18 @@ namespace roundhouse.migrators
             {
                 return false;
             }
+
+            return true;
+        }
+
+        public bool this_script_is_new_or_updated(string script_name, string sql_to_run, Environment environment)
+        {
+            if (!this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment))
+                return false;
+
+            if (this_script_has_run_already(script_name)
+                   && !this_script_has_changed_since_last_run(script_name, sql_to_run))
+                return false;
 
             return true;
         }

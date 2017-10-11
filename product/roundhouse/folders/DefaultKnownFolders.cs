@@ -12,6 +12,7 @@ namespace roundhouse.folders
                                    MigrationsFolder functions,
                                    MigrationsFolder views,
                                    MigrationsFolder sprocs,
+                                   MigrationsFolder triggers,
                                    MigrationsFolder indexes,
                                    MigrationsFolder runAfterOtherAnyTimeScripts,        
                                    MigrationsFolder permissions,
@@ -29,6 +30,7 @@ namespace roundhouse.folders
             this.functions = functions;
             this.views = views;
             this.sprocs = sprocs;
+            this.triggers = triggers;
             this.indexes = indexes;
             this.run_after_other_any_time_scripts = runAfterOtherAnyTimeScripts;
             this.permissions = permissions;
@@ -46,6 +48,7 @@ namespace roundhouse.folders
         public MigrationsFolder functions { get; private set; }
         public MigrationsFolder views { get; private set; }
         public MigrationsFolder sprocs { get; private set; }
+        public MigrationsFolder triggers { get; private set; }
         public MigrationsFolder indexes { get; private set; }
         public MigrationsFolder run_after_other_any_time_scripts { get; private set; }
         public MigrationsFolder permissions { get; private set; }

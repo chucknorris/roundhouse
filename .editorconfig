@@ -1,0 +1,12 @@
+; EditorConfig file to support per-solution formatting.
+; Use EditorConfig Visual Studio add-in to make this work.
+; The add-in is available in the Visual Studio gallery.
+; http://editorconfig.org
+
+[*.cs]
+indent_style = space
+indent_size = 4
+
+[*.{config,xml}]
+indent_style = space
+indent_size = 2
