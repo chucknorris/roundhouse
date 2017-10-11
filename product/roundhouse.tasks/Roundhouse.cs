@@ -123,6 +123,8 @@
 
         public bool DoNotCreateDatabase { get; set; }
 
+        public bool DoNotAlterDatabase { get; set; }
+
         public string OutputPath { get; set; }
 
         public bool WarnOnOneTimeScriptChanges { get; set; }
