@@ -3,14 +3,12 @@ namespace roundhouse
     using System;
     using folders;
     using infrastructure.app;
-    using infrastructure.app.logging;
     using infrastructure.containers;
     using infrastructure.filesystem;
     using infrastructure.logging;
     using migrators;
     using resolvers;
     using runners;
-    using environments;
 
     public class Migrate
     {
@@ -91,7 +89,7 @@ namespace roundhouse
             RoundhouseMigrationRunner migrationRunner = GetMigrationRunner();
 
             RoundhouseUpdateCheckRunner updateCheckRunner = new RoundhouseUpdateCheckRunner(
-                Container.get_an_instance_of<environments.Environment>(),
+                Container.get_an_instance_of<environments.EnvironmentSet>(),
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
                 Container.get_an_instance_of<DatabaseMigrator>(),
@@ -109,7 +107,7 @@ namespace roundhouse
 
             return new RoundhouseMigrationRunner(
                 this.configuration.RepositoryPath,
-                Container.get_an_instance_of<EnvironmentSet>(),
+                Container.get_an_instance_of<environments.EnvironmentSet>(),
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
                 Container.get_an_instance_of<DatabaseMigrator>(),

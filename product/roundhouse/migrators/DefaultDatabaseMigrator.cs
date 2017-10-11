@@ -383,9 +383,9 @@ namespace roundhouse.migrators
             return true;
         }
 
-        public bool this_script_is_new_or_updated(string script_name, string sql_to_run, Environment environment)
+        public bool this_script_is_new_or_updated(string script_name, string sql_to_run, EnvironmentSet environment_set)
         {
-            if (!this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment))
+            if (!this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment_set))
                 return false;
 
             if (this_script_has_run_already(script_name)

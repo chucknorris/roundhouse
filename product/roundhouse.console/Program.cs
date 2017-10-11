@@ -610,7 +610,7 @@ namespace roundhouse.console
         private static RoundhouseUpdateCheckRunner get_update_check_runner(ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner)
         {
             return new RoundhouseUpdateCheckRunner(
-                Container.get_an_instance_of<environments.Environment>(),
+                Container.get_an_instance_of<environments.EnvironmentSet>(),
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
                 Container.get_an_instance_of<DatabaseMigrator>(), 
