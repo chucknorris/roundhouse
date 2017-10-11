@@ -8,7 +8,6 @@ using ILogger = Microsoft.Build.Framework.ILogger;
 
 namespace roundhouse.infrastructure.app
 {
-    using System;
     using System.IO;
     using builders;
     using containers;
@@ -16,7 +15,6 @@ namespace roundhouse.infrastructure.app
     using cryptography;
     using databases;
     using environments;
-    using extensions;
     using filesystem;
     using folders;
     using infrastructure.logging;
@@ -27,7 +25,6 @@ namespace roundhouse.infrastructure.app
     using resolvers;
     using StructureMap;
     using Container = roundhouse.infrastructure.containers.Container;
-    using Environment = roundhouse.environments.Environment;
 
     public static class ApplicationConfiguraton
     {
@@ -125,9 +122,12 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.VersionXPath = ApplicationParameters.default_version_x_path;
             }
-            if (string.IsNullOrEmpty(configuration_property_holder.EnvironmentName))
+            if (string.IsNullOrEmpty(configuration_property_holder.EnvironmentNames))
             {
-                configuration_property_holder.EnvironmentName = ApplicationParameters.default_environment_name;
+                if (!string.IsNullOrEmpty(configuration_property_holder.EnvironmentName))
+                    configuration_property_holder.EnvironmentNames = configuration_property_holder.EnvironmentName;
+                else
+                    configuration_property_holder.EnvironmentNames = ApplicationParameters.default_environment_name;
             }
             if (string.IsNullOrEmpty(configuration_property_holder.OutputPath))
             {
@@ -189,7 +189,7 @@ namespace roundhouse.infrastructure.app
                                             cfg.For<DatabaseMigrator>().Singleton().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
                                             cfg.For<VersionResolver>().Singleton().Use(
                                                 context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<Environment>().Singleton().Use(new DefaultEnvironment(configuration_property_holder));
+                                            cfg.For<EnvironmentSet>().Singleton().Use(new DefaultEnvironmentSet(configuration_property_holder));
                                             cfg.For<Initializer>().Singleton().Use<FileSystemInitializer>();
                                         });
 

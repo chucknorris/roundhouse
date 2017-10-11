@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace roundhouse
 {
     using System;
@@ -12,7 +10,7 @@ namespace roundhouse
     using migrators;
     using resolvers;
     using runners;
-    using Environment = roundhouse.environments.Environment;
+    using environments;
 
     public class Migrate
     {
@@ -55,6 +53,7 @@ namespace roundhouse
         public void Run()
         {
             RoundhouseMigrationRunner migrator = GetMigrationRunner();
+               
 
             migrator.run();
         }
@@ -110,7 +109,7 @@ namespace roundhouse
 
             return new RoundhouseMigrationRunner(
                 this.configuration.RepositoryPath,
-                Container.get_an_instance_of<Environment>(),
+                Container.get_an_instance_of<EnvironmentSet>(),
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
                 Container.get_an_instance_of<DatabaseMigrator>(),
