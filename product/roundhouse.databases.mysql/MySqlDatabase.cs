@@ -1,12 +1,14 @@
 ﻿using roundhouse.consoles;
+using System.IO;
+
 namespace roundhouse.databases.mysql
 {
-    using System;
     using infrastructure.app;
     using infrastructure.extensions;
     using infrastructure.logging;
     using MySql.Data.MySqlClient;
     using System.Collections.Generic;
+    using System;
     using System.IO;
     using System.Globalization;
 
@@ -172,7 +174,12 @@ namespace roundhouse.databases.mysql
 
         public override string restore_database_script(string restore_from_path, string custom_restore_options)
         {
-            throw new NotImplementedException();
+            if (restore_from_path == null)
+                return string.Empty;
+            Log.bound_to(this).log_an_info_event_containing("Restoring from path " + restore_from_path);
+            if (!File.Exists(restore_from_path))
+                return string.Empty;
+            return File.ReadAllText(restore_from_path);
         }
 
         // MySQLScript Helper Functions
