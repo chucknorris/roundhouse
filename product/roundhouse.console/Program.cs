@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using log4net;
 using roundhouse.consoles;
 using roundhouse.databases;
@@ -31,6 +32,8 @@ namespace roundhouse.console
         private static void Main(string[] args)
         {
             Log4NetAppender.configure();
+
+            init_security_protocol();
 
             int exit_code = 0;
 
@@ -558,6 +561,12 @@ namespace roundhouse.console
                 Console.WriteLine("{0}Please press enter to continue...", Environment.NewLine);
                 Console.Read();
             }
+        }
+
+        public static void init_security_protocol()
+        {
+            // allow tls
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
         }
 
         private static void run_update_check(ConfigurationPropertyHolder configuration)
