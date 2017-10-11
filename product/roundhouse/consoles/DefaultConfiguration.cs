@@ -38,7 +38,9 @@ namespace roundhouse.consoles
         public string VersionTableName { get; set; }
         public string ScriptsRunTableName { get; set; }
         public string ScriptsRunErrorsTableName { get; set; }
+        [Obsolete("Use EnvironmentNames")]
         public string EnvironmentName { get; set; }
+        public string EnvironmentNames { get; set; }
         public bool Restore { get; set; }
         public string RestoreFromPath { get; set; }
         public string RestoreCustomOptions { get; set; }

@@ -250,12 +250,12 @@ namespace roundhouse.console
                          "ScriptsRunErrorsTableName - This is the table where RH stores information about scripts that have been run with errors. Once you set this a certain way, do not change this. This is definitelly running with scissors and very sharp. Defaults to \"{0}\".",
                          ApplicationParameters.default_scripts_run_errors_table_name),
                      option => configuration.ScriptsRunErrorsTableName = option)
-                //environment
-                .Add("env=|environment=|environmentname=",
+                //environment(s)
+                .Add("env=|environment=|environmentname=|envs=|environments=|environmentnames=",
                      string.Format(
-                         "EnvironmentName - This allows RH to be environment aware and only run scripts that are in a particular environment based on the naming of the script. LOCAL.something.ENV.sql would only be run in the LOCAL environment. Defaults to \"{0}\".",
+                         "EnvironmentName(s) - This allows RH to be environment aware and only run scripts that are in a particular environment based on the naming of the script. LOCAL.something.ENV.sql would only be run in the LOCAL environment. Multiple environments may be specified as a comma-separated list. Defaults to \"{0}\".",
                          ApplicationParameters.default_environment_name),
-                     option => configuration.EnvironmentName = option)
+                     option => configuration.EnvironmentNames = option)
                 //restore
                 .Add("restore",
                      "Restore - This instructs RH to do a restore (with the restorefrompath parameter) of a database before running migration scripts. Defaults to false.",
@@ -586,7 +586,7 @@ namespace roundhouse.console
         {
             return new RoundhouseMigrationRunner(
                 configuration.RepositoryPath,
-                Container.get_an_instance_of<environments.Environment>(),
+                Container.get_an_instance_of<environments.EnvironmentSet>(),
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
                 Container.get_an_instance_of<DatabaseMigrator>(),
@@ -610,7 +610,7 @@ namespace roundhouse.console
         private static RoundhouseUpdateCheckRunner get_update_check_runner(ConfigurationPropertyHolder configuration, RoundhouseMigrationRunner migration_runner)
         {
             return new RoundhouseUpdateCheckRunner(
-                Container.get_an_instance_of<environments.Environment>(),
+                Container.get_an_instance_of<environments.EnvironmentSet>(),
                 Container.get_an_instance_of<KnownFolders>(),
                 Container.get_an_instance_of<FileSystemAccess>(),
                 Container.get_an_instance_of<DatabaseMigrator>(), 

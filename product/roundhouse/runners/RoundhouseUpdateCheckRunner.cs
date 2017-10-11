@@ -5,14 +5,14 @@ using roundhouse.infrastructure.app;
 using roundhouse.infrastructure.filesystem;
 using roundhouse.infrastructure.logging;
 using roundhouse.migrators;
-using Environment = roundhouse.environments.Environment;
+using roundhouse.environments;
 
 namespace roundhouse.runners
 {
     public class RoundhouseUpdateCheckRunner : IRunner
     {
         private readonly ConfigurationPropertyHolder configuration;
-        private readonly Environment environment;
+        private readonly EnvironmentSet environment_set;
         private readonly KnownFolders known_folders;
         private readonly FileSystemAccess file_system;
         private readonly DatabaseMigrator database_migrator;
@@ -22,14 +22,14 @@ namespace roundhouse.runners
 
 
         public RoundhouseUpdateCheckRunner(
-            Environment environment,
+            EnvironmentSet environment_set,
             KnownFolders known_folders, 
             FileSystemAccess file_system, 
             DatabaseMigrator database_migrator, 
             ConfigurationPropertyHolder configuration,
             RoundhouseMigrationRunner migration_runner)
         {
-            this.environment = environment;
+            this.environment_set = environment_set;
             this.known_folders = known_folders;
             this.file_system = file_system;
             this.database_migrator = database_migrator;
@@ -82,7 +82,7 @@ namespace roundhouse.runners
                 bool script_should_run = database_migrator.this_script_is_new_or_updated(
                     file_system.get_file_name_from(sql_file),
                     sql_file_text,
-                    environment);
+                    environment_set);
 
                 if (script_should_run)
                     return false;
