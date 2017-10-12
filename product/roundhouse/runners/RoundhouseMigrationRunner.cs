@@ -11,7 +11,7 @@ namespace roundhouse.runners
     using infrastructure.logging;
     using migrators;
     using resolvers;
-    using environments;
+    using roundhouse.environments;
 
     public sealed class RoundhouseMigrationRunner : IRunner
     {
@@ -24,6 +24,7 @@ namespace roundhouse.runners
         public bool silent { get; set; }
         public bool dropping_the_database { get; set; }
         private readonly bool dont_create_the_database;
+        private readonly bool dont_alter_the_database;
         private bool run_in_a_transaction;
         private readonly bool use_simple_recovery;
         private readonly ConfigurationPropertyHolder configuration;
@@ -131,10 +132,13 @@ namespace roundhouse.runners
                     Log.bound_to(this).log_an_info_event_containing("{0}", "=".PadRight(50, '='));
 
                     run_out_side_of_transaction_folder(known_folders.before_migration, version_id, new_version);
-                    
-                    database_migrator.open_admin_connection();
-                    log_and_traverse(known_folders.alter_database, version_id, new_version, ConnectionType.Admin);
-                    database_migrator.close_admin_connection();
+
+                    if (!configuration.DoNotAlterDatabase)
+                    {
+                        database_migrator.open_admin_connection();
+                        log_and_traverse(known_folders.alter_database, version_id, new_version, ConnectionType.Admin);
+                        database_migrator.close_admin_connection();
+                    }
 
                     if (database_was_created)
                     {

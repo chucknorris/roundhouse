@@ -284,6 +284,10 @@ namespace roundhouse.console
                 .Add("dc|dnc|donotcreatedatabase",
                      "DoNotCreateDatabase - This instructs RH to not create a database if it does not exists. Defaults to false.",
                      option => configuration.DoNotCreateDatabase = option != null)
+                //don't alter the database (e.g. to avoid needing master DB login)
+                .Add("da|dna|donotalterdatabase",
+                     "DoNotAlterDatabase - This instructs RH to not alter the database. Defaults to false.",
+                     option => configuration.DoNotAlterDatabase = option != null)
                 //output
                 .Add("o=|output=|outputpath=",
                      string.Format(

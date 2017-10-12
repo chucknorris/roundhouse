@@ -1,13 +1,11 @@
+using roundhouse.consoles;
 using roundhouse.databases;
+using roundhouse.environments;
+using roundhouse.migrators;
 using Should;
 
-namespace roundhouse.tests.infrastructure.containers
+namespace roundhouse.tests.migrators
 {
-    using consoles;
-
-    using environments;
-    using migrators;
-
     public class DefaultDatabaseMigratorSpecs
     {
         public abstract class concern_for_database_migrator : TinySpec<DefaultDatabaseMigrator>
