@@ -50,6 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{828B1E
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.databases.sqlserverce", "product\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj", "{3447F080-CF50-4B02-9521-671E7AEE8D34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Build|Any CPU = Build|Any CPU
@@ -129,6 +131,12 @@ Global
 		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41CE538E-E6F1-4AB6-AB66-508DEF669A39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3447F080-CF50-4B02-9521-671E7AEE8D34}.Build|Any CPU.ActiveCfg = Release|Any CPU
+		{3447F080-CF50-4B02-9521-671E7AEE8D34}.Build|Any CPU.Build.0 = Release|Any CPU
+		{3447F080-CF50-4B02-9521-671E7AEE8D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3447F080-CF50-4B02-9521-671E7AEE8D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3447F080-CF50-4B02-9521-671E7AEE8D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3447F080-CF50-4B02-9521-671E7AEE8D34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,6 +151,7 @@ Global
 		{35E058E3-8FEE-4107-AEDC-37A452C588EC} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{1D41D70E-E310-4699-B7CB-C1F77476A685} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{41CE538E-E6F1-4AB6-AB66-508DEF669A39} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
+		{3447F080-CF50-4B02-9521-671E7AEE8D34} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {54AD825C-DC48-4C69-88E5-356B43AC3674}
