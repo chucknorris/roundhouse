@@ -56,7 +56,7 @@ namespace roundhouse.tests.infrastructure.logging
 
             public override void Because()
             {
-                result = Log.bound_to(typeof(StructureMapContainer));
+                result = Log.bound_to(new StructureMapContainer(null));
             }
 
             [Observation]
