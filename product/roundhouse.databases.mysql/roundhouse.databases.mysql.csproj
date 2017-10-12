@@ -100,6 +100,7 @@
     </Compile>
     <Compile Include="MySqlAdoNetProviderResolver.cs" />
     <Compile Include="MySqlDatabase.cs" />
+    <Compile Include="MySqlTokenizer.cs" />
     <Compile Include="orm\ScriptsRunErrorMapping.cs" />
     <Compile Include="orm\ScriptsRunMapping.cs" />
     <Compile Include="orm\VersionMapping.cs" />

@@ -2,14 +2,14 @@ using Moq;
 using roundhouse.consoles;
 using roundhouse.databases;
 using roundhouse.environments;
-using roundhouse.folders;
 using roundhouse.infrastructure.containers;
+using roundhouse.infrastructure.containers.custom;
 using roundhouse.infrastructure.filesystem;
+using roundhouse.infrastructure.logging;
+using roundhouse.infrastructure.logging.custom;
 using roundhouse.migrators;
 using roundhouse.resolvers;
 using roundhouse.runners;
-using roundhouse.tests.migrators;
-using Should;
 
 namespace roundhouse.tests.runners
 {
@@ -23,14 +23,14 @@ namespace roundhouse.tests.runners
             private RoundhouseMigrationRunner default_database_migrator;
 
             protected Mock<DatabaseMigrator> database_migrator_mock;
-            protected DatabaseMigrator database_migrator;
 
             protected concern_for_migrator_runner()
             {
                 configuration = new DefaultConfiguration
                 {
                     EnvironmentName = "TEST",
-                    Drop = false 
+                    Drop = false ,
+                    Silent = true
                 };
 
                 var database_mock = new Mock<Database>();
@@ -39,11 +39,10 @@ namespace roundhouse.tests.runners
 
                 var known_folders_mock = new MockKnownFolders();
 
-                var environment_mock = Mock.Of<Environment>();
+                var environment_mock = Mock.Of<EnvironmentSet>();
                 
                 database_migrator_mock = new Mock<DatabaseMigrator>();
                 database_migrator_mock.Setup(m => m.database).Returns(database_mock.Object);
-                database_migrator = database_migrator_mock.Object;
 
                 default_database_migrator = 
                         new RoundhouseMigrationRunner(
@@ -51,7 +50,7 @@ namespace roundhouse.tests.runners
                             environment_mock,
                             known_folders_mock,
                             filesystem_mock.Object,
-                            database_migrator,
+                            database_migrator_mock.Object,
                             version_resolver_mock.Object,
                             configuration.Silent,
                             configuration.Drop,
@@ -59,13 +58,39 @@ namespace roundhouse.tests.runners
                             configuration.WithTransaction,
                             configuration.RecoveryModeSimple,
                             configuration);
+
+                var container_mock = new Mock<InversionContainer>();
+
+                setup_logging(container_mock);
+
+                var the_container = container_mock.Object;
+                Container.initialize_with(the_container);
             }
 
-            public override void Context()
+            private static void setup_logging(Mock<InversionContainer> container_mock)
             {
-                environment = new DefaultEnvironment(configuration);
+                var mock_log_factory = new Mock<LogFactory>();
+                var log_factory = mock_log_factory.Object;
+
+                var logger = get_logger();
+
+                mock_log_factory.Setup(x => x.create_logger_bound_to(typeof(RoundhouseMigrationRunner)))
+                    .Returns(logger);
+
+                container_mock.Setup(x => x.Resolve<LogFactory>())
+                    .Returns(log_factory);
             }
 
+            private static Logger get_logger()
+            {
+                return new TraceLogger(true);
+            }
+
+            public override void AfterEachSpec()
+            {
+                Container.initialize_with(null);
+            }
+ 
             protected override RoundhouseMigrationRunner sut
             {
                 get { return default_database_migrator;}
@@ -76,9 +101,16 @@ namespace roundhouse.tests.runners
         [Concern(typeof(RoundhouseMigrationRunner))]
         public class when_setting_do_not_alter_database : concern_for_migrator_runner
         {
-            public override void Because()
+            public when_setting_do_not_alter_database(): base()
             {
                 configuration.DoNotAlterDatabase = true;
+            }
+
+            public override void Context()
+            {}
+
+            public override void Because()
+            {
                 sut.run();
             }
 
@@ -92,10 +124,18 @@ namespace roundhouse.tests.runners
         [Concern(typeof(RoundhouseMigrationRunner))]
         public class when_not_setting_do_not_alter_database : concern_for_migrator_runner
         {
-            public override void Because()
+
+            public when_not_setting_do_not_alter_database(): base()
             {
                 configuration.DoNotAlterDatabase = false;
                 sut.run();
+            }
+
+            public override void Context()
+            {}
+
+            public override void Because()
+            {
             }
 
             [Observation]

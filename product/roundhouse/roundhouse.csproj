@@ -46,6 +46,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -77,7 +78,7 @@
     </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
+      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Framework">
       <Private>True</Private>
@@ -125,6 +126,8 @@
     <Compile Include="consoles\InteractivePrompt.cs" />
     <Compile Include="cryptography\LocalMD5Implementation.cs" />
     <Compile Include="databases\RecoveryMode.cs" />
+    <Compile Include="environments\DefaultEnvironmentSet.cs" />
+    <Compile Include="environments\EnvironmentSet.cs" />
     <Compile Include="infrastructure.app\ConnectionType.cs" />
     <Compile Include="databases\DefaultDatabase.cs" />
     <Compile Include="databases\MockDatabase.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="infrastructure.app\DatabaseTypeSynonyms.cs" />
     <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
     <Compile Include="infrastructure\extensions\ObjectExtensions.cs" />
+    <Compile Include="infrastructure\logging\custom\TraceLogger.cs" />
     <Compile Include="infrastructure\logging\custom\ConsoleLogger.cs" />
     <Compile Include="infrastructure\persistence\AuditEventListener.cs" />
     <Compile Include="infrastructure\persistence\DifferencingNHibernateSessionFactory.cs" />

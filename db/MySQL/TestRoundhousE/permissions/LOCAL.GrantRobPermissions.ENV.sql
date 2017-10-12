@@ -1,4 +1,4 @@
-DROP USER 'rob'@'%';
+DROP USER IF EXISTS 'rob'@'%';
 
 CREATE USER 'rob'@'%' IDENTIFIED BY 'RHr0x0r!';
 
