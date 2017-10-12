@@ -11,7 +11,7 @@ namespace roundhouse.runners
     using infrastructure.logging;
     using migrators;
     using resolvers;
-    using environments;
+    using roundhouse.environments;
 
     public sealed class RoundhouseMigrationRunner : IRunner
     {

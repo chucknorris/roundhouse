@@ -39,7 +39,7 @@ namespace roundhouse.tests.runners
 
                 var known_folders_mock = new MockKnownFolders();
 
-                var environment_mock = Mock.Of<Environment>();
+                var environment_mock = Mock.Of<EnvironmentSet>();
                 
                 database_migrator_mock = new Mock<DatabaseMigrator>();
                 database_migrator_mock.Setup(m => m.database).Returns(database_mock.Object);
@@ -59,7 +59,6 @@ namespace roundhouse.tests.runners
                             configuration.RecoveryModeSimple,
                             configuration);
 
-                environment = new DefaultEnvironment(configuration);
                 var container_mock = new Mock<InversionContainer>();
 
                 setup_logging(container_mock);
