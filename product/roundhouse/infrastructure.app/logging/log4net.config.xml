@@ -1,4 +1,7 @@
 ﻿<?xml version="1.0"?>
+<!-- For colors that can be used with ManagedColoredConsoleAppender, see
+     http://msdn.microsoft.com/en-us/library/system.consolecolor(v=vs.110).aspx 
+-->
 <log4net>
   <appender name="ColoredConsoleAppender" type="log4net.Appender.ManagedColoredConsoleAppender">
     <mapping>

@@ -27,10 +27,13 @@ namespace roundhouse.infrastructure.persistence
                                 () => MsSqlConfiguration.MsSql2005.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.sqlserver2000.SqlServerDatabase, roundhouse.databases.sqlserver2000",
                                 () => MsSqlConfiguration.MsSql2000.ConnectionString(configuration_holder.ConnectionString));
+            func_dictionary.Add("roundhouse.databases.sqlserverce.SqlServerCEDatabase, roundhouse.databases.sqlserverce",
+                                () => MsSqlCeConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.mysql.MySqlDatabase, roundhouse.databases.mysql",
                                 () => MySQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.oracle.OracleDatabase, roundhouse.databases.oracle",
-                                () => OracleClientConfiguration.Oracle9.ConnectionString(configuration_holder.ConnectionString));
+                                () => OracleClientConfiguration.Oracle9.ConnectionString(configuration_holder.ConnectionString)
+                                        .Driver("roundhouse.databases.oracle.RoundhousEOracleDriver, roundhouse.databases.oracle"));
             func_dictionary.Add("roundhouse.databases.access.AccessDatabase, roundhouse.databases.access",
                                 () => JetDriverConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.sqlite.SqliteDatabase, roundhouse.databases.sqlite",
@@ -43,10 +46,13 @@ namespace roundhouse.infrastructure.persistence
                                 () => MsSqlConfiguration.MsSql2005.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.sqlserver2000.SqlServerDatabase, " + merged_assembly_name,
                                 () => MsSqlConfiguration.MsSql2000.ConnectionString(configuration_holder.ConnectionString));
+            func_dictionary.Add("roundhouse.databases.sqlserverce.SqlServerCEDatabase, " + merged_assembly_name,
+                                () => MsSqlCeConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.mysql.MySqlDatabase, " + merged_assembly_name,
                                 () => MySQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.oracle.OracleDatabase, " + merged_assembly_name,
-                                () => OracleClientConfiguration.Oracle9.ConnectionString(configuration_holder.ConnectionString));
+                                () => OracleClientConfiguration.Oracle9.ConnectionString(configuration_holder.ConnectionString)
+                                        .Driver("roundhouse.databases.oracle.RoundhousEOracleDriver, " + merged_assembly_name));
             func_dictionary.Add("roundhouse.databases.access.AccessDatabase, " + merged_assembly_name,
                                 () => JetDriverConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.sqlite.SqliteDatabase, " + merged_assembly_name,
