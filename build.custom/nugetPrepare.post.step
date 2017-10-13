@@ -69,6 +69,7 @@
         <include name="buildCustomization/**" />
         <include name="logo/**" />
         <include name="*.dot" />
+        <include name="*.docx" />
         <include name="*.pptx" />
       </fileset>
     </delete>
