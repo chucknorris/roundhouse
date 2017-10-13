@@ -1,6 +1,8 @@
-﻿namespace roundhouse.tasks
+﻿
+namespace roundhouse.tasks
 {
     using System;
+    using System.Collections.Generic;
     using databases;
     using folders;
     using infrastructure.app;
@@ -190,6 +192,7 @@
         public System.Text.Encoding FileEncoding { get; set; }
 
         public bool DisableOutput { get; set; }
+        public Dictionary<string, string> UserTokens { get; set; }
 
         public bool Initialize { get; set; }
         public string ConfigurationFile { get; set; }

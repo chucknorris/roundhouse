@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace roundhouse.consoles
 {
     using System;
@@ -65,6 +67,7 @@ namespace roundhouse.consoles
         public bool DisableTokenReplacement { get; set; }
         public bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         public bool DisableOutput { get; set; }
+        public Dictionary<string, string> UserTokens { get; set; }
         public bool Initialize { get; set; }
         public string ConfigurationFile { get; set; }
         public System.Text.Encoding FileEncoding { get; set; }

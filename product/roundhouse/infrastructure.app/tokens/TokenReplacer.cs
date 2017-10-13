@@ -36,7 +36,19 @@ namespace roundhouse.infrastructure.app.tokens
             Dictionary<string, string> property_dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (var property in configuration.GetType().GetProperties())
             {
-                property_dictionary.Add(property.Name, property.GetValue(configuration, null).to_string());
+                if (property.Name == "UserTokens")
+                {
+                    var user_tokens = property.GetValue(configuration, null) as Dictionary<string, string>;
+                    if (user_tokens == null)
+                        continue;
+
+                    foreach (var user_token in user_tokens)
+                    {
+                        property_dictionary[user_token.Key] = user_token.Value;
+                    }
+                }
+                else property_dictionary.Add(property.Name, property.GetValue(configuration, null).to_string());
+
             }
 
             return property_dictionary;
