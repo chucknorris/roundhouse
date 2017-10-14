@@ -17,6 +17,8 @@ namespace roundhouse.consoles
         public int CommandTimeout { get; set; }
         public int CommandTimeoutAdmin { get; set; }
         public string SqlFilesDirectory { get; set; }
+        public string SqlDataFileDirectory { get; set; }
+        public string SqlLogFileDirectory { get; set; }
         public string RepositoryPath { get; set; }
         public string Version { get; set; }
         public string VersionFile { get; set; }
