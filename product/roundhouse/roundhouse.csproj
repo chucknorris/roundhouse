@@ -135,6 +135,7 @@
     <Compile Include="infrastructure.app\builders\VersionResolverBuilder.cs" />
     <Compile Include="infrastructure.app\DatabaseTypeSynonyms.cs" />
     <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
+    <Compile Include="infrastructure.app\UserTokenParser.cs" />
     <Compile Include="infrastructure\extensions\ObjectExtensions.cs" />
     <Compile Include="infrastructure\logging\custom\TraceLogger.cs" />
     <Compile Include="infrastructure\logging\custom\ConsoleLogger.cs" />

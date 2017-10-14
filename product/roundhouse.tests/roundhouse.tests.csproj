@@ -112,6 +112,7 @@
     <Compile Include="EmptyTestContainer.cs" />
     <Compile Include="cryptography\CryptographicServiceSpecs.cs" />
     <Compile Include="infrastructure.app\tokens\TokenReplacerSpecs.cs" />
+    <Compile Include="infrastructure.app\tokens\UserTokenParserSpecs.cs" />
     <Compile Include="infrastructure\containers\ContainerSpecs.cs" />
     <Compile Include="infrastructure\containers\custom\StructureMapContainerSpecs.cs" />
     <Compile Include="infrastructure\extensions\IterationSpecs.cs" />

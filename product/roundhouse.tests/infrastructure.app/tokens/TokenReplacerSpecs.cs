@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace roundhouse.tests.infrastructure.app.tokens
 {
     using consoles;
@@ -14,7 +16,15 @@ namespace roundhouse.tests.infrastructure.app.tokens
 
             public override void Context()
             {
-                configuration = new DefaultConfiguration { DatabaseName = database_name };
+                configuration = new DefaultConfiguration
+                {
+                    DatabaseName = database_name,
+                    UserTokens = new Dictionary<string,string>()
+                    {
+                        { "UserId", "123" },
+                        { "UserName", "Some Name" }
+                    }
+                };
             }
         }
 
@@ -71,6 +81,39 @@ namespace roundhouse.tests.infrastructure.app.tokens
             {
                 TokenReplacer.replace_tokens(configuration, "ALTER DATABASE {{DataBase}}").should_be_equal_to("ALTER DATABASE {{DataBase}}");
             }
+            [Observation]
+            public void if_given_userid_and_username_should_replace_with_the_user_tokens_from_the_configuration()
+            {
+                TokenReplacer.replace_tokens(configuration, "SELECT * FROM Users WHERE UserId = {{UserId}} OR UserName = '{{UserName}}'")
+                .should_be_equal_to("SELECT * FROM Users WHERE UserId = "+configuration.UserTokens["UserId"]+" OR UserName = '"+configuration.UserTokens["UserName"]+"'");
+            }
         }
+        [Concern(typeof(TokenReplacer))]
+        public class when_replacing_tokens_in_sql_files_using_user_tokens_from_configuration : TinySpec
+        {
+            protected static object result;
+            protected static ConfigurationPropertyHolder configuration;
+            
+            public override void Context()
+            {
+                configuration = new DefaultConfiguration
+                {
+                    UserTokens = new Dictionary<string,string>()
+                    {
+                        { "UserId", "123" },
+                        { "UserName", "Some Name" }
+                    }
+                };
+            }
+
+            public override void Because() {}
+    
+            [Observation]
+            public void if_given_bracket_bracket_DatabaseName_bracket_bracket_should_replace_with_the_DatabaseName_from_the_configuration()
+            {
+                TokenReplacer.replace_tokens(configuration, "SELECT * FROM Users WHERE UserId = {{UserId}} OR UserName = '{{UserName}}'")
+                .should_be_equal_to("SELECT * FROM Users WHERE UserId = " + configuration.UserTokens["UserId"] + " OR UserName = '" + configuration.UserTokens["UserName"] + "'");
+            }
+}
     }
 }

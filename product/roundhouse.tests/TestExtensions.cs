@@ -1,5 +1,7 @@
 using System;
 using NUnit.Framework;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace roundhouse.tests
 {
@@ -28,6 +30,15 @@ namespace roundhouse.tests
         public static void should_throw_an<T>(this Action a) where T: Exception
         {
             Assert.Throws<T>(() => a());
+        }
+
+        public static void should_only_contain<K,V>(this IDictionary<K,V> dictionary, params KeyValuePair<K,V>[] values)
+        {
+            Assert.That(dictionary, Has.Count.EqualTo(values.Length));
+            foreach(var value in values)
+            {
+                Assert.That(dictionary, Contains.Item(value));
+            }
         }
     }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using roundhouse.infrastructure.logging;
 
 namespace roundhouse.infrastructure.app
@@ -65,6 +66,7 @@ namespace roundhouse.infrastructure.app
         bool DisableTokenReplacement { get; set; }
         bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         bool DisableOutput { get; set; }
+        Dictionary<string, string> UserTokens { get; set; }
         System.Text.Encoding FileEncoding { get; set; }
         string ConfigurationFile { get; set; }
 	}
