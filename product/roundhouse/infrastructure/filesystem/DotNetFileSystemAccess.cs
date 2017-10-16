@@ -69,32 +69,36 @@ namespace roundhouse.infrastructure.filesystem
         }
 
         /// <summary>
-        /// Takes a guess at the file encoding by looking to see if it has a BOM
+        /// Try to use BOM to detect encoding. If BOM is not present, use default from configuration or UTF-8 if configuration is empty.
         /// </summary>
         /// <param name="file_path">Path to the file name</param>
         /// <returns>A best guess at the encoding of the file</returns>
-        /// <remarks>http://www.west-wind.com/WebLog/posts/197245.aspx</remarks>
+        /// <remarks>https://stackoverflow.com/a/4522251/381282</remarks>
         public Encoding get_file_encoding(string file_path)
         {
-            if(configuration.FileEncoding != null)
-            {
-                return configuration.FileEncoding;
-            }
-            // *** Use Default of Encoding.Default (Ansi CodePage)
-            Encoding enc = Encoding.Default;
+            Encoding enc = configuration.DefaultEncoding ?? Encoding.UTF8;
 
-            // *** Detect byte order mark if any - otherwise assume default
+            // *** Detect byte order mark if any
             byte[] buffer = new byte[5];
-            FileStream file = new FileStream(file_path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            file.Read(buffer, 0, 5);
-            file.Close();
-
+            int bytes_read;
+            using (FileStream file = new FileStream(file_path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                bytes_read = file.Read(buffer, 0, 5);
+            }
+            
             if (buffer[0] == 0xef && buffer[1] == 0xbb && buffer[2] == 0xbf)
                 enc = Encoding.UTF8;
             else if (buffer[0] == 0xfe && buffer[1] == 0xff)
-                enc = Encoding.Unicode;
+                enc = Encoding.BigEndianUnicode;     // UTF-16 BE
+            if (buffer[0] == 0xff && buffer[1] == 0xfe)
+            {
+                if(bytes_read >= 4 && buffer[2] == 0 && buffer[3] == 0)
+                    enc = Encoding.UTF32;   // UTF-32 LE
+                else
+                    enc = Encoding.Unicode; // UTF-16 LE
+            }                
             else if (buffer[0] == 0 && buffer[1] == 0 && buffer[2] == 0xfe && buffer[3] == 0xff)
-                enc = Encoding.UTF32;
+                enc = Encoding.GetEncoding(12001);   // UTF-32 BE
             else if (buffer[0] == 0x2b && buffer[1] == 0x2f && buffer[2] == 0x76)
                 enc = Encoding.UTF7;
 

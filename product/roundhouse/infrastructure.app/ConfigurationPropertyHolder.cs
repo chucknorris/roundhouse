@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using roundhouse.infrastructure.logging;
+// ReSharper disable InconsistentNaming
 
 namespace roundhouse.infrastructure.app
 {
@@ -67,7 +68,7 @@ namespace roundhouse.infrastructure.app
         bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         bool DisableOutput { get; set; }
         Dictionary<string, string> UserTokens { get; set; }
-        System.Text.Encoding FileEncoding { get; set; }
+        System.Text.Encoding DefaultEncoding { get; set; }
         string ConfigurationFile { get; set; }
 	}
 }

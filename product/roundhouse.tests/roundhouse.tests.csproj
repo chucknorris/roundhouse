@@ -181,7 +181,25 @@
     <Content Include="infrastructure\filesystem\ansiencoded.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="infrastructure\filesystem\utf8encoded.txt">
+    <Content Include="infrastructure\filesystem\utf16BE_with_bom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="infrastructure\filesystem\utf16LE_with_bom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="infrastructure\filesystem\utf32BE_with_bom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="infrastructure\filesystem\utf32LE_with_bom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="infrastructure\filesystem\utf8_no_bom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="infrastructure\filesystem\utf8_with_bom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="infrastructure\filesystem\very_small_file.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

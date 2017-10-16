@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using NUnit.Framework;
 
@@ -11,45 +12,120 @@ namespace roundhouse.tests.infrastructure.filesystem
     {
         public abstract class concern_for_file_system : TinySpec<DotNetFileSystemAccess>
         {
-            protected object result;
-            private DotNetFileSystemAccess dot_net_file_system_access = new DotNetFileSystemAccess(new DefaultConfiguration());
+            protected DotNetFileSystemAccess dot_net_file_system_access;
 
-            public override void Context() { }
+            protected string utf_expected_string;
+
+            protected string very_small_file;
+            protected string utf8_file_with_bom;
+            protected string utf8_file_no_bom;
+            protected string utf16LE_file_with_bom;
+            protected string utf16BE_file_with_bom;
+            protected string utf32LE_file_with_bom;
+            protected string utf32BE_file_with_bom;
+            protected string ansi_file;
+
             protected override DotNetFileSystemAccess sut
             {
                 get { return dot_net_file_system_access; }
                 set { dot_net_file_system_access = value; }
             }
-        }
 
-        [Concern(typeof(DotNetFileSystemAccess))]
-        public class when_reading_files_with_different_formats : concern_for_file_system
-        {
-            protected static string utf8_file;
-            protected static string ansi_file;
+            private string read_test_file(string file_name)
+            {
+                return sut.read_file_text(Path.Combine(TestContext.CurrentContext.TestDirectory, string.Format(@"infrastructure\filesystem\{0}", file_name)));
+            }
 
             public override void Because()
             {
-                utf8_file = sut.read_file_text(Path.Combine(TestContext.CurrentContext.TestDirectory, @"infrastructure\filesystem\utf8encoded.txt"));
-                ansi_file = sut.read_file_text(Path.Combine(TestContext.CurrentContext.TestDirectory, @"infrastructure\filesystem\ansiencoded.txt"));
+                // NOTE: When testing encodings, its important to do it so the result doesnt depend on how the compiler itself will read the source file.
+                // Best way to do it is to work with byte representation i.e. do not include any non ASCII characters (> 127) in source code directly...
+                string unicode_character = Encoding.UTF8.GetString(new byte[] { 0xc3, 0xa3 });  // small "a" with tilde (utf-8)
+                utf_expected_string = string.Format("INSERT INTO [dbo].[timmy]([value]) VALUES('G{0}')", unicode_character);
+
+                very_small_file = read_test_file("very_small_file.txt");
+                utf8_file_with_bom = read_test_file("utf8_with_bom.txt");
+                utf8_file_no_bom = read_test_file("utf8_no_bom.txt");
+                utf16LE_file_with_bom = read_test_file("utf16LE_with_bom.txt");
+                utf16BE_file_with_bom = read_test_file("utf16BE_with_bom.txt");
+                utf32LE_file_with_bom = read_test_file("utf32LE_with_bom.txt");
+                utf32BE_file_with_bom = read_test_file("utf32BE_with_bom.txt");
+
+                ansi_file = read_test_file("ansiencoded.txt");
             }
 
             [Observation]
-            public void utf8_encoded_file_should_read_correctly()
+            public void very_small_file_should_read_correctly()
             {
-                utf8_file.should_be_equal_to("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')");
+                very_small_file.should_be_equal_to("GO");
             }
 
             [Observation]
-            public void ansi_encoded_file_should_read_correctly()
+            public void utf8_encoded_file_with_bom_should_read_correctly()
             {
-                ansi_file.should_be_equal_to(to_default_code_page("INSERT INTO [dbo].[timmy]([value]) VALUES('Gã')"));
+                utf8_file_with_bom.should_be_equal_to(utf_expected_string);
             }
 
-            private string to_default_code_page(string english_code_page_text)
+            [Observation]
+            public void utf16LE_encoded_file_with_bom_should_read_correctly()
             {
-                var bytes = Encoding.GetEncoding(1252).GetBytes(english_code_page_text);
-                return Encoding.Default.GetString(bytes);
+                utf16LE_file_with_bom.should_be_equal_to(utf_expected_string);
+            }
+
+            [Observation]
+            public void utf16BE_encoded_file_with_bom_should_read_correctly()
+            {
+                utf16BE_file_with_bom.should_be_equal_to(utf_expected_string);
+            }
+
+            [Observation]
+            public void utf32LE_encoded_file_with_bom_should_read_correctly()
+            {
+                utf32LE_file_with_bom.should_be_equal_to(utf_expected_string);
+            }
+
+            [Observation]
+            public void utf32BE_encoded_file_with_bom_should_read_correctly()
+            {
+                utf32BE_file_with_bom.should_be_equal_to(utf_expected_string);
+            }
+        }
+
+        
+        [Concern(typeof(DotNetFileSystemAccess))]
+        public class when_reading_files_with_different_formats_with_default_configuration : concern_for_file_system
+        {
+            public override void Context()
+            {
+                dot_net_file_system_access = new DotNetFileSystemAccess(new DefaultConfiguration());
+            }
+
+            [Observation]
+            public void utf8_encoded_file_without_bom_should_read_correctly()
+            {
+                utf8_file_no_bom.should_be_equal_to(utf_expected_string);
+            }
+        }
+
+        [Concern(typeof(DotNetFileSystemAccess))]
+        public class when_reading_files_with_different_formats_with_ansi_encoding_configuration : concern_for_file_system
+        {
+            private readonly Encoding ansi_encoding = Encoding.GetEncoding("windows-1252");
+
+            public override void Context()
+            {
+                dot_net_file_system_access = new DotNetFileSystemAccess(
+                    new DefaultConfiguration { DefaultEncoding =  ansi_encoding }
+                );
+            }
+
+            [Observation]
+            public void ansi_encoded_file_shoul_read_correctly()
+            {
+                // small "a" with tilde in Windows-1252
+                string extended_ascii_character = ansi_encoding.GetString(new byte[] { 0xe3 }); 
+
+                ansi_file.should_be_equal_to(string.Format("INSERT INTO [dbo].[timmy]([value]) VALUES('G{0}')", extended_ascii_character));
             }
         }
     }

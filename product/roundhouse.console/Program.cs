@@ -351,15 +351,16 @@ namespace roundhouse.console
                      "SearchAllSubdirectoriesInsteadOfTraverse - Each Migration folder's subdirectories are traversed by default. This option pulls back scripts from the main directory and all subdirectories at once. Defaults to 'false'",
                      option => configuration.SearchAllSubdirectoriesInsteadOfTraverse = option != null)
                 .Add("isuptodate",
-                     "This option prints whether there are any database updates or not, whithout actually running them. Other output except errors is disabled, to make it easy to use in scripts.",
+                     "This option prints whether there are any database updates or not, without actually running them. Other output except errors is disabled, to make it easy to use in scripts.",
                      option => { })
-                .Add("fileencoding=",
-                     "File Encoding - Explicitly specify the file encoding of all files",
+                // default encoding
+                .Add("defaultencoding=",
+                     "Default encoding to use for loading script file from disk if file doesn't contain BOM. For the list of possible values see the column Name in table listed in .NET Encoding class documentation. Defaults to UTF-8",
                      option =>
                          {
                              if(option != null)
                              {
-                                 configuration.FileEncoding = System.Text.Encoding.GetEncoding(option);
+                                 configuration.DefaultEncoding = System.Text.Encoding.GetEncoding(option);
                              }
                          })
                 //load configuration from file
@@ -414,6 +415,7 @@ namespace roundhouse.console
                         "/dryrun " +
                         "/search[allsubdirectories]insteadoftraverse " +
                         "/isuptodate" +
+                        "/defaultencoding VALUE" +
                         "]", Environment.NewLine);
                 show_help(usage_message, option_set);
             }
