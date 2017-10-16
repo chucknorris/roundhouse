@@ -1,4 +1,5 @@
 using roundhouse.infrastructure.logging;
+// ReSharper disable InconsistentNaming
 
 namespace roundhouse.infrastructure.app
 {
@@ -65,7 +66,7 @@ namespace roundhouse.infrastructure.app
         bool DisableTokenReplacement { get; set; }
         bool SearchAllSubdirectoriesInsteadOfTraverse { get; set; }
         bool DisableOutput { get; set; }
-        System.Text.Encoding FileEncoding { get; set; }
+        System.Text.Encoding DefaultEncoding { get; set; }
         string ConfigurationFile { get; set; }
 	}
 }

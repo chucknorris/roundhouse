@@ -67,6 +67,6 @@ namespace roundhouse.consoles
         public bool DisableOutput { get; set; }
         public bool Initialize { get; set; }
         public string ConfigurationFile { get; set; }
-        public System.Text.Encoding FileEncoding { get; set; }
+        public System.Text.Encoding DefaultEncoding { get; set; }
 	}
 }
