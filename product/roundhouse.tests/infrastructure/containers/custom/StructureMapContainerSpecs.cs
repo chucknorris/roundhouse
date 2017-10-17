@@ -41,7 +41,7 @@ namespace roundhouse.tests.infrastructure.containers.custom
 
             public concerns_using_a_real_container()
             {
-                the_container = ObjectFactory.Container;
+                the_container = new StructureMap.Container();
                 sut = new StructureMapContainer(the_container);
             }
         }
