@@ -23,12 +23,14 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Castle.Core" Version="4.2.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="Moq" Version="4.7.142" />
     <PackageReference Include="NUnit" Version="3.8.1" />
     <PackageReference Include="NUnit.ConsoleRunner" Version="3.7.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
     <PackageReference Include="Should" version="1.1.20" />
     <PackageReference Include="structuremap" version="4.5.2" />
+    <PackageReference Include="StructureMap" Version="4.5.2" />
     <PackageReference Include="TinySpec.NUnit" version="0.9.5" />
   </ItemGroup>
   <ItemGroup>
@@ -42,7 +44,6 @@
     <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
     <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
   </ItemGroup>
- 
   <ItemGroup>
     <Content Include="infrastructure\filesystem\ansiencoded.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
