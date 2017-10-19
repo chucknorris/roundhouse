@@ -205,10 +205,9 @@
                 commandline="${solution.path} /nologo /property:Configuration=${msbuild.configuration} /verbosity:minimal" />
           </if>
           <if test="${framework::get-family(microsoft.framework.specific) != 'mono'}" >
-            <exec program="${app.msbuild}"
-                basedir="${dirs.build}"
+             <exec program="${app.msbuild}"
                 workingdir="${dirs.build}"
-                commandline='${solution.path} /nologo /property:OutputPath="${msbuild.outputpath}" /property:Configuration=${msbuild.configuration} /verbosity:minimal /property:Platform=${msbuild.platform} /l:${msbuild.logger};&quot;${dirs.build_results}${path.separator}msbuild-${microsoft.framework.specific}-results.xml&quot;'
+                commandline='${solution.path} /nologo /property:OutputPath="${msbuild.outputpath}" /property:Configuration="${msbuild.configuration}" /verbosity:minimal /property:Platform="${msbuild.platform}" /l:${msbuild.logger};&quot;${dirs.build_results}${path.separator}msbuild-${microsoft.framework.specific}-results.xml&quot;'
             />
           </if>
         </if>
@@ -227,10 +226,9 @@
                 commandline="${solution.path.windows.mono} /nologo /property:Configuration=${msbuild.configuration} /verbosity:minimal" />
           </if>
           <if test="${framework::get-family(microsoft.framework.specific) != 'mono'}" >
-            <exec program="${app.msbuild}"
-                basedir="${dirs.build}"
+             <exec program="${app.msbuild}"
                 workingdir="${dirs.build}"
-                commandline='${solution.path} /nologo /property:OutputPath="${msbuild.outputpath}" /property:Configuration=${msbuild.configuration} /verbosity:minimal /property:Platform=${msbuild.platform} /l:${msbuild.logger};&quot;${dirs.build_results}${path.separator}msbuild-${microsoft.framework.specific}-results.xml&quot;'
+                commandline='${solution.path} /nologo /property:OutputPath="${msbuild.outputpath}" /property:Configuration="${msbuild.configuration}" /verbosity:minimal /property:Platform="${msbuild.platform}" /l:${msbuild.logger};&quot;${dirs.build_results}${path.separator}msbuild-${microsoft.framework.specific}-results.xml&quot;'
             />
           </if>
         </if>

@@ -137,7 +137,7 @@ namespace roundhouse.tests.infrastructure.containers.custom
             [Observation]
             public void should_throw_an_exception()
             {
-                attempting_to_get_an_unregistered_item.should_throw_an<StructureMapException>();
+                attempting_to_get_an_unregistered_item.should_throw_an<StructureMapConfigurationException>();
             }
         }
     }
