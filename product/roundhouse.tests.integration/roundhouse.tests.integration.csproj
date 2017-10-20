@@ -38,7 +38,7 @@
     <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Build|AnyCPU' ">
-    <OutputPath>..\..\build_output\RoundhousE\</OutputPath>
+    <OutputPath>..\..\build_output\RoundhousE.IntegrationTests\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
