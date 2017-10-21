@@ -4,34 +4,10 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>roundhouse</RootNamespace>
     <AssemblyName>roundhouse</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <NoWarn>NU1701</NoWarn>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -99,101 +75,6 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="connections\AdoNetConnection.cs" />
-    <Compile Include="connections\IConnection.cs" />
-    <Compile Include="consoles\CommandExecutor.cs" />
-    <Compile Include="consoles\InteractivePrompt.cs" />
-    <Compile Include="cryptography\LocalMD5Implementation.cs" />
-    <Compile Include="databases\RecoveryMode.cs" />
-    <Compile Include="environments\DefaultEnvironmentSet.cs" />
-    <Compile Include="environments\EnvironmentSet.cs" />
-    <Compile Include="infrastructure.app\ConnectionType.cs" />
-    <Compile Include="databases\DefaultDatabase.cs" />
-    <Compile Include="databases\MockDatabase.cs" />
-    <Compile Include="DifferenceWithFluentNHibernate.cs" />
-    <Compile Include="infrastructure.app\builders\VersionResolverBuilder.cs" />
-    <Compile Include="infrastructure.app\DatabaseTypeSynonyms.cs" />
-    <Compile Include="infrastructure.app\persistence\NHibernateMigrationSessionFactory.cs" />
-    <Compile Include="infrastructure\extensions\ObjectExtensions.cs" />
-    <Compile Include="infrastructure\logging\custom\TraceLogger.cs" />
-    <Compile Include="infrastructure\logging\custom\ConsoleLogger.cs" />
-    <Compile Include="infrastructure\persistence\AuditEventListener.cs" />
-    <Compile Include="infrastructure\persistence\DifferencingNHibernateSessionFactory.cs" />
-    <Compile Include="infrastructure\persistence\IRepository.cs" />
-    <Compile Include="infrastructure\persistence\NHibernateSessionFactoryBuilder.cs" />
-    <Compile Include="infrastructure\persistence\Repository.cs" />
-    <Compile Include="infrastructure.app\tokens\TokenReplacer.cs" />
-    <Compile Include="init\Initializer.cs" />
-    <Compile Include="model\Auditable.cs" />
-    <Compile Include="model\ScriptsRun.cs" />
-    <Compile Include="model\ScriptsRunError.cs" />
-    <Compile Include="model\Version.cs" />
-    <Compile Include="parameters\AdoNetParameter.cs" />
-    <Compile Include="parameters\IParameter.cs" />
-    <Compile Include="Migrate.cs" />
-    <Compile Include="resolvers\CommandLineVersionResolver.cs" />
-    <Compile Include="resolvers\JsonVersionResolver.cs" />
-    <Compile Include="resolvers\ScriptfileVersionResolver.cs" />
-    <Compile Include="resolvers\TextVersionResolver.cs" />
-    <Compile Include="RoundhousEFluentNHibernateDiffingType.cs" />
-    <Compile Include="RoundhouseMode.cs" />
-    <Compile Include="runners\RoundhouseNHibernateCompareRunner.cs" />
-    <Compile Include="runners\RoundhouseRedGateCompareRunner.cs" />
-    <Compile Include="runners\RoundhouseUpdateCheckRunner.cs" />
-    <Compile Include="sqlsplitters\StatementSplitter.cs" />
-    <Compile Include="consoles\DefaultConfiguration.cs" />
-    <Compile Include="cryptography\CryptographicService.cs" />
-    <Compile Include="cryptography\MD5CryptographicService.cs" />
-    <Compile Include="databases\AdoNetDatabase.cs" />
-    <Compile Include="environments\DefaultEnvironment.cs" />
-    <Compile Include="environments\Environment.cs" />
-    <Compile Include="folders\DefaultFolder.cs" />
-    <Compile Include="folders\DefaultKnownFolders.cs" />
-    <Compile Include="folders\Folder.cs" />
-    <Compile Include="folders\KnownFolders.cs" />
-    <Compile Include="folders\DefaultMigrationsFolder.cs" />
-    <Compile Include="folders\MigrationsFolder.cs" />
-    <Compile Include="infrastructure.app\logging\Log4NetAppender.cs" />
-    <Compile Include="infrastructure.app\ApplicationConfiguraton.cs" />
-    <Compile Include="infrastructure\ApplicationParameters.cs" />
-    <Compile Include="infrastructure\commandline.options\Options.cs" />
-    <Compile Include="infrastructure.app\ConfigurationPropertyHolder.cs" />
-    <Compile Include="infrastructure\containers\Container.cs" />
-    <Compile Include="infrastructure\containers\custom\StructureMapContainer.cs" />
-    <Compile Include="infrastructure\containers\InversionContainer.cs" />
-    <Compile Include="infrastructure.app\builders\DatabaseBuilder.cs" />
-    <Compile Include="infrastructure\extensions\Iteration.cs" />
-    <Compile Include="infrastructure\extensions\StringExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="infrastructure\extensions\TypeCasting.cs" />
-    <Compile Include="infrastructure\extensions\TypeExtensions.cs" />
-    <Compile Include="infrastructure\filesystem\FileSystemAccess.cs" />
-    <Compile Include="infrastructure\filesystem\DotNetFileSystemAccess.cs" />
-    <Compile Include="infrastructure.app\builders\KnownFoldersBuilder.cs" />
-    <Compile Include="infrastructure\loaders\DefaultAssemblyLoader.cs" />
-    <Compile Include="infrastructure\loaders\DefaultInstanceCreator.cs" />
-    <Compile Include="infrastructure\logging\custom\FileLogger.cs" />
-    <Compile Include="infrastructure\logging\custom\MSBuildLogger.cs" />
-    <Compile Include="infrastructure\logging\custom\MultipleLoggerLogFactory.cs" />
-    <Compile Include="infrastructure\logging\custom\MultipleLogger.cs" />
-    <Compile Include="infrastructure\logging\custom\Log4NetLogFactory.cs" />
-    <Compile Include="infrastructure\logging\custom\Log4NetLogger.cs" />
-    <Compile Include="infrastructure\logging\Logger.cs" />
-    <Compile Include="infrastructure\logging\LogFactory.cs" />
-    <Compile Include="infrastructure\logging\Log.cs" />
-    <Compile Include="infrastructure\VersionInformation.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="resolvers\ComplexVersionResolver.cs" />
-    <Compile Include="resolvers\DllFileVersionResolver.cs" />
-    <Compile Include="resolvers\XmlFileVersionResolver.cs" />
-    <Compile Include="runners\IRunner.cs" />
-    <Compile Include="runners\RoundhouseMigrationRunner.cs" />
-    <Compile Include="resolvers\VersionResolver.cs" />
-    <Compile Include="databases\Database.cs" />
-    <Compile Include="migrators\DatabaseMigrator.cs" />
-    <Compile Include="migrators\DefaultDatabaseMigrator.cs" />
-    <Compile Include="databases\SqlServerLiteSpeedDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="infrastructure.app\logging\log4net.config.xml" />
@@ -201,37 +82,5 @@
   <ItemGroup>
     <EmbeddedResource Include="infrastructure.app\logging\log4net.config.no.console.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="targets\Microsoft.Application.targets" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project=".\targets\Microsoft.Application.targets" />
-  <Import Project=".\targets\Microsoft.Application.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name=BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

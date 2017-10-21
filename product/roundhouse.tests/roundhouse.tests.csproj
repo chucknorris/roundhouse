@@ -49,10 +49,7 @@
     <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="infrastructure\filesystem\ansiencoded.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="infrastructure\filesystem\utf8encoded.txt">
+    <Content Include="infrastructure\filesystem\*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
