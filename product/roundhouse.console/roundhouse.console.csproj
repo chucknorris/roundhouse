@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,7 +28,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -72,12 +72,39 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
     <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
   </ItemGroup>
- <ItemGroup>
+  <ItemGroup>
     <None Include="..\..\docs\logo\roundhouse.ico">
       <Link>roundhouse.ico</Link>
     </None>
- </ItemGroup>
-  <Import Project=".\targets\Microsoft.Application.targets" />
+  </ItemGroup>
+  <Target Name="ILMerge" AfterTargets="Build">
+    <ItemGroup>
+      <ILMergeAssemblies Include="$(OutputPath)*.dll" />
+    </ItemGroup>
+    <PropertyGroup>
+      <IgnoreFile>..\..\build.custom\ilmerge.internalize.ignore.txt</IgnoreFile>
+      <ILMerge>..\..\lib\ILMerge\ILMerge.exe</ILMerge>
+      <ILMergeDir>..\..\merge\</ILMergeDir>
+      <ILMergeLog>$(ILMergeDir)ILMerge.log</ILMergeLog>
+      <ILMergeSource>$(OutputPath)$(AssemblyName).exe</ILMergeSource>
+      <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
+    </PropertyGroup>
+    <!--
+    $ILMERGE /internalize:$($root)\build.custom\ilmerge.internalize.ignore.txt /target:exe /out:$MERGEDIR\rh.exe /log:$LOGDIR\ilmerge.log /ndebug /zeroPeKind /allowDup rh.exe $(dir *.dll)
+    -->
+    <RemoveDir Directories="$(ILMergeDir)" Condition="Exists($(ILMergeDir))" />
+    <MakeDir Directories="$(ILMergeDir)" />
+    <Message Importance="high" Text="$(ILMerge) /internalize:$(IgnoreFile) /target:exe /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup $(ILMergeSource)  @(ILMergeAssemblies, ' ')" />
+    <Exec Command="$(ILMerge) /internalize:$(IgnoreFile) /target:exe /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup $(ILMergeSource)  @(ILMergeAssemblies, ' ')" />
+  </Target>
 </Project>
