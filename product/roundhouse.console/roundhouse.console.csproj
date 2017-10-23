@@ -5,19 +5,26 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Exe</OutputType>
+    <OutputPath>bin\</OutputPath>
     <RootNamespace>roundhouse.console</RootNamespace>
     <AssemblyName>rh</AssemblyName>
-   <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <NoWarn>NU1701</NoWarn>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+
+    <VersionPrefix>0.8.9</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
+    <Version Condition="'$(Version)' == ''">$(VersionPrefix)</Version>
+    <Version Condition="'$(Version)' == '$(VersionPrefix)' And '$(VersionSuffix)' != ''">$(Version)-$(VersionSuffix)</Version>
+    <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,7 +35,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -60,7 +66,9 @@
     <PackageReference Include="Iesi.Collections" Version="3.3.2.4000" />
     <PackageReference Include="NHibernate" Version="3.3.2.4000" />
     <PackageReference Include="NHibernate.JetDriver" Version="2.0.0.1001" />
-    <PackageReference Include="EnterpriseLibrary.TransientFaultHandling" Version="6.0.1304.0" />
+    <PackageReference Include="EnterpriseLibrary.TransientFaultHandling" Version="6.0.1304.0" >
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="EnterpriseLibrary.TransientFaultHandling.Data" Version="6.0.1304.1" />
     <PackageReference Include="log4net" Version="2.0.8.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
@@ -72,39 +80,60 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
-    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
-    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
-    <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" />
-    <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" />
-    <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" />
-    <ProjectReference Include="..\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj" />
-    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
-    <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" ExcludeAssets="All"  />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse\roundhouse.csproj" ExcludeAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\docs\logo\roundhouse.ico">
       <Link>roundhouse.ico</Link>
     </None>
   </ItemGroup>
-  <Target Name="ILMerge" AfterTargets="Build">
+
+  <!-- Merge properties and target -->
+  <PropertyGroup>
+     <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
+     <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
+  </PropertyGroup>
+
+  <Target Name="ILMerge" BeforeTargets="Pack">
     <ItemGroup>
       <ILMergeAssemblies Include="$(OutputPath)*.dll" />
     </ItemGroup>
     <PropertyGroup>
       <IgnoreFile>..\..\build.custom\ilmerge.internalize.ignore.txt</IgnoreFile>
       <ILMerge>..\..\lib\ILMerge\ILMerge.exe</ILMerge>
-      <ILMergeDir>..\..\merge\</ILMergeDir>
       <ILMergeLog>$(ILMergeDir)ILMerge.log</ILMergeLog>
       <ILMergeSource>$(OutputPath)$(AssemblyName).exe</ILMergeSource>
-      <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
+      <ILMergeCommand>$(ILMerge) /internalize:$(IgnoreFile) /target:exe /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup $(ILMergeSource)  @(ILMergeAssemblies, ' ')</ILMergeCommand>
     </PropertyGroup>
-    <!--
-    $ILMERGE /internalize:$($root)\build.custom\ilmerge.internalize.ignore.txt /target:exe /out:$MERGEDIR\rh.exe /log:$LOGDIR\ilmerge.log /ndebug /zeroPeKind /allowDup rh.exe $(dir *.dll)
-    -->
     <RemoveDir Directories="$(ILMergeDir)" Condition="Exists($(ILMergeDir))" />
     <MakeDir Directories="$(ILMergeDir)" />
-    <Message Importance="high" Text="$(ILMerge) /internalize:$(IgnoreFile) /target:exe /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup $(ILMergeSource)  @(ILMergeAssemblies, ' ')" />
-    <Exec Command="$(ILMerge) /internalize:$(IgnoreFile) /target:exe /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup $(ILMergeSource)  @(ILMergeAssemblies, ' ')" />
+    <Message Importance="high" Text="ILMerge-ing into $(ILMergeTarget)" />
+    <Exec Command="$(ILMergeCommand)" />
   </Target>
+
+
+  <!-- Nuspec properties (for generating NuGet package) -->
+  <PropertyGroup>
+    <NuspecFile>..\..\nuget\roundhouse\roundhouse.nuspec</NuspecFile>
+    <AppConfigFile>$(MSBuildProjectDirectory)\$(OutputPath)$(TargetFramework)\$(AssemblyName).exe.config</AppConfigFile>
+    <NuspecProperties>appConfigFile=$(AppConfigFile);mergedExe=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
+  </PropertyGroup>
+
+  <!-- Copy to drop folder after packaging -->
+  <Target Name="CopyToDropFolder" AfterTargets="Pack" Condition="'$(DropFolder)' != ''">
+    <ItemGroup>
+       <NugetPackages Include="$(OutputPath)..\**\*.nupkg" />
+    </ItemGroup>
+    
+    <Copy SourceFiles="@(NugetPackages)" DestinationFolder="$(DropFolder)" />
+  </Target>
+
 </Project>

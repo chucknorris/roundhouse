@@ -3,7 +3,7 @@
   <metadata>
     <id>roundhouse</id>
     <title>RoundhousE</title>
-    <version>0.7.0.282</version>
+    <version>$version$</version>
     <authors>Rob Reynolds</authors>
     <owners>Rob Reynolds</owners>
     <summary>RoundhousE - Professional Database Change and Versioning Management</summary>
@@ -12,6 +12,15 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>roundhouse db migration database migrator chucknorris</tags>
-	<iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
+    <dependencies />
+	  <iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
   </metadata>
+  <files>
+    <file src="$mergedExe$" target="bin\" />
+    <file src="$appConfigFile$" target="bin\" />
+    <file src="..\..\nuget\roundhouse\content\ReadMe.RoundhousE.txt" target="content\" />
+    <file src="..\..\docs\GettingStarted.docx" target="docs\" />
+    <file src="..\..\docs\legal\*" target="docs\" />
+    <file src="..\..\nuget\roundhouse\tools\chocolateyInstall.ps1" target="tools\" />
+  </files>
 </package>
