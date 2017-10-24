@@ -16,11 +16,7 @@
 	  <iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
   </metadata>
   <files>
-    <file src="$mergedExe$" target="bin\" />
-    <file src="$appConfigFile$" target="bin\" />
-    <file src="..\..\nuget\roundhouse\content\ReadMe.RoundhousE.txt" target="content\" />
-    <file src="..\..\docs\GettingStarted.docx" target="docs\" />
-    <file src="..\..\docs\legal\*" target="docs\" />
-    <file src="..\..\nuget\roundhouse\tools\chocolateyInstall.ps1" target="tools\" />
+    <file src="$mergedExe$" target="tools\" />
+    <file src="..\..\docs\legal\*" target="tools\" />
   </files>
 </package>

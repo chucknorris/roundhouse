@@ -123,8 +123,7 @@
   <!-- Nuspec properties (for generating NuGet package) -->
   <PropertyGroup>
     <NuspecFile>..\..\nuget\roundhouse\roundhouse.nuspec</NuspecFile>
-    <AppConfigFile>$(MSBuildProjectDirectory)\$(OutputPath)$(TargetFramework)\$(AssemblyName).exe.config</AppConfigFile>
-    <NuspecProperties>appConfigFile=$(AppConfigFile);mergedExe=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
+    <NuspecProperties>mergedExe=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
 
   <!-- Copy to drop folder after packaging -->
