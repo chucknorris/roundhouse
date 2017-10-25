@@ -5,7 +5,7 @@ $root = $PSScriptRoot;
 $CODEDROP="$($root)\code_drop";
 $LOGDIR="$($CODEDROP)\log";
 
-$TESTOUTDIR="$($root)\build_output\RoundhousE.UnitTests\net461"
+$TESTOUTDIR="$($root)\product\roundhouse.tests\bin"
 
 pushd $root
 
@@ -30,7 +30,7 @@ nuget restore -NonInteractive -Verbosity quiet
 #msbuild /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild.log;Verbosity=m" /p:Configuration=Build /p:Platform="Any CPU"
 
 "`n * Building and packaging"
-msbuild /t:Pack /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild-nuget.log;Verbosity=m" /p:Configuration=Build /p:Platform="Any CPU"
+msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
 # Find nunit3-console dynamically
 "`n * Looking for nunit3-console.exe"
@@ -39,7 +39,7 @@ $nunit = $(dir -r $env:HOME\.nuget\packages\nunit* -i nunit3-console.exe | Selec
 "    - Found at $($nunit)"
 
 "`n * Running unit tests`n"
-$tests =  $(dir "$($TESTOUTDIR)\*.tests.dll");
+$tests =  $(dir -r "$($TESTOUTDIR)" -i *.tests.dll);
  & $nunit --noheader --noresult --output "$($LOGDIR)\nunit.log" --err="$($LOGDIR)\nunit.errlog" $tests
 
 #"`n * Packaging"
