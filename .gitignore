@@ -21,6 +21,8 @@ App_Data
 *.sln.docstates
 *.results.xml
 *.bak
+.vs
+.idea
  
 TestResult.xml
 submit.xml

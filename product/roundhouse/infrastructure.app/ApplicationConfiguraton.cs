@@ -176,7 +176,7 @@ namespace roundhouse.infrastructure.app
 
             Logger multiLogger = GetMultiLogger(configuration_property_holder);
 
-            ObjectFactory.Configure(cfg =>
+            var container = new StructureMap.Container(cfg =>
                                         {
                                             cfg.For<ConfigurationPropertyHolder>().Singleton().Use(configuration_property_holder);
                                             cfg.For<FileSystemAccess>().Singleton().Use(context => new DotNetFileSystemAccess(configuration_property_holder));
@@ -194,13 +194,13 @@ namespace roundhouse.infrastructure.app
                                         });
 
             // forcing a build of database to initialize connections so we can be sure server/database have values
-            Database database = ObjectFactory.GetInstance<Database>();
+            Database database = container.GetInstance<Database>();
             database.initialize_connections(configuration_property_holder);
             configuration_property_holder.ServerName = database.server_name;
             configuration_property_holder.DatabaseName = database.database_name;
             configuration_property_holder.ConnectionString = database.connection_string;
 
-            return new StructureMapContainer(ObjectFactory.Container);
+            return new StructureMapContainer(container);
         }
 
         private static Logger GetMultiLogger(ConfigurationPropertyHolder configuration_property_holder)

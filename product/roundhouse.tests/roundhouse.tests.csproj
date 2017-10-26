@@ -1,215 +1,49 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0726928C-FDAC-4C79-B423-841C7E0DF5B8}</ProjectGuid>
+    <!--<TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>-->
+    <TargetFramework>net461</TargetFramework>
+    <CLSCompliant>true</CLSCompliant>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>roundhouse.tests</RootNamespace>
     <AssemblyName>roundhouse.tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NoWarn>NU1701</NoWarn>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Build|AnyCPU' ">
-    <OutputPath>..\..\build_output\RoundhousE\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Castle.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Castle.Core.4.1.0\lib\net35\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq, Version=4.7.49.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Moq.4.7.49\lib\net45\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.7.1\lib\net35\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Should, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap, Version=2.6.3.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
-    </Reference>
+ <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\SolutionVersion.cs">
-      <Link>Properties\SolutionVersion.cs</Link>
-    </Compile>
-    <Compile Include="databases\SqlServerDatabaseSpecs.cs" />
-    <Compile Include="DummyDatabase.cs" />
-    <Compile Include="EmptyTestContainer.cs" />
-    <Compile Include="cryptography\CryptographicServiceSpecs.cs" />
-    <Compile Include="infrastructure.app\tokens\TokenReplacerSpecs.cs" />
-    <Compile Include="infrastructure.app\tokens\UserTokenParserSpecs.cs" />
-    <Compile Include="infrastructure\containers\ContainerSpecs.cs" />
-    <Compile Include="infrastructure\containers\custom\StructureMapContainerSpecs.cs" />
-    <Compile Include="infrastructure\extensions\IterationSpecs.cs" />
-    <Compile Include="infrastructure\extensions\StringExtensionsSpecs.cs" />
-    <Compile Include="infrastructure\extensions\TypeCastingSpecs.cs" />
-    <Compile Include="infrastructure\extensions\TypeExtensionsSpecs.cs" />
-    <Compile Include="infrastructure\logging\custom\Log4NetLogFactorySpecs.cs" />
-    <Compile Include="infrastructure\logging\custom\Log4NetLoggerSpecs.cs" />
-    <Compile Include="infrastructure\logging\LogSpecs.cs" />
-    <Compile Include="migrators\DefaultDatabaseMigratorSpecs.cs" />
-    <Compile Include="MockKnownFolders.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="infrastructure\filesystem\DotNetFileSystemAccessSpecs.cs" />
-    <Compile Include="resolvers\TextVersionResolverSpecs.cs" />
-    <Compile Include="runners\RoundhouseMigratorRunnerSpecs.cs" />
-    <Compile Include="sqlsplitters\SplitterContext.cs" />
-    <Compile Include="sqlsplitters\StatementSplitterSpecs.cs" />
-    <Compile Include="TestExtensions.cs" />
-    <Compile Include="TinySpec.cs" />
-    <Compile Include="TinySpecExtensions.cs" />
-    <Compile Include="_ExampleSpecs.cs" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Castle.Core" Version="4.2.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="Moq" Version="4.7.142" />
+    <PackageReference Include="NUnit" Version="3.8.1" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.7.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
+    <PackageReference Include="Should" version="1.1.20" />
+    <PackageReference Include="structuremap" version="4.5.2" />
+    <PackageReference Include="StructureMap" Version="4.5.2" />
+    <PackageReference Include="TinySpec.NUnit" version="0.9.5" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj">
-      <Project>{35E058E3-8FEE-4107-AEDC-37A452C588EC}</Project>
-      <Name>roundhouse.databases.access</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj">
-      <Project>{3828D379-C96A-49C8-8BC9-0182CC8C55B1}</Project>
-      <Name>roundhouse.databases.oracle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj">
-      <Project>{F02B7642-3EC4-4374-BBBE-7857A93EA5D9}</Project>
-      <Name>roundhouse.databases.sqlserver</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\roundhouse\roundhouse.csproj">
-      <Project>{A95DE649-D5BA-4402-9D9C-3D8D67E2FF44}</Project>
-      <Name>roundhouse</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
+    <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="infrastructure\filesystem\ansiencoded.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="infrastructure\filesystem\utf16BE_with_bom.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="infrastructure\filesystem\utf16LE_with_bom.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="infrastructure\filesystem\utf32BE_with_bom.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="infrastructure\filesystem\utf32LE_with_bom.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="infrastructure\filesystem\utf8_no_bom.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="infrastructure\filesystem\utf8_with_bom.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="infrastructure\filesystem\very_small_file.txt">
+    <Content Include="infrastructure\filesystem\*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

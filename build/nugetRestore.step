@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project name="Compiler" default="go">
+  <property name="solution.path" value="${dirs.current}${path.separator}${path_to_solution}${path.separator}${project.name}.sln" />
+  <property name="app.nuget" value="nuget"  />
+
+  <target name="go" depends="run_tasks" />
+  
+  <target name="run_tasks">
+    <call target="restore" if="${target::exists('restore')}" />
+  </target>
+ 
+  
+  <target name="restore">
+    <echo level="Warning" message="Nuget restore ${project::get-name()}" />
+    <exec program="${app.nuget}"
+          workingdir="${dirs.build}"
+          commandline="restore ${solution.path}" />
+  </target>
+  
+</project>

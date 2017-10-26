@@ -3,7 +3,7 @@
   <metadata>
     <id>roundhouse</id>
     <title>RoundhousE</title>
-    <version>0.7.0.282</version>
+    <version>$version$</version>
     <authors>Rob Reynolds</authors>
     <owners>Rob Reynolds</owners>
     <summary>RoundhousE - Professional Database Change and Versioning Management</summary>
@@ -12,6 +12,11 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>roundhouse db migration database migrator chucknorris</tags>
-	<iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
+    <dependencies />
+	  <iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
   </metadata>
+  <files>
+    <file src="$mergedExe$" target="tools\" />
+    <file src="..\..\docs\legal\*" target="tools\" />
+  </files>
 </package>
