@@ -39,6 +39,13 @@ If (!(Test-Path $LOGDIR)) {
 "`n * Building and packaging"
 msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:m /fl /flp:"LogFile=$LOGDIR\msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
+# Workaround until test filter is updated - remove then.
+If ($onAppVeyor) {
+    dir -r product/roundhouse.tests.integration -i roundhouse.tests.integration.dll | % { 
+        rm -fo $_;
+    }
+}
+
 # AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe. 
 # But we want to run the tests on localhost too.
 If (! $onAppVeyor) {
