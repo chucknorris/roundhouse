@@ -24,10 +24,19 @@ pushd $root
 $gitVersion = (GitVersion | ConvertFrom-Json)
 
 "`n * Restoring nuget packages"
-nuget restore -NonInteractive -Verbosity quiet
+nuget restore -NonInteractive # -Verbosity quiet
 
 #"`n * Building"
 #msbuild /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild.log;Verbosity=m" /p:Configuration=Build /p:Platform="Any CPU"
+
+# Create output and log dirs if they don't exist (don't know why this is necessary - works on my box...)
+If (!(Test-Path $CODEDROP)) {
+    mkdir $CODEDROP;
+}
+If (!(Test-Path $LOGDIR)) {
+    mkdir $LOGDIR;
+}
+
 
 "`n * Building and packaging"
 msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
