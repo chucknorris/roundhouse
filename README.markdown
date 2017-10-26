@@ -8,6 +8,15 @@ Apache 2.0 - see docs\legal (just LEGAL in the zip folder)
 # Documentation
 [WIKI](https://github.com/chucknorris/roundhouse/wiki)  
   
+# UNDER CONSTRUCTION
+Pardon our mess while we modernize the dependencies and build system. There's clean up underway.
+To work with the latest code, pull master and run **build.ps1** in your directory (or open project in Visual Studio 2017)
+
+To work with the command line, you will need the following in your path:
+ - MS Build
+ - GitVersion (easiest to run choco install gitversion.portable. You are running choclately aren't you?)
+ - NuGet Command Line (easiest to run choco install nuget.commandline. You are running choclately aren't you?)
+
 # IMPORTANT
 NOTE: If you are looking at the source - please run build.bat before opening the solution. It creates the SolutionVersion.cs file that is necessary for a successful build.
 
