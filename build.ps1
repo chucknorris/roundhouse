@@ -41,7 +41,7 @@ msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSe
 
 # AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe. 
 # But we want to run the tests on localhost too.
-If ($onAppVeyor) {
+If (! $onAppVeyor) {
 
     # Find nunit3-console dynamically
     "`n * Looking for nunit3-console.exe"
