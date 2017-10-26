@@ -13,23 +13,10 @@ pushd $root
 
 
 "`n * Generating version number"
-
-# Might use nuget to get the GitVersion.dll, and use it from PowerShell, like this:
-#
-#nuget install gitversion -out "$($env:TEMP)" -Verbosity quiet
-#$gitVersionDll = $(dir -r $env:TEMP\gitversion.* -i GitVersionCore.dll | Select-Object -last 1)
-#Add-Type -Path "$($gitVersionDll)";
-#
-# or, simpler, with chocolatey: 
-#choco inst gitversion.portable
-
 $gitVersion = (GitVersion | ConvertFrom-Json)
 
 "`n * Restoring nuget packages"
-nuget restore -NonInteractive # -Verbosity quiet
-
-#"`n * Building"
-#msbuild /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild.log;Verbosity=m" /p:Configuration=Build /p:Platform="Any CPU"
+nuget restore -NonInteractive -Verbosity quiet
 
 # Create output and log dirs if they don't exist (don't know why this is necessary - works on my box...)
 If (!(Test-Path $CODEDROP)) {
@@ -41,27 +28,27 @@ If (!(Test-Path $LOGDIR)) {
 
 
 "`n * Building and packaging"
-msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
+msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:m /fl /flp:"LogFile=$LOGDIR\msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
-# Find nunit3-console dynamically
-"`n * Looking for nunit3-console.exe"
+# AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe. 
+# But we want to run the tests on localhost too.
+If ("$($env:APPVEYOR)" -ne "True") {
 
+    # Find nunit3-console dynamically
+    "`n * Looking for nunit3-console.exe"
 
-$nugetRoot = $env:NUGET_PACKAGES;
+    $nugetRoot = $env:NUGET_PACKAGES;
+    If ("$($nugetRoot)" -eq "") {
+        $nugetRoot = "~/.nuget"
+    }
 
-If ("$($nugetRoot)" -eq "") {
-    $nugetRoot = "~/.nuget"
+    $nunit = $(dir -r "$($nugetRoot)/packages/nunit*" -i nunit3-console.exe | Select-Object -last 1)
+
+    "    - Found at $($nunit)"
+
+    "`n * Running unit tests`n"
+    $tests =  $(dir -r "$($TESTOUTDIR)" -i *.tests.dll);
+    & $nunit --noheader --noresult --output "$($LOGDIR)/nunit.log" --err="$($LOGDIR)/nunit.errlog" $tests
 }
-
-$nunit = $(dir -r "$($nugetRoot)/packages/nunit*" -i nunit3-console.exe | Select-Object -last 1)
-
-"    - Found at $($nunit)"
-
-"`n * Running unit tests`n"
-$tests =  $(dir -r "$($TESTOUTDIR)" -i *.tests.dll);
- & $nunit --noheader --noresult --output "$($LOGDIR)/nunit.log" --err="$($LOGDIR)/nunit.errlog" $tests
-
-#"`n * Packaging"
-#msbuild /t:Pack /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /p:PackageOutputDir=$CODEDROP /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild-nuget.log;Verbosity=m" /p:Configuration=Build /p:Platform="Any CPU"
 
 popd
