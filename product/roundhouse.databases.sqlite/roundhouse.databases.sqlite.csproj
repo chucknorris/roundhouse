@@ -63,7 +63,7 @@
         <None Include="App.config"/>
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="$(NuGetPackageRoot)System.Data.SQLite\1.0.84\lib\net45\System.Data.SQLite.dll">
+        <EmbeddedResource Include="$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.105.2\lib\net45\System.Data.SQLite.dll">
             <Link>assemblyresource\System.Data.SQLite.dll</Link>
         </EmbeddedResource>
     </ItemGroup>
