@@ -9,11 +9,20 @@ $LOGDIR="$($CODEDROP)\log";
 
 $TESTOUTDIR="$($root)\product\roundhouse.tests\bin"
 
+$onAppVeyor = $("$($env:APPVEYOR)" -eq "True");
+
 pushd $root
 
 
 "`n * Generating version number"
 $gitVersion = (GitVersion | ConvertFrom-Json)
+
+If ($onAppVeyor) {
+    $newVersion="$($gitVersion.FullSemVer).$env:APPVEYOR_BUILD_NUMBER"
+    Write-host "   - Updating appveyor build version to: $newVersion"
+    $env:APPVEYOR_BUILD_VERSION="$newVersion"
+    appveyor UpdateBuild -Version "$newVersion"
+}
 
 "`n * Restoring nuget packages"
 nuget restore -NonInteractive -Verbosity quiet
@@ -32,7 +41,7 @@ msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSe
 
 # AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe. 
 # But we want to run the tests on localhost too.
-If ("$($env:APPVEYOR)" -ne "True") {
+If ($onAppVeyor) {
 
     # Find nunit3-console dynamically
     "`n * Looking for nunit3-console.exe"
