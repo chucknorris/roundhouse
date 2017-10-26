@@ -1,3 +1,5 @@
+#!/usr/bin/env powershell
+
 $MSBUILD=msbuild
 
 $root = $PSScriptRoot;
@@ -31,10 +33,10 @@ nuget restore -NonInteractive # -Verbosity quiet
 
 # Create output and log dirs if they don't exist (don't know why this is necessary - works on my box...)
 If (!(Test-Path $CODEDROP)) {
-    mkdir $CODEDROP;
+    $null = mkdir $CODEDROP;
 }
 If (!(Test-Path $LOGDIR)) {
-    mkdir $LOGDIR;
+    $null = mkdir $LOGDIR;
 }
 
 
@@ -43,13 +45,21 @@ msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSe
 
 # Find nunit3-console dynamically
 "`n * Looking for nunit3-console.exe"
-$nunit = $(dir -r $env:HOME\.nuget\packages\nunit* -i nunit3-console.exe | Select-Object -last 1)
+
+
+$nugetRoot = $env:NUGET_PACKAGES;
+
+If ("$($nugetRoot)" -eq "") {
+    $nugetRoot = "~/.nuget"
+}
+
+$nunit = $(dir -r "$($nugetRoot)/packages/nunit*" -i nunit3-console.exe | Select-Object -last 1)
 
 "    - Found at $($nunit)"
 
 "`n * Running unit tests`n"
 $tests =  $(dir -r "$($TESTOUTDIR)" -i *.tests.dll);
- & $nunit --noheader --noresult --output "$($LOGDIR)\nunit.log" --err="$($LOGDIR)\nunit.errlog" $tests
+ & $nunit --noheader --noresult --output "$($LOGDIR)/nunit.log" --err="$($LOGDIR)/nunit.errlog" $tests
 
 #"`n * Packaging"
 #msbuild /t:Pack /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /p:PackageOutputDir=$CODEDROP /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild-nuget.log;Verbosity=m" /p:Configuration=Build /p:Platform="Any CPU"
