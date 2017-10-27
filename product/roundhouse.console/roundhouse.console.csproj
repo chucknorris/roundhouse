@@ -20,6 +20,7 @@
     <Version Condition="'$(Version)' == ''">$(VersionPrefix)</Version>
     <Version Condition="'$(Version)' == '$(VersionPrefix)' And '$(VersionSuffix)' != ''">$(Version)-$(VersionSuffix)</Version>
     <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
+
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -107,7 +108,7 @@
 
   <!-- Nuspec properties (for generating NuGet package) -->
   <PropertyGroup>
-    <NuspecFile>..\..\nuget\roundhouse\roundhouse.nuspec</NuspecFile>
+    <NuspecFile>roundhouse.nuspec</NuspecFile>
     <NuspecProperties>mergedExe=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
 
@@ -117,7 +118,7 @@
        <NugetPackages Include="$(OutputPath)..\**\*.nupkg" />
     </ItemGroup>
     
-    <Copy SourceFiles="@(NugetPackages)" DestinationFolder="$(DropFolder)" />
+    <Copy SourceFiles="@(NugetPackages)" DestinationFolder="$(DropFolder)\packages" />
   </Target>
 
 </Project>

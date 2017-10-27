@@ -14,6 +14,25 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+
+    
+    <VersionPrefix>0.8.9</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
+    <Version Condition="'$(Version)' == ''">$(VersionPrefix)</Version>
+    <Version Condition="'$(Version)' == '$(VersionPrefix)' And '$(VersionSuffix)' != ''">$(Version)-$(VersionSuffix)</Version>
+    <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
+
+    <PackageVersion>$(NugetVersion)</PackageVersion>
+    <PackageId>roundhouse.msbuild</PackageId>
+    <Title>RoundhousE MSBuild</Title>
+    <Authors>Rob Reynolds</Authors>
+    <Description>RoundhousE is a Professional Database Change and Versioning Management tool.</Description>
+    <PackageProjectUrl>http://projectroundhouse.org</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>roundhouse db migration database migrator chucknorris</PackageTags>
+	  <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
+
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,5 +86,14 @@
   <ItemGroup>
     <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
   </ItemGroup>
-  <Import Project=".\targets\Microsoft.Application.targets" />
+
+   <!-- Copy to drop folder after packaging -->
+  <Target Name="CopyToDropFolder" AfterTargets="Pack" Condition="'$(DropFolder)' != ''">
+    <ItemGroup>
+       <NugetPackages Include="$(OutputPath)..\**\*.nupkg" />
+    </ItemGroup>
+    
+    <Copy SourceFiles="@(NugetPackages)" DestinationFolder="$(DropFolder)\packages" />
+  </Target>
+
 </Project>
