@@ -55,7 +55,7 @@ namespace roundhouse.tests.cryptography
         [TestFixture]
         public class when_using_an_unofficial_md5_implementation
         {
-            const int passes = 1000000;
+            const int passes = 2000;
             const int max_len = 10240;
 
             private int seed = Environment.TickCount;
