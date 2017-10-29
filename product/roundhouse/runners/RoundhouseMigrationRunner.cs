@@ -25,7 +25,6 @@ namespace roundhouse.runners
         public bool dropping_the_database { get; set; }
         private readonly bool dont_create_the_database;
         private bool run_in_a_transaction;
-        private readonly bool use_simple_recovery;
         private readonly ConfigurationPropertyHolder configuration;
         private const string SQL_EXTENSION = "*.sql";
 
@@ -40,7 +39,6 @@ namespace roundhouse.runners
             bool dropping_the_database,
             bool dont_create_the_database,
             bool run_in_a_transaction,
-            bool use_simple_recovery,
             ConfigurationPropertyHolder configuration)
         {
             this.known_folders = known_folders;
@@ -53,7 +51,6 @@ namespace roundhouse.runners
             this.dropping_the_database = dropping_the_database;
             this.dont_create_the_database = dont_create_the_database;
             this.run_in_a_transaction = run_in_a_transaction;
-            this.use_simple_recovery = use_simple_recovery;
             this.configuration = configuration;
         }
 

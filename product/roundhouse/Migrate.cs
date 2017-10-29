@@ -116,7 +116,6 @@ namespace roundhouse
                 this.configuration.Drop,
                 this.configuration.DoNotCreateDatabase,
                 this.configuration.WithTransaction,
-                this.configuration.RecoveryModeSimple,
                 this.configuration);
         }
 
