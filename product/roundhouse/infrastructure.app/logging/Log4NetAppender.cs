@@ -5,6 +5,7 @@ using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Layout;
+using log4net.Repository;
 
 namespace roundhouse.infrastructure.app.logging
 {
@@ -33,9 +34,14 @@ namespace roundhouse.infrastructure.app.logging
                 xml_config_stream = Assembly.Load(assembly_name).GetManifestResourceStream(ApplicationParameters.log4net_configuration_resource);
             }
 
-            XmlConfigurator.Configure(xml_config_stream);
+            XmlConfigurator.Configure(get_logger_repository(), xml_config_stream);
 
             the_logger.DebugFormat("Configured {0} from assembly {1}", ApplicationParameters.log4net_configuration_resource, used_merged ? ApplicationParameters.get_merged_assembly_name() : assembly_name);
+        }
+
+        private static ILoggerRepository get_logger_repository()
+        {
+            return LogManager.GetRepository(typeof(Log4NetAppender).Assembly);
         }
 
         public static void configure_without_console()
@@ -54,7 +60,7 @@ namespace roundhouse.infrastructure.app.logging
                 xml_config_stream = Assembly.Load(assembly_name).GetManifestResourceStream(ApplicationParameters.log4net_configuration_resource_no_console);
             }
 
-            XmlConfigurator.Configure(xml_config_stream);
+            XmlConfigurator.Configure(get_logger_repository(), xml_config_stream);
 
             the_logger.DebugFormat("Configured {0} from assembly {1}", ApplicationParameters.log4net_configuration_resource_no_console, used_merged ? ApplicationParameters.get_merged_assembly_name() : assembly_name);
         }
@@ -82,11 +88,11 @@ namespace roundhouse.infrastructure.app.logging
                 };
                 rollingFileAppender.ActivateOptions();
 
-                var log = LogManager.GetLogger("roundhouse");
+                var log = LogManager.GetLogger(get_logger_repository().Name, "roundhouse");
                 var logger = (log4net.Repository.Hierarchy.Logger)log.Logger;
                 logger.AddAppender(rollingFileAppender);
             
-                var nhLog = LogManager.GetLogger("NHibernate.SQL");
+                var nhLog = LogManager.GetLogger(get_logger_repository().Name, "NHibernate.SQL");
                 var nhLogger = (log4net.Repository.Hierarchy.Logger)nhLog.Logger;
                 nhLogger.AddAppender(rollingFileAppender);
             }

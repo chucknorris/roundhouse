@@ -208,7 +208,7 @@ namespace roundhouse.infrastructure.app
                 loggers.Add(msbuild_logger);
             }
 
-            Logger log4net_logger = new Log4NetLogger(LogManager.GetLogger("roundhouse"));
+            Logger log4net_logger = new Log4NetLogger(LogManager.GetLogger(typeof(ApplicationConfiguraton)));
             loggers.Add(log4net_logger);
 
             if (configuration_property_holder.Logger != null && !loggers.Contains(configuration_property_holder.Logger))
