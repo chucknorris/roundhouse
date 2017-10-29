@@ -1,0 +1,13 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+build_script:
+- ps: .\build.ps1
+test:
+  assemblies:
+    only:
+    - '**\*tests.dll'
+artifacts:
+- path: .\code_drop\packages\*.nupkg
+  name: Nuget packages
+- path: .\code_drop\log\*
+  name: Logs
