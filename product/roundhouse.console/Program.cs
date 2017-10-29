@@ -318,9 +318,6 @@ namespace roundhouse.console
                      "WithTransaction - This instructs RH to run inside of a transaction. Defaults to false.",
                      option => configuration.WithTransaction = option != null)
                 //recovery mode
-                .Add("simple",
-                     "RecoveryModeSimple - This instructs RH to set the database recovery mode to simple recovery. Defaults to false.",
-                     option => configuration.RecoveryModeSimple = option != null)
                 .Add("rcm=|recoverymode=",
                      "RecoveryMode - This instructs RH to set the database recovery mode to Simple|Full|NoChange. Defaults to NoChange.",
                      option => configuration.RecoveryMode = (RecoveryMode)Enum.Parse(typeof(RecoveryMode), option, true))
