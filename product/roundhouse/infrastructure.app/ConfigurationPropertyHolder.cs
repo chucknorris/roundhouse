@@ -40,8 +40,6 @@ namespace roundhouse.infrastructure.app
         string VersionTableName { get; set; }
         string ScriptsRunTableName { get; set; }
         string ScriptsRunErrorsTableName { get; set; }
-        [Obsolete("Use EnvironmentNames")]
-        string EnvironmentName { get; set; }
         string EnvironmentNames { get; set; }
         bool Restore { get; set; }
         string RestoreFromPath { get; set; }
@@ -58,8 +56,6 @@ namespace roundhouse.infrastructure.app
         bool DoNotAlterDatabase { get; set; }
         bool WithTransaction { get; set; }
         RecoveryMode RecoveryMode { get; set; }
-        [Obsolete("Use RecoveryMode = Simple")]
-        bool RecoveryModeSimple { get; set; }
         bool Debug { get; set; }
         bool DryRun { get; set; }
         bool Baseline { get; set; }

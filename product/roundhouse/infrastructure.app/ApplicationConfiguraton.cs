@@ -124,10 +124,7 @@ namespace roundhouse.infrastructure.app
             }
             if (string.IsNullOrEmpty(configuration_property_holder.EnvironmentNames))
             {
-                if (!string.IsNullOrEmpty(configuration_property_holder.EnvironmentName))
-                    configuration_property_holder.EnvironmentNames = configuration_property_holder.EnvironmentName;
-                else
-                    configuration_property_holder.EnvironmentNames = ApplicationParameters.default_environment_name;
+                configuration_property_holder.EnvironmentNames = ApplicationParameters.default_environment_name;
             }
             if (string.IsNullOrEmpty(configuration_property_holder.OutputPath))
             {
@@ -144,10 +141,6 @@ namespace roundhouse.infrastructure.app
             if (!string.IsNullOrEmpty(configuration_property_holder.RestoreFromPath))
             {
                 configuration_property_holder.RestoreFromPath = Path.GetFullPath(configuration_property_holder.RestoreFromPath);
-            }
-            if (configuration_property_holder.RecoveryModeSimple)
-            {
-                configuration_property_holder.RecoveryMode = RecoveryMode.Simple;
             }
         }
 
