@@ -111,6 +111,7 @@ namespace roundhouse.databases.sqlserver
             {
                 run_sql(create_roundhouse_schema_script(),ConnectionType.Default);
             }
+#pragma warning disable 168
             catch (Exception ex)
             {
                 throw;
@@ -118,6 +119,7 @@ namespace roundhouse.databases.sqlserver
                 //    "Either the schema has already been created OR {0} with provider {1} does not provide a facility for creating roundhouse schema at this time.{2}{3}",
                 //    GetType(), provider, Environment.NewLine, ex.Message);
             }
+#pragma warning restore 168
         }
 
         public string create_roundhouse_schema_script()

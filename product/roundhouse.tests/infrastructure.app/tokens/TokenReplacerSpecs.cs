@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace roundhouse.tests.infrastructure.app.tokens
@@ -52,13 +53,13 @@ namespace roundhouse.tests.infrastructure.app.tokens
                 TokenReplacer.replace_tokens(configuration, "ALTER DATABASE DatabaseName").should_be_equal_to("ALTER DATABASE DatabaseName");
             }
 
-            [Observation]
+            [Observation, CLSCompliant(false)]
             public void if_given_bracket_bracket_databasename_bracket_bracket_should_replace_with_the_DatabaseName_from_the_configuration()
             {
                 TokenReplacer.replace_tokens(configuration, "ALTER DATABASE {{databasename}}").should_be_equal_to("ALTER DATABASE " + database_name);
             }
 
-            [Observation]
+            [Observation, CLSCompliant(false)]
             public void if_given_bracket_bracket_DATABASENAME_bracket_bracket_should_replace_with_the_DatabaseName_from_the_configuration()
             {
                 TokenReplacer.replace_tokens(configuration, "ALTER DATABASE {{DATABASENAME}}").should_be_equal_to("ALTER DATABASE " + database_name);

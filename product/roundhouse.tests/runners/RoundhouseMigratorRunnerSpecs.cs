@@ -28,7 +28,7 @@ namespace roundhouse.tests.runners
             {
                 configuration = new DefaultConfiguration
                 {
-                    EnvironmentName = "TEST",
+                    EnvironmentNames = "TEST",
                     Drop = false ,
                     Silent = true
                 };
@@ -56,7 +56,6 @@ namespace roundhouse.tests.runners
                             configuration.Drop,
                             configuration.DoNotCreateDatabase,
                             configuration.WithTransaction,
-                            configuration.RecoveryModeSimple,
                             configuration);
 
                 var container_mock = new Mock<InversionContainer>();

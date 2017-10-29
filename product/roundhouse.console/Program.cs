@@ -615,7 +615,6 @@ namespace roundhouse.console
                 configuration.Drop,
                 configuration.DoNotCreateDatabase,
                 configuration.WithTransaction,
-                configuration.RecoveryModeSimple,
                 configuration);
         }
 

@@ -229,7 +229,6 @@ namespace roundhouse.tasks
                 Drop,
                 DoNotCreateDatabase,
                 WithTransaction,
-                RecoveryModeSimple,
                 this);
 
             roundhouse_runner.run();

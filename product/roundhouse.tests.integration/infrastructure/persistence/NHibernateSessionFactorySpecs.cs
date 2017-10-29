@@ -39,7 +39,6 @@ namespace roundhouse.tests.integration.infrastructure.persistence
             private static void get_schema_export(Configuration cfg)
             {
                 build_schema(cfg);
-                int i = 0;
             }
 
             [Observation]
