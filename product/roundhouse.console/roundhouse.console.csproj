@@ -89,7 +89,7 @@
      <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
   </PropertyGroup>
 
-  <Target Name="ILMerge" BeforeTargets="Pack">
+  <Target Name="ILMerge" AfterTargets="Build">
     <ItemGroup>
       <ILMergeAssemblies Include="$(OutputPath)*.dll" />
     </ItemGroup>
