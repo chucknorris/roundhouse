@@ -1,3 +1,5 @@
+using System.Data.Common;
+
 namespace roundhouse.databases.sqlserver
 {
     using System;
@@ -89,6 +91,11 @@ namespace roundhouse.databases.sqlserver
 
             connection_specific_setup(connection);
             return new AdoNetConnection(connection);
+        }
+
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return SqlClientFactory.Instance;
         }
 
         protected override void connection_specific_setup(IDbConnection connection)

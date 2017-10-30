@@ -1,4 +1,6 @@
-﻿namespace roundhouse.databases.sqlite
+﻿using System.Data.Common;
+
+namespace roundhouse.databases.sqlite
 {
     using System;
     using System.Data.SQLite;
@@ -128,6 +130,11 @@
         public override string restore_database_script(string restore_from_path, string custom_restore_options)
         {
             throw new NotImplementedException();
+        }
+
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return SQLiteFactory.Instance;
         }
     }
 }
