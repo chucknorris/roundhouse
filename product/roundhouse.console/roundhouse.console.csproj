@@ -89,7 +89,7 @@
      <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
   </PropertyGroup>
 
-  <Target Name="ILMerge" AfterTargets="Build">
+  <Target Name="ILMerge" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
     <ItemGroup>
       <ILMergeAssemblies Include="$(OutputPath)*.dll" />
     </ItemGroup>

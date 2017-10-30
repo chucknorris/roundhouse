@@ -24,12 +24,17 @@
 
         protected virtual AdoNetConnection GetAdoNetConnection(string conn_string)
         {
-            provider_factory = DbProviderFactories.GetFactory(provider);
+            provider_factory = get_db_provider_factory();
             IDbConnection connection = provider_factory.CreateConnection();
             connection_specific_setup(connection);
             
             connection.ConnectionString = conn_string;
             return new AdoNetConnection(connection);
+        }
+
+        protected DbProviderFactory get_db_provider_factory()
+        {
+            return DbProviderFactories.GetFactory(provider);
         }
 
         protected virtual void connection_specific_setup(IDbConnection connection)

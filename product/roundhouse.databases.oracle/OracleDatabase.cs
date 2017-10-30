@@ -11,7 +11,7 @@ namespace roundhouse.databases.oracle
     using infrastructure.extensions;
     using parameters;
 
-    public sealed class OracleDatabase : AdoNetDatabase
+    public class OracleDatabase : AdoNetDatabase
     {
         private string connect_options = "Integrated Security";
 
