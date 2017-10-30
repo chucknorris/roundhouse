@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Data.Common;
+using System.Text.RegularExpressions;
 using roundhouse.consoles;
 
 namespace roundhouse.databases.postgresql
@@ -20,6 +21,11 @@ namespace roundhouse.databases.postgresql
                 throw new Exception(
                     "This option can not be changed because PostgreSQL database migrator always splits batch statements by using Npgsql class from Npgsql ADO.NET provider");
             }
+        }
+
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return NpgsqlFactory.Instance;
         }
 
         private readonly PostgreAdoNetProviderResolver postgre_ado_net_provider_resolver;

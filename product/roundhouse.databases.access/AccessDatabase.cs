@@ -1,3 +1,4 @@
+using System.Data.Common;
 using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.access
@@ -74,6 +75,11 @@ namespace roundhouse.databases.access
             admin_connection_string = connection_string;
             configuration_property_holder.ConnectionStringAdmin = admin_connection_string;
             //set_repository(configuration_property_holder);
+        }
+
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return OleDbFactory.Instance;
         }
 
         public override void open_admin_connection()

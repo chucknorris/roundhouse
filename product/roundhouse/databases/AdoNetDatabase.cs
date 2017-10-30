@@ -41,6 +41,8 @@
         {
         }
 
+     
+
         public override void open_admin_connection()
         {
             Log.bound_to(this).log_a_debug_event_containing("Opening admin connection to '{0}'", admin_connection_string);

@@ -1,4 +1,5 @@
-﻿using roundhouse.consoles;
+﻿using System.Data.Common;
+using roundhouse.consoles;
 using System.IO;
 
 namespace roundhouse.databases.mysql
@@ -31,6 +32,11 @@ namespace roundhouse.databases.mysql
                 throw new Exception(
                     "This option can not be changed because MySQL database migrator always splits batch statements by using MySqlScript class from MySQL ADO.NET provider");
             }
+        }
+
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return new MySqlClientFactory();
         }
 
         public override void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
