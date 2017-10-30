@@ -124,7 +124,10 @@ namespace roundhouse.infrastructure.app
             }
             if (string.IsNullOrEmpty(configuration_property_holder.EnvironmentNames))
             {
-                configuration_property_holder.EnvironmentNames = ApplicationParameters.default_environment_name;
+                if (!string.IsNullOrEmpty(configuration_property_holder.EnvironmentName))
+                    configuration_property_holder.EnvironmentNames = configuration_property_holder.EnvironmentName;
+                else
+                    configuration_property_holder.EnvironmentNames = ApplicationParameters.default_environment_name;
             }
             if (string.IsNullOrEmpty(configuration_property_holder.OutputPath))
             {
