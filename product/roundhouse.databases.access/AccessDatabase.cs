@@ -12,6 +12,11 @@ namespace roundhouse.databases.access
     {
         private string connect_options = "Trusted_Connection";
 
+        public AccessDatabase()
+        {
+            server_connection = new AdoNetConnection(new OleDbConnection(connection_string));
+        }
+
         public override bool supports_ddl_transactions
         {
             get { return false; }
@@ -79,7 +84,6 @@ namespace roundhouse.databases.access
 
         public override void open_connection(bool with_transaction)
         {
-            server_connection = new AdoNetConnection(new OleDbConnection(connection_string));
             server_connection.open();
 
             set_repository();
