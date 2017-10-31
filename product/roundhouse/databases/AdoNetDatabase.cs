@@ -32,10 +32,7 @@
             return new AdoNetConnection(connection);
         }
 
-        protected DbProviderFactory get_db_provider_factory()
-        {
-            return DbProviderFactories.GetFactory(provider);
-        }
+        protected abstract DbProviderFactory get_db_provider_factory();
 
         protected virtual void connection_specific_setup(IDbConnection connection)
         {
