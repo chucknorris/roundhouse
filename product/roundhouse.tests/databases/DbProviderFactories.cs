@@ -145,11 +145,11 @@ namespace roundhouse.tests.databases
             }
 
             // Fails with Expecting non-empty string for 'providerInvariantName' parameter.
-            //[Observation]
+            [Observation]
             public void has_oledb_provider_factory()
             {
                 DbProviderFactory fac = testable_sut().factory;
-                fac.ShouldBeType<System.Data.OracleClient.OracleClientFactory>();
+                fac.ShouldBeType<System.Data.OleDb.OleDbFactory>();
             }
         }
 
