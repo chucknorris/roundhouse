@@ -121,7 +121,7 @@
 
             if (transaction == null)
             {
-                retry_policy.ExecuteAction(() => run_command_with(sql_to_run, connection_type, parameters));
+                retry_policy.Execute(() => run_command_with(sql_to_run, connection_type, parameters));
             }
             else
             {
@@ -146,7 +146,7 @@
             {
                 if (transaction == null)
                 {
-                    return_value = retry_policy.ExecuteAction(() => command.ExecuteScalar());
+                    return_value = retry_policy.Execute(() => command.ExecuteScalar());
                 }
                 else
                 {

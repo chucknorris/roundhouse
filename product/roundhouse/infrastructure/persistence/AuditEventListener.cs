@@ -1,3 +1,6 @@
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace roundhouse.infrastructure.persistence
 {
     using System;
@@ -16,6 +19,11 @@ namespace roundhouse.infrastructure.persistence
         }
 
         //http://ayende.com/Blog/archive/2009/04/29/nhibernate-ipreupdateeventlistener-amp-ipreinserteventlistener.aspx
+        public async Task<bool> OnPreInsertAsync(PreInsertEvent @event, CancellationToken cancellationToken)
+        {
+            return await Task.FromResult(OnPreInsert(@event));
+        }
+
         public bool OnPreInsert(PreInsertEvent event_item)
         {
             Auditable audit = event_item.Entity as Auditable;
@@ -36,6 +44,11 @@ namespace roundhouse.infrastructure.persistence
             audit.entered_by = identity_of_updater;
 
             return false;
+        }
+
+        public async Task<bool> OnPreUpdateAsync(PreUpdateEvent @event, CancellationToken cancellationToken)
+        {
+            return await Task.FromResult(OnPreUpdate(@event));
         }
 
         public bool OnPreUpdate(PreUpdateEvent event_item)

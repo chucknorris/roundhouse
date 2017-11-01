@@ -1,13 +1,13 @@
-﻿using System.Data.OracleClient;
+﻿using System.Data.Common;
+using System.Data.OracleClient;
 using NHibernate.Driver;
 using NHibernate.SqlTypes;
-using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.oracle
 {
     public class RoundhousEOracleDriver : OracleClientDriver
     {
-        protected override void InitializeParameter(System.Data.IDbDataParameter dbParam, string name, SqlType sqlType)
+        protected override void InitializeParameter(DbParameter dbParam, string name, SqlType sqlType)
         {
             base.InitializeParameter(dbParam, name, sqlType);
 

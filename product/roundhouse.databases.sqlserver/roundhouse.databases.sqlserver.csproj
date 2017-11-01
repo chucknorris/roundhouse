@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -35,23 +35,14 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
- <ItemGroup>
-    <PackageReference Include="EnterpriseLibrary.TransientFaultHandling" Version="6.0.1304.0" />
-    <PackageReference Include="EnterpriseLibrary.TransientFaultHandling.Data" Version="6.0.1304.1" />
-    <PackageReference Include="FluentNHibernate" Version="1.3.0.733" />
-    <PackageReference Include="FluentNHibernate" Version="1.3.0.733" />
-    <PackageReference Include="NHibernate" Version="3.3.2.4000" />
-    <PackageReference Include="Iesi.Collections" Version="3.3.2.4000" />
+  <ItemGroup>
+    <PackageReference Include="FluentNHibernate" Version="2.1.2" />
+    <PackageReference Include="Iesi.Collections" Version="4.0.4" />
+    <PackageReference Include="NHibernate" Version="5.1.1" />
+    <PackageReference Include="Polly" Version="5.9.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-   <ItemGroup>
     <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
   </ItemGroup>
-
-
 </Project>
