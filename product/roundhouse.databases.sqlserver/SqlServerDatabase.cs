@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Polly;
 
 namespace roundhouse.databases.sqlserver
 {
@@ -7,7 +8,6 @@ namespace roundhouse.databases.sqlserver
     using System.Data.SqlClient;
     using System.Text;
     using System.Text.RegularExpressions;
-    using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 
     using infrastructure.app;
     using connections;
@@ -19,17 +19,22 @@ namespace roundhouse.databases.sqlserver
         public SqlServerDatabase()
         {
             // Retry upto 5 times with exponential backoff before giving up
-            retry_policy = new RetryPolicy(
-                new TransientErrorDetectionStrategy(),
-                5,
-                minBackoff: TimeSpan.FromSeconds(5),
-                maxBackoff: TimeSpan.FromMinutes(2),
-                deltaBackoff: TimeSpan.FromSeconds(5));
-
-            retry_policy.Retrying += (sender, args) => log_command_retrying(args);
+            retry_policy = Policy
+                .Handle<Exception>(ex => error_detection_strategy.is_transient(ex))
+                .WaitAndRetry(new[]
+                {
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(5)
+                },
+                    log_command_retrying
+                );
         }
 
         private string connect_options = "Integrated Security=SSPI;";
+        private readonly TransientErrorDetectionStrategy error_detection_strategy = new TransientErrorDetectionStrategy();
 
         public override string sql_statement_separator_regex_pattern
         {
@@ -79,13 +84,22 @@ namespace roundhouse.databases.sqlserver
 
         protected override AdoNetConnection GetAdoNetConnection(string conn_string)
         {
-            var connection_retry_policy = new RetryPolicy<TransientErrorDetectionStrategy>(
-                5, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
-            connection_retry_policy.Retrying += (sender, args) => log_connection_retrying(args);
+            var connection_retry_policy = Policy
+                .Handle<Exception>(ex => error_detection_strategy.is_transient(ex))
+                .WaitAndRetry(new[]
+                    {
+                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(5)
+                    },
+                    log_command_retrying
+                );
 
             // Command retry policy is only used when ReliableSqlConnection.ExecuteCommand helper methods are explicitly invoked.
             // This is not our case, as those method are not used.
-            var command_retry_policy = RetryPolicy.NoRetry;
+            var command_retry_policy = Policy.Handle<Exception>().Retry(0);
 
             var connection = new ReliableSqlConnection(conn_string, connection_retry_policy, command_retry_policy);
 
@@ -260,22 +274,22 @@ namespace roundhouse.databases.sqlserver
             return result.Tables.Count == 0 ? null : result.Tables[0];
         }
         
-        private void log_connection_retrying(RetryingEventArgs args)
+        private void log_connection_retrying(Exception ex, TimeSpan time_span, int retry_count, Context context)
         {
             Log.bound_to(this).log_a_warning_event_containing(
                 "Failure opening connection, trying again (current retry count:{0}){1}{2}",
-                args.CurrentRetryCount,
+                retry_count,
                 Environment.NewLine,
-                args.LastException.to_string());
+                ex.to_string());
         }
 
-        private void log_command_retrying(RetryingEventArgs args)
+        private void log_command_retrying(Exception ex, TimeSpan time_span, int retry_count, Context context)
         {
             Log.bound_to(this).log_a_warning_event_containing(
                 "Failure executing command, trying again (current retry count:{0}){1}{2}",
-                args.CurrentRetryCount,
+                retry_count,
                 Environment.NewLine,
-                args.LastException.to_string());
+                ex.to_string());
         }
     }
 }
