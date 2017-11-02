@@ -17,7 +17,8 @@ namespace roundhouse.tests.migrators
 
             protected concern_for_database_migrator()
             {
-                default_configuration = new DefaultConfiguration {EnvironmentNames = "TEST"};
+                default_configuration = new DefaultConfiguration();
+                default_configuration.EnvironmentNames.Add("TEST");
                 default_database_migrator = new DefaultDatabaseMigrator(new MockDatabase(null), null, default_configuration);
             }
 
@@ -108,7 +109,9 @@ namespace roundhouse.tests.migrators
             private readonly DefaultConfiguration default_configuration;
             protected concern_for_database_migrator_with_multiple_environments()
             {
-                default_configuration = new DefaultConfiguration {EnvironmentNames = "TEST,SPECIAL"};
+                default_configuration = new DefaultConfiguration();
+                default_configuration.EnvironmentNames.Add("TEST");
+                default_configuration.EnvironmentNames.Add("SPECIAL");
                 default_database_migrator = new DefaultDatabaseMigrator(new MockDatabase(null), null, default_configuration);
             }
 

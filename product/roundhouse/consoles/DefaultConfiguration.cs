@@ -6,9 +6,14 @@ namespace roundhouse.consoles
     using databases;
     using infrastructure.app;
     using infrastructure.logging;
+    using System.Linq;
 
     public sealed class DefaultConfiguration : ConfigurationPropertyHolder
     {
+        public DefaultConfiguration()
+        {
+            EnvironmentNames = new List<string>();
+        }
         public Logger Logger { get; set; }
         public string ServerName { get; set; }
         public string DatabaseName { get; set; }
@@ -41,8 +46,15 @@ namespace roundhouse.consoles
         public string ScriptsRunTableName { get; set; }
         public string ScriptsRunErrorsTableName { get; set; }
         [Obsolete("Use EnvironmentNames")]
-        public string EnvironmentName { get; set; }
-        public string EnvironmentNames { get; set; }
+        public string EnvironmentName {
+            get { return EnvironmentNames.SingleOrDefault(); }
+            set
+            {
+                EnvironmentNames.Clear();
+                EnvironmentNames.Add(value);
+            }
+        }
+        public IList<string> EnvironmentNames { get; private set; }
         public bool Restore { get; set; }
         public string RestoreFromPath { get; set; }
         public string RestoreCustomOptions { get; set; }

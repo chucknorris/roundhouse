@@ -25,6 +25,7 @@ namespace roundhouse.infrastructure.app
     using resolvers;
     using StructureMap;
     using Container = roundhouse.infrastructure.containers.Container;
+    using System.Linq;
 
     public static class ApplicationConfiguraton
     {
@@ -122,12 +123,9 @@ namespace roundhouse.infrastructure.app
             {
                 configuration_property_holder.VersionXPath = ApplicationParameters.default_version_x_path;
             }
-            if (string.IsNullOrEmpty(configuration_property_holder.EnvironmentNames))
+            if (!configuration_property_holder.EnvironmentNames.Any())
             {
-                if (!string.IsNullOrEmpty(configuration_property_holder.EnvironmentName))
-                    configuration_property_holder.EnvironmentNames = configuration_property_holder.EnvironmentName;
-                else
-                    configuration_property_holder.EnvironmentNames = ApplicationParameters.default_environment_name;
+                configuration_property_holder.EnvironmentNames.Add(ApplicationParameters.default_environment_name);
             }
             if (string.IsNullOrEmpty(configuration_property_holder.OutputPath))
             {

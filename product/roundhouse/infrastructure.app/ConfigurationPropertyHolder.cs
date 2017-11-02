@@ -42,7 +42,7 @@ namespace roundhouse.infrastructure.app
         string ScriptsRunErrorsTableName { get; set; }
         [Obsolete("Use EnvironmentNames")]
         string EnvironmentName { get; set; }
-        string EnvironmentNames { get; set; }
+        IList<string> EnvironmentNames { get; }
         bool Restore { get; set; }
         string RestoreFromPath { get; set; }
         string RestoreCustomOptions { get; set; }

@@ -11,8 +11,6 @@
         public DefaultEnvironmentSet(ConfigurationPropertyHolder configuration_property_holder)
         {
             set_items = configuration_property_holder.EnvironmentNames
-                .Split(',')
-                .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Select(x => new DefaultEnvironment(x.Trim()))
                 .ToList();
         }
