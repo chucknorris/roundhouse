@@ -28,7 +28,7 @@ namespace roundhouse.console
 
     public class Program
     {
-        private static readonly char[] OptionsSplit = new[] { ',' };
+        private static readonly char[] OptionsSplit = new[] { ',',';' };
 
         private static readonly ILog the_logger = LogManager.GetLogger(typeof(Program));
 
@@ -259,7 +259,7 @@ namespace roundhouse.console
                 //environment(s)
                 .Add("env=|environment=|environmentname=|envs=|environments=|environmentnames=",
                      string.Format(
-                         "EnvironmentName(s) - This allows RH to be environment aware and only run scripts that are in a particular environment based on the naming of the script. LOCAL.something.ENV.sql would only be run in the LOCAL environment. Multiple environments may be specified as a comma-separated list. Defaults to \"{0}\".",
+                         "EnvironmentName(s) - This allows RH to be environment aware and only run scripts that are in a particular environment based on the naming of the script. LOCAL.something.ENV.sql would only be run in the LOCAL environment. Multiple environments may be specified as a comma or semicolon separated list. Defaults to \"{0}\".",
                          ApplicationParameters.default_environment_name),
                      environmentOption =>
                      {
