@@ -101,7 +101,7 @@ namespace roundhouse.tests.integration.databases
             public void should_have_the_correct_default_restore_options()
             {
                 //NOTE: this is not conclusive since this could vary from system to system depending on where you store stuff. This test needs some work to make it go to the database.
-                result.ShouldEqual(@", MOVE 'TestRoundhousE' TO 'C:\Program Files (x86)\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\TestRoundhousE.mdf', MOVE 'TestRoundhousE_log' TO 'C:\Program Files (x86)\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\TestRoundhousE_log.LDF'");
+                result.ShouldEqual(@", MOVE 'TestRoundhousE' TO 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\DATA\TestRoundhousE.mdf', MOVE 'TestRoundhousE_log' TO 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\DATA\TestRoundhousE_log.ldf'");
             }
 
         }

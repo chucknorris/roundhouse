@@ -75,8 +75,8 @@ namespace roundhouse.infrastructure.persistence
             try
             {
                 string key = configuration_holder.DatabaseType.Substring(0, configuration_holder.DatabaseType.IndexOf(',')) + ", " +
-                             ApplicationParameters.get_merged_assembly_name();
-                return build_session_factory(func_dictionary[key](), Assembly.GetExecutingAssembly(),top_namespace, additional_function);
+                             ApplicationParameters.get_merged_assembly_name(top_namespace);
+                return build_session_factory(func_dictionary[key](), Type.GetType(key).Assembly, top_namespace, additional_function);
                 //return build_session_factory(func_dictionary[key](), DefaultAssemblyLoader.load_assembly(ApplicationParameters.get_merged_assembly_name()),
                                              //top_namespace, additional_function);
             }
