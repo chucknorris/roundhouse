@@ -1,4 +1,6 @@
-using System.Data.OracleClient;
+using System.Data.Common;
+using Oracle.ManagedDataAccess.Client;
+
 using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.oracle
@@ -84,7 +86,12 @@ namespace roundhouse.databases.oracle
 
         public override void set_provider()
         {
-            provider = "System.Data.OracleClient";
+            provider = "Oracle.ManagedDataAccess.Client";
+        }
+
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return OracleClientFactory.Instance;
         }
 
         protected override void connection_specific_setup(IDbConnection connection)

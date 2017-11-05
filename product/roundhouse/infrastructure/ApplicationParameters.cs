@@ -46,12 +46,12 @@ namespace roundhouse.infrastructure
         public static readonly int default_restore_timeout = 900;
         public static readonly bool default_disable_output = false;
 
-        public static string get_merged_assembly_name()
+        public static string get_merged_assembly_name(string type_defined_in_assembly = "roundhouse")
         {
             string merged_assembly_name = "rh";
             Log.bound_to(typeof(ApplicationParameters)).log_a_debug_event_containing("The executing assembly is \"{0}\"", Assembly.GetExecutingAssembly().Location);
 
-            if (Assembly.GetExecutingAssembly().Location.to_lower().Contains("roundhouse.dll")) merged_assembly_name = "roundhouse";
+            if (Assembly.GetExecutingAssembly().Location.to_lower().Contains("roundhouse.dll")) merged_assembly_name = type_defined_in_assembly;
 
             return merged_assembly_name;
         }

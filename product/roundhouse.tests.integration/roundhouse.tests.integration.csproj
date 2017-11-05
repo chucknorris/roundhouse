@@ -61,6 +61,7 @@
   <ItemGroup>
     <ProjectReference Include="..\roundhouse.console\roundhouse.console.csproj" />
     <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
     <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
     <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
   </ItemGroup>

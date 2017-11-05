@@ -1,7 +1,6 @@
-﻿using System.Data.OracleClient;
+﻿using Oracle.ManagedDataAccess.Client;
 using NHibernate.Driver;
 using NHibernate.SqlTypes;
-using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.oracle
 {
@@ -22,7 +21,7 @@ namespace roundhouse.databases.oracle
             //Mapping file will need to be update to use StringClob as the property type
             if ((sqlType is StringClobSqlType))
             {
-                ((OracleParameter)dbParam).OracleType = OracleType.NClob;
+                ((OracleParameter)dbParam).OracleDbType = OracleDbType.NClob;
             }
         }
     }
