@@ -28,10 +28,10 @@ namespace roundhouse.tests.runners
             {
                 configuration = new DefaultConfiguration
                 {
-                    EnvironmentNames = "TEST",
                     Drop = false ,
                     Silent = true
                 };
+                configuration.EnvironmentNames.Add("TEST");
 
                 var database_mock = new Mock<Database>();
                 var filesystem_mock = new Mock<FileSystemAccess>();

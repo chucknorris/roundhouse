@@ -16,6 +16,7 @@ namespace roundhouse.tasks
     using resolvers;
     using runners;
     using Logger = roundhouse.infrastructure.logging.Logger;
+    using System.Linq;
 
     public sealed class Roundhouse : ITask, ConfigurationPropertyHolder
     {
@@ -26,6 +27,7 @@ namespace roundhouse.tasks
         public Roundhouse()
         {
             this.loggingHelper = new TaskLoggingHelper(this);
+            EnvironmentNames = new List<string>();
         }
 
         #region MSBuild
@@ -110,9 +112,15 @@ namespace roundhouse.tasks
         public string ScriptsRunErrorsTableName { get; set; }
 
         [Obsolete("Use EnvironmentNames")]
-        public string EnvironmentName { get; set; }
-
-        public string EnvironmentNames { get; set; }
+        public string EnvironmentName {
+            get { return EnvironmentNames.SingleOrDefault(); }
+            set
+            {
+                EnvironmentNames.Clear();
+                EnvironmentNames.Add(value);
+            }
+        }
+        public IList<string> EnvironmentNames { get; private set; }
 
         public bool Restore { get; set; }
 
