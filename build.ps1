@@ -1,4 +1,4 @@
-#!/usr/bin/env powershell
+#!/usr/bin/env pwsh
 
 $MSBUILD=msbuild
 
@@ -19,7 +19,7 @@ pushd $root
 $gitVersion = (GitVersion | ConvertFrom-Json)
 
 If ($onAppVeyor) {
-    $newVersion="$($gitVersion.FullSemVer).$env:APPVEYOR_BUILD_NUMBER"
+    $newVersion="$($gitVersion.FullSemVer)"
     Write-host "   - Updating appveyor build version to: $newVersion"
     $env:APPVEYOR_BUILD_VERSION="$newVersion"
     appveyor UpdateBuild -Version "$newVersion"

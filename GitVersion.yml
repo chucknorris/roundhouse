@@ -1,0 +1,8 @@
+assembly-versioning-scheme: None
+mode: ContinuousDelivery
+branches:
+  master:
+    mode: ContinuousDelivery
+    tag: pre
+ignore:
+  sha: []
