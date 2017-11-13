@@ -32,7 +32,7 @@ It seeks to solve both maintenance concerns and ease of deployment. We follow so
 
  You can also obtain a copy from the build server at [http://teamcity.codebetter.com](http://teamcity.codebetter.com).  
   
-### Gems  
+### Gems (_Not updated for 0.9.0, sorry_) 
 If you have Ruby 1.8.6+ (and Gems 1.3.7+) installed, you can get the current release of RoundhousE to your machine quickly!  
   
 1. Type `gem install roundhouse`  
@@ -62,7 +62,7 @@ This is the best way to get to the bleeding edge of what we are doing.
   
   
 # REQUIREMENTS
-* .NET Framework 3.5  
+* .NET Framework 4.6.1
 * SA access to the sql server (for creation or deletion)  
 * change access to the database (for everything else)  
 
@@ -71,6 +71,13 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+## [0.9.0](https://github.com/chucknorris/roundhouse/releases/tag/0.9.0)
+ **Focus on modernising tooling**
+
+ RoundhousE has had some catching-up to do tooling-wise. Dependency on .NET 3.5, old, NAnt-based build chain, etc. We are starting this work. It is not done yet, but on its way. Feature-wise not a lot to brag about, but RH.exe should now be able to run on Windows Server 2016 out-of-the-box, because it is no longer dependent on .NET 3.5.
+
+ (See release for the full release notes)
+
 ## [0.8.8](https://github.com/chucknorris/roundhouse/releases/tag/0.8.8)
  **Catching up with Pull Requests**
  (See release for the release notes)
