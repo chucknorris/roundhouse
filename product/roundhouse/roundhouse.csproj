@@ -24,7 +24,7 @@
 
     <PackageVersion>$(NugetVersion)</PackageVersion>
     <PackageId>roundhouse.lib</PackageId>
-    <Title>RoundhousE</Title>
+    <Title>RoundhousE Library</Title>
     <Authors>Rob Reynolds</Authors>
     <Description>RoundhousE is a Professional Database Change and Versioning Management tool.</Description>
     <PackageProjectUrl>http://projectroundhouse.org</PackageProjectUrl>
