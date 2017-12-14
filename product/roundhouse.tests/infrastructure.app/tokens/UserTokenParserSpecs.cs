@@ -23,6 +23,27 @@ namespace roundhouse.tests.infrastructure.app.tokens
             }
 
             [Observation]
+            public void empty_entry_should_be_ignored()
+            {
+                var dictionary = UserTokenParser.Parse("=");
+                dictionary.should_be_empty();
+            }
+            [Observation]
+            public void empty_key_should_be_ignored()
+            {
+                var dictionary = UserTokenParser.Parse("=42");
+                dictionary.should_be_empty();
+            }
+            [Observation]
+            public void empty_value_should_parse_to_empty_option()
+            {
+                var dictionary = UserTokenParser.Parse("Bob=");
+                dictionary.should_be_an_instance_of<Dictionary<string, string>>();
+                dictionary.should_only_contain(
+                    new KeyValuePair<string, string>("Bob",string.Empty)
+                );
+            }
+            [Observation]
             public void if_given_keyvalues_should_parse_to_dictionary()
             {
                 var dictionary = UserTokenParser.Parse("UserId=123;UserName=Some Name");

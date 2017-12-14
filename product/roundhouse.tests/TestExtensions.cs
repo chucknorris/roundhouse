@@ -40,6 +40,11 @@ namespace roundhouse.tests
                 Assert.That(dictionary, Contains.Item(value));
             }
         }
+
+        public static void should_be_empty<K>(this ICollection<K> collection)
+        {
+            Assert.That(collection, Has.Count.EqualTo(0));
+        }
     }
 
 }

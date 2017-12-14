@@ -13,18 +13,24 @@
                 throw new ArgumentNullException("option");
 
             var textToParse = option;
-            var pairs = textToParse.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            var pairStrings = textToParse.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (pairs.Length == 1 && File.Exists(textToParse))
+            if (pairStrings.Length == 1 && File.Exists(textToParse))
             {
                 textToParse = File.ReadAllText(textToParse);
-                pairs = textToParse.Split(new string[] { ";",Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                pairStrings = textToParse.Split(new string[] { ";",Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             }
 
-            if (pairs.Any(p => !p.Contains("="))) throw new FormatException("Wrong format");
+            if (pairStrings.Any(p => !p.Contains("=")))
+                throw new FormatException("Wrong format");
 
-            return pairs.ToDictionary(p => p.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[0],
-                p => p.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[1]);
+            return pairStrings
+                .Select(p => {
+                    var split = p.Split('='); // Preserve the empties
+                    return new KeyValuePair<string, string>(split.FirstOrDefault(), split.LastOrDefault());
+                })
+                .Where(kvp => !string.IsNullOrWhiteSpace(kvp.Key))
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
     }
 }
