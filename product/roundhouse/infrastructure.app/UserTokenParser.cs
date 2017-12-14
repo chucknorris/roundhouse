@@ -23,8 +23,8 @@
 
             if (pairs.Any(p => !p.Contains("="))) throw new FormatException("Wrong format");
 
-            return pairs.ToDictionary(p => p.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[0],
-                p => p.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[1]);
+            return pairs.ToDictionary(p => p.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(),
+                p => p.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault());
         }
     }
 }
