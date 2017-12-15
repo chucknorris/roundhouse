@@ -4,8 +4,8 @@
     <id>roundhouse</id>
     <title>RoundhousE</title>
     <version>$version$</version>
-    <authors>Rob Reynolds</authors>
-    <owners>Rob Reynolds</owners>
+    <authors>Rob Reynolds, Andy Davis, Erik A. Brandstadmoen</authors>
+    <owners>Rob Reynolds, Andy Davis, Erik A. Brandstadmoen</owners>
     <summary>RoundhousE - Professional Database Change and Versioning Management</summary>
     <description>RoundhousE is a Professional Database Change and Versioning Management tool. Type rh /? for options</description>
     <projectUrl>http://projectroundhouse.org</projectUrl>

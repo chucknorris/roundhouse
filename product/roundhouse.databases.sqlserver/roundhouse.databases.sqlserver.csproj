@@ -39,8 +39,9 @@
     <PackageReference Include="EnterpriseLibrary.TransientFaultHandling" Version="6.0.1304.0" />
     <PackageReference Include="EnterpriseLibrary.TransientFaultHandling.Data" Version="6.0.1304.1" />
     <PackageReference Include="FluentNHibernate" Version="1.3.0.733" />
-    <PackageReference Include="Iesi.Collections" Version="3.3.2.4000" />
+    <PackageReference Include="FluentNHibernate" Version="1.3.0.733" />
     <PackageReference Include="NHibernate" Version="3.3.2.4000" />
+    <PackageReference Include="Iesi.Collections" Version="3.3.2.4000" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
