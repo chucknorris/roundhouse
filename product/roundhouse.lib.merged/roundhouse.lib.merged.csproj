@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks>net461</TargetFrameworks>
+    <TargetFramework>net461</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -69,18 +69,15 @@
       <Link>roundhouse.ico</Link>
     </None>
   </ItemGroup>
+  
   <!-- Merge properties and target -->
   <PropertyGroup>
     <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
     <ILMergeTarget>$(ILMergeDir)roundhouse.dll</ILMergeTarget>
   </PropertyGroup>
+  
   <Target Name="ILMerge" AfterTargets="Build">
     <ItemGroup>
-      <!--
-      <ILMergeAssemblies Include="$(OutputPath)*.dll" />
-      <ILMergeAssemblies Exclude="$(OutputPath)$(AssemblyName).dll" />
-      <ILMergeAssemblies Exclude="$(OutputPath)FluentNHibernate.dll" />
-      -->
       <ILMergeAssemblies Include="$(OutputPath)roundhouse*.dll" />
       <ILMergeAssemblies Remove="$(OutputPath)$(AssemblyName).dll" />
     </ItemGroup>
@@ -90,16 +87,19 @@
       <ILMergeLog>$(ILMergeDir)roundhouse.ILMerge.log</ILMergeLog>
       <ILMergeCommand>$(ILMerge) /internalize:$(IgnoreFile) /target:dll /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup  @(ILMergeAssemblies, ' ')</ILMergeCommand>
     </PropertyGroup>
-    <Delete Files="$(ILMergeLog);$(ILMergeTarget)" Condition="Exists($(ILMergeDir))" />
+    <Delete Files="$(ILMergeLog)" Condition="Exists('$(ILMergeLog)')" />
+    <Delete Files="$(ILMergeTarget)" Condition="Exists('$(ILMergeTarget)')" />
     <MakeDir Directories="$(ILMergeDir)" />
     <Message Importance="high" Text="ILMerge-ing into $(ILMergeTarget)" />
     <Exec Command="$(ILMergeCommand)" />
   </Target>
+  
   <!-- Nuspec properties (for generating NuGet package) -->
   <PropertyGroup>
     <NuspecFile>roundhouse.lib.nuspec</NuspecFile>
     <NuspecProperties>mergedDll=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
+  
   <!-- Copy to drop folder after packaging -->
   <Target Name="CopyToDropFolder" AfterTargets="Pack" Condition="'$(DropFolder)' != ''">
     <ItemGroup>
