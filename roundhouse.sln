@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "roundhouse.databases.postgr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "roundhouse.databases.sqlserverce", "product\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj", "{3447F080-CF50-4B02-9521-671E7AEE8D34}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.lib.merged", "product\roundhouse.lib.merged\roundhouse.lib.merged.csproj", "{6BB8E05F-CEC6-4CC8-87CF-8A9C439C8122}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Build|Any CPU = Build|Any CPU
@@ -130,6 +132,12 @@ Global
 		{3447F080-CF50-4B02-9521-671E7AEE8D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3447F080-CF50-4B02-9521-671E7AEE8D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3447F080-CF50-4B02-9521-671E7AEE8D34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BB8E05F-CEC6-4CC8-87CF-8A9C439C8122}.Build|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB8E05F-CEC6-4CC8-87CF-8A9C439C8122}.Build|Any CPU.Build.0 = Debug|Any CPU
+		{6BB8E05F-CEC6-4CC8-87CF-8A9C439C8122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB8E05F-CEC6-4CC8-87CF-8A9C439C8122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB8E05F-CEC6-4CC8-87CF-8A9C439C8122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB8E05F-CEC6-4CC8-87CF-8A9C439C8122}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

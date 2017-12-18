@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata>
+    <id>roundhouse.lib</id>
+    <title>RoundhousE Library</title>
+    <version>$version$</version>
+    <authors>Rob Reynolds, Andy Davis, Erik A. Brandstadmoen</authors>
+    <owners>Rob Reynolds</owners>
+    <summary>RoundhousE - Professional Database Change and Versioning Management</summary>
+    <description>RoundhousE is a Professional Database Change and Versioning Management tool. Type rh /? for options</description>
+    <projectUrl>http://projectroundhouse.org</projectUrl>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>roundhouse db migration database migrator chucknorris</tags>
+    <dependencies>
+      <dependency id="FluentNHibernate" version="1.3.0" />
+      <dependency id="Iesi.Collections" version="3.3.2.4000" />
+      <dependency id="NHibernate" version="3.3.2.4000" />
+      <dependency id="NHibernate.JetDriver" version="2.0.0" />
+      <dependency id="Npgsql" version="3.1.1.0" />
+      <dependency id="System.Data.SQLite" version="1.0.105.2" />
+      <dependency id="EnterpriseLibrary.TransientFaultHandling" version="6.0.1304.0" />
+      <dependency id="EnterpriseLibrary.TransientFaultHandling.Data" version="6.0.1304.1" />
+      <dependency id="Microsoft.SqlServer.Compact" version="4.0.8876.1" />
+    </dependencies>
+	<iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
+  </metadata>
+  <files>
+    <file src="$mergedDll$" target="lib\net461" />
+  </files>
+</package>

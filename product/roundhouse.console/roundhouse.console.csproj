@@ -96,11 +96,11 @@
     <PropertyGroup>
       <IgnoreFile>..\..\build.custom\ilmerge.internalize.ignore.txt</IgnoreFile>
       <ILMerge>..\..\lib\ILMerge\ILMerge.exe</ILMerge>
-      <ILMergeLog>$(ILMergeDir)ILMerge.log</ILMergeLog>
+      <ILMergeLog>$(ILMergeDir)roundhouse.console.ILMerge.log</ILMergeLog>
       <ILMergeSource>$(OutputPath)$(AssemblyName).exe</ILMergeSource>
       <ILMergeCommand>$(ILMerge) /internalize:$(IgnoreFile) /target:exe /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup $(ILMergeSource)  @(ILMergeAssemblies, ' ')</ILMergeCommand>
     </PropertyGroup>
-    <RemoveDir Directories="$(ILMergeDir)" Condition="Exists($(ILMergeDir))" />
+    <Delete Files="$(ILMergeLog);$(ILMergeTarget)" Condition="Exists($(ILMergeDir))" />
     <MakeDir Directories="$(ILMergeDir)" />
     <Message Importance="high" Text="ILMerge-ing into $(ILMergeTarget)" />
     <Exec Command="$(ILMergeCommand)" />
