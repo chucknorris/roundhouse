@@ -71,6 +71,13 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
 
 # RELEASE NOTES
+## [0.9.1](https://github.com/chucknorris/roundhouse/releases/tag/0.9.1)
+ **Two Bugfixes**
+
+After the 0.9.0 release, users identifed two significant bugs. These are fixed in a quick point release.
+
+ (See release for the full release notes)
+
 ## [0.9.0](https://github.com/chucknorris/roundhouse/releases/tag/0.9.0)
  **Focus on modernising tooling**
 
