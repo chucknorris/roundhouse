@@ -84,6 +84,7 @@ namespace roundhouse.databases.mysql
                 builder.Database = "information_schema";
                 admin_connection_string = builder.ConnectionString;
             }
+            configuration_property_holder.ServerName = server_name;
             configuration_property_holder.DatabaseName = database_name;
             configuration_property_holder.ConnectionStringAdmin = admin_connection_string;
         }
@@ -98,6 +99,7 @@ namespace roundhouse.databases.mysql
         {
             var connectionBuilder = new MySqlConnectionStringBuilder();
             connectionBuilder.Server = server_name;
+            connectionBuilder.Database = database_name;
             connectionBuilder.Port = 3306;
             connectionBuilder.UserID = user_name;
             connectionBuilder.Password = password;
