@@ -111,7 +111,14 @@ namespace roundhouse.databases.mysql
         public override string create_database_script()
         {
             return string.Format(
-                @"CREATE DATABASE IF NOT EXISTS `{0}`;",
+                @"SET @Created = 1;
+
+                SELECT 0 FROM INFORMATION_SCHEMA.SCHEMATA
+                WHERE SCHEMA_NAME='{0}' INTO @Created;
+
+                CREATE DATABASE IF NOT EXISTS `{0}`;
+
+                SELECT @Created;",
                 database_name);
         }
 
