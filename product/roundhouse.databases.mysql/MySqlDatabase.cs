@@ -116,8 +116,7 @@ namespace roundhouse.databases.mysql
                 SELECT 0 FROM INFORMATION_SCHEMA.SCHEMATA
                 WHERE SCHEMA_NAME='{0}' INTO @Created;
 
-                CREATE DATABASE IF NOT EXISTS `{0}`
-                CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+                CREATE DATABASE IF NOT EXISTS `{0}`;
 
                 SELECT @Created;",
                 database_name);
