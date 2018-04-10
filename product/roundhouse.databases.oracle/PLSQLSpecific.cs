@@ -3,7 +3,7 @@ namespace roundhouse.databases.oracle
     public sealed class PLSQLSpecific
     {
 
-        public string create_roundhouse_version_table(string roundhouse_schema_name, string version_table_name)
+        public static string create_roundhouse_version_table(string roundhouse_schema_name, string version_table_name)
         {
             return string.Format(
                 @"
@@ -24,22 +24,13 @@ namespace roundhouse.databases.oracle
                             
                             EXECUTE IMMEDIATE 'ALTER TABLE {0}_{1} ADD (
                                 PRIMARY KEY(id)
-                            )';
-
-                            EXECUTE IMMEDIATE 'CREATE SEQUENCE {0}_{1}id
-                            START WITH 1
-                            INCREMENT BY 1
-                            MINVALUE 1
-                            MAXVALUE 999999999999999999999999999
-                            CACHE 20
-                            NOCYCLE 
-                            NOORDER';
+                            )';                           
                         END IF;
                     END;
                 ", roundhouse_schema_name, version_table_name);
         }
 
-        public string create_roundhouse_scripts_run_table(string roundhouse_schema_name, string version_table_name, string scripts_run_table_name)
+        public static string create_roundhouse_scripts_run_table(string roundhouse_schema_name, string version_table_name, string scripts_run_table_name)
         {
             return string.Format(
                 @"
@@ -63,16 +54,7 @@ namespace roundhouse.databases.oracle
 
                             EXECUTE IMMEDIATE 'ALTER TABLE {0}_{1} ADD (
                                 PRIMARY KEY(id)
-                            )';
-
-                            EXECUTE IMMEDIATE 'CREATE SEQUENCE {0}_{1}id
-                            START WITH 1
-                            INCREMENT BY 1
-                            MINVALUE 1
-                            MAXVALUE 999999999999999999999999999
-                            CACHE 20
-                            NOCYCLE 
-                            NOORDER';
+                            )';                          
 
                             EXECUTE IMMEDIATE 'ALTER TABLE {0}_{1} ADD (
                                 CONSTRAINT FK_{1}_{2}_vid
@@ -85,7 +67,7 @@ namespace roundhouse.databases.oracle
                 roundhouse_schema_name, scripts_run_table_name, version_table_name);
         }
 
-        public string create_roundhouse_scripts_run_errors_table(string roundhouse_schema_name, string scripts_run_errors_table_name)
+        public static string create_roundhouse_scripts_run_errors_table(string roundhouse_schema_name, string scripts_run_errors_table_name)
         {
             return string.Format(
                 @"
@@ -110,16 +92,7 @@ namespace roundhouse.databases.oracle
 
                             EXECUTE IMMEDIATE 'ALTER TABLE {0}_{1} ADD (
                                 PRIMARY KEY(id)
-                            )';
-
-                            EXECUTE IMMEDIATE 'CREATE SEQUENCE {0}_{1}id
-                            START WITH 1
-                            INCREMENT BY 1
-                            MINVALUE 1
-                            MAXVALUE 999999999999999999999999999
-                            CACHE 20
-                            NOCYCLE 
-                            NOORDER';
+                            )';        
                             
                         END IF;
                     END;
@@ -129,7 +102,7 @@ namespace roundhouse.databases.oracle
 
         //functions
 
-        public string get_version(string roundhouse_schema_name, string version_table_name, string repository_path)
+        public static string get_version(string roundhouse_schema_name, string version_table_name, string repository_path)
         {
             return string.Format(
                  @"
@@ -143,7 +116,7 @@ namespace roundhouse.databases.oracle
                 roundhouse_schema_name, version_table_name, repository_path);
         }
 
-        public string get_version_parameterized(string roundhouse_schema_name, string version_table_name)
+        public static string get_version_parameterized(string roundhouse_schema_name, string version_table_name)
         {
             return string.Format(
                  @"
@@ -157,7 +130,7 @@ namespace roundhouse.databases.oracle
                 roundhouse_schema_name, version_table_name);
         }
 
-        public string get_current_script_hash_parameterized(string roundhouse_schema_name, string scripts_run_table_name)
+        public static string get_current_script_hash_parameterized(string roundhouse_schema_name, string scripts_run_table_name)
         {
             return string.Format(
                 @"
@@ -172,7 +145,7 @@ namespace roundhouse.databases.oracle
                 );
         }
 
-        public string has_script_run_parameterized(string roundhouse_schema_name, string scripts_run_table_name)
+        public static string has_script_run_parameterized(string roundhouse_schema_name, string scripts_run_table_name)
         {
             return string.Format(
                 @"
@@ -185,7 +158,7 @@ namespace roundhouse.databases.oracle
                 );
         }
 
-        public string insert_script_run_parameterized(string roundhouse_schema_name, string scripts_run_table_name)
+        public static string insert_script_run_parameterized(string roundhouse_schema_name, string scripts_run_table_name)
         {
             return string.Format(
                 @"
@@ -213,7 +186,7 @@ namespace roundhouse.databases.oracle
                 roundhouse_schema_name, scripts_run_table_name);
         }
 
-        public string insert_script_run_error_parameterized(string roundhouse_schema_name, string scripts_run_errors_table_name)
+        public static string insert_script_run_error_parameterized(string roundhouse_schema_name, string scripts_run_errors_table_name)
         {
             return string.Format(
                 @"
