@@ -60,9 +60,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.105.2\lib\net45\System.Data.SQLite.dll">
+    <EmbeddedResource Include="$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\lib\net46\System.Data.SQLite.dll">
       <Link>assemblyresource\System.Data.SQLite.dll</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.105.2\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.105.2\build\net45\System.Data.SQLite.Core.targets')" />
+  <Import Project="$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets')" />
 </Project>
