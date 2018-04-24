@@ -87,7 +87,7 @@
     <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
     <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
   </PropertyGroup>
-  <Target Name="ILMerge" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
+  <Target Name="ILMerge" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true' and '$(TargetFramework)' == 'net461'">
     <ItemGroup>
       <ILMergeAssemblies Include="$(OutputPath)*.dll" />
     </ItemGroup>
