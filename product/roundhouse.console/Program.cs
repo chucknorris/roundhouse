@@ -582,7 +582,7 @@ namespace roundhouse.console
         public static void init_security_protocol()
         {
             // allow tls
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
         }
 
         private static void run_update_check(ConfigurationPropertyHolder configuration)
