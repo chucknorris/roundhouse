@@ -13,7 +13,15 @@ namespace roundhouse.infrastructure.persistence
     {
         public string get_identity()
         {
-            string identity_of_updater = WindowsIdentity.GetCurrent() != null ? WindowsIdentity.GetCurrent().Name : string.Empty;
+            string identity_of_updater = null;
+            try
+            {
+                identity_of_updater = WindowsIdentity.GetCurrent().Name;
+            }
+            catch (PlatformNotSupportedException)
+            {
+                identity_of_updater = Environment.UserName;
+            }
 
             return identity_of_updater;
         }
