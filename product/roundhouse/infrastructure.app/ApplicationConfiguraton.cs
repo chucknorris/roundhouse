@@ -200,13 +200,19 @@ namespace roundhouse.infrastructure.app
         private static Logger GetMultiLogger(ConfigurationPropertyHolder configuration_property_holder)
         {
             IList<Logger> loggers = new List<Logger>();
-
-            var task = configuration_property_holder as ITask;
-            if (task != null)
+            
+            // This doesn't work on macOS, at least. Try, and fail silently.
+            try
             {
-                Logger msbuild_logger = new MSBuildLogger(configuration_property_holder);
-                loggers.Add(msbuild_logger);
+                var task = configuration_property_holder as ITask;
+                if (task != null)
+                {
+                    Logger msbuild_logger = new MSBuildLogger(configuration_property_holder);
+                    loggers.Add(msbuild_logger);
+                }
             }
+            catch (FileNotFoundException)
+            {}
 
             Logger log4net_logger = new Log4NetLogger(LogManager.GetLogger(typeof(ApplicationConfiguraton)));
             loggers.Add(log4net_logger);

@@ -56,10 +56,15 @@ namespace roundhouse.infrastructure.app.builders
         private static string get_identity_of_person_running_roundhouse()
         {
             string identity_of_runner = string.Empty;
-            WindowsIdentity windows_identity = WindowsIdentity.GetCurrent();
-            if (windows_identity != null)
+
+            try
             {
+                WindowsIdentity windows_identity = WindowsIdentity.GetCurrent();
                 identity_of_runner = windows_identity.Name;
+            }
+            catch (System.PlatformNotSupportedException)
+            {
+                identity_of_runner = Environment.UserName;
             }
 
             return identity_of_runner;
