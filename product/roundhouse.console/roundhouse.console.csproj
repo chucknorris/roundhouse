@@ -78,6 +78,7 @@
   <!-- Merge properties and target -->
   <PropertyGroup>
     <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
+    <LogDir>..\..\code_drop\log\</LogDir>
     <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
   </PropertyGroup>
   <Target Name="ILMerge" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true' and '$(TargetFramework)' == 'net461'">
@@ -87,7 +88,7 @@
     <PropertyGroup>
       <IgnoreFile>..\..\build.custom\ilmerge.internalize.ignore.txt</IgnoreFile>
       <ILMerge>..\..\lib\ILMerge\ILMerge.exe</ILMerge>
-      <ILMergeLog>$(ILMergeDir)roundhouse.console.ILMerge.log</ILMergeLog>
+      <ILMergeLog>$(LogDir)roundhouse.console.ILMerge.log</ILMergeLog>
       <ILMergeSource>$(OutputPath)$(AssemblyName).exe</ILMergeSource>
       <ILMergeCommand>$(ILMerge) /internalize:$(IgnoreFile) /target:exe /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup $(ILMergeSource)  @(ILMergeAssemblies, ' ')</ILMergeCommand>
     </PropertyGroup>
