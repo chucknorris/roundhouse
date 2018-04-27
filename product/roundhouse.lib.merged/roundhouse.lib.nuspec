@@ -13,18 +13,28 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>roundhouse db migration database migrator chucknorris</tags>
     <dependencies>
-      <dependency id="FluentNHibernate" version="1.3.0" />
-      <dependency id="Iesi.Collections" version="3.3.2.4000" />
-      <dependency id="NHibernate" version="3.3.2.4000" />
-      <dependency id="NHibernate.JetDriver" version="2.0.0" />
-      <dependency id="Npgsql" version="3.1.1.0" />
-      <dependency id="System.Data.SQLite" version="1.0.105.2" />
+      <dependency id="FluentNHibernate" version="2.1.2" />
+      <dependency id="Iesi.Collections" version="4.0.4" />
+      <dependency id="NHibernate" version="5.1.1" />
+      <dependency id="NHibernate.JetDriver" version="2.0.0.1002" />
+      <dependency id="Npgsql" version="3.2.7" />
+      <dependency id="System.Data.SQLite.Core" version="1.0.108" />
       <dependency id="Microsoft.SqlServer.Compact" version="4.0.8876.1" />
     </dependencies>
 	<iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
   </metadata>
   <files>
-    <file src="$mergedDll$" target="lib\net461" />
-    <file src="$netstandardFiles$" target="lib\netstandard2.0" />
+    <file src="$mergedDll$" target="lib/net461" />
+    <file src="bin\$configuration$\netstandard2.0\*.dll"
+          exclude="bin\$configuration$\netstandard2.0\$AssemblyName$.dll"
+          target="lib/netstandard2.0" />
+      
+    <!--
+    <file
+            src="bin/$configuration$/netstandard2.0/roundhouse*.dll"
+            exclude="bin/$configuration$/netstandard2.0/$(AssemblyName).dll"
+            target="lib/netstandard2.0" />
+            -->
+    
   </files>
 </package>

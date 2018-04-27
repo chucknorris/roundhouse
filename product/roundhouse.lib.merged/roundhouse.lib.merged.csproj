@@ -96,20 +96,15 @@
     <Delete Files="$(ILMergeLog)" Condition="Exists('$(ILMergeLog)')" />
     <Delete Files="$(ILMergeTarget)" Condition="Exists('$(ILMergeTarget)')" />
     <MakeDir Directories="$(ILMergeDir)" />
+    <MakeDir Directories="$(LogDir)" />
     <Message Importance="high" Text="ILMerge-ing into $(ILMergeTarget)" />
     <Exec Command="$(ILMergeCommand)" />
   </Target>
-
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <NetstandardFiles Include="$(OutputPath)roundhouse*.dll" />
-    <NetstandardFiles Remove="$(OutputPath)$(AssemblyName).dll" />
-  </ItemGroup>
   
   <!-- Nuspec properties (for generating NuGet package) -->
   <PropertyGroup>
     <NuspecFile>roundhouse.lib.nuspec</NuspecFile>
-    <NuspecProperties>mergedDll=$(ILMergeTarget);netstandardFiles=$(NetstandardFiles);version=$(NugetVersion)</NuspecProperties>
+    <NuspecProperties>mergedDll=$(ILMergeTarget);configuration=$(Configuration);assemblyName=$(AssemblyName);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
   
   <!-- Copy to drop folder after packaging -->
