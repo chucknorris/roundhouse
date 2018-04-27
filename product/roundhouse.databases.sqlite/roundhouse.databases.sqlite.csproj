@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -38,20 +38,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="FluentNHibernate" Version="2.1.2" />
     <PackageReference Include="Iesi.Collections" Version="4.0.4" />
     <PackageReference Include="NHibernate" Version="5.1.1" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.108" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.108" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
@@ -64,5 +55,9 @@
       <Link>assemblyresource\System.Data.SQLite.dll</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets')" />
+  <PropertyGroup>
+    <AlreadyImported>true</AlreadyImported>
+  </PropertyGroup>
+  <Import Project="$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets" 
+          Condition="Exists('$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets') and '$(AlreadyImported)' != 'true'" />
 </Project>
