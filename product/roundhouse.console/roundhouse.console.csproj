@@ -44,12 +44,14 @@
     <PackageReference Include="FluentNHibernate" Version="2.1.2" />
     <PackageReference Include="Iesi.Collections" Version="4.0.4" />
     <PackageReference Include="Microsoft.Build.Framework" Version="15.6.85" />
+    <PackageReference Include="MySql.Data" Version="8.0.11" />
     <PackageReference Include="NHibernate" Version="5.1.1" />
     <PackageReference Include="NHibernate.JetDriver" Version="2.0.0.1002" />
     <PackageReference Include="log4net" Version="2.0.8.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Polly" Version="5.9.0" />
     <PackageReference Include="StructureMap" Version="4.6.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
     <PackageReference Include="System.Data.SqlClient">
       <Version>4.4.3</Version>
     </PackageReference>
@@ -58,17 +60,17 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse\roundhouse.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" />
+    <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\docs\logo\roundhouse.ico">
