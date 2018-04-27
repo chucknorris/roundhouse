@@ -78,6 +78,7 @@
   <!-- Merge properties and target -->
   <PropertyGroup>
     <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
+    <LogDir>..\..\code_drop\log\</LogDir>
     <ILMergeTarget>$(ILMergeDir)roundhouse.dll</ILMergeTarget>
   </PropertyGroup>
   
@@ -89,7 +90,7 @@
     <PropertyGroup>
       <IgnoreFile>..\..\build.custom\ilmerge.internalize.ignore.txt</IgnoreFile>
       <ILMerge>..\..\lib\ILMerge\ILMerge.exe</ILMerge>
-      <ILMergeLog>$(ILMergeDir)roundhouse.ILMerge.log</ILMergeLog>
+      <ILMergeLog>$(LogDir)roundhouse.ILMerge.log</ILMergeLog>
       <ILMergeCommand>$(ILMerge) /internalize:$(IgnoreFile) /target:dll /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup  @(ILMergeAssemblies, ' ')</ILMergeCommand>
     </PropertyGroup>
     <Delete Files="$(ILMergeLog)" Condition="Exists('$(ILMergeLog)')" />
