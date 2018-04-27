@@ -6,8 +6,10 @@ namespace roundhouse.tests.sqlsplitters
     using System.Text.RegularExpressions;
 
     using roundhouse.databases;
+#if NET461
     using roundhouse.databases.access;
     using roundhouse.databases.oracle;
+#endif
     using roundhouse.databases.sqlserver;
     using roundhouse.sqlsplitters;
 
@@ -23,10 +25,13 @@ namespace roundhouse.tests.sqlsplitters
             {
                 Database database = new SqlServerDatabase();
                 tsql_separator_regex_string = database.sql_statement_separator_regex_pattern;
+                
+#if NET461
                 database = new AccessDatabase();
                 access_sql_separator_regex_string = database.sql_statement_separator_regex_pattern;
                 database = new OracleDatabase();
                 plsql_separator_regex_string = database.sql_statement_separator_regex_pattern;
+#endif
             }
         }
 

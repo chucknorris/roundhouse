@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -31,6 +31,9 @@
     <PackageTags>roundhouse db migration database migrator chucknorris</PackageTags>
     <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
+    
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -53,10 +56,12 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
-    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
     <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" />
     <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" />
     <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" />
@@ -76,7 +81,7 @@
     <ILMergeTarget>$(ILMergeDir)roundhouse.dll</ILMergeTarget>
   </PropertyGroup>
   
-  <Target Name="ILMerge" AfterTargets="Build">
+  <Target Name="ILMerge" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true' and '$(TargetFramework)' == 'net461'">
     <ItemGroup>
       <ILMergeAssemblies Include="$(OutputPath)roundhouse*.dll" />
       <ILMergeAssemblies Remove="$(OutputPath)$(AssemblyName).dll" />
@@ -93,11 +98,17 @@
     <Message Importance="high" Text="ILMerge-ing into $(ILMergeTarget)" />
     <Exec Command="$(ILMergeCommand)" />
   </Target>
+
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <NetstandardFiles Include="$(OutputPath)roundhouse*.dll" />
+    <NetstandardFiles Remove="$(OutputPath)$(AssemblyName).dll" />
+  </ItemGroup>
   
   <!-- Nuspec properties (for generating NuGet package) -->
   <PropertyGroup>
     <NuspecFile>roundhouse.lib.nuspec</NuspecFile>
-    <NuspecProperties>mergedDll=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
+    <NuspecProperties>mergedDll=$(ILMergeTarget);netstandardFiles=$(NetstandardFiles);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
   
   <!-- Copy to drop folder after packaging -->

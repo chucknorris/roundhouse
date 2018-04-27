@@ -1,8 +1,5 @@
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Data.OracleClient;
-using NHibernate.Dialect;
-using NUnit.Framework.Internal.Commands;
 using roundhouse.databases;
 using roundhouse.infrastructure.logging.custom;
 using Should;
@@ -13,11 +10,13 @@ namespace roundhouse.tests.databases
     using roundhouse.databases.sqlserver;
     using roundhouse.databases.sqlserverce;
     using roundhouse.databases.mysql;
+#if NET461
     using roundhouse.databases.oracle;
+    using roundhouse.databases.access;
+#endif
     using roundhouse.databases.postgresql;
     using roundhouse.databases.sqlite;
     using roundhouse.infrastructure.app;
-    using roundhouse.databases.access;
 
     public class DbProviderFactories
     {
@@ -36,6 +35,7 @@ namespace roundhouse.tests.databases
             public DbProviderFactory factory => get_db_provider_factory();
         }
 
+#if NET461
         public class TestableOracleDatabase : OracleDatabase, ITestableDatabase
         {
             public DbProviderFactory factory => get_db_provider_factory();
@@ -46,6 +46,7 @@ namespace roundhouse.tests.databases
             public DbProviderFactory factory => get_db_provider_factory();
         }
 
+#endif
 
         public class TestablePostgreSQLDatabase : PostgreSQLDatabase, ITestableDatabase
         {
@@ -124,6 +125,8 @@ namespace roundhouse.tests.databases
                 fac.ShouldBeType<global::MySql.Data.MySqlClient.MySqlClientFactory>();
             }
         }
+        
+#if NET461
 
         [Concern(typeof(TestableOracleDatabase))]
         public class concern_for_OracleDatabase : concern_for_Database<TestableOracleDatabase>
@@ -152,6 +155,7 @@ namespace roundhouse.tests.databases
                 fac.ShouldBeType<System.Data.OleDb.OleDbFactory>();
             }
         }
+#endif
 
         [Concern(typeof(TestablePostgreSQLDatabase))]
         public class concern_for_PostgresqlDatabase : concern_for_Database<TestablePostgreSQLDatabase>
