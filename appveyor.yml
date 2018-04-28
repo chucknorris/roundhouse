@@ -13,10 +13,17 @@ test:
   assemblies:
     only:
       - '**\*tests.dll'
+
+after_build:
+  - 7z a .\code_drop\packages\RoundhousE.tar .\code_drop\tmp\RoundhousE
+  - 7z a .\code_drop\packages\RoundhousE.$(GitVersion_FullSemVer).tar.gz .\code_drop\packages\RoundhousE.tar
+  
       
 artifacts:
   - path: .\code_drop\packages\*.nupkg
     name: Nuget packages
+  - path: .\code_drop\packages\*.tar.gz
+    name: Dotnet core .tar.gz distro
   - path: .\code_drop\log\*
     name: Logs
 
