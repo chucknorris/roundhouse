@@ -40,6 +40,9 @@ If (!(Test-Path $LOGDIR)) {
 " * Building and packaging"
 msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
+"`n    - Packaging netcoreapp2.0 roundhouse binary"
+dotnet publish -v q --no-restore product/roundhouse.console -t:Publish -p:TargetFramework=netcoreapp2.0 -p:DropFolder=$CODEDROP -p:Version="$($gitVersion.FullSemVer)" -p:Configuration=Build -p:Platform="Any CPU"
+
 # AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe. 
 # But we want to run the tests on localhost too.
 If (! $onAppVeyor) {
@@ -51,7 +54,7 @@ If (! $onAppVeyor) {
 
     $testProjects | % {
         Push-Location $_.Directory
-        dotnet test -v m
+        dotnet test -v q
         Pop-Location
     }
 }

@@ -265,7 +265,7 @@ namespace roundhouse.databases.sqlserver
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (hasOpenedConnection && command.Connection != null &&
                     command.Connection.State == ConnectionState.Open)

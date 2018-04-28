@@ -77,6 +77,11 @@
       <Link>roundhouse.ico</Link>
     </None>
   </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <None Include="rh" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  
   <!-- Merge properties and target -->
   <PropertyGroup>
     <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
@@ -104,6 +109,19 @@
     <NuspecFile>roundhouse.nuspec</NuspecFile>
     <NuspecProperties>mergedExe=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
+  
+  <Target Name="CollectDotnetCoreFiles" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'netcoreapp2.0'" >
+    <ItemGroup>
+      <DotnetCoreAppFiles Include="$(OutDir)/publish/**/**" />
+    </ItemGroup>
+    <PropertyGroup>
+      <CopyDestination>$(DropFolder)/tmp/RoundhousE</CopyDestination>
+    </PropertyGroup>
+      
+    <MakeDir Directories="$(CopyDestination)" />
+    <Copy SourceFiles="@(DotnetCoreAppFiles)" DestinationFiles="$(CopyDestination)/%(DotnetCoreAppFiles.RecursiveDir)%(Filename)%(Extension)"/>
+  </Target>
+  
   <!-- Copy to drop folder after packaging -->
   <Target Name="CopyToDropFolder" AfterTargets="Pack" Condition="'$(DropFolder)' != ''">
     <ItemGroup>
