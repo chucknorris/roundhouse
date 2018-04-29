@@ -60,10 +60,16 @@ produce what you want.
 For now, we publish a `.tar.gz` of the application, at the [Releases](https://github.com/chucknorris/roundhouse/releases) page. Extract the file somewhere, and run 
 the included `rh` shell script. You will need dotnet core installed on your box for this to work. You can get it here: [https://dot.net](https://dot.net).
 
-So, 
-1. Install dotnet core from either [https://dot.net](https://dot.net), or use a package manager of choice [(e.g. `apt-get` on Debian/Ubuntu)](https://www.microsoft.com/net/download/linux-package-manager/ubuntu17-10/runtime-2.0.6)
+So: 
+1. Install dotnet core from either [https://dot.net](https://dot.net), or use a package manager of choice [(e.g. `apt-get` on Debian/Ubuntu)](https://www.microsoft.com/net/download/linux-package-manager/ubuntu17-10/runtime-2.0.6), if you haven't already
 1. Grab the newest [RoundhousE .net core distribution](https://github.com/chucknorris/roundhouse/releases)
 
+1. Extract to an appropriate place, e.g. `/usr/local`, and optionally symlink it to an appropriate folder in your `$PATH`:
+```
+cd /usr/local
+sudo tar -zxvf ~/Downloads/Roundhouse-latest.tar.gz
+sudo ln -s /usr/local/RoundhousE/rh /usr/local/bin/rh
+```
 
   
 ### Source
@@ -78,7 +84,8 @@ This is the best way to get to the bleeding edge of what we are doing.
   
   
 # REQUIREMENTS
-* .NET Framework 4.6.1
+* .NET Framework 4.6.1 (for the full framework version), _or_
+* .net core 2.0+ (for the dotnet core distribution)
 * SA access to the sql server (for creation or deletion)  
 * change access to the database (for everything else)  
 
