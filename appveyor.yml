@@ -16,7 +16,7 @@ test:
 
 after_build:
   - 7z a .\code_drop\packages\RoundhousE.tar .\code_drop\tmp\RoundhousE
-  - 7z a .\code_drop\packages\RoundhousE.$(GitVersion_FullSemVer).tar.gz .\code_drop\packages\RoundhousE.tar
+  - 7z a .\code_drop\packages\RoundhousE.%GitVersion_SemVer%.tar.gz .\code_drop\packages\RoundhousE.tar
   
       
 artifacts:
