@@ -14,4 +14,4 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 
 DLL=$DIR/rh.dll 
-dotnet $DLL $@
+dotnet $DLL "$@"
