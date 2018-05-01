@@ -17,7 +17,7 @@ namespace roundhouse.infrastructure.filesystem
     public sealed class DotNetFileSystemAccess : FileSystemAccess
     {
         private static readonly bool is_running_on_mono = Type.GetType("Mono.Runtime") != null;
-        private static readonly bool is_running_dotnet_core = RuntimeInformation.FrameworkDescription == ".NET Core";
+        private static readonly bool is_running_dotnet_core = RuntimeInformation.FrameworkDescription.StartsWith(".NET Core");
 
         public DotNetFileSystemAccess(ConfigurationPropertyHolder configuration)
         {
