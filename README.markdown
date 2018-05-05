@@ -68,7 +68,7 @@ This is the best way to get to the bleeding edge of what we are doing.
 
 # DONATE
 Donations Accepted - If you enjoy using this product or it has saved you time and money in some way, please consider making a donation.  
-It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9831498
+It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2RA38UKSK6EZU
 
 # RELEASE NOTES
 ## [0.9.1](https://github.com/chucknorris/roundhouse/releases/tag/0.9.1)
