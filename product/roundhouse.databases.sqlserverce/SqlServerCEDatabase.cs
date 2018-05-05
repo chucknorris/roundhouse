@@ -1,4 +1,5 @@
-﻿using System.Data.SqlServerCe;
+﻿using System.Data.Common;
+using System.Data.SqlServerCe;
 
 namespace roundhouse.databases.sqlserverce
 {
@@ -75,6 +76,11 @@ namespace roundhouse.databases.sqlserverce
         private static string build_connection_string(string server_name, string connection_options)
         {
             return string.Format("data source={0};{1}", server_name, connection_options);
+        }
+
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return SqlCeProviderFactory.Instance;
         }
 
         protected override void connection_specific_setup(IDbConnection connection)

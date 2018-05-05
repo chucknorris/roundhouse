@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Data.OracleClient;
 using roundhouse.infrastructure.logging;
 
@@ -11,7 +12,7 @@ namespace roundhouse.databases.oracle
     using infrastructure.extensions;
     using parameters;
 
-    public sealed class OracleDatabase : AdoNetDatabase
+    public class OracleDatabase : AdoNetDatabase
     {
         private string connect_options = "Integrated Security";
 
@@ -85,6 +86,11 @@ namespace roundhouse.databases.oracle
         public override void set_provider()
         {
             provider = "System.Data.OracleClient";
+        }
+
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return OracleClientFactory.Instance;
         }
 
         protected override void connection_specific_setup(IDbConnection connection)

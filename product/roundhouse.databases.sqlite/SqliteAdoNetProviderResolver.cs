@@ -21,22 +21,29 @@
 
         public string output_path { get; set; }
 
+
         public void register_db_provider_factory()
         {
-            var dataSet = (DataSet)ConfigurationManager.GetSection("system.data");
+            var data_set = (DataSet) ConfigurationManager.GetSection("system.data");
 
-            var sql_client_row = dataSet.Tables[0]
-                .AsEnumerable()
-                .Where(x => x.Field<string>(2) == "System.Data.SQLite")
-                .SingleOrDefault();
+            if (data_set != null)
+            {
+                var my_sql_client_row = data_set?.Tables[0]
+                    .Rows?.Cast<DataRow>()
+                    .SingleOrDefault(row => (string) row[2] == "System.Data.SQLite");
 
-            if (sql_client_row != null) dataSet.Tables[0].Rows.Remove(sql_client_row);
+                if (my_sql_client_row != null) data_set.Tables[0].Rows.Remove(my_sql_client_row);
 
-            dataSet.Tables[0].Rows.Add(
-                "Sqlite Data Provider",
-                ".Net Framework Data Provider for Sqlite",
-                "System.Data.SQLite",
-               "System.Data.SQLite.SQLiteFactory, System.Data.SQLite");
+                var factory_type = is_merged
+                    ? "System.Data.SQLite.SQLiteFactory, " + ApplicationParameters.get_merged_assembly_name()
+                    : "System.Data.SQLite.SQLiteFactory, System.Data.SQLite";
+
+                data_set.Tables[0].Rows.Add(
+                    "Sqlite Data Provider",
+                    ".Net Framework Data Provider for Sqlite",
+                    "System.Data.SQLite",
+                    factory_type);
+            }
         }
 
         public void enable_loading_from_merged_assembly()

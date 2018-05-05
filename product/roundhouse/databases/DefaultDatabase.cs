@@ -1,10 +1,12 @@
+using Polly;
+using Polly.Retry;
+
 namespace roundhouse.databases
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
     using connections;
     using infrastructure.app;
     using infrastructure.app.tokens;
@@ -23,7 +25,7 @@ namespace roundhouse.databases
 
     public abstract class DefaultDatabase<DBCONNECTION> : Database
     {
-        protected RetryPolicy retry_policy = RetryPolicy.NoRetry;
+        protected RetryPolicy retry_policy = Policy.Handle<Exception>().Retry(0);
 
         public ConfigurationPropertyHolder configuration { get; set; }
         public string server_name { get; set; }
@@ -237,7 +239,7 @@ namespace roundhouse.databases
 
             try
             {
-                retry_policy.ExecuteAction(() => repository.save_or_update(script_run));
+                retry_policy.Execute(() => repository.save_or_update(script_run));
             }
             catch (Exception ex)
             {
@@ -263,7 +265,7 @@ namespace roundhouse.databases
 
             try
             {
-                retry_policy.ExecuteAction(() => repository.save_or_update(script_run_error));
+                retry_policy.Execute(() => repository.save_or_update(script_run_error));
             }
             catch (Exception ex)
             {
@@ -286,7 +288,7 @@ namespace roundhouse.databases
             IList<Version> items = null;
             try
             {
-                items = retry_policy.ExecuteAction(() => repository.get_with_criteria(crit));
+                items = retry_policy.Execute(() => repository.get_with_criteria(crit));
             }
             catch (Exception ex)
             {
@@ -315,7 +317,7 @@ namespace roundhouse.databases
 
             try
             {
-                retry_policy.ExecuteAction(() => repository.save_or_update(version));
+                retry_policy.Execute(() => repository.save_or_update(version));
                 version_id = version.id;
             }
             catch (Exception ex)
@@ -342,7 +344,7 @@ namespace roundhouse.databases
 
         protected IList<ScriptsRun> get_all_scripts()
         {
-            return retry_policy.ExecuteAction(() => repository.get_all<ScriptsRun>());
+            return retry_policy.Execute(() => repository.get_all<ScriptsRun>());
         }
 
         protected ScriptsRun get_script_run(string script_name)
@@ -356,7 +358,7 @@ namespace roundhouse.databases
             IList<ScriptsRun> found_items;
             try
             {
-                found_items = retry_policy.ExecuteAction(() => repository.get_with_criteria(criteria));
+                found_items = retry_policy.Execute(() => repository.get_with_criteria(criteria));
             }
             catch (Exception ex)
             {

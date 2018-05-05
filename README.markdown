@@ -28,9 +28,9 @@ It seeks to solve both maintenance concerns and ease of deployment. We follow so
   
 ## Getting started with RoundhousE
 ### Downloads
- You can download RoundhousE from [http://code.google.com/p/roundhouse/downloads/list](http://code.google.com/p/roundhouse/downloads/list)  
+ You can download RoundhousE from [https://github.com/chucknorris/roundhouse/releases](https://github.com/chucknorris/roundhouse/releases)
 
- You can also obtain a copy from the build server at [http://teamcity.codebetter.com](http://teamcity.codebetter.com).  
+ You can also obtain a copy from the build server at [https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts](https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts).  
   
 ### Gems (_Not updated for 0.9.0, sorry_) 
 If you have Ruby 1.8.6+ (and Gems 1.3.7+) installed, you can get the current release of RoundhousE to your machine quickly!  
@@ -49,6 +49,28 @@ Chocolatey is like apt-get, but for Windows! This is an alternative method to ge
   
 1. Type `cinst roundhouse`  
 2. Then from anywhere you can type `rh [options]`  
+
+### Dotnet core (Linux, macOS, etc)
+We have a new build of RoundhousE, built on the new(er) mean and lean dotnet core. Dotnet core applications are a bit different that standard
+.net desktop (e.g. .Net 4.6.1) applications, and we're still figuring out the best way to distribute them. If you have opinions on what
+is the most convenient form for a particular platform, please let us know. Even better, if you have knowledge of a particular distribution method,
+or would like to learn about one, file a Pull Request with changes in the build script to 
+produce what you want.
+
+For now, we publish a `.tar.gz` of the application, at the [Releases](https://github.com/chucknorris/roundhouse/releases) page. Extract the file somewhere, and run 
+the included `rh` shell script. You will need dotnet core installed on your box for this to work. You can get it here: [https://dot.net](https://dot.net).
+
+So: 
+1. Install dotnet core from either [https://dot.net](https://dot.net), or use a package manager of choice [(e.g. `apt-get` on Debian/Ubuntu)](https://www.microsoft.com/net/download/linux-package-manager/ubuntu17-10/runtime-2.0.6), if you haven't already
+1. Grab the newest [RoundhousE .net core distribution](https://github.com/chucknorris/roundhouse/releases)
+
+1. Extract to an appropriate place, e.g. `/usr/local`, and optionally symlink it to an appropriate folder in your `$PATH`:
+```
+cd /usr/local
+sudo tar -zxvf ~/Downloads/Roundhouse-latest.tar.gz
+sudo ln -s /usr/local/RoundhousE/rh /usr/local/bin/rh
+```
+
   
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
@@ -62,7 +84,8 @@ This is the best way to get to the bleeding edge of what we are doing.
   
   
 # REQUIREMENTS
-* .NET Framework 4.6.1
+* .NET Framework 4.6.1 (for the full framework version), _or_
+* .net core 2.0+ (for the dotnet core distribution)
 * SA access to the sql server (for creation or deletion)  
 * change access to the database (for everything else)  
 

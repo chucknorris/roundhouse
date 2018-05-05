@@ -17,6 +17,7 @@ namespace roundhouse.infrastructure.filesystem
     public sealed class DotNetFileSystemAccess : FileSystemAccess
     {
         private static readonly bool is_running_on_mono = Type.GetType("Mono.Runtime") != null;
+        private static readonly bool is_running_dotnet_core = RuntimeInformation.FrameworkDescription.StartsWith(".NET Core");
 
         public DotNetFileSystemAccess(ConfigurationPropertyHolder configuration)
         {
@@ -127,7 +128,7 @@ namespace roundhouse.infrastructure.filesystem
         {
             Log.bound_to(this).log_a_debug_event_containing("Attempting to copy from \"{0}\" to \"{1}\".", source_file_name, destination_file_name);
             //Private Declare Function apiCopyFile Lib "kernel32" Alias "CopyFileA" _
-            if (is_running_on_mono)
+            if (is_running_on_mono || is_running_dotnet_core)
             {
                 File.Copy(source_file_name, destination_file_name, overwrite_the_existing_file);
             }

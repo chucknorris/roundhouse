@@ -24,7 +24,7 @@
 
         protected virtual AdoNetConnection GetAdoNetConnection(string conn_string)
         {
-            provider_factory = DbProviderFactories.GetFactory(provider);
+            provider_factory = get_db_provider_factory();
             IDbConnection connection = provider_factory.CreateConnection();
             connection_specific_setup(connection);
             
@@ -32,9 +32,13 @@
             return new AdoNetConnection(connection);
         }
 
+        protected abstract DbProviderFactory get_db_provider_factory();
+
         protected virtual void connection_specific_setup(IDbConnection connection)
         {
         }
+
+     
 
         public override void open_admin_connection()
         {
@@ -117,7 +121,7 @@
 
             if (transaction == null)
             {
-                retry_policy.ExecuteAction(() => run_command_with(sql_to_run, connection_type, parameters));
+                retry_policy.Execute(() => run_command_with(sql_to_run, connection_type, parameters));
             }
             else
             {
@@ -142,7 +146,7 @@
             {
                 if (transaction == null)
                 {
-                    return_value = retry_policy.ExecuteAction(() => command.ExecuteScalar());
+                    return_value = retry_policy.Execute(() => command.ExecuteScalar());
                 }
                 else
                 {

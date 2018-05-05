@@ -15,29 +15,30 @@
         {
             is_merged = Assembly.GetExecutingAssembly().GetName().Name == ApplicationParameters.get_merged_assembly_name();
         }
-
+ 
         public void register_db_provider_factory()
         {
-            var dataSet = (DataSet) ConfigurationManager.GetSection("system.data");
+            var data_set = (DataSet) ConfigurationManager.GetSection("system.data");
 
-            var my_sql_client_row = dataSet.Tables[0]
-                .AsEnumerable()
-                .Where(x => x.Field<string>(2) == "Npgsql")
-                .SingleOrDefault();
-
-            if (my_sql_client_row != null)
+            if (data_set != null)
             {
-                dataSet.Tables[0].Rows.Remove(my_sql_client_row);
+                var my_sql_client_row = data_set?.Tables[0]
+                    .Rows?.Cast<DataRow>()
+                    .SingleOrDefault(row => (string) row[2] == "Npgsql");
+
+                if (my_sql_client_row != null) data_set.Tables[0].Rows.Remove(my_sql_client_row);
+
+                var factory_type = is_merged ? "Npgsql.NpgsqlFactory, " + ApplicationParameters.get_merged_assembly_name() : "Npgsql.NpgsqlFactory, Npgsql";
+
+
+                data_set.Tables[0].Rows.Add(
+                    "PostgreSQL Data Provider",
+                    ".Net Framework Data Provider for PostgreSQL",
+                    "Npgsql",
+                    factory_type);
             }
-
-            var factory_type = is_merged ? "Npgsql.NpgsqlFactory, " + ApplicationParameters.get_merged_assembly_name() : "Npgsql.NpgsqlFactory, Npgsql";
-
-            dataSet.Tables[0].Rows.Add(
-                "PostgreSQL Data Provider",
-                ".Net Framework Data Provider for PostgreSQL",
-                "Npgsql",
-                factory_type);
         }
+
 
         public void enable_loading_from_merged_assembly()
         {

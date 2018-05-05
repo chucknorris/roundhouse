@@ -4,19 +4,19 @@ $MSBUILD=msbuild
 
 $root = $PSScriptRoot;
 
-$CODEDROP="$($root)\code_drop";
-$LOGDIR="$($CODEDROP)\log";
+$CODEDROP="$($root)/code_drop";
+$LOGDIR="$($CODEDROP)/log";
 
-$TESTOUTDIR="$($root)\product\roundhouse.tests\bin"
+$TESTOUTDIR="$($root)/product/roundhouse.tests\bin"
 
 $onAppVeyor = $("$($env:APPVEYOR)" -eq "True");
 
-pushd $root
+Push-Location $root
 
 
 "`n"
 " * Generating version number"
-$gitVersion = (GitVersion | ConvertFrom-Json)
+$gitVersion = (gitversion | ConvertFrom-Json)
 
 If ($onAppVeyor) {
     $newVersion="$($gitVersion.FullSemVer)"
@@ -38,27 +38,25 @@ If (!(Test-Path $LOGDIR)) {
 
 
 " * Building and packaging"
-msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR\msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
+msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
+
+"`n    - Packaging netcoreapp2.0 roundhouse binary"
+dotnet publish -v q --no-restore product/roundhouse.console -t:Publish -p:TargetFramework=netcoreapp2.0 -p:DropFolder=$CODEDROP -p:Version="$($gitVersion.FullSemVer)" -p:Configuration=Build -p:Platform="Any CPU"
 
 # AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe. 
 # But we want to run the tests on localhost too.
 If (! $onAppVeyor) {
 
-    # Find nunit3-console dynamically
-    "`n * Looking for nunit3-console.exe"
-
-    $nugetRoot = $env:NUGET_PACKAGES;
-    If ("$($nugetRoot)" -eq "") {
-        $nugetRoot = "~/.nuget"
-    }
-
-    $nunit = $(dir -r "$($nugetRoot)/packages/nunit*" -i nunit3-console.exe | Select-Object -last 1)
-
-    "    - Found at $($nunit)"
-
     "`n * Running unit tests`n"
-    $tests =  $(dir -r "$($TESTOUTDIR)" -i *.tests.dll);
-    & $nunit --noheader --noresult --output "$($LOGDIR)/nunit.log" --err="$($LOGDIR)/nunit.errlog" $tests
+
+    # Find test projects
+    $testProjects = $(dir -r -i *.tests.csproj)
+
+    $testProjects | % {
+        Push-Location $_.Directory
+        dotnet test -v q
+        Pop-Location
+    }
 }
 
-popd
+Pop-Location

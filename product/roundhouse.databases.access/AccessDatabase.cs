@@ -1,3 +1,4 @@
+using System.Data.Common;
 using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.access
@@ -11,6 +12,11 @@ namespace roundhouse.databases.access
     public class AccessDatabase : AdoNetDatabase
     {
         private string connect_options = "Trusted_Connection";
+
+        public AccessDatabase()
+        {
+            server_connection = new AdoNetConnection(new OleDbConnection(connection_string));
+        }
 
         public override bool supports_ddl_transactions
         {
@@ -71,6 +77,11 @@ namespace roundhouse.databases.access
             //set_repository(configuration_property_holder);
         }
 
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return OleDbFactory.Instance;
+        }
+
         public override void open_admin_connection()
         {
             admin_connection = new AdoNetConnection(new OleDbConnection(admin_connection_string));
@@ -79,7 +90,6 @@ namespace roundhouse.databases.access
 
         public override void open_connection(bool with_transaction)
         {
-            server_connection = new AdoNetConnection(new OleDbConnection(connection_string));
             server_connection.open();
 
             set_repository();
