@@ -8,6 +8,12 @@ Apache 2.0 - see docs\legal (just LEGAL in the zip folder)
 # Documentation
 [WIKI](https://github.com/chucknorris/roundhouse/wiki)  
   
+# 1.0.0 Release Candidates are Out! Help us test!
+We are releasing a cross-platform, .NET core version of RoundhousE. We are calling this release 1.0.0 and need your help to test it. Switch the
+branch over to the 1.0.0 branch and the instructions for the new version will be waiting.
+
+To get this new build, please visit: <???? Can the beta builds be downloaded from MyGet ??? >
+
 # UNDER CONSTRUCTION
 Pardon our mess while we modernize the dependencies and build system. There's clean up underway.
 To work with the latest code, pull master and run **build.ps1** in your directory (or open project in Visual Studio 2017)
