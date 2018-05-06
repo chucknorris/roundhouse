@@ -15,6 +15,7 @@ test:
       - '**\*tests.dll'
 
 after_build:
+  - 7z a .\code_drop\packages\RoundhousE.%GitVersion_SemVer%.zip .\code_drop\tmp\RoundhousE
   - 7z a .\code_drop\packages\RoundhousE.tar .\code_drop\tmp\RoundhousE
   - 7z a .\code_drop\packages\RoundhousE.%GitVersion_SemVer%.tar.gz .\code_drop\packages\RoundhousE.tar
   
@@ -24,6 +25,8 @@ artifacts:
     name: Nuget packages
   - path: .\code_drop\packages\*.tar.gz
     name: Dotnet core .tar.gz distro
+  - path: .\code_drop\packages\*.zip
+    name: Dotnet core .zip distro
   - path: .\code_drop\log\*
     name: Logs
 
