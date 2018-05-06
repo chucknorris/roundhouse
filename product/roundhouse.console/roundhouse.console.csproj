@@ -80,6 +80,7 @@
   
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
     <None Include="rh" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="rh.bat" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   
   <!-- Merge properties and target -->
