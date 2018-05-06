@@ -12,7 +12,19 @@ Apache 2.0 - see docs\legal (just LEGAL in the zip folder)
 We are releasing a cross-platform, .NET core version of RoundhousE. We are calling this release 1.0.0 and need your help to test it. Switch the
 branch over to the 1.0.0 branch and the instructions for the new version will be waiting.
 
-To get this new build, please visit: <???? Can the beta builds be downloaded from MyGet ??? >
+To get this new build, for the Nuget packages, please add the following to you nuget sources: 
+[https://www.myget.org/F/roundhouse/api/v3/index.json](https://www.myget.org/F/roundhouse/api/v3/index.json)
+
+This can be done via your favourite IDE, e.g. Visual Studio, or via the command-line:
+
+```
+nuget sources add -Name Roundhouse-Myget -Source https://www.myget.org/F/roundhouse/api/v3/index.json
+```
+
+Be sure to enable _Preview versions_ when browsing for the packages, if not, they will not show up in your feed.
+
+For the command line, before the release is final, and we push to Chocolatey (and hopefully some other package managers, like `apt-get` in the future), the easiest way to get the command-line version, would be off the [build server](https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts). If you would like to help us test the .net core version, please download the `.tar.gz` file, and use on an OS of choice (Windows, macOS, Linux). Dotnet core is required.
+
 
 # UNDER CONSTRUCTION
 Pardon our mess while we modernize the dependencies and build system. There's clean up underway.
