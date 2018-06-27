@@ -1,9 +1,6 @@
 namespace roundhouse.infrastructure.app.tokens
 {
-    using System;
-    using System.Collections.Generic;
     using System.Text.RegularExpressions;
-    using extensions;
 
     public class TokenReplacer
     {
@@ -11,7 +8,7 @@ namespace roundhouse.infrastructure.app.tokens
         {
             if (string.IsNullOrEmpty(text_to_replace)) return string.Empty;
 
-            IDictionary<string, string> dictionary = create_dictionary_from_configuration(configuration);
+            var dictionary = configuration.to_token_dictionary();
             Regex regex = new Regex("{{(?<key>\\w+)}}");
 
             string output = regex.Replace(text_to_replace, m =>
@@ -29,29 +26,6 @@ namespace roundhouse.infrastructure.app.tokens
             });
 
             return output;
-        }
-
-        private static IDictionary<string, string> create_dictionary_from_configuration(ConfigurationPropertyHolder configuration)
-        {
-            Dictionary<string, string> property_dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var property in configuration.GetType().GetProperties())
-            {
-                if (property.Name == "UserTokens")
-                {
-                    var user_tokens = property.GetValue(configuration, null) as Dictionary<string, string>;
-                    if (user_tokens == null)
-                        continue;
-
-                    foreach (var user_token in user_tokens)
-                    {
-                        property_dictionary[user_token.Key] = user_token.Value;
-                    }
-                }
-                else property_dictionary.Add(property.Name, property.GetValue(configuration, null).to_string());
-
-            }
-
-            return property_dictionary;
         }
     }
 }
