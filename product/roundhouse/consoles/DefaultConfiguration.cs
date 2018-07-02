@@ -5,6 +5,7 @@ namespace roundhouse.consoles
     using System;
     using databases;
     using infrastructure.app;
+    using infrastructure.extensions;
     using infrastructure.logging;
     using System.Linq;
 
@@ -83,5 +84,77 @@ namespace roundhouse.consoles
         public bool Initialize { get; set; }
         public string ConfigurationFile { get; set; }
         public System.Text.Encoding DefaultEncoding { get; set; }
-	}
+
+        public IDictionary<string, string> to_token_dictionary()
+        {
+            var tokens = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            tokens["AfterMigrationFolderName"] = AfterMigrationFolderName.to_string();
+            tokens["AlterDatabaseFolderName"] = AlterDatabaseFolderName.to_string();
+            tokens["Baseline"] = Baseline.to_string();
+            tokens["BeforeMigrationFolderName"] = BeforeMigrationFolderName.to_string();
+            tokens["CommandTimeout"] = CommandTimeout.to_string();
+            tokens["CommandTimeoutAdmin"] = CommandTimeoutAdmin.to_string();
+            tokens["ConfigurationFile"] = ConfigurationFile.to_string();
+            tokens["ConnectionString"] = ConnectionString.to_string();
+            tokens["ConnectionStringAdmin"] = ConnectionStringAdmin.to_string();
+            tokens["CreateDatabaseCustomScript"] = CreateDatabaseCustomScript.to_string();
+            tokens["DatabaseName"] = DatabaseName.to_string();
+            tokens["DatabaseType"] = DatabaseType.to_string();
+            tokens["Debug"] = Debug.to_string();
+            tokens["DisableOutput"] = DisableOutput.to_string();
+            tokens["DisableTokenReplacement"] = DisableTokenReplacement.to_string();
+            tokens["DoNotAlterDatabase"] = DoNotAlterDatabase.to_string();
+            tokens["DoNotCreateDatabase"] = DoNotCreateDatabase.to_string();
+            tokens["DownFolderName"] = DownFolderName.to_string();
+            tokens["Drop"] = Drop.to_string();
+            tokens["DryRun"] = DryRun.to_string();
+            tokens["EnvironmentName"] = string.Join(",", EnvironmentNames);
+            tokens["EnvironmentNames"] = string.Join(",", EnvironmentNames);
+            tokens["FunctionsFolderName"] = FunctionsFolderName.to_string();
+            tokens["IndexesFolderName"] = IndexesFolderName.to_string();
+            tokens["Initialize"] = Initialize.to_string();
+            tokens["OutputPath"] = OutputPath.to_string();
+            tokens["PermissionsFolderName"] = PermissionsFolderName.to_string();
+            tokens["RecoveryMode"] = RecoveryMode.to_string();
+            tokens["RepositoryPath"] = RepositoryPath.to_string();
+            tokens["Restore"] = Restore.to_string();
+            tokens["RestoreCustomOptions"] = RestoreCustomOptions.to_string();
+            tokens["RestoreFromPath"] = RestoreFromPath.to_string();
+            tokens["RestoreTimeout"] = RestoreTimeout.to_string();
+            tokens["RunAfterCreateDatabaseFolderName"] = RunAfterCreateDatabaseFolderName.to_string();
+            tokens["RunAfterOtherAnyTimeScriptsFolderName"] = RunAfterOtherAnyTimeScriptsFolderName.to_string();
+            tokens["RunAllAnyTimeScripts"] = RunAllAnyTimeScripts.to_string();
+            tokens["RunBeforeUpFolderName"] = RunBeforeUpFolderName.to_string();
+            tokens["RunFirstAfterUpFolderName"] = RunFirstAfterUpFolderName.to_string();
+            tokens["SchemaName"] = SchemaName.to_string();
+            tokens["ScriptsRunErrorsTableName"] = ScriptsRunErrorsTableName.to_string();
+            tokens["ScriptsRunTableName"] = ScriptsRunTableName.to_string();
+            tokens["SearchAllSubdirectoriesInsteadOfTraverse"] = SearchAllSubdirectoriesInsteadOfTraverse.to_string();
+            tokens["ServerName"] = ServerName.to_string();
+            tokens["Silent"] = Silent.to_string();
+            tokens["SprocsFolderName"] = SprocsFolderName.to_string();
+            tokens["SqlFilesDirectory"] = SqlFilesDirectory.to_string();
+            tokens["TriggersFolderName"] = TriggersFolderName.to_string();
+            tokens["UpFolderName"] = UpFolderName.to_string();
+            tokens["Version"] = Version.to_string();
+            tokens["VersionFile"] = VersionFile.to_string();
+            tokens["VersionTableName"] = VersionTableName.to_string();
+            tokens["VersionXPath"] = VersionXPath.to_string();
+            tokens["ViewsFolderName"] = ViewsFolderName.to_string();
+            tokens["WarnAndIgnoreOnOneTimeScriptChanges"] = WarnAndIgnoreOnOneTimeScriptChanges.to_string();
+            tokens["WarnOnOneTimeScriptChanges"] = WarnOnOneTimeScriptChanges.to_string();
+            tokens["WithTransaction"] = WithTransaction.to_string();
+
+            if (UserTokens != null)
+            {
+                foreach (var t in UserTokens)
+                {
+                    tokens[t.Key] = t.Value;
+                }
+            }
+
+            return tokens;
+        }
+
+    }
 }

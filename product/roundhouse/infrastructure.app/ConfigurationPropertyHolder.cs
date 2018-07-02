@@ -68,5 +68,6 @@ namespace roundhouse.infrastructure.app
         Dictionary<string, string> UserTokens { get; set; }
         System.Text.Encoding DefaultEncoding { get; set; }
         string ConfigurationFile { get; set; }
+        IDictionary<string, string> to_token_dictionary();
 	}
 }

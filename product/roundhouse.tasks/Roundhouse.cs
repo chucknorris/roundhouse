@@ -8,6 +8,7 @@ namespace roundhouse.tasks
     using infrastructure.app;
     using infrastructure.app.logging;
     using infrastructure.containers;
+    using infrastructure.extensions;
     using infrastructure.filesystem;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
@@ -206,6 +207,81 @@ namespace roundhouse.tasks
         public string ConfigurationFile { get; set; }
 
         #endregion
+
+        public IDictionary<string, string> to_token_dictionary()
+        {
+            var tokens = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { nameof(AfterMigrationFolderName), AfterMigrationFolderName.to_string() },
+                { nameof(AlterDatabaseFolderName), AlterDatabaseFolderName.to_string() },
+                { nameof(Baseline), Baseline.to_string() },
+                { nameof(BeforeMigrationFolderName), BeforeMigrationFolderName.to_string() },
+                { nameof(CommandTimeout), CommandTimeout.to_string() },
+                { nameof(CommandTimeoutAdmin), CommandTimeoutAdmin.to_string() },
+                { nameof(ConfigurationFile), ConfigurationFile.to_string() },
+                { nameof(ConnectionString), ConnectionString.to_string() },
+                { nameof(ConnectionStringAdmin), ConnectionStringAdmin.to_string() },
+                { nameof(CreateDatabaseCustomScript), CreateDatabaseCustomScript.to_string() },
+                { nameof(DatabaseName), DatabaseName.to_string() },
+                { nameof(DatabaseType), DatabaseType.to_string() },
+                { nameof(Debug), Debug.to_string() },
+                { nameof(DisableOutput), DisableOutput.to_string() },
+                { nameof(DisableTokenReplacement), DisableTokenReplacement.to_string() },
+                { nameof(DoNotAlterDatabase), DoNotAlterDatabase.to_string() },
+                { nameof(DoNotCreateDatabase), DoNotCreateDatabase.to_string() },
+                { nameof(DownFolderName), DownFolderName.to_string() },
+                { nameof(Drop), Drop.to_string() },
+                { nameof(DryRun), DryRun.to_string() },
+#pragma warning disable 618
+                { nameof(EnvironmentName), string.Join(",", EnvironmentNames) },
+#pragma warning restore 618
+                { nameof(EnvironmentNames), string.Join(",", EnvironmentNames) },
+                { nameof(FunctionsFolderName), FunctionsFolderName.to_string() },
+                { nameof(IndexesFolderName), IndexesFolderName.to_string() },
+                { nameof(Initialize), Initialize.to_string() },
+                { nameof(OutputPath), OutputPath.to_string() },
+                { nameof(PermissionsFolderName), PermissionsFolderName.to_string() },
+                { nameof(RecoveryMode), RecoveryMode.to_string() },
+                { nameof(RepositoryPath), RepositoryPath.to_string() },
+                { nameof(Restore), Restore.to_string() },
+                { nameof(RestoreCustomOptions), RestoreCustomOptions.to_string() },
+                { nameof(RestoreFromPath), RestoreFromPath.to_string() },
+                { nameof(RestoreTimeout), RestoreTimeout.to_string() },
+                { nameof(RunAfterCreateDatabaseFolderName), RunAfterCreateDatabaseFolderName.to_string() },
+                { nameof(RunAfterOtherAnyTimeScriptsFolderName), RunAfterOtherAnyTimeScriptsFolderName.to_string() },
+                { nameof(RunAllAnyTimeScripts), RunAllAnyTimeScripts.to_string() },
+                { nameof(RunBeforeUpFolderName), RunBeforeUpFolderName.to_string() },
+                { nameof(RunFirstAfterUpFolderName), RunFirstAfterUpFolderName.to_string() },
+                { nameof(SchemaName), SchemaName.to_string() },
+                { nameof(ScriptsRunErrorsTableName), ScriptsRunErrorsTableName.to_string() },
+                { nameof(ScriptsRunTableName), ScriptsRunTableName.to_string() },
+                { nameof(SearchAllSubdirectoriesInsteadOfTraverse), SearchAllSubdirectoriesInsteadOfTraverse.to_string() },
+                { nameof(ServerName), ServerName.to_string() },
+                { nameof(Silent), Silent.to_string() },
+                { nameof(SprocsFolderName), SprocsFolderName.to_string() },
+                { nameof(SqlFilesDirectory), SqlFilesDirectory.to_string() },
+                { nameof(TriggersFolderName), TriggersFolderName.to_string() },
+                { nameof(UpFolderName), UpFolderName.to_string() },
+                { nameof(Version), Version.to_string() },
+                { nameof(VersionFile), VersionFile.to_string() },
+                { nameof(VersionTableName), VersionTableName.to_string() },
+                { nameof(VersionXPath), VersionXPath.to_string() },
+                { nameof(ViewsFolderName), ViewsFolderName.to_string() },
+                { nameof(WarnAndIgnoreOnOneTimeScriptChanges), WarnAndIgnoreOnOneTimeScriptChanges.to_string() },
+                { nameof(WarnOnOneTimeScriptChanges), WarnOnOneTimeScriptChanges.to_string() },
+                { nameof(WithTransaction), WithTransaction.to_string() },
+            };
+
+            if (UserTokens != null)
+            {
+                foreach (var t in UserTokens)
+                {
+                    tokens[t.Key] = t.Value;
+                }
+            }
+
+            return tokens;
+        }
 
         public void run_the_task()
         {
