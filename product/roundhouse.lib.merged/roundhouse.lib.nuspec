@@ -21,7 +21,8 @@
       <dependency id="System.Data.SQLite" version="1.0.105.2" />
       <dependency id="EnterpriseLibrary.TransientFaultHandling" version="6.0.1304.0" />
       <dependency id="EnterpriseLibrary.TransientFaultHandling.Data" version="6.0.1304.1" />
-      <dependency id="Microsoft.SqlServer.Compact" version="4.0.8876.1" />
+      <dependency id="Microsoft.SqlServer.Compact" version="4.0.8876.1" />	    
+      <dependency id="StructureMap" version="4.5.1.0" />	
     </dependencies>
 	<iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
   </metadata>
