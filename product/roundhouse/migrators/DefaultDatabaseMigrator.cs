@@ -172,8 +172,10 @@ namespace roundhouse.migrators
         {
             bool this_sql_ran = false;
             bool skip_run = is_baseline;
+            var sql_to_run_hash = new Lazy<string>(() => create_hash(sql_to_run, false));
+            var sql_to_run_hash_normalised_endings = new Lazy<string>(() => create_hash(sql_to_run, true));
 
-            if (this_is_a_one_time_script_that_has_changes_but_has_already_been_run(script_name, sql_to_run, run_this_script_once))
+            if (this_is_a_one_time_script_that_has_changes_but_has_already_been_run(script_name, sql_to_run, sql_to_run_hash, sql_to_run_hash_normalised_endings, run_this_script_once))
             {
                 if (error_on_one_time_script_changes)
                 {
@@ -191,7 +193,7 @@ namespace roundhouse.migrators
             }
 
             if (this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment_set)
-                && this_script_should_run(script_name, sql_to_run, run_this_script_once, run_this_script_every_time))
+                && this_script_should_run(script_name, sql_to_run, sql_to_run_hash, sql_to_run_hash_normalised_endings, run_this_script_once, run_this_script_every_time))
             {
                 if (!is_dryrun)
                 {
@@ -225,7 +227,7 @@ namespace roundhouse.migrators
                 }
                 if (!is_dryrun)
                 {
-                    record_script_in_scripts_run_table(script_name, sql_to_run, run_this_script_once, version_id);
+                    record_script_in_scripts_run_table(script_name, sql_to_run, sql_to_run_hash_normalised_endings, run_this_script_once, version_id);
                     this_sql_ran = true;
                 }
             }
@@ -256,10 +258,10 @@ namespace roundhouse.migrators
             return sql_statements;
         }
 
-        public void record_script_in_scripts_run_table(string script_name, string sql_to_run, bool run_this_script_once, long version_id)
+        public void record_script_in_scripts_run_table(string script_name, string sql_to_run, Lazy<string> sql_to_run_hash_normalised_endings, bool run_this_script_once, long version_id)
         {
             Log.bound_to(this).log_a_debug_event_containing("Recording {0} script ran on {1} - {2}.", script_name, database.server_name, database.database_name);
-            database.insert_script_run(script_name, sql_to_run, create_hash(sql_to_run, true), run_this_script_once, version_id);
+            database.insert_script_run(script_name, sql_to_run, sql_to_run_hash_normalised_endings.Value, run_this_script_once, version_id);
         }
 
         public void record_script_in_scripts_run_errors_table(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
@@ -303,12 +305,12 @@ namespace roundhouse.migrators
             return database.has_run_script_already(script_name);
         }
 
-        private bool this_is_a_one_time_script_that_has_changes_but_has_already_been_run(string script_name, string sql_to_run, bool run_this_script_once)
+        private bool this_is_a_one_time_script_that_has_changes_but_has_already_been_run(string script_name, string sql_to_run, Lazy<string> sql_to_run_hash, Lazy<string> sql_to_run_hash_normalised_endings, bool run_this_script_once)
         {
-            return this_script_has_changed_since_last_run(script_name, sql_to_run) && this_script_has_run_already(script_name) && run_this_script_once;
+            return this_script_has_changed_since_last_run(script_name, sql_to_run, sql_to_run_hash, sql_to_run_hash_normalised_endings) && this_script_has_run_already(script_name) && run_this_script_once;
         }
 
-        private bool this_script_has_changed_since_last_run(string script_name, string sql_to_run)
+        private bool this_script_has_changed_since_last_run(string script_name, string sql_to_run, Lazy<string> sql_to_run_hash, Lazy<string> sql_to_run_hash_normalised_endings)
         {
             string old_text_hash = string.Empty;
             try
@@ -326,9 +328,9 @@ namespace roundhouse.migrators
             // These check hashes from before the normalization change and after
             // The change does result in a different hash that will not be the result of
             // any sore of file change and therefore should not be logged.
-            bool hash_is_same = 
-                hashes_are_equal(create_hash(sql_to_run, true), old_text_hash) ||   // New hash
-                hashes_are_equal(create_hash(sql_to_run, false), old_text_hash);    // Old hash
+            bool hash_is_same =
+                hashes_are_equal(sql_to_run_hash_normalised_endings.Value, old_text_hash) ||   // New hash
+                hashes_are_equal(sql_to_run_hash.Value, old_text_hash);    // Old hash
 
             if (!hash_is_same)
             {
@@ -362,7 +364,7 @@ namespace roundhouse.migrators
             });
         }
 
-        private bool this_script_should_run(string script_name, string sql_to_run, bool run_this_script_once, bool run_this_script_every_time)
+        private bool this_script_should_run(string script_name, string sql_to_run, Lazy<string> sql_to_run_hash, Lazy<string> sql_to_run_hash_normalised_endings, bool run_this_script_once, bool run_this_script_every_time)
         {
             if (this_is_an_every_time_script(script_name, run_this_script_every_time))
             {
@@ -375,7 +377,7 @@ namespace roundhouse.migrators
             }
 
             if (this_script_has_run_already(script_name)
-                && !this_script_has_changed_since_last_run(script_name, sql_to_run))
+                && !this_script_has_changed_since_last_run(script_name, sql_to_run, sql_to_run_hash, sql_to_run_hash_normalised_endings))
             {
                 return false;
             }
@@ -385,11 +387,18 @@ namespace roundhouse.migrators
 
         public bool this_script_is_new_or_updated(string script_name, string sql_to_run, EnvironmentSet environment_set)
         {
+            var sql_to_run_hash = new Lazy<string>(() => create_hash(sql_to_run, false));
+            var sql_to_run_hash_normalised_endings = new Lazy<string>(() => create_hash(sql_to_run, true));
+            return this_script_is_new_or_updated(script_name, sql_to_run, sql_to_run_hash, sql_to_run_hash_normalised_endings, environment_set);
+        }
+
+        private bool this_script_is_new_or_updated(string script_name, string sql_to_run, Lazy<string> sql_to_run_hash, Lazy<string> sql_to_run_hash_normalised_endings, EnvironmentSet environment_set)
+        {
             if (!this_is_an_environment_file_and_its_in_the_right_environment(script_name, environment_set))
                 return false;
 
             if (this_script_has_run_already(script_name)
-                   && !this_script_has_changed_since_last_run(script_name, sql_to_run))
+                   && !this_script_has_changed_since_last_run(script_name, sql_to_run, sql_to_run_hash, sql_to_run_hash_normalised_endings))
                 return false;
 
             return true;
