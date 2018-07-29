@@ -64,7 +64,7 @@ namespace roundhouse.databases
         protected IConnection<DBCONNECTION> admin_connection;
 
         private bool disposing;
-        private Dictionary<string, ScriptsRun> scripts_cache;
+        private Dictionary<string, ScriptsRunCache> scripts_cache;
 
         //this method must set the provider
         public abstract void initialize_connections(ConfigurationPropertyHolder configuration_property_holder);
@@ -238,6 +238,7 @@ namespace roundhouse.databases
             try
             {
                 retry_policy.ExecuteAction(() => repository.save_or_update(script_run));
+                scripts_cache[script_name] = script_run;
             }
             catch (Exception ex)
             {
@@ -330,48 +331,36 @@ namespace roundhouse.databases
 
         public virtual string get_current_script_hash(string script_name)
         {
-            ScriptsRun script = get_from_script_cache(script_name) ?? get_script_run(script_name);
+            var script = get_script_run(script_name);
             return script != null ? script.text_hash : string.Empty;
         }
 
         public virtual bool has_run_script_already(string script_name)
         {
-            ScriptsRun script = get_from_script_cache(script_name) ?? get_script_run(script_name);
+            var script = get_script_run(script_name);
             return script != null;
         }
 
-        protected IList<ScriptsRun> get_all_scripts()
+        protected IList<ScriptsRunCache> get_all_scripts()
         {
-            return retry_policy.ExecuteAction(() => repository.get_all<ScriptsRun>());
+            return retry_policy.ExecuteAction(() => repository.get_all<ScriptsRunCache>());
         }
 
-        protected ScriptsRun get_script_run(string script_name)
+        protected ScriptsRunCache get_script_run(string script_name)
         {
-            QueryOver<ScriptsRun> criteria = QueryOver.Of<ScriptsRun>()
-                .Where(x => x.script_name == script_name)
-                .OrderBy(x => x.id).Desc
-                .Take(1);
+            if (scripts_cache == null)
+            {
+                scripts_cache = new Dictionary<string, ScriptsRunCache>();
 
-            ScriptsRun script = null;
-            IList<ScriptsRun> found_items;
-            try
-            {
-                found_items = retry_policy.ExecuteAction(() => repository.get_with_criteria(criteria));
-            }
-            catch (Exception ex)
-            {
-                Log.bound_to(this).log_an_error_event_containing(
-                    "{0} with provider {1} does not provide a facility for recording scripts run this time.{2}{3}",
-                    GetType(), provider, Environment.NewLine, ex.to_string());
-                throw;
+                // latest id overrides possible old one, just like in queries searching for scripts
+                foreach (var script in get_all_scripts().OrderBy(x => x.id))
+                {
+                    scripts_cache[script.script_name] = script;
+                }
             }
 
-            if (found_items != null && found_items.Count > 0)
-            {
-                script = found_items[0];
-            }
-
-            return script;
+            ScriptsRunCache script_run;
+            return scripts_cache.TryGetValue(script_name, out script_run) ? script_run : null;
         }
 
         public virtual void Dispose()
@@ -401,35 +390,6 @@ namespace roundhouse.databases
                 }
 
                 connection.Dispose();
-            }
-        }
-
-        private ScriptsRun get_from_script_cache(string script_name)
-        {
-            ensure_script_cache();
-
-            ScriptsRun script;
-            if (scripts_cache.TryGetValue(script_name, out script))
-            {
-                return script;
-            }
-
-            return null;
-        }
-
-        private void ensure_script_cache()
-        {
-            if (scripts_cache != null)
-            {
-                return;
-            }
-
-            scripts_cache = new Dictionary<string, ScriptsRun>();
-
-            // latest id overrides possible old one, just like in queries searching for scripts
-            foreach (var script in get_all_scripts().OrderBy(x => x.id))
-            {
-                scripts_cache[script.script_name] = script;
             }
         }
     }
