@@ -4,7 +4,6 @@ using log4net;
 using Microsoft.Build.Framework;
 using log4net.Core;
 using log4net.Repository;
-using ILogger = Microsoft.Build.Framework.ILogger;
 
 namespace roundhouse.infrastructure.app
 {
@@ -167,29 +166,11 @@ namespace roundhouse.infrastructure.app
         {
             configuration_property_holder.DatabaseType = DatabaseTypeSynonyms.convert_database_type_synonyms(configuration_property_holder.DatabaseType);
 
-            set_up_current_mappings(configuration_property_holder);
-
-            
+            set_up_current_mappings(configuration_property_holder);         
 
             IKernel kernel = new StandardKernel(new AppModule(configuration_property_holder));
             
             var container = new NinjectContainer(kernel);
-            //var container = new StructureMap.Container(cfg =>
-            //                            {
-            //                                cfg.For<ConfigurationPropertyHolder>().Singleton().Use(configuration_property_holder);
-            //                                cfg.For<FileSystemAccess>().Singleton().Use(context => new DotNetFileSystemAccess(configuration_property_holder));
-            //                                cfg.For<Database>().Singleton().Use(context => DatabaseBuilder.build(context.Kernel.Get<FileSystemAccess>()), configuration_property_holder));
-            //                                cfg.For<KnownFolders>().Singleton().Use(context => KnownFoldersBuilder.build(context.Kernel.Get<FileSystemAccess>()), configuration_property_holder));
-            //                                cfg.For<LogFactory>().Singleton().Use<MultipleLoggerLogFactory>();
-            //                                //cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.Kernel.Get<FileSystemAccess>()), configuration_property_holder));
-            //                                cfg.For<Logger>().Use(multiLogger);
-            //                                cfg.For<CryptographicService>().Singleton().Use<MD5CryptographicService>();
-            //                                cfg.For<DatabaseMigrator>().Singleton().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
-            //                                cfg.For<VersionResolver>().Singleton().Use(
-            //                                    context => VersionResolverBuilder.build(context.Kernel.Get<FileSystemAccess>()), configuration_property_holder));
-            //                                cfg.For<EnvironmentSet>().Singleton().Use(new DefaultEnvironmentSet(configuration_property_holder));
-            //                                cfg.For<Initializer>().Singleton().Use<FileSystemInitializer>();
-            //                            });
 
             // forcing a build of database to initialize connections so we can be sure server/database have values
             Database database = container.Resolve<Database>();
@@ -238,7 +219,6 @@ namespace roundhouse.infrastructure.app
         }
         public override void Load()
         {
-
             Bind<ConfigurationPropertyHolder>()
                 .ToConstant(config)
                 .InSingletonScope();
@@ -255,7 +235,7 @@ namespace roundhouse.infrastructure.app
                .To<MultipleLoggerLogFactory>()
                .InSingletonScope();
 
-            ////cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.Kernel.Get<FileSystemAccess>()), config));
+            //cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.Kernel.Get<FileSystemAccess>()), config));
             Logger multiLogger = GetMultiLogger(config);
             Bind<Logger>()
               .ToConstant(multiLogger);

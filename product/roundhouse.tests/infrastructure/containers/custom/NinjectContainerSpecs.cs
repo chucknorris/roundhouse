@@ -17,7 +17,6 @@ namespace roundhouse.tests.infrastructure.containers.custom
             protected IKernel the_kernel;
             protected Mock<IKernel> kernel_mock = new Mock<IKernel>();
 
-
             public override void AfterEachSpec()
             {
                 Container.initialize_with(null);
@@ -49,8 +48,14 @@ namespace roundhouse.tests.infrastructure.containers.custom
         [Concern(typeof(NinjectContainer))]
         public class when_the_kernel_is_initialized : concerns_using_a_fake_container
         {
-            public override void Context() { }
-            public override void Because() { }
+            public override void Context()
+            {
+                //Not required but have to override 
+            }
+            public override void Because()
+            {
+                //Not required but have to override 
+            }
 
             [Observation]
             public void should_be_an_instance_of_IContainer()
@@ -63,7 +68,7 @@ namespace roundhouse.tests.infrastructure.containers.custom
         public class when_asking_the_kernel_using_structuremap_for_an_item_and_it_has_that_that_item_registered :
             concerns_using_a_real_container
         {
-            private static LogFactory result;
+            private LogFactory result;
 
             public override void Context() { the_kernel.Bind<LogFactory>().To<Log4NetLogFactory>(); }
             public override void Because() { result = sut.Resolve<LogFactory>(); }
@@ -80,7 +85,7 @@ namespace roundhouse.tests.infrastructure.containers.custom
         public class when_asking_the_kernel_using_structuremap_to_resolve_an_item_and_it_does_not_have_the_item_registered :
                 concerns_using_a_real_container
         {
-            private static Action attempting_to_get_an_unregistered_item;
+            private Action attempting_to_get_an_unregistered_item;
 
             public override void Context()
             {
