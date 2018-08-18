@@ -1,6 +1,5 @@
 #!/usr/bin/env pwsh
 
-$MSBUILD=msbuild
 
 $root = $PSScriptRoot;
 
@@ -38,7 +37,7 @@ If (!(Test-Path $LOGDIR)) {
 
 
 " * Building and packaging"
-msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
+dotnet msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
 "`n    - Packaging netcoreapp2.0 roundhouse binary"
 dotnet publish -v q --no-restore product/roundhouse.console -t:Publish -p:TargetFramework=netcoreapp2.0 -p:DropFolder=$CODEDROP -p:Version="$($gitVersion.FullSemVer)" -p:Configuration=Build -p:Platform="Any CPU"

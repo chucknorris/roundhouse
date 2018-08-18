@@ -41,7 +41,7 @@ namespace roundhouse.tests.infrastructure.logging
                 mock_log_factory = new Mock<LogFactory>();
                 mock_logger = new Mock<Logger>();
 
-                mock_log_factory.Setup(x => x.create_logger_bound_to(typeof(StructureMapContainer)))
+                mock_log_factory.Setup(x => x.create_logger_bound_to(typeof(NinjectContainer)))
                     .Returns(mock_logger.Object);
 
                 container_mock.Setup(x => x.Resolve<LogFactory>())
@@ -56,7 +56,7 @@ namespace roundhouse.tests.infrastructure.logging
 
             public override void Because()
             {
-                result = Log.bound_to(new StructureMapContainer(null));
+                result = Log.bound_to(new NinjectContainer(null));
             }
 
             [Observation]
