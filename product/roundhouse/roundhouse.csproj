@@ -55,8 +55,8 @@
     <PackageReference Include="Microsoft.Build.Framework" Version="15.6.85" />
     <PackageReference Include="log4net" Version="2.0.8.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Polly" Version="5.9.0" />
-    <PackageReference Include="StructureMap" Version="4.6.1" />
     <PackageReference Include="NHibernate" Version="5.1.1" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />

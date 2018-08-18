@@ -23,9 +23,10 @@ namespace roundhouse.infrastructure.app
     using logging;
     using migrators;
     using resolvers;
-    using StructureMap;
     using Container = roundhouse.infrastructure.containers.Container;
     using System.Linq;
+    using Ninject;
+    using Ninject.Modules;
 
     public static class ApplicationConfiguraton
     {
@@ -168,62 +169,39 @@ namespace roundhouse.infrastructure.app
 
             set_up_current_mappings(configuration_property_holder);
 
-            Logger multiLogger = GetMultiLogger(configuration_property_holder);
+            
 
-            var container = new StructureMap.Container(cfg =>
-                                        {
-                                            cfg.For<ConfigurationPropertyHolder>().Singleton().Use(configuration_property_holder);
-                                            cfg.For<FileSystemAccess>().Singleton().Use(context => new DotNetFileSystemAccess(configuration_property_holder));
-                                            cfg.For<Database>().Singleton().Use(context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<KnownFolders>().Singleton().Use(context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<LogFactory>().Singleton().Use<MultipleLoggerLogFactory>();
-                                            //cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<Logger>().Use(multiLogger);
-                                            cfg.For<CryptographicService>().Singleton().Use<MD5CryptographicService>();
-                                            cfg.For<DatabaseMigrator>().Singleton().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
-                                            cfg.For<VersionResolver>().Singleton().Use(
-                                                context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<EnvironmentSet>().Singleton().Use(new DefaultEnvironmentSet(configuration_property_holder));
-                                            cfg.For<Initializer>().Singleton().Use<FileSystemInitializer>();
-                                        });
+            IKernel kernel = new StandardKernel(new AppModule(configuration_property_holder));
+            
+            var container = new NinjectContainer(kernel);
+            //var container = new StructureMap.Container(cfg =>
+            //                            {
+            //                                cfg.For<ConfigurationPropertyHolder>().Singleton().Use(configuration_property_holder);
+            //                                cfg.For<FileSystemAccess>().Singleton().Use(context => new DotNetFileSystemAccess(configuration_property_holder));
+            //                                cfg.For<Database>().Singleton().Use(context => DatabaseBuilder.build(context.Kernel.Get<FileSystemAccess>()), configuration_property_holder));
+            //                                cfg.For<KnownFolders>().Singleton().Use(context => KnownFoldersBuilder.build(context.Kernel.Get<FileSystemAccess>()), configuration_property_holder));
+            //                                cfg.For<LogFactory>().Singleton().Use<MultipleLoggerLogFactory>();
+            //                                //cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.Kernel.Get<FileSystemAccess>()), configuration_property_holder));
+            //                                cfg.For<Logger>().Use(multiLogger);
+            //                                cfg.For<CryptographicService>().Singleton().Use<MD5CryptographicService>();
+            //                                cfg.For<DatabaseMigrator>().Singleton().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
+            //                                cfg.For<VersionResolver>().Singleton().Use(
+            //                                    context => VersionResolverBuilder.build(context.Kernel.Get<FileSystemAccess>()), configuration_property_holder));
+            //                                cfg.For<EnvironmentSet>().Singleton().Use(new DefaultEnvironmentSet(configuration_property_holder));
+            //                                cfg.For<Initializer>().Singleton().Use<FileSystemInitializer>();
+            //                            });
 
             // forcing a build of database to initialize connections so we can be sure server/database have values
-            Database database = container.GetInstance<Database>();
+            Database database = container.Resolve<Database>();
             database.initialize_connections(configuration_property_holder);
             configuration_property_holder.ServerName = database.server_name;
             configuration_property_holder.DatabaseName = database.database_name;
             configuration_property_holder.ConnectionString = database.connection_string;
 
-            return new StructureMapContainer(container);
+            return container;
         }
 
-        private static Logger GetMultiLogger(ConfigurationPropertyHolder configuration_property_holder)
-        {
-            IList<Logger> loggers = new List<Logger>();
-            
-            // This doesn't work on macOS, at least. Try, and fail silently.
-            try
-            {
-                var task = configuration_property_holder as ITask;
-                if (task != null)
-                {
-                    Logger msbuild_logger = new MSBuildLogger(configuration_property_holder);
-                    loggers.Add(msbuild_logger);
-                }
-            }
-            catch (FileNotFoundException)
-            {}
-
-            Logger log4net_logger = new Log4NetLogger(LogManager.GetLogger(typeof(ApplicationConfiguraton)));
-            loggers.Add(log4net_logger);
-
-            if (configuration_property_holder.Logger != null && !loggers.Contains(configuration_property_holder.Logger))
-            {
-                loggers.Add(configuration_property_holder.Logger);
-            }
-
-            return new MultipleLogger(loggers);
-        }
+        
 
         private static void initialize_file_log_appender()
         {
@@ -247,6 +225,83 @@ namespace roundhouse.infrastructure.app
                     }
                 }
             }
+        }
+    }
+
+    public class AppModule : NinjectModule
+    {
+        private readonly ConfigurationPropertyHolder config;
+
+        public AppModule(ConfigurationPropertyHolder config)
+        {
+            this.config = config;
+        }
+        public override void Load()
+        {
+
+            Bind<ConfigurationPropertyHolder>()
+                .ToConstant(config)
+                .InSingletonScope();
+            Bind<FileSystemAccess>()
+                .ToMethod((context) => new DotNetFileSystemAccess(config))
+                .InSingletonScope();
+            Bind<Database>()
+               .ToMethod((context) => DatabaseBuilder.build(context.Kernel.Get<FileSystemAccess>(), config))
+               .InSingletonScope();
+            Bind<KnownFolders>()
+               .ToMethod((context) => KnownFoldersBuilder.build(context.Kernel.Get<FileSystemAccess>(), config))
+               .InSingletonScope();
+            Bind<LogFactory>()
+               .To<MultipleLoggerLogFactory>()
+               .InSingletonScope();
+
+            ////cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.Kernel.Get<FileSystemAccess>()), config));
+            Logger multiLogger = GetMultiLogger(config);
+            Bind<Logger>()
+              .ToConstant(multiLogger);
+            Bind<CryptographicService>()
+               .To<MD5CryptographicService>()
+               .InSingletonScope();
+            Bind<DatabaseMigrator>()
+               .ToMethod((context) => new DefaultDatabaseMigrator(context.Kernel.Get<Database>(), context.Kernel.Get<CryptographicService>(), config))
+               .InSingletonScope();
+            Bind<VersionResolver>()
+               .ToMethod((context) => VersionResolverBuilder.build(context.Kernel.Get<FileSystemAccess>(), config))
+               .InSingletonScope();
+            Bind<EnvironmentSet>()
+               .ToMethod((context) => new DefaultEnvironmentSet(config))
+               .InSingletonScope();
+            Bind<Initializer>()
+               .To<FileSystemInitializer>()
+               .InSingletonScope();
+        }
+
+        private static Logger GetMultiLogger(ConfigurationPropertyHolder configuration_property_holder)
+        {
+            IList<Logger> loggers = new List<Logger>();
+
+            // This doesn't work on macOS, at least. Try, and fail silently.
+            try
+            {
+                var task = configuration_property_holder as ITask;
+                if (task != null)
+                {
+                    Logger msbuild_logger = new MSBuildLogger(configuration_property_holder);
+                    loggers.Add(msbuild_logger);
+                }
+            }
+            catch (FileNotFoundException)
+            { }
+
+            Logger log4net_logger = new Log4NetLogger(LogManager.GetLogger(typeof(ApplicationConfiguraton)));
+            loggers.Add(log4net_logger);
+
+            if (configuration_property_holder.Logger != null && !loggers.Contains(configuration_property_holder.Logger))
+            {
+                loggers.Add(configuration_property_holder.Logger);
+            }
+
+            return new MultipleLogger(loggers);
         }
     }
 }
