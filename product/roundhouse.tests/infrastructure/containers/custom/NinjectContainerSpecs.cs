@@ -38,7 +38,7 @@ namespace roundhouse.tests.infrastructure.containers.custom
         {
             protected override NinjectContainer sut { get; set; }
 
-            public concerns_using_a_real_container()
+            protected concerns_using_a_real_container()
             {
                 the_kernel = new StandardKernel();
                 sut = new NinjectContainer(the_kernel);

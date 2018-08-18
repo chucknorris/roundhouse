@@ -234,8 +234,6 @@ namespace roundhouse.infrastructure.app
             Bind<LogFactory>()
                .To<MultipleLoggerLogFactory>()
                .InSingletonScope();
-
-            //cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.Kernel.Get<FileSystemAccess>()), config));
             Logger multiLogger = GetMultiLogger(config);
             Bind<Logger>()
               .ToConstant(multiLogger);
