@@ -23,6 +23,7 @@ namespace roundhouse.infrastructure.app.builders
             MigrationsFolder permissions_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.PermissionsFolderName, false, true, "Permission");
             MigrationsFolder before_migration_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.BeforeMigrationFolderName, false, true, "BeforeMigration");
             MigrationsFolder after_migration_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.AfterMigrationFolderName, false, true, "AfterMigration");
+            
 
             Folder change_drop_folder = new DefaultFolder(file_system, combine_items_into_one_path(file_system,
                                                                                                    configuration_property_holder.OutputPath,

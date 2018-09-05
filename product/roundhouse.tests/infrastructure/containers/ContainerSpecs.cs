@@ -6,7 +6,6 @@ namespace roundhouse.tests.infrastructure.containers
     using roundhouse.infrastructure.containers;
     using roundhouse.infrastructure.logging;
     using roundhouse.infrastructure.logging.custom;
-    using StructureMap;
     using Container = roundhouse.infrastructure.containers.Container;
 
     public class ContainerSpecs
@@ -28,19 +27,6 @@ namespace roundhouse.tests.infrastructure.containers
             public override void AfterEachSpec()
             {
                 Container.initialize_with(null);
-            }
-        }
-
-        [Concern(typeof(Container))]
-        public class when_asking_the_container_to_initialize : concern_for_container
-        {
-            public override void Context(){}
-            public override void Because() { result = Container.get_an_instance_of<LogFactory>(); }
-
-            [Observation]
-            public void should_not_be_of_type_IWindsorContainer()
-            {
-                the_container.should_not_be_an_instance_of<IContainer>();
             }
         }
 
