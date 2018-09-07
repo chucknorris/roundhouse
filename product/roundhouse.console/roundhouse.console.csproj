@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,13 +14,18 @@
     <NoWarn>NU1701</NoWarn>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <VersionPrefix>0.8.9</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
     <Version Condition="'$(Version)' == ''">$(VersionPrefix)</Version>
     <Version Condition="'$(Version)' == '$(VersionPrefix)' And '$(VersionSuffix)' != ''">$(Version)-$(VersionSuffix)</Version>
     <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFranework)' == 'net461'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+ 
+  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -28,7 +34,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,7 +42,6 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
@@ -52,12 +56,8 @@
     <PackageReference Include="Polly" Version="5.9.0" />
     <PackageReference Include="StructureMap" Version="4.6.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
-    <PackageReference Include="System.Data.SqlClient">
-      <Version>4.4.3</Version>
-    </PackageReference>
-    <PackageReference Include="System.Security.Principal.Windows">
-      <Version>4.4.1</Version>
-    </PackageReference>
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
+    <PackageReference Include="System.Security.Principal.Windows" Version="4.4.1" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
@@ -78,7 +78,7 @@
     </None>
   </ItemGroup>
   
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
     <None Include="rh" CopyToOutputDirectory="PreserveNewest" />
     <None Include="rh.bat" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
@@ -105,23 +105,18 @@
     <Message Importance="high" Text="ILMerge-ing into $(ILMergeTarget)" />
     <Exec Command="$(ILMergeCommand)" />
   </Target>
+    
   <!-- Nuspec properties (for generating NuGet package) -->
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
     <NuspecFile>roundhouse.nuspec</NuspecFile>
     <NuspecProperties>mergedExe=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
-  
-  <Target Name="CollectDotnetCoreFiles" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'netcoreapp2.0'" >
-    <ItemGroup>
-      <DotnetCoreAppFiles Include="$(OutDir)/publish/**/**" />
-    </ItemGroup>
-    <PropertyGroup>
-      <CopyDestination>$(DropFolder)/tmp/RoundhousE</CopyDestination>
-    </PropertyGroup>
-      
-    <MakeDir Directories="$(CopyDestination)" />
-    <Copy SourceFiles="@(DotnetCoreAppFiles)" DestinationFiles="$(CopyDestination)/%(DotnetCoreAppFiles.RecursiveDir)%(Filename)%(Extension)"/>
-  </Target>
+    
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+    <NuspecFile>roundhouse.tool.nuspec</NuspecFile>
+    <NuspecProperties>version=$(NugetVersion)</NuspecProperties>
+  </PropertyGroup>
+ 
   
   <!-- Copy to drop folder after packaging -->
   <Target Name="CopyToDropFolder" AfterTargets="Pack" Condition="'$(DropFolder)' != ''">
