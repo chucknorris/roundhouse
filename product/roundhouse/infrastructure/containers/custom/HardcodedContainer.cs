@@ -22,7 +22,7 @@ namespace roundhouse.infrastructure.containers.custom
             registrations[typeof(TDependency)] = implementation;
         }
 
-        public TypeToReturn Resolve<TypeToReturn>()
+        TypeToReturn InversionContainer.Resolve<TypeToReturn>()
         {
             return (TypeToReturn) registrations[typeof(TypeToReturn)];
         }
