@@ -25,7 +25,6 @@ using log4net.Core;
 
 namespace roundhouse.console
 {
-
     public class Program
     {
         private static readonly char[] OptionsSplit = new[] { ',',';' };

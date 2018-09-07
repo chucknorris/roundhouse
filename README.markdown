@@ -69,26 +69,24 @@ Chocolatey is like apt-get, but for Windows! This is an alternative method to ge
 2. Then from anywhere you can type `rh [options]`  
 
 ### Dotnet core (Linux, macOS, etc)
-We have a new build of RoundhousE, built on the new(er) mean and lean dotnet core. Dotnet core applications are a bit different that standard
-.net desktop (e.g. .Net 4.6.1) applications, and we're still figuring out the best way to distribute them. If you have opinions on what
-is the most convenient form for a particular platform, please let us know. Even better, if you have knowledge of a particular distribution method,
-or would like to learn about one, file a Pull Request with changes in the build script to 
-produce what you want.
+We have a new build of RoundhousE, built on the new(er) mean and lean dotnet core. 
+Dotnet core runs on all major OS-es, including Windows, Linux and macOS.
+RoundhousE is distributed as a .net core 2.1 _global tool_, and can be installed like this:
 
-For now, we publish a `.tar.gz` of the application, at the [Releases](https://github.com/chucknorris/roundhouse/releases) page. Extract the file somewhere, and run 
-the included `rh` shell script. You will need dotnet core installed on your box for this to work. You can get it here: [https://dot.net](https://dot.net).
+`dotnet tool install -g dotnet-roundhouse`
 
-So: 
-1. Install dotnet core from either [https://dot.net](https://dot.net), or use a package manager of choice [(e.g. `apt-get` on Debian/Ubuntu)](https://www.microsoft.com/net/download/linux-package-manager/ubuntu17-10/runtime-2.0.6), if you haven't already
-1. Grab the newest [RoundhousE .net core distribution](https://github.com/chucknorris/roundhouse/releases)
+You can read more about what happens in the background e.g. here:
+https://natemcmaster.com/blog/2018/05/12/dotnet-global-tools/, but in short, it installs
+the binaries to your `~/.dotnet/tools` folder. You can run RoundhousE by typing
 
-1. Extract to an appropriate place, e.g. `/usr/local`, and optionally symlink it to an appropriate folder in your `$PATH`:
-```
-cd /usr/local
-sudo tar -zxvf ~/Downloads/Roundhouse-latest.tar.gz
-sudo ln -s /usr/local/RoundhousE/rh /usr/local/bin/rh
-```
+`dotnet rh`
 
+You will need dotnet core installed on your box for this to work. You can get it here: [https://dot.net](https://dot.net).
+
+So, to sum up: 
+1. Install dotnet core 2.1 from either [https://dot.net](https://dot.net), or use a package manager of choice [(e.g. `apt-get` on Debian/Ubuntu)](https://www.microsoft.com/net/download/linux-package-manager/ubuntu17-10/runtime-2.1.0), if you haven't already
+1. `dotnet tool install -g dotnet-roundhouse`
+1. `dotnet rh`
   
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
