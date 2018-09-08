@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>roundhouse.tests</RootNamespace>
     <AssemblyName>roundhouse.tests</AssemblyName>
-    <NoWarn>NU1701</NoWarn>
+    <NoWarn>NU1701;CS0618</NoWarn>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -21,12 +21,11 @@
     <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
     <PackageReference Include="Moq" Version="4.8.2" />
     <PackageReference Include="MySql.Data" Version="6.10.4" />
-   <PackageReference Include="Npgsql" Version="3.2.7" />
+    <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit.ConsoleRunner" Version="3.8.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
     <PackageReference Include="Should" Version="1.1.20" />
-    <PackageReference Include="StructureMap" Version="4.6.1" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.108" />
     <PackageReference Include="TinySpec.NUnit" Version="0.9.5" />
   </ItemGroup>

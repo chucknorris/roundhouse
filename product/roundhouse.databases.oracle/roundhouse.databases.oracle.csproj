@@ -9,7 +9,7 @@
     <RootNamespace>roundhouse.databases.oracle</RootNamespace>
     <AssemblyName>roundhouse.databases.oracle</AssemblyName>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <NoWarn>NU1701</NoWarn>
+    <NoWarn>NU1701;CS0618</NoWarn>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>

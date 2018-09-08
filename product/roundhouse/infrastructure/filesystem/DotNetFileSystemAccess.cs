@@ -415,7 +415,7 @@ namespace roundhouse.infrastructure.filesystem
         /// <returns></returns>
         public string combine_paths(params string[] paths)
         {
-            string combined_path = String.Empty;
+            string combined_path = string.Empty;
             foreach (string path in paths)
             {
                 combined_path = Path.Combine(combined_path, path);
