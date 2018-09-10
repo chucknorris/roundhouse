@@ -64,7 +64,7 @@ namespace roundhouse.databases
         protected IConnection<DBCONNECTION> admin_connection;
 
         private bool disposing;
-        private Dictionary<string, ScriptsRun> scripts_cache;
+        private Dictionary<string, ScriptsRunCache> scripts_cache;
 
         //this method must set the provider
         public abstract void initialize_connections(ConfigurationPropertyHolder configuration_property_holder);
@@ -341,16 +341,16 @@ namespace roundhouse.databases
             return script != null;
         }
 
-        protected IList<ScriptsRun> get_all_scripts()
+        protected IList<ScriptsRunCache> get_all_scripts()
         {
-            return retry_policy.ExecuteAction(() => repository.get_all<ScriptsRun>());
+            return retry_policy.ExecuteAction(() => repository.get_all<ScriptsRunCache>());
         }
 
-        protected ScriptsRun get_script_run(string script_name)
+        protected ScriptsRunCache get_script_run(string script_name)
         {
             if (scripts_cache == null)
             {
-                scripts_cache = new Dictionary<string, ScriptsRun>();
+                scripts_cache = new Dictionary<string, ScriptsRunCache>();
 
                 // latest id overrides possible old one, just like in queries searching for scripts
                 foreach (var script in get_all_scripts().OrderBy(x => x.id))
@@ -359,7 +359,7 @@ namespace roundhouse.databases
                 }
             }
 
-            ScriptsRun script_run;
+            ScriptsRunCache script_run;
             return scripts_cache.TryGetValue(script_name, out script_run) ? script_run : null;
         }
 

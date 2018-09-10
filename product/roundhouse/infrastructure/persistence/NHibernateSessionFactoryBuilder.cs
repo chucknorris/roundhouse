@@ -99,6 +99,7 @@ namespace roundhouse.infrastructure.persistence
                 {
                     m.FluentMappings.Add(assembly.GetType(top_namespace + ".orm.VersionMapping", true, true))
                         .Add(assembly.GetType(top_namespace + ".orm.ScriptsRunMapping", true, true))
+                        .Add(assembly.GetType(top_namespace + ".orm.ScriptsRunCacheMapping", true, true))
                         .Add(assembly.GetType(top_namespace + ".orm.ScriptsRunErrorMapping", true, true));
                     //.Conventions.AddAssembly(assembly);
                     //m.HbmMappings.AddFromAssembly(assembly);
