@@ -43,8 +43,8 @@
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="FluentNHibernate" Version="2.1.2" />
     <PackageReference Include="Iesi.Collections" Version="4.0.4" />
-    <PackageReference Include="NHibernate" Version="5.1.1" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.108" />
+    <PackageReference Include="NHibernate" Version="5.1.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
@@ -60,6 +60,5 @@
   <PropertyGroup>
     <AlreadyImported>true</AlreadyImported>
   </PropertyGroup>
-  <Import Project="$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets" 
-          Condition="Exists('$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets') and '$(AlreadyImported)' != 'true'" />
+  <Import Project="$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('$(NuGetPackageRoot)System.Data.SQLite.Core\1.0.108\build\net46\System.Data.SQLite.Core.targets') and '$(AlreadyImported)' != 'true'" />
 </Project>
