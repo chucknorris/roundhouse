@@ -7,7 +7,7 @@ $root = $PSScriptRoot;
 $CODEDROP="$($root)/code_drop";
 $LOGDIR="$($CODEDROP)/log";
 
-$TESTOUTDIR="$($root)/product/roundhouse.tests\bin"
+$TESTOUTDIR="$($root)/product/roundhouse.tests/bin"
 
 $onAppVeyor = $("$($env:APPVEYOR)" -eq "True");
 
