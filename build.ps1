@@ -37,7 +37,13 @@ If (!(Test-Path $LOGDIR)) {
 }
 
 " * Building and packaging"
-msbuild /t:"Build;Pack" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
+msbuild /t:"Build" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
+
+"`n    - Packaging net461 packages`n"
+
+nuget pack product/roundhouse.console/roundhouse.nuspec -OutputDirectory "$CODEDROP/packages" -Properties "mergedExe=$CODEDROP/merge/rh.exe" -Verbosity quiet -NoPackageAnalysis -Version "$($gitVersion.FullSemVer)" 
+msbuild /t:"Pack" product/roundhouse.lib.merged/roundhouse.lib.merged.csproj  /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.roundhouse.lib.pack.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
+msbuild /t:"Pack" product/roundhouse.tasks/roundhouse.tasks.csproj  /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.roundhouse.tasks.pack.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
 "`n    - Packaging netcoreapp2.1 global tool dotnet-roundhouse`n"
 
