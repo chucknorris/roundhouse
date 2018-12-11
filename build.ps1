@@ -47,6 +47,7 @@ msbuild /t:"Pack" product/roundhouse.tasks/roundhouse.tasks.csproj  /p:DropFolde
 
 "`n    - Packaging netcoreapp2.1 global tool dotnet-roundhouse`n"
 
+dotnet publish -v q --no-restore product/roundhouse.console -p:Version="$($gitVersion.FullSemVer)" -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -p:Version="$($gitVersion.FullSemVer)" -p:RunILMerge=false -p:Configuration=Build -p:Platform="Any CPU"
 dotnet pack -v q --no-restore product/roundhouse.console -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -o $CODEDROP/packages -p:Version="$($gitVersion.FullSemVer)" -p:RunILMerge=false -p:Configuration=Build -p:Platform="Any CPU"
 
 

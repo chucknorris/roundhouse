@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks Condition="'$(TargetFramework)' == ''" >netcoreapp2.1;net461</TargetFrameworks>
+    <TargetFramework Condition="'$(TargetFramework)' == ''" >net461</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -19,6 +19,7 @@
     <Version Condition="'$(Version)' == ''">$(VersionPrefix)</Version>
     <Version Condition="'$(Version)' == '$(VersionPrefix)' And '$(VersionSuffix)' != ''">$(Version)-$(VersionSuffix)</Version>
     <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
+    <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
