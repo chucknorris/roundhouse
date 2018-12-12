@@ -25,6 +25,7 @@ namespace roundhouse.infrastructure.filesystem
         }
 
         private ConfigurationPropertyHolder configuration;
+        private static readonly char[] InvalidPathCharacters = Path.GetInvalidPathChars().Append(':').ToArray();
 
 
         #region File
@@ -247,6 +248,16 @@ namespace roundhouse.infrastructure.filesystem
         public string get_file_name_without_extension_from(string file_path)
         {
             return Path.GetFileNameWithoutExtension(file_path);
+        }
+
+        public string remove_invalid_characters_from(string path_segment)
+        {
+            foreach (var c in InvalidPathCharacters)
+            {
+                path_segment = path_segment.Replace(c, '_');
+            }
+
+            return path_segment;
         }
 
         /// <summary>
