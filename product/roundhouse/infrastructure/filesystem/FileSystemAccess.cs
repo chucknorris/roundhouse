@@ -109,6 +109,14 @@ namespace roundhouse.infrastructure.filesystem
         /// <param name="file_path">Full path to file including file name</param>
         /// <returns>Returns only the file name minus extensions from the filepath</returns>
         string get_file_name_without_extension_from(string file_path);
+        
+        /// <summary>
+        /// Removes invalid characters from a path segment
+        /// </summary>
+        /// <param name="path_segment">segment of path to clean</param>
+        /// <returns>The path with all illegal characters stripped away</returns>
+        string remove_invalid_characters_from(string path_segment);
+        
 
         /// <summary>
         /// Determines the file extension for a given path to a file
