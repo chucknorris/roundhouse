@@ -23,7 +23,7 @@ namespace roundhouse.infrastructure.logging
                 {
                     have_displayed_error_message = true;
                 }
-                logger = new Log4NetLogger(LogManager.GetLogger(object_that_needs_logging.to_string()));
+                logger = new Log4NetLogger(LogManager.GetLogger(object_that_needs_logging?.GetType()));
             }
 
             return logger;

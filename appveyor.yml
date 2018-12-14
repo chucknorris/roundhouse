@@ -1,7 +1,7 @@
 image: Visual Studio 2017
 
 install:
-  - choco install gitversion.portable -pre -y
+  - choco install gitversion.portable -y
 
 before_build:
   - ps: gitversion /l console /output buildserver
@@ -13,6 +13,7 @@ test:
   assemblies:
     only:
       - '**\*tests.dll'
+
       
 artifacts:
   - path: .\code_drop\packages\*.nupkg

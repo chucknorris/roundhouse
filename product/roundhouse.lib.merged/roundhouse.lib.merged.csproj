@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +13,6 @@
     <NoWarn>NU1701</NoWarn>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <VersionPrefix>0.8.9</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
@@ -31,6 +30,11 @@
     <PackageTags>roundhouse db migration database migrator chucknorris</PackageTags>
     <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFranework)' == 'net461'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -39,7 +43,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <LangVersion>5</LangVersion>
   </PropertyGroup>
@@ -50,13 +53,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
-    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
     <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" />
     <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" />
     <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" />
@@ -73,10 +77,11 @@
   <!-- Merge properties and target -->
   <PropertyGroup>
     <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
+    <LogDir>..\..\code_drop\log\</LogDir>
     <ILMergeTarget>$(ILMergeDir)roundhouse.dll</ILMergeTarget>
   </PropertyGroup>
   
-  <Target Name="ILMerge" AfterTargets="Build">
+  <Target Name="ILMerge" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true' and '$(TargetFramework)' == 'net461'">
     <ItemGroup>
       <ILMergeAssemblies Include="$(OutputPath)roundhouse*.dll" />
       <ILMergeAssemblies Remove="$(OutputPath)$(AssemblyName).dll" />
@@ -84,12 +89,13 @@
     <PropertyGroup>
       <IgnoreFile>..\..\build.custom\ilmerge.internalize.ignore.txt</IgnoreFile>
       <ILMerge>..\..\lib\ILMerge\ILMerge.exe</ILMerge>
-      <ILMergeLog>$(ILMergeDir)roundhouse.ILMerge.log</ILMergeLog>
+      <ILMergeLog>$(LogDir)roundhouse.ILMerge.log</ILMergeLog>
       <ILMergeCommand>$(ILMerge) /internalize:$(IgnoreFile) /target:dll /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup  @(ILMergeAssemblies, ' ')</ILMergeCommand>
     </PropertyGroup>
     <Delete Files="$(ILMergeLog)" Condition="Exists('$(ILMergeLog)')" />
     <Delete Files="$(ILMergeTarget)" Condition="Exists('$(ILMergeTarget)')" />
     <MakeDir Directories="$(ILMergeDir)" />
+    <MakeDir Directories="$(LogDir)" />
     <Message Importance="high" Text="ILMerge-ing into $(ILMergeTarget)" />
     <Exec Command="$(ILMergeCommand)" />
   </Target>
@@ -97,7 +103,7 @@
   <!-- Nuspec properties (for generating NuGet package) -->
   <PropertyGroup>
     <NuspecFile>roundhouse.lib.nuspec</NuspecFile>
-    <NuspecProperties>mergedDll=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
+    <NuspecProperties>mergedDll=$(ILMergeTarget);configuration=$(Configuration);assemblyName=$(AssemblyName);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
   
   <!-- Copy to drop folder after packaging -->

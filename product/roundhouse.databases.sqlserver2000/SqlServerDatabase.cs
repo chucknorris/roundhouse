@@ -1,3 +1,5 @@
+using System.Data.Common;
+using System.Data.SqlClient;
 using roundhouse.infrastructure.logging;
 
 namespace roundhouse.databases.sqlserver2000
@@ -154,6 +156,11 @@ namespace roundhouse.databases.sqlserver2000
                             DROP DATABASE [{0}] 
                         END",
                 database_name);
+        }
+
+        protected override DbProviderFactory get_db_provider_factory()
+        {
+            return SqlClientFactory.Instance;
         }
     }
 }

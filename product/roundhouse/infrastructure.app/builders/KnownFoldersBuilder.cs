@@ -23,12 +23,13 @@ namespace roundhouse.infrastructure.app.builders
             MigrationsFolder permissions_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.PermissionsFolderName, false, true, "Permission");
             MigrationsFolder before_migration_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.BeforeMigrationFolderName, false, true, "BeforeMigration");
             MigrationsFolder after_migration_folder = new DefaultMigrationsFolder(file_system, configuration_property_holder.SqlFilesDirectory, configuration_property_holder.AfterMigrationFolderName, false, true, "AfterMigration");
+            
 
             Folder change_drop_folder = new DefaultFolder(file_system, combine_items_into_one_path(file_system,
                                                                                                    configuration_property_holder.OutputPath,
                                                                                                    "migrations",
-                                                                                                   remove_paths_from(configuration_property_holder.DatabaseName,file_system),
-                                                                                                   remove_paths_from(configuration_property_holder.ServerName,file_system)),
+                                                                                                   remove_invalid_characters_from(configuration_property_holder.DatabaseName,file_system),
+                                                                                                   remove_invalid_characters_from(configuration_property_holder.ServerName,file_system)),
                                                           get_run_date_time_string());
 
 			return new DefaultKnownFolders(
@@ -57,6 +58,11 @@ namespace roundhouse.infrastructure.app.builders
         private static string remove_paths_from(string name, FileSystemAccess file_system)
         {
             return file_system.get_file_name_without_extension_from(name);
+        }
+        
+        private static string remove_invalid_characters_from(string path_segment, FileSystemAccess file_system)
+        {
+            return file_system.remove_invalid_characters_from(path_segment);
         }
 
         private static string get_run_date_time_string()

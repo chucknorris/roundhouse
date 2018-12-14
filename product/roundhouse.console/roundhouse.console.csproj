@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks Condition="'$(TargetFramework)' == ''" >netcoreapp2.1;net461</TargetFrameworks>
+    <TargetFramework Condition="'$(TargetFramework)' == ''" >net461</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,16 +14,19 @@
     <NoWarn>NU1701</NoWarn>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-
     <VersionPrefix>0.8.9</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
     <Version Condition="'$(Version)' == ''">$(VersionPrefix)</Version>
     <Version Condition="'$(Version)' == '$(VersionPrefix)' And '$(VersionSuffix)' != ''">$(Version)-$(VersionSuffix)</Version>
     <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
-
+    <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
+  </PropertyGroup>
+  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -31,72 +35,69 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\..\build_output\RoundhousE\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-   <ItemGroup>
-    <PackageReference Include="FluentNHibernate" Version="1.3.0.733" />
-    <PackageReference Include="Iesi.Collections" Version="3.3.2.4000" />
-    <PackageReference Include="NHibernate" Version="3.3.2.4000" />
-    <PackageReference Include="NHibernate.JetDriver" Version="2.0.0.1001" />
-    <PackageReference Include="EnterpriseLibrary.TransientFaultHandling" Version="6.0.1304.0">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="EnterpriseLibrary.TransientFaultHandling.Data" Version="6.0.1304.1" />
+    <PackageReference Include="FluentNHibernate" Version="2.1.2" />
+    <PackageReference Include="Iesi.Collections" Version="4.0.4" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.9.20" />
+    <PackageReference Include="MySql.Data" Version="8.0.11" />
+    <PackageReference Include="NHibernate" Version="5.1.3" />
+    <PackageReference Include="NHibernate.JetDriver" Version="2.0.0.1002" />
     <PackageReference Include="log4net" Version="2.0.8.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
-    <PackageReference Include="StructureMap" Version="4.5.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Polly" Version="6.1.2" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
+    <PackageReference Include="System.Security.Principal.Windows" Version="4.5.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" ExcludeAssets="All" />
-    <ProjectReference Include="..\roundhouse\roundhouse.csproj" ExcludeAssets="All" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" />
+    <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\docs\logo\roundhouse.ico">
       <Link>roundhouse.ico</Link>
     </None>
   </ItemGroup>
-
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+    <None Include="rh" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="rh.bat" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="DotnetToolSettings.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  
   <!-- Merge properties and target -->
   <PropertyGroup>
-     <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
-     <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
+    <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
+    <LogDir>..\..\code_drop\log\</LogDir>
+    <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
   </PropertyGroup>
-
-  <Target Name="ILMerge" AfterTargets="Build">
+  <Target Name="ILMerge" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true' and '$(TargetFramework)' == 'net461'">
     <ItemGroup>
       <ILMergeAssemblies Include="$(OutputPath)*.dll" />
     </ItemGroup>
     <PropertyGroup>
       <IgnoreFile>..\..\build.custom\ilmerge.internalize.ignore.txt</IgnoreFile>
       <ILMerge>..\..\lib\ILMerge\ILMerge.exe</ILMerge>
-      <ILMergeLog>$(ILMergeDir)roundhouse.console.ILMerge.log</ILMergeLog>
+      <ILMergeLog>$(LogDir)roundhouse.console.ILMerge.log</ILMergeLog>
       <ILMergeSource>$(OutputPath)$(AssemblyName).exe</ILMergeSource>
       <ILMergeCommand>$(ILMerge) /internalize:$(IgnoreFile) /target:exe /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup $(ILMergeSource)  @(ILMergeAssemblies, ' ')</ILMergeCommand>
     </PropertyGroup>
@@ -105,20 +106,24 @@
     <Message Importance="high" Text="ILMerge-ing into $(ILMergeTarget)" />
     <Exec Command="$(ILMergeCommand)" />
   </Target>
-
+    
   <!-- Nuspec properties (for generating NuGet package) -->
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
     <NuspecFile>roundhouse.nuspec</NuspecFile>
     <NuspecProperties>mergedExe=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
-
+    
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+    <NuspecFile>roundhouse.tool.nuspec</NuspecFile>
+    <NuspecProperties>version=$(NugetVersion)</NuspecProperties>
+  </PropertyGroup>
+ 
+  
   <!-- Copy to drop folder after packaging -->
   <Target Name="CopyToDropFolder" AfterTargets="Pack" Condition="'$(DropFolder)' != ''">
     <ItemGroup>
-       <NugetPackages Include="$(OutputPath)..\**\*.nupkg" />
+      <NugetPackages Include="$(OutputPath)..\**\*.nupkg" />
     </ItemGroup>
-    
     <Copy SourceFiles="@(NugetPackages)" DestinationFolder="$(DropFolder)\packages" />
   </Target>
-
 </Project>

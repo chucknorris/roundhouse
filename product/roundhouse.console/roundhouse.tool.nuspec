@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata>
+    <id>dotnet-roundhouse</id>
+    <title>RoundhousE .net core global tool</title>
+    <version>$version$</version>
+    <authors>Rob Reynolds, Andy Davis, Erik A. Brandstadmoen</authors>
+    <owners>Rob Reynolds, Andy Davis, Erik A. Brandstadmoen</owners>
+    <summary>.NET Core global too for RoundhousE - Professional Database Change and Versioning Management</summary>
+    <description>RoundhousE is a Professional Database Change and Versioning Management tool. Type rh /? for options</description>
+    <projectUrl>http://projectroundhouse.org</projectUrl>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>roundhouse db migration database migrator chucknorris</tags>
+    <packageTypes>
+      <packageType name="DotnetTool" />
+    </packageTypes>
+    <dependencies>
+      <group targetFramework=".NETCoreApp2.1" />
+    </dependencies>
+    <iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
+  </metadata>
+  <files>
+    <file src="bin\netcoreapp2.1\publish\**\**" target="tools\netcoreapp2.1\any" />
+  </files>
+</package>

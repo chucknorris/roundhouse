@@ -33,7 +33,12 @@ namespace roundhouse.tests.infrastructure.filesystem
 
             private string read_test_file(string file_name)
             {
-                return sut.read_file_text(Path.Combine(TestContext.CurrentContext.TestDirectory, string.Format(@"infrastructure\filesystem\{0}", file_name)));
+                return sut.read_file_text(
+                    Path.Combine(
+                        TestContext.CurrentContext.TestDirectory,
+                        "infrastructure",
+                        "filesystem",
+                        file_name));
             }
 
             public override void Because()

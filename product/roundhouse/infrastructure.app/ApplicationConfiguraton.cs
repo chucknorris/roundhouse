@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using log4net;
@@ -23,8 +24,6 @@ namespace roundhouse.infrastructure.app
     using logging;
     using migrators;
     using resolvers;
-    using StructureMap;
-    using Container = roundhouse.infrastructure.containers.Container;
     using System.Linq;
 
     public static class ApplicationConfiguraton
@@ -168,47 +167,60 @@ namespace roundhouse.infrastructure.app
 
             set_up_current_mappings(configuration_property_holder);
 
-            Logger multiLogger = GetMultiLogger(configuration_property_holder);
-
-            var container = new StructureMap.Container(cfg =>
-                                        {
-                                            cfg.For<ConfigurationPropertyHolder>().Singleton().Use(configuration_property_holder);
-                                            cfg.For<FileSystemAccess>().Singleton().Use(context => new DotNetFileSystemAccess(configuration_property_holder));
-                                            cfg.For<Database>().Singleton().Use(context => DatabaseBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<KnownFolders>().Singleton().Use(context => KnownFoldersBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<LogFactory>().Singleton().Use<MultipleLoggerLogFactory>();
-                                            //cfg.For<Logger>().Singleton().Use(context => LogBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<Logger>().Use(multiLogger);
-                                            cfg.For<CryptographicService>().Singleton().Use<MD5CryptographicService>();
-                                            cfg.For<DatabaseMigrator>().Singleton().Use(context => new DefaultDatabaseMigrator(context.GetInstance<Database>(), context.GetInstance<CryptographicService>(), configuration_property_holder));
-                                            cfg.For<VersionResolver>().Singleton().Use(
-                                                context => VersionResolverBuilder.build(context.GetInstance<FileSystemAccess>(), configuration_property_holder));
-                                            cfg.For<EnvironmentSet>().Singleton().Use(new DefaultEnvironmentSet(configuration_property_holder));
-                                            cfg.For<Initializer>().Singleton().Use<FileSystemInitializer>();
-                                        });
-
+            Logger multi_logger = GetMultiLogger(configuration_property_holder);
+            
+            var file_system = new DotNetFileSystemAccess(configuration_property_holder);
+            
+            var database = DatabaseBuilder.build(file_system, configuration_property_holder);
+            
             // forcing a build of database to initialize connections so we can be sure server/database have values
-            Database database = container.GetInstance<Database>();
             database.initialize_connections(configuration_property_holder);
             configuration_property_holder.ServerName = database.server_name;
             configuration_property_holder.DatabaseName = database.database_name;
             configuration_property_holder.ConnectionString = database.connection_string;
+            
+            var known_folders = KnownFoldersBuilder.build(file_system, configuration_property_holder);
+            var log_factory = new MultipleLoggerLogFactory();
+            var crypto_service = new MD5CryptographicService();
+            var db_migrator = new DefaultDatabaseMigrator(database, crypto_service, configuration_property_holder);
+            var version_resolver = VersionResolverBuilder.build(file_system, configuration_property_holder);
+            var environment_set = new DefaultEnvironmentSet(configuration_property_holder);
+            var initializer = new FileSystemInitializer(known_folders);
+            
+            HardcodedContainer.Register<ConfigurationPropertyHolder>(configuration_property_holder);
+            HardcodedContainer.Register<FileSystemAccess>(file_system);
+            HardcodedContainer.Register<Database>(database);
+            HardcodedContainer.Register<KnownFolders>(known_folders);
+            HardcodedContainer.Register<LogFactory>(log_factory);
+            HardcodedContainer.Register<Logger>(multi_logger);
+            HardcodedContainer.Register<CryptographicService>(crypto_service);
+            HardcodedContainer.Register<DatabaseMigrator>(db_migrator);
+            HardcodedContainer.Register<VersionResolver>(version_resolver);
+            HardcodedContainer.Register<EnvironmentSet>(environment_set);
+            HardcodedContainer.Register<Initializer>(initializer);
+           
 
-            return new StructureMapContainer(container);
+            return HardcodedContainer.Instance;
         }
 
         private static Logger GetMultiLogger(ConfigurationPropertyHolder configuration_property_holder)
         {
             IList<Logger> loggers = new List<Logger>();
-
-            var task = configuration_property_holder as ITask;
-            if (task != null)
+            
+            // This doesn't work on macOS, at least. Try, and fail silently.
+            try
             {
-                Logger msbuild_logger = new MSBuildLogger(configuration_property_holder);
-                loggers.Add(msbuild_logger);
+                var task = configuration_property_holder as ITask;
+                if (task != null)
+                {
+                    Logger msbuild_logger = new MSBuildLogger(configuration_property_holder);
+                    loggers.Add(msbuild_logger);
+                }
             }
+            catch (FileNotFoundException)
+            {}
 
-            Logger log4net_logger = new Log4NetLogger(LogManager.GetLogger("roundhouse"));
+            Logger log4net_logger = new Log4NetLogger(LogManager.GetLogger(typeof(ApplicationConfiguraton)));
             loggers.Add(log4net_logger);
 
             if (configuration_property_holder.Logger != null && !loggers.Contains(configuration_property_holder.Logger))

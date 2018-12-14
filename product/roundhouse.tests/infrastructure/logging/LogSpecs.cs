@@ -41,22 +41,17 @@ namespace roundhouse.tests.infrastructure.logging
                 mock_log_factory = new Mock<LogFactory>();
                 mock_logger = new Mock<Logger>();
 
-                mock_log_factory.Setup(x => x.create_logger_bound_to(typeof(StructureMapContainer)))
+                mock_log_factory.Setup(x => x.create_logger_bound_to(typeof(HardcodedContainer)))
                     .Returns(mock_logger.Object);
 
                 container_mock.Setup(x => x.Resolve<LogFactory>())
                     .Returns(mock_log_factory.Object);
-
-                //when(the_container).is_told_to(x => x.Resolve<LogFactory>())
-                //    .Return(mock_log_factory);
-                //when_the(mock_log_factory).is_told_to(x => x.create_logger_bound_to(typeof(StructureMapContainer)))
-                //    .IgnoreArguments()
-                //    .Return(mock_logger);
-            }
+                
+           }
 
             public override void Because()
             {
-                result = Log.bound_to(new StructureMapContainer(null));
+                result = Log.bound_to(HardcodedContainer.Instance);
             }
 
             [Observation]

@@ -17,6 +17,7 @@ namespace roundhouse.infrastructure.filesystem
     public sealed class DotNetFileSystemAccess : FileSystemAccess
     {
         private static readonly bool is_running_on_mono = Type.GetType("Mono.Runtime") != null;
+        private static readonly bool is_running_dotnet_core = RuntimeInformation.FrameworkDescription.StartsWith(".NET Core");
 
         public DotNetFileSystemAccess(ConfigurationPropertyHolder configuration)
         {
@@ -24,6 +25,7 @@ namespace roundhouse.infrastructure.filesystem
         }
 
         private ConfigurationPropertyHolder configuration;
+        private static readonly char[] InvalidPathCharacters = Path.GetInvalidPathChars().Append(':').ToArray();
 
 
         #region File
@@ -127,7 +129,7 @@ namespace roundhouse.infrastructure.filesystem
         {
             Log.bound_to(this).log_a_debug_event_containing("Attempting to copy from \"{0}\" to \"{1}\".", source_file_name, destination_file_name);
             //Private Declare Function apiCopyFile Lib "kernel32" Alias "CopyFileA" _
-            if (is_running_on_mono)
+            if (is_running_on_mono || is_running_dotnet_core)
             {
                 File.Copy(source_file_name, destination_file_name, overwrite_the_existing_file);
             }
@@ -246,6 +248,16 @@ namespace roundhouse.infrastructure.filesystem
         public string get_file_name_without_extension_from(string file_path)
         {
             return Path.GetFileNameWithoutExtension(file_path);
+        }
+
+        public string remove_invalid_characters_from(string path_segment)
+        {
+            foreach (var c in InvalidPathCharacters)
+            {
+                path_segment = path_segment.Replace(c, '_');
+            }
+
+            return path_segment;
         }
 
         /// <summary>
@@ -414,7 +426,7 @@ namespace roundhouse.infrastructure.filesystem
         /// <returns></returns>
         public string combine_paths(params string[] paths)
         {
-            string combined_path = String.Empty;
+            string combined_path = string.Empty;
             foreach (string path in paths)
             {
                 combined_path = Path.Combine(combined_path, path);

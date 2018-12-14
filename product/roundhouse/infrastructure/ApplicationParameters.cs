@@ -34,7 +34,7 @@ namespace roundhouse.infrastructure
         public static readonly string default_version_x_path = @"//buildInfo/version";
         public static readonly string default_files_directory = @".";
         public static readonly string default_server_name = "(local)";
-        public static readonly string default_output_path = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "ChuckNorris"), name);
+        public static readonly string default_output_path = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ChuckNorris"), name);
         public static readonly string default_database_type = "roundhouse.databases.sqlserver.SqlServerDatabase, roundhouse.databases.sqlserver";
         public static readonly string logging_file = @"C:\Temp\RoundhousE\roundhouse.changes.log";
         public static readonly string log4net_configuration_assembly = @"roundhouse";

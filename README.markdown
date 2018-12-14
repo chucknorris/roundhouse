@@ -46,9 +46,9 @@ It seeks to solve both maintenance concerns and ease of deployment. We follow so
   
 ## Getting started with RoundhousE
 ### Downloads
- You can download RoundhousE from [http://code.google.com/p/roundhouse/downloads/list](http://code.google.com/p/roundhouse/downloads/list)  
+ You can download RoundhousE from [https://github.com/chucknorris/roundhouse/releases](https://github.com/chucknorris/roundhouse/releases)
 
- You can also obtain a copy from the build server at [http://teamcity.codebetter.com](http://teamcity.codebetter.com).  
+ You can also obtain a copy from the build server at [https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts](https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts).  
   
 ### Gems (_Not updated for 0.9.0, sorry_) 
 If you have Ruby 1.8.6+ (and Gems 1.3.7+) installed, you can get the current release of RoundhousE to your machine quickly!  
@@ -67,6 +67,26 @@ Chocolatey is like apt-get, but for Windows! This is an alternative method to ge
   
 1. Type `cinst roundhouse`  
 2. Then from anywhere you can type `rh [options]`  
+
+### Dotnet core (Linux, macOS, etc)
+We have a new build of RoundhousE, built on the new(er) mean and lean dotnet core. 
+Dotnet core runs on all major OS-es, including Windows, Linux and macOS.
+RoundhousE is distributed as a .net core 2.1 _global tool_, and can be installed like this:
+
+`dotnet tool install -g dotnet-roundhouse`
+
+You can read more about what happens in the background e.g. here:
+https://natemcmaster.com/blog/2018/05/12/dotnet-global-tools/, but in short, it installs
+the binaries to your `~/.dotnet/tools` folder. You can run RoundhousE by typing
+
+`dotnet rh`
+
+You will need dotnet core installed on your box for this to work. You can get it here: [https://dot.net](https://dot.net).
+
+So, to sum up: 
+1. Install dotnet core 2.1 from either [https://dot.net](https://dot.net), or use a package manager of choice [(e.g. `apt-get` on Debian/Ubuntu)](https://www.microsoft.com/net/download/linux-package-manager/ubuntu17-10/runtime-2.1.0), if you haven't already
+1. `dotnet tool install -g dotnet-roundhouse`
+1. `dotnet rh`
   
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
@@ -80,7 +100,8 @@ This is the best way to get to the bleeding edge of what we are doing.
   
   
 # REQUIREMENTS
-* .NET Framework 4.6.1
+* .NET Framework 4.6.1 (for the full framework version), _or_
+* .net core 2.0+ (for the dotnet core distribution)
 * SA access to the sql server (for creation or deletion)  
 * change access to the database (for everything else)  
 

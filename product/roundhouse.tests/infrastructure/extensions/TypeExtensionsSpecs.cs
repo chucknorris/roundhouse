@@ -11,7 +11,7 @@ namespace roundhouse.tests.infrastructure.extensions
     {
     }
 
-    [Concern(typeof(TypeExtensions))]
+    [Concern(typeof(roundhouse.infrastructure.extensions.TypeExtensions))]
     public class when_a_type_is_told_to_find_its_greediest_constructor : TinySpec
     {
         ConstructorInfo result;
