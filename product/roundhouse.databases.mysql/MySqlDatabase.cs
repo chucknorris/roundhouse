@@ -226,7 +226,7 @@ namespace roundhouse.databases.mysql
             int num1 = 0;
             List<ScriptStatement> list = new List<ScriptStatement>();
             List<int> lineNumbers = this.BreakScriptIntoLines(query);
-            MySqlTokenizer tokenizer = new MySqlTokenizer(query);
+            MySqlTokenizerOld tokenizer = new MySqlTokenizerOld(query);
             tokenizer.AnsiQuotes = ansiQuotes;
             tokenizer.BackslashEscapes = !noBackslashEscapes;
             for (string str2 = tokenizer.NextToken(); str2 != null; str2 = tokenizer.NextToken())
@@ -288,7 +288,7 @@ namespace roundhouse.databases.mysql
             return index;
         }
 
-        private void AdjustDelimiterEnd(string query, MySqlTokenizer tokenizer)
+        private void AdjustDelimiterEnd(string query, MySqlTokenizerOld tokenizer)
         {
             int stopIndex = tokenizer.StopIndex;
             char c = query[stopIndex];

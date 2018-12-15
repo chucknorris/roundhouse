@@ -52,7 +52,7 @@ namespace roundhouse.databases.mysql
         public void Scan() 
         {
 
-            while (!isAtEnd()) {
+            while (!IsAtEnd()) {
                 
                 start = current;
                 ScanToken();
@@ -178,14 +178,6 @@ namespace roundhouse.databases.mysql
             get
             {
                 return this.column;
-            }
-        }
-
-        public bool Quote
-        {
-            get 
-            {
-                return this.quote;
             }
         }
     }
