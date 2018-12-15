@@ -22,6 +22,7 @@ App_Data
 *.results.xml
 *.bak
 .vs
+.vscode
 .idea
  
 TestResult.xml
