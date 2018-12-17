@@ -12,6 +12,7 @@ namespace roundhouse.databases.mysql
     using System;
     using System.IO;
     using System.Globalization;
+    using System.Text;
 
     public class MySqlDatabase : AdoNetDatabase
     {
@@ -144,6 +145,9 @@ namespace roundhouse.databases.mysql
         public override void run_sql(string sql_to_run, ConnectionType connection_type)
         {
             if (string.IsNullOrEmpty(sql_to_run)) return;
+
+            Parser parser = new Parser(sql_to_run);
+            parser.Test();
 
             try
             {
