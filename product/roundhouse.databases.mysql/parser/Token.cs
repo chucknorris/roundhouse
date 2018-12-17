@@ -2,7 +2,7 @@ namespace roundhouse.databases.mysql.parser
 {
     class Token
     {
-        public enum Type { Delimiter, Comment, Text, Quote, AnsiQuote, Whitespace, EndOfLine, EndOfFile };
+        public enum Type { DelimiterDeclare, Delimiter, Comment, Text, Quote, AnsiQuote, Whitespace, EndOfLine, EndOfFile };
 
         private Type type = Type.Text;
         private string value = null;

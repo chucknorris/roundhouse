@@ -6,15 +6,16 @@ namespace roundhouse.databases.mysql.parser
     class Scanner
     {
 
-        private const string DEFINER = "definer";
+        private const string DELIMITER_DECLARE = "delimiter";
         private const string SINGLE_LINE_COMMENT_DASHED = "--";
         private const string SINGLE_LINE_COMMENT_HASH = "#";
         private const string MULTI_LINE_COMMENT_START = "/*";
         private const string MULTI_LINE_COMMENT_CLOSE = "*/";
         private const char QUOTE = '`';
         private const char ANSI_QUOTE = '\"';
+        private const string DEFAULT_DELIMETER = ";";
         private string script;
-        private string delimiter = ";";
+        private string delimiter = DEFAULT_DELIMETER;
         private bool ansiQuotes;
         private int start = 0;
         private int current = 0;
@@ -68,13 +69,38 @@ namespace roundhouse.databases.mysql.parser
 
             char c = Advance();
 
+            // we're giving delimiters precedence of other tokens
+            if (delimiter.Length == 1 && c == delimiter[0]) {
+                SingleCharacterDelimiter();
+                return;
+            } else if (delimiter.Length == 2 && c == delimiter[0] && Peek() == delimiter[1]) {
+                TwoCharacterDelimiter();
+                return;
+            } else if (delimiter.Length > 2 && c == delimiter[0] && Peek() == delimiter[1]) {
+                if(MultiCharacterDelimiter()) {
+                    return;
+                }
+            }
+
             switch (c)
             {
                 // whitespace we can ignore, but delimits tokens
                 case '\t':
                 case ' ':
+                    Whitespace();
+                    break;
+
                 case '\r':
+                    if (Peek() == '\n') {
+                        Advance();  // we are discarding /r
+                        EndOfLine();
+                        break;
+                    } else {
+                        goto case '\n';
+                    }
+
                 case '\n':
+                    EndOfLine();
                     break;
 
                 case '"':
@@ -88,10 +114,6 @@ namespace roundhouse.databases.mysql.parser
                 case '#':
                     Comment();
                     break;
-
-                case ';':
-                    DefaultDelimiter();
-                    break;
                 
                 case '-':
                     if (Match('-')) {
@@ -99,8 +121,7 @@ namespace roundhouse.databases.mysql.parser
                         Comment();
                         break;
                     } else {
-                        General();
-                        break;
+                        goto case '/';
                     }
                 
                 case '/':
@@ -150,11 +171,39 @@ namespace roundhouse.databases.mysql.parser
             AddToken(Token.Type.Comment);
         }
 
-        private void DefaultDelimiter()
+        private void SingleCharacterDelimiter()
         {
-            if (delimiter.Length == 1 && delimiter[0] == ';') {
-                AddToken(Token.Type.Delimiter);
+            AddToken(Token.Type.Delimiter);
+        }
+
+        private void TwoCharacterDelimiter()
+        {
+            Advance();  // consume second character
+            AddToken(Token.Type.Delimiter);
+        }
+
+        private bool MultiCharacterDelimiter() 
+        {
+            if (start + delimiter.Length <= script.Length) {
+
+                string possibleDelimiter = script.Substring(start, delimiter.Length);
+                if (possibleDelimiter.Equals(delimiter)) {
+                    current = start + delimiter.Length;  // consume the rest of the delimiter
+                    AddToken(Token.Type.Delimiter);
+                    return true;
+                }
             }
+
+            return false;
+        }
+
+        private void Whitespace()
+        {
+            while (!IsAtEnd() && Peek() != '\n' && Char.IsWhiteSpace(Peek())) {
+                Advance();
+            }
+
+            AddToken(Token.Type.Whitespace);
         }
 
         private void Quoted()
@@ -213,6 +262,7 @@ namespace roundhouse.databases.mysql.parser
 
         private void EndOfLine()
         {
+            line++;
             AddEmptyToken(Token.Type.EndOfLine);
         }
 
@@ -289,6 +339,39 @@ namespace roundhouse.databases.mysql.parser
             return value;
         }
 
+        private void DelimiterDeclaration() {
+
+            // add our declaration keyword
+            int end = current - start;
+            string value = script.Substring(start, end);
+            tokens.Add(new Token(Token.Type.DelimiterDeclare, value, line, start));
+
+            // move our start forward for next scan
+            start = current;
+            char c = Advance();
+
+            // consume any whitespace
+            Whitespace();
+
+            if (IsAtEnd()) {
+                // no delimiter provided
+                throw new Exception("Delimiter keyword used but no delimiter was provided");
+            }
+
+            // consume the new delimiter
+            while (Peek() != '\n' && !IsAtEnd()) {
+                Advance();
+            }
+
+            // add the new delimiter
+            end = current - start;
+            value = script.Substring(start, end).Trim();
+            tokens.Add(new Token(Token.Type.Delimiter, value, line, start));
+
+            // set our new delimiter
+            delimiter = value;
+        }
+
         private void AddToken(Token.Type type)
         {
             int end = current - start;
@@ -300,13 +383,19 @@ namespace roundhouse.databases.mysql.parser
                 return;
             }
 
-            Console.Out.WriteLine("TOKEN [" + type + ", " + current + ", " + end + "]: " + script.Substring(start, end));
-            tokens.Add(new Token(type, script.Substring(start, end), line, start));
+            // delimiter redeclaration
+            string value = script.Substring(start, end);
+            if (value.ToLower().Equals(DELIMITER_DECLARE)) {
+                DelimiterDeclaration();
+                return;
+            }
+
+            // typical token addition
+            tokens.Add(new Token(type, value, line, start));
         }
 
         private void AddEmptyToken(Token.Type type)
         {
-            Console.Out.WriteLine("TOKEN [" + type + "]: ");
             tokens.Add(new Token(type, null, line, start));
         }
     }
