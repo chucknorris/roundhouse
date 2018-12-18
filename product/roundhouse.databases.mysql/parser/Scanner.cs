@@ -104,8 +104,12 @@ namespace roundhouse.databases.mysql.parser
                     break;
 
                 case '"':
-                    AnsiQuoted();
-                    break;
+                    if (ansiQuotes) {
+                        AnsiQuoted();
+                        break;
+                    } else {
+                        goto case '`';
+                    }
 
                 case '`':
                     Quoted();

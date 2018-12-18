@@ -13,13 +13,31 @@ namespace roundhouse.databases.mysql.parser
         private Scanner scanner;
         private List<Token> tokens;
         private List<ParsedStatement> statements = new List<ParsedStatement>();
+        private bool ansiQuotes;
         private int start = 0;
         private int current = 0;
 
         public Parser(string script)
         {
             this.script = script;
-            this.scanner = new Scanner(script);            
+            this.scanner = new Scanner(script);
+            this.scanner.AnsiQuotes = ansiQuotes;       
+        }
+
+        public bool AnsiQuotes
+        {
+            get
+            {
+                return this.ansiQuotes;
+            }
+            set 
+            {
+                this.ansiQuotes = value;
+
+                if (scanner != null) {
+                    scanner.AnsiQuotes = value;
+                }
+            }
         }
 
         public List<ParsedStatement> Parse() {
@@ -30,7 +48,7 @@ namespace roundhouse.databases.mysql.parser
                 start = current;
                 statements.Add(ParseStatement());
             }
-            
+
             return statements;
         }
 

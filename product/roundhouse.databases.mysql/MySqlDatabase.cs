@@ -167,6 +167,7 @@ namespace roundhouse.databases.mysql
 
                 // http://bugs.mysql.com/bug.php?id=46429
                 Parser parser = new Parser(sql_to_run);
+                parser.AnsiQuotes = sql_mode.IndexOf("ANSI_QUOTES") == 0 ? false : true;
                 List<ParsedStatement> statements = parser.Parse();
                 foreach (var statement in statements)
                 {
