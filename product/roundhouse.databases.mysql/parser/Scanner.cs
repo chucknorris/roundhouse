@@ -377,7 +377,6 @@ namespace roundhouse.databases.mysql.parser
 
             // move our start forward for next scan
             start = current;
-            char c = Advance();
 
             // consume any whitespace
             Whitespace();
