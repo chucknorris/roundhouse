@@ -16,17 +16,17 @@ namespace roundhouse.databases.mysql.parser
         /// <summary>
         /// Type of statement
         /// </summary>
-        private Type type = Type.Sql;
+        private readonly Type type = Type.Sql;
 
         /// <summary>
         /// Value of the statement
         /// </summary>
-        private string value = null;
+        private readonly string value;
 
         /// <summary>
         /// Delimiter for the statement
         /// </summary>
-        private string delimiter = null;
+        private readonly string delimiter;
 
         /// <summary>
         /// Creates a new statement of type Sql and sets its fields

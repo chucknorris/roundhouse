@@ -14,36 +14,6 @@ namespace roundhouse.databases.mysql.parser
         private const string DELIMITER_DECLARE = "delimiter";
 
         /// <summary>
-        /// Single line comment
-        /// </summary>
-        private const string SINGLE_LINE_COMMENT_DASHED = "--";
-
-        /// <summary>
-        /// Inline comment
-        /// </summary>
-        private const string SINGLE_LINE_COMMENT_HASH = "#";
-
-        /// <summary>
-        /// Beginning of a multi-line comment
-        /// </summary>
-        private const string MULTI_LINE_COMMENT_START = "/*";
-
-        /// <summary>
-        /// End of a multi-line comment
-        /// </summary>
-        private const string MULTI_LINE_COMMENT_CLOSE = "*/";
-
-        /// <summary>
-        /// Quotation mark
-        /// </summary>
-        private const char QUOTE = '`';
-
-        /// <summary>
-        /// ANSI quotation mark
-        /// </summary>
-        private const char ANSI_QUOTE = '\"';
-
-        /// <summary>
         /// Default statement delimiter
         /// </summary>
         private const string DEFAULT_DELIMETER = ";";
@@ -51,7 +21,7 @@ namespace roundhouse.databases.mysql.parser
         /// <summary>
         /// The MySQL script to scan
         /// </summary>
-        private string script;
+        private readonly string script;
 
         /// <summary>
         /// The current statement delimiter
@@ -66,22 +36,22 @@ namespace roundhouse.databases.mysql.parser
         /// <summary>
         /// Start position in the script for the current token
         /// </summary>
-        private int start = 0;
+        private int start;
 
         /// <summary>
         /// Current position in the script
         /// </summary>
-        private int current = 0;
+        private int current;
 
         /// <summary>
         /// Current line in the script
         /// </summary>
-        private int line = 1;
+        private int line;
 
         /// <summary>
         /// List of tokens in the script
         /// </summary>
-        private List<Token> tokens = new List<Token>();
+        private readonly List<Token> tokens = new List<Token>();
 
         /// <summary>
         /// Creates a new scanner and sets its MySQL script
@@ -122,6 +92,10 @@ namespace roundhouse.databases.mysql.parser
         /// <returns>List of Token</return>
         public List<Token> Scan() 
         {
+            // initialize our starting location
+            start = 0;
+            current = 0;
+            line = 1;
 
             while (!IsAtEnd()) {
                 
@@ -225,7 +199,7 @@ namespace roundhouse.databases.mysql.parser
 
                 if (IsAtEnd()) {
                     // unterminated comment
-                    throw new Exception("Unterminated comment on line " + line);
+                    throw new ParserException("Unterminated comment on line " + line);
                 }
             }
 
@@ -291,7 +265,7 @@ namespace roundhouse.databases.mysql.parser
 
                 if (IsAtEnd()) {
                     // unterminated string
-                    throw new Exception("Unterminated quoted value on line " + line);
+                    throw new ParserException("Unterminated quoted value on line " + line);
                 }
             }
 
@@ -311,7 +285,7 @@ namespace roundhouse.databases.mysql.parser
 
                 if (IsAtEnd()) {
                     // unterminated string
-                    throw new Exception("Unterminated quoted value on line " + line);
+                    throw new ParserException("Unterminated quoted value on line " + line);
                 }
             }
 
@@ -390,22 +364,22 @@ namespace roundhouse.databases.mysql.parser
             return value;
         }
 
-        private bool IsQuote(char c) 
+        private static bool IsQuote(char c) 
         {
             bool value = false;
 
-            if (c == QUOTE) {
+            if (c == '`') {
                 value = true;
             }
             
             return value;
         }
 
-        private bool IsAnsiQuote(char c) 
+        private static bool IsAnsiQuote(char c) 
         {
             bool value = false;
 
-            if(c == ANSI_QUOTE) {
+            if(c == '"') {
                 value = true;
             }
 
@@ -458,7 +432,7 @@ namespace roundhouse.databases.mysql.parser
 
             // delimiter redeclaration
             string value = script.Substring(start, end);
-            if (value.ToLower().Equals(DELIMITER_DECLARE)) {
+            if (value.ToLowerInvariant().Equals(DELIMITER_DECLARE)) {
                 DelimiterDeclaration();
                 return;
             }

@@ -23,22 +23,22 @@ namespace roundhouse.databases.mysql.parser
         /// <summary>
         /// Type of token
         /// </summary>
-        private Type type = Type.Text;
+        private readonly Type type = Type.Text;
 
         /// <summary>
         /// Value of the token
         /// </summary>
-        private string value = null;
+        private readonly string value;
 
         /// <summary>
         /// Line on which the token was found
         /// </summary>
-        private int line = 0;
+        private readonly int line;
 
         /// <summary>
         /// Column on which the token was found
         /// </summary>
-        private int column = 0;
+        private readonly int column;
 
         /// <summary>
         /// Creates a new token of the type Text and sets its fields

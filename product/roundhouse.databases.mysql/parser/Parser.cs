@@ -15,12 +15,12 @@ namespace roundhouse.databases.mysql.parser
         /// <summary>
         /// MySQL script to parse
         /// </summary>
-        private string script;
+        private readonly string script;
 
         /// <summary>
         /// Scanner to break script into tokens
         /// </summary>
-        private Scanner scanner;
+        private readonly Scanner scanner;
 
         /// <summary>
         /// List of scanned tokens from the script
@@ -40,12 +40,12 @@ namespace roundhouse.databases.mysql.parser
         /// <summary>
         /// Start position in the token list for the current statement
         /// </summary>
-        private int start = 0;
+        private int start;
 
         /// <summary>
         /// Current position in the token list
         /// </summary>
-        private int current = 0;
+        private int current;
 
         /// <summary>
         /// Creates a new parser and sets its MySQL script.
@@ -81,6 +81,10 @@ namespace roundhouse.databases.mysql.parser
         /// <returns>List of ParsedStatement</returns>
         public List<ParsedStatement> Parse() {
 
+            // initialize our starting location
+            start = 0;
+            current = 0;
+
             tokens = scanner.Scan();
 
             while (!IsAtEnd()) {
@@ -115,9 +119,6 @@ namespace roundhouse.databases.mysql.parser
                             // the delimiter will not be part of the statemtent's value
                             delimiter = token.Value;
                         }
-                        break;
-
-                    default:
                         break;
                 }
 

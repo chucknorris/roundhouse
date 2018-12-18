@@ -169,7 +169,8 @@ namespace roundhouse.databases.mysql
                 Parser parser = new Parser(sql_to_run);
 
                 // set ANSI quote mode, may effect delimiter parsing
-                parser.AnsiQuotes = sql_mode.IndexOf("ANSI_QUOTES") == 0 ? false : true;
+                parser.AnsiQuotes = 
+                    sql_mode.IndexOf("ANSI_QUOTES", 0, sql_mode.Length, StringComparison.InvariantCulture) == 0 ? false : true;
 
                 // parse out and process our SQL statements
                 List<ParsedStatement> statements = parser.Parse();
