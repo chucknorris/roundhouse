@@ -64,7 +64,7 @@ namespace roundhouse.databases.mysql.parser
             return tokens;
         }
 
-        public void ScanToken() 
+        private void ScanToken() 
         {
 
             char c = Advance();

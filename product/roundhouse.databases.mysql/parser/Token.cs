@@ -20,6 +20,14 @@ namespace roundhouse.databases.mysql.parser
             this.line = line;
             this.column = column;
         }
+
+        public Token.Type TokenType
+        {
+            get
+            {
+                return this.type;
+            }
+        }
         
         public string Value
         {
