@@ -402,7 +402,7 @@ namespace roundhouse.databases.mysql.parser
 
             if (IsAtEnd()) {
                 // no delimiter provided
-                throw new Exception("Delimiter keyword used but no delimiter was provided");
+                throw new ParserException("Delimiter keyword used but no delimiter was provided");
             }
 
             // consume the new delimiter

@@ -30,7 +30,7 @@ namespace roundhouse.databases.mysql.parser
         /// <summary>
         /// List of accumulated statements
         /// </summary>
-        private List<ParsedStatement> statements = new List<ParsedStatement>();
+        private readonly List<ParsedStatement> statements = new List<ParsedStatement>();
 
         /// <summary>
         /// Flag indicating ANSI style quotes will be honored by MySQL
@@ -119,6 +119,10 @@ namespace roundhouse.databases.mysql.parser
                             // the delimiter will not be part of the statemtent's value
                             delimiter = token.Value;
                         }
+                        break;
+
+                    default:
+                        // do nothing
                         break;
                 }
 
