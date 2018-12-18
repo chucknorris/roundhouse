@@ -355,35 +355,17 @@ namespace roundhouse.databases.mysql.parser
 
         private bool IsAtEnd()
         {
-            bool value = false;
-
-            if (current >= script.Length) {
-                value = true;
-            }
-
-            return value;
+            return current >= script.Length;
         }
 
         private static bool IsQuote(char c) 
         {
-            bool value = false;
-
-            if (c == '`') {
-                value = true;
-            }
-            
-            return value;
+            return c == '`';
         }
 
         private static bool IsAnsiQuote(char c) 
         {
-            bool value = false;
-
-            if(c == '"') {
-                value = true;
-            }
-
-            return value;
+            return c == '"';
         }
 
         private void DelimiterDeclaration() {

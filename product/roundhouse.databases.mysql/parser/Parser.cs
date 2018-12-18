@@ -152,13 +152,7 @@ namespace roundhouse.databases.mysql.parser
 
         private bool IsAtEnd()
         {
-            bool value = false;
-
-            if (current >= tokens.Count) {
-                value = true;
-            }
-
-            return value;
+            return current >= tokens.Count;
         }
     }
 }
