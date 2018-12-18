@@ -143,7 +143,7 @@ namespace roundhouse.databases.mysql.parser
         private void MultiLineComment()
         {
             while (Peek() != '*' && PeekPeek() != '/') {
-
+                
                 if (Peek() == '\n') {
                     line++;
                 }
@@ -164,7 +164,7 @@ namespace roundhouse.databases.mysql.parser
 
         private void Comment()
         {
-            while (Peek() != '\n' && !IsAtEnd()) {
+            while (!(Peek() == '\r' && PeekPeek() == '\n') && Peek() != '\n' && !IsAtEnd()) {
                 Advance();
             }
 
