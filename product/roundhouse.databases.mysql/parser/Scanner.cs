@@ -3,25 +3,90 @@ using System.Collections.Generic;
 
 namespace roundhouse.databases.mysql.parser
 {
+    /// <summary>
+    /// Provides a scanner that will break a string of MySQL into tokens.
+    /// </summary>
     class Scanner
     {
-
+        /// <summary>
+        /// Keyword indicating the delimiter is being re-defined
+        /// </summary>
         private const string DELIMITER_DECLARE = "delimiter";
+
+        /// <summary>
+        /// Single line comment
+        /// </summary>
         private const string SINGLE_LINE_COMMENT_DASHED = "--";
+
+        /// <summary>
+        /// Inline comment
+        /// </summary>
         private const string SINGLE_LINE_COMMENT_HASH = "#";
+
+        /// <summary>
+        /// Beginning of a multi-line comment
+        /// </summary>
         private const string MULTI_LINE_COMMENT_START = "/*";
+
+        /// <summary>
+        /// End of a multi-line comment
+        /// </summary>
         private const string MULTI_LINE_COMMENT_CLOSE = "*/";
+
+        /// <summary>
+        /// Quotation mark
+        /// </summary>
         private const char QUOTE = '`';
+
+        /// <summary>
+        /// ANSI quotation mark
+        /// </summary>
         private const char ANSI_QUOTE = '\"';
+
+        /// <summary>
+        /// Default statement delimiter
+        /// </summary>
         private const string DEFAULT_DELIMETER = ";";
+
+        /// <summary>
+        /// The MySQL script to scan
+        /// </summary>
         private string script;
+
+        /// <summary>
+        /// The current statement delimiter
+        /// </summary>
         private string delimiter = DEFAULT_DELIMETER;
+
+        /// <summary>
+        /// Flag indicating ANSI style quotes will be honored by MySQL
+        /// </summary>
         private bool ansiQuotes;
+
+        /// <summary>
+        /// Start position in the script for the current token
+        /// </summary>
         private int start = 0;
+
+        /// <summary>
+        /// Current position in the script
+        /// </summary>
         private int current = 0;
+
+        /// <summary>
+        /// Current line in the script
+        /// </summary>
         private int line = 1;
+
+        /// <summary>
+        /// List of tokens in the script
+        /// </summary>
         private List<Token> tokens = new List<Token>();
 
+        /// <summary>
+        /// Creates a new scanner and sets its MySQL script
+        /// </summary>
+        /// <param name="script">the MySQL script to parse</script>
         public Scanner(string script)
         {
             this.script = script;
@@ -51,6 +116,10 @@ namespace roundhouse.databases.mysql.parser
             }
         }
 
+        /// <summary>
+        /// Scans the MySQL script and returns a List of Token instances
+        /// </summary>
+        /// <returns>List of Token</return>
         public List<Token> Scan() 
         {
 

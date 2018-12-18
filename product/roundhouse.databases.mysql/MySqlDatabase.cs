@@ -165,9 +165,13 @@ namespace roundhouse.databases.mysql
                     }
                 }
 
-                // http://bugs.mysql.com/bug.php?id=46429
+                // create a new parser to parse statements -- http://bugs.mysql.com/bug.php?id=46429
                 Parser parser = new Parser(sql_to_run);
+
+                // set ANSI quote mode, may effect delimiter parsing
                 parser.AnsiQuotes = sql_mode.IndexOf("ANSI_QUOTES") == 0 ? false : true;
+
+                // parse out and process our SQL statements
                 List<ParsedStatement> statements = parser.Parse();
                 foreach (var statement in statements)
                 {
