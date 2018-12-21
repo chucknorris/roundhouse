@@ -112,7 +112,7 @@ namespace roundhouse.databases.mysql.parser
 
             char c = Advance();
 
-            // we're giving delimiters precedence of other tokens
+            // we're giving delimiters precedence over other tokens
             if (delimiter.Length == 1 && c == delimiter[0]) {
                 SingleCharacterDelimiter();
                 return;
@@ -244,6 +244,19 @@ namespace roundhouse.databases.mysql.parser
             return false;
         }
 
+         private bool PeekMultiCharacterDelimiter() 
+        {
+            if (current + delimiter.Length <= script.Length) {
+
+                string possibleDelimiter = script.Substring(current, delimiter.Length);
+                if (possibleDelimiter.Equals(delimiter)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void Whitespace()
         {
             while (!IsAtEnd() && Peek() != '\n' && Char.IsWhiteSpace(Peek())) {
@@ -296,6 +309,18 @@ namespace roundhouse.databases.mysql.parser
         private void General()
         {
             while (!IsAtEnd() && Char.IsLetterOrDigit(Peek())) {
+                
+                // we need to check for delimiters that start with letters or numbers
+                if (Char.IsLetterOrDigit(delimiter[0])) {
+                    if (delimiter.Length == 1 && Peek() == delimiter[0]) {
+                        break;
+                    } else if (delimiter.Length == 2 && Peek() == delimiter[0] && PeekPeek() == delimiter[1]) {
+                        break;
+                    } else if (delimiter.Length > 2 && PeekMultiCharacterDelimiter()) {
+                        break;
+                    }
+                }
+
                 Advance();
             }
 

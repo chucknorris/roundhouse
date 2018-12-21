@@ -3,7 +3,7 @@ namespace roundhouse.databases.mysql.parser
     /// <summary>
     /// Models a Token of a MySQL script
     /// </summary>
-    class Token
+    public class Token
     {
         /// <summary>
         /// Enumeration of MySQL token types

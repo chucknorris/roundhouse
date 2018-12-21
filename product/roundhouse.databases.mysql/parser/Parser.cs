@@ -23,6 +23,11 @@ namespace roundhouse.databases.mysql.parser
         private readonly Scanner scanner;
 
         /// <summary>
+        /// The current statement delimiter
+        /// </summary>
+        private string delimiter = ";";
+
+        /// <summary>
         /// List of scanned tokens from the script
         /// </summary>
         private List<Token> tokens;
@@ -88,8 +93,21 @@ namespace roundhouse.databases.mysql.parser
             tokens = scanner.Scan();
 
             while (!IsAtEnd()) {
+
                 start = current;
-                statements.Add(ParseStatement());
+                
+                ParsedStatement statement = ParseStatement();
+                
+                if (
+                    // we don't need to execute empty strings
+                    statement.Value.Trim().Length > 0
+
+                    // we don't need to execute delimiter declarations
+                    && !statement.StatementType.Equals(ParsedStatement.Type.Delimiter)
+                ) {
+
+                    statements.Add(statement);
+                }
             }
 
             return statements;
@@ -97,13 +115,13 @@ namespace roundhouse.databases.mysql.parser
 
         private ParsedStatement ParseStatement() 
         {
-            Token token = Advance();
-            string delimiter = ";";
             bool setDelimiter = false;
+            bool statementEnd = false;
             ParsedStatement.Type statementType = ParsedStatement.Type.Sql;
 
-            while (!IsAtEnd() && !token.TokenType.Equals(Token.Type.Delimiter)) {
+            while (!IsAtEnd() && !statementEnd) {
 
+                Token token = Advance();
                 switch(token.TokenType) {
 
                     case Token.Type.EndOfFile:
@@ -116,22 +134,27 @@ namespace roundhouse.databases.mysql.parser
 
                     case Token.Type.Delimiter:
                         if (setDelimiter) {
-                            // the delimiter will not be part of the statemtent's value
                             delimiter = token.Value;
+                            setDelimiter = false;
                         }
+
+                        if(Peek().TokenType.Equals(Token.Type.EndOfLine)) {
+                            // add the EOL to the current statement
+                            Advance();
+                        }
+
+                        // this marks the end of the statement
+                        statementEnd = true;
                         break;
 
                     default:
                         // do nothing
                         break;
                 }
-
-                token = Advance();
             }
 
             StringBuilder builder = new StringBuilder();
             foreach (Token tokenThis in tokens.GetRange(start, (current - start))) {
-
                 if(tokenThis.TokenType.Equals(Token.Type.EndOfLine)) {
                     builder.Append(Environment.NewLine);
                 } if(tokenThis.TokenType.Equals(Token.Type.Delimiter)) {
@@ -148,6 +171,11 @@ namespace roundhouse.databases.mysql.parser
         {
             current++;
             return tokens[current - 1];
+        }
+
+        private Token Peek() 
+        {
+            return tokens[current];
         }
 
         private bool IsAtEnd()

@@ -177,18 +177,6 @@ namespace roundhouse.databases.mysql
                 foreach (var statement in statements)
                 {
                     query = statement.Value;
-
-                    if (string.IsNullOrWhiteSpace(statement.Value))
-                    {
-                        // we don't execute empty statements
-                        continue;
-                    }
-
-                    if (statement.StatementType.Equals(ParsedStatement.Type.Delimiter)) {
-                        // the delimiter is for parsing only
-                        continue;
-                    }
-
                     using (var command = setup_database_command(statement.Value, connection_type, null))
                     {
                         Log.bound_to(this).log_a_debug_event_containing(query);
