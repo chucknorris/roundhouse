@@ -90,12 +90,12 @@ namespace roundhouse.databases.mysql.parser
             start = 0;
             current = 0;
 
+            // lilst of scanned tokens from the source script
             tokens = scanner.Scan();
 
             while (!IsAtEnd()) {
 
                 start = current;
-                
                 ParsedStatement statement = ParseStatement();
                 
                 if (

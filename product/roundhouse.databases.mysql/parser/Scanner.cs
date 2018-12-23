@@ -244,19 +244,6 @@ namespace roundhouse.databases.mysql.parser
             return false;
         }
 
-         private bool PeekMultiCharacterDelimiter() 
-        {
-            if (current + delimiter.Length <= script.Length) {
-
-                string possibleDelimiter = script.Substring(current, delimiter.Length);
-                if (possibleDelimiter.Equals(delimiter)) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private void Whitespace()
         {
             while (!IsAtEnd() && Peek() != '\n' && Char.IsWhiteSpace(Peek())) {
@@ -310,7 +297,7 @@ namespace roundhouse.databases.mysql.parser
         {
             while (!IsAtEnd() && Char.IsLetterOrDigit(Peek())) {
                 
-                // we need to check for delimiters that start with letters or numbers
+                // we need to check for delimiters come immediately after an identifiers
                 if (Char.IsLetterOrDigit(delimiter[0])) {
                     if (delimiter.Length == 1 && Peek() == delimiter[0]) {
                         break;
@@ -369,6 +356,19 @@ namespace roundhouse.databases.mysql.parser
             }
 
             return script[current + 1];
+        }
+
+        private bool PeekMultiCharacterDelimiter() 
+        {
+            if (current + delimiter.Length <= script.Length) {
+
+                string possibleDelimiter = script.Substring(current, delimiter.Length);
+                if (possibleDelimiter.Equals(delimiter)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private char Advance() 
