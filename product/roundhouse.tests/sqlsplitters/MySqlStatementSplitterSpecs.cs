@@ -122,6 +122,20 @@ namespace roundhouse.tests.sqlsplitters
                 Assert.AreEqual(statements.Count, 2);
             }
 
+            [Observation]
+            public void should_honor_trailing_delimiter()
+            {
+                string script = "delimiter $$\nselect * from test1$$\nselect * from test2$$select * from test3$$\ndelimiter ;";
+
+                Parser parser = new Parser(script);
+                List<ParsedStatement> statements = parser.Parse();
+                WriteStatements(statements);
+
+                TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
+                Assert.IsTrue(statements[0].Value.Length > 10);
+                Assert.AreEqual(statements.Count, 3);
+            }
+
             private void WriteStatements(List<ParsedStatement> statements) {
                 int index = 0;
                 foreach (ParsedStatement statement in statements) {
