@@ -34,8 +34,8 @@ namespace roundhouse.tests.sqlsplitters
                 WriteStatements(statements);
 
                 TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
-                Assert.IsTrue(statements[0].Value.Length > 10);
-                Assert.AreEqual(statements.Count, 2);
+                Assert.Greater(statements[0].Value.Length, 10);
+                Assert.AreEqual(2, statements.Count);
             }
 
             [Observation]
@@ -47,9 +47,8 @@ namespace roundhouse.tests.sqlsplitters
                 List<ParsedStatement> statements = parser.Parse();
                 WriteStatements(statements);
 
-                TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
-                Assert.IsTrue(statements[0].Value.Length > 25);
-                Assert.AreEqual(statements.Count, 2);
+                Assert.AreEqual("/*\n *\n * Test Statement\n *\n */\nselect * from test1", statements[0].Value.Trim());
+                Assert.AreEqual(2, statements.Count);
             }
 
             [Observation]
@@ -62,8 +61,8 @@ namespace roundhouse.tests.sqlsplitters
                 WriteStatements(statements);
 
                 TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
-                Assert.IsTrue(statements[0].Value.Length > 10);
-                Assert.AreEqual(statements.Count, 2);
+                Assert.Greater(statements[0].Value.Length, 10);
+                Assert.AreEqual(2, statements.Count);
             }
 
             [Observation]
@@ -76,8 +75,8 @@ namespace roundhouse.tests.sqlsplitters
                 WriteStatements(statements);
 
                 TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
-                Assert.IsTrue(statements[0].Value.Length > 10);
-                Assert.AreEqual(statements.Count, 2);
+                Assert.Greater(statements[0].Value.Length, 10);
+                Assert.AreEqual(2, statements.Count);
             }
 
             [Observation]
@@ -90,8 +89,8 @@ namespace roundhouse.tests.sqlsplitters
                 WriteStatements(statements);
 
                 TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
-                Assert.IsTrue(statements[0].Value.Length > 10);
-                Assert.AreEqual(statements.Count, 2);
+                Assert.Greater(statements[0].Value.Length, 10);
+                Assert.AreEqual(2, statements.Count);
             }
 
             [Observation]
@@ -105,7 +104,7 @@ namespace roundhouse.tests.sqlsplitters
 
                 TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
                 Assert.IsTrue(statements[0].Value.Length > 10);
-                Assert.AreEqual(statements.Count, 2);
+                Assert.AreEqual(2, statements.Count);
             }
 
             [Observation]
@@ -118,8 +117,8 @@ namespace roundhouse.tests.sqlsplitters
                 WriteStatements(statements);
 
                 TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
-                Assert.IsTrue(statements[0].Value.Length > 10);
-                Assert.AreEqual(statements.Count, 2);
+                Assert.Greater(statements[0].Value.Length, 10);
+                Assert.AreEqual(2, statements.Count);
             }
 
             [Observation]
@@ -132,8 +131,8 @@ namespace roundhouse.tests.sqlsplitters
                 WriteStatements(statements);
 
                 TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
-                Assert.IsTrue(statements[0].Value.Length > 10);
-                Assert.AreEqual(statements.Count, 3);
+                Assert.Greater(statements[0].Value.Length, 10);
+                Assert.AreEqual(3, statements.Count);
             }
 
             private void WriteStatements(List<ParsedStatement> statements) {
