@@ -34,7 +34,7 @@ namespace roundhouse.tests.sqlsplitters
                 WriteStatements(statements);
 
                 TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
-                Assert.Greater(statements[0].Value.Length, 10);
+                Assert.AreEqual("select * from test1" + Environment.NewLine, statements[0].Value);
                 Assert.AreEqual(2, statements.Count);
             }
 
