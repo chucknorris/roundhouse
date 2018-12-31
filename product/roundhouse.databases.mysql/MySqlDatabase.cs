@@ -12,6 +12,8 @@ namespace roundhouse.databases.mysql
     using System;
     using System.IO;
     using System.Globalization;
+    using System.Text;
+    using roundhouse.databases.mysql.parser;
 
     public class MySqlDatabase : AdoNetDatabase
     {
@@ -140,14 +142,15 @@ namespace roundhouse.databases.mysql
             Log.bound_to(this).log_a_debug_event_containing("MySQL has no database specific tasks. Moving along now...");
         }
 
-        // http://bugs.mysql.com/bug.php?id=46429
         public override void run_sql(string sql_to_run, ConnectionType connection_type)
         {
+            string query = sql_to_run;
             if (string.IsNullOrEmpty(sql_to_run)) return;
 
             try
             {
                 string sql_mode = null;
+
                 // Read The sql_mode to determine ANSI_QUOTED && NO_BACKSLASH_ESCAPES
                 using (var dataReader = setup_database_command("SHOW VARIABLES", connection_type, null).ExecuteReader())
                 {
@@ -162,22 +165,31 @@ namespace roundhouse.databases.mysql
                     }
                 }
 
-                // Parse the Sql into statements and account for Delimiter changes                
-                var list = BreakIntoStatements(sql_to_run, sql_mode.IndexOf("ANSI_QUOTES") != -1, sql_mode.IndexOf("NO_BACKSLASH_ESCAPES") != -1);
-                foreach (var statement in list)
-                {
-                    if (string.IsNullOrEmpty(statement.text))
-                        continue;
+                // create a new parser to parse statements -- http://bugs.mysql.com/bug.php?id=46429
+                Parser parser = new Parser(sql_to_run);
 
-                    using (var command = setup_database_command(statement.text, connection_type, null))
+                // set ANSI quote mode, may effect delimiter parsing
+                parser.AnsiQuotes = 
+                    sql_mode.IndexOf("ANSI_QUOTES", 0, sql_mode.Length, StringComparison.InvariantCulture) == 0 ? false : true;
+
+                // parse out and process our SQL statements
+                List<ParsedStatement> statements = parser.Parse();
+                foreach (var statement in statements)
+                {
+                    query = statement.Value;
+                    using (var command = setup_database_command(statement.Value, connection_type, null))
                     {
+                        Log.bound_to(this).log_a_debug_event_containing(query);
                         command.ExecuteNonQuery();
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log.bound_to(this).log_a_debug_event_containing("Failure executing command. {0}{1}", Environment.NewLine, ex.ToString());
+                Log.bound_to(this).log_a_debug_event_containing(
+                    "Failure executing query \"{0}\": {1}", 
+                    query, 
+                    ex.ToString());
                 throw ex;
             }
         }
@@ -195,107 +207,6 @@ namespace roundhouse.databases.mysql
             if (!File.Exists(restore_from_path))
                 return string.Empty;
             return File.ReadAllText(restore_from_path);
-        }
-
-        // MySQLScript Helper Functions
-        string delimiter = ";";
-        private struct ScriptStatement
-        {
-            public string text;
-            public int line;
-            public int position;
-        }
-
-        private List<int> BreakScriptIntoLines(string query)
-        {
-            List<int> list = new List<int>();
-            StringReader stringReader = new StringReader(query);
-            string str = stringReader.ReadLine();
-            int num = 0;
-            for (; str != null; str = stringReader.ReadLine())
-            {
-                list.Add(num);
-                num += str.Length;
-            }
-            return list;
-        }
-
-        private List<ScriptStatement> BreakIntoStatements(string query, bool ansiQuotes, bool noBackslashEscapes)
-        {
-            string str1 = this.delimiter;
-            int num1 = 0;
-            List<ScriptStatement> list = new List<ScriptStatement>();
-            List<int> lineNumbers = this.BreakScriptIntoLines(query);
-            MySqlTokenizer tokenizer = new MySqlTokenizer(query);
-            tokenizer.AnsiQuotes = ansiQuotes;
-            tokenizer.BackslashEscapes = !noBackslashEscapes;
-            for (string str2 = tokenizer.NextToken(); str2 != null; str2 = tokenizer.NextToken())
-            {
-                if (!tokenizer.Quoted)
-                {
-                    if (str2.ToLower(CultureInfo.InvariantCulture) == "delimiter")
-                    {
-                        tokenizer.NextToken();
-                        this.AdjustDelimiterEnd(query, tokenizer);
-                        str1 = query.Substring(tokenizer.StartIndex, tokenizer.StopIndex - tokenizer.StartIndex + 1).Trim();
-                        num1 = tokenizer.StopIndex;
-                    }
-                    else
-                    {
-                        if (str1.StartsWith(str2) && tokenizer.StartIndex + str1.Length <= query.Length && query.Substring(tokenizer.StartIndex, str1.Length) == str1)
-                        {
-                            str2 = str1;
-                            tokenizer.Position = tokenizer.StartIndex + str1.Length;
-                            tokenizer.StopIndex = tokenizer.Position;
-                        }
-                        int num2 = str2.IndexOf(str1, StringComparison.InvariantCultureIgnoreCase);
-                        if (num2 != -1)
-                        {
-                            int num3 = tokenizer.StopIndex - str2.Length + num2;
-                            if (tokenizer.StopIndex == query.Length - 1)
-                                ++num3;
-                            string str3 = query.Substring(num1, num3 - num1);
-                            ScriptStatement scriptStatement = new ScriptStatement();
-                            scriptStatement.text = str3.Trim();
-                            scriptStatement.line = FindLineNumber(num1, lineNumbers);
-                            scriptStatement.position = num1 - lineNumbers[scriptStatement.line];
-                            list.Add(scriptStatement);
-                            num1 = num3 + str1.Length;
-                        }
-                    }
-                }
-            }
-            if (num1 < query.Length - 1)
-            {
-                string str2 = query.Substring(num1).Trim();
-                if (!string.IsNullOrEmpty(str2))
-                {
-                    ScriptStatement scriptStatement = new ScriptStatement();
-                    scriptStatement.text = str2;
-                    scriptStatement.line = FindLineNumber(num1, lineNumbers);
-                    scriptStatement.position = num1 - lineNumbers[scriptStatement.line];
-                    list.Add(scriptStatement);
-                }
-            }
-            return list;
-        }
-
-        private int FindLineNumber(int position, List<int> lineNumbers)
-        {
-            int index = 0;
-            while (index < lineNumbers.Count && position < lineNumbers[index])
-                ++index;
-            return index;
-        }
-
-        private void AdjustDelimiterEnd(string query, MySqlTokenizer tokenizer)
-        {
-            int stopIndex = tokenizer.StopIndex;
-            char c = query[stopIndex];
-            while (!char.IsWhiteSpace(c) && stopIndex < query.Length - 1)
-                c = query[++stopIndex];
-            tokenizer.StopIndex = stopIndex;
-            tokenizer.Position = stopIndex;
         }
     }
 }
