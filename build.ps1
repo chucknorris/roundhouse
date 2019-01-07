@@ -36,6 +36,12 @@ If (!(Test-Path $LOGDIR)) {
     $null = mkdir $LOGDIR;
 }
 
+" * Extracting keywords.txt so that MySql works after ILMerge"
+
+$file = $(Get-ChildItem -Recurse -Include MySql.Data.dll ~/.nuget/packages/mysql.data/ | Select-Object -Last 1)
+& "$root/build/Extract-Resource.ps1" -File $file -ResourceName MySql.Data.keywords.txt -OutFile generated/MySql.Data/keywords.txt
+
+
 " * Building and packaging"
 msbuild /t:"Build" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
