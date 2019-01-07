@@ -1,5 +1,6 @@
 .svn
 build_output
+generated
 code_drop
 bin
 obj
