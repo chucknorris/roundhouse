@@ -1,107 +1,101 @@
 Project RoundhousE - Database Change Management done right
 =======
+<a href=https://ci.appveyor.com/project/chucknorris/roundhouse>
+<img src="https://ci.appveyor.com/api/projects/status/github/chucknorris/roundhouse?branch=master&svg=true" alt="CI build status"/>
+</a>
+<p></p>
+
 <img src="https://github.com/ferventcoder/roundhouse/raw/master/docs/logo/RoundhousE_Logo.jpg" height="200" alt="RoundhousE - Professional Database Management" />  
+
   
 # LICENSE
-Apache 2.0 - see docs\legal (just LEGAL in the zip folder)  
+[Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) - see docs\legal (just LEGAL in the zip folder)  
   
 # Documentation
 [WIKI](https://github.com/chucknorris/roundhouse/wiki)  
-  
-# 1.0.0 Release Candidates are Out! Help us test!
-We are releasing a cross-platform, .NET core version of RoundhousE. We are calling this release 1.0.0 and need your help to test it. Switch the
-branch over to the 1.0.0 branch and the instructions for the new version will be waiting.
-
-To get this new build, for the Nuget packages, please add the following to you nuget sources: 
-[https://www.myget.org/F/roundhouse/api/v3/index.json](https://www.myget.org/F/roundhouse/api/v3/index.json)
-
-This can be done via your favourite IDE, e.g. Visual Studio, or via the command-line:
-
-```
-nuget sources add -Name Roundhouse-Myget -Source https://www.myget.org/F/roundhouse/api/v3/index.json
-```
-
-Be sure to enable _Preview versions_ when browsing for the packages, if not, they will not show up in your feed.
-
-For the command line, before the release is final, and we push to Chocolatey (and hopefully some other package managers, like `apt-get` in the future), the easiest way to get the command-line version, would be off the [build server](https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts). If you would like to help us test the .net core version, please download the `.tar.gz` file, and use on an OS of choice (Windows, macOS, Linux). Dotnet core is required.
-
-
-# UNDER CONSTRUCTION
-Pardon our mess while we modernize the dependencies and build system. There's clean up underway.
-To work with the latest code, pull master and run **build.ps1** in your directory (or open project in Visual Studio 2017)
-
-To work with the command line, you will need the following in your path:
- - MS Build
- - GitVersion (easiest to run choco install gitversion.portable. You are running choclately aren't you?)
- - NuGet Command Line (easiest to run choco install nuget.commandline. You are running choclately aren't you?)
-
-# IMPORTANT
-NOTE: If you are looking at the source - please run build.bat before opening the solution. It creates the SolutionVersion.cs file that is necessary for a successful build.
 
 # INFO
 ## Overview
-RoundhousE is an automated database deployment (change management) system that allows you to use your current idioms and gain much more. Currently works with Oracle, SQL Server (2000/2005/2008/Express), Access, MySQL, SQLite and PostgreSQL.There are future plans for other databases.  
+RoundhousE is an automated database deployment (change management) system that allows you to use your current idioms and gain much more. Currently works with Oracle<sup>[1](footnote1)</sup>, SQL Server (2000/2005/2008/Express), Access<sup>[1](footnote1)</sup>, MySQL, SQLite and PostgreSQL. There are future plans for other databases.  
   
 It seeks to solve both maintenance concerns and ease of deployment. We follow some of the same idioms as other database management systems (SQL scripts), but we are different in that we think about future maintenance concerns. We want to always apply certain scripts (anything stateless like functions, views, stored procedures, and permissions), so we don't have to throw everything into our change scripts. This seeks to solves future source control concerns. How sweet is it when you can version the database according to your current source control version?  
+
+<a name="footnote1">1</a>)  Only on full-framework on Windows, not on Cross-platform .NET Core global tool version.
+
   
 ## Getting started with RoundhousE
 ### Downloads
- You can download RoundhousE from [https://github.com/chucknorris/roundhouse/releases](https://github.com/chucknorris/roundhouse/releases)
+ You can download RoundhousE from [https://github.com/chucknorris/roundhouse/releases](https://github.com/erikbra/roundhouse/releases)
 
  You can also obtain a copy from the build server at [https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts](https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts).  
   
-### Gems (_Not updated for 0.9.0, sorry_) 
+### Gems (_Not updated for 0.9.0 and above, sorry_) 
+
+![](https://img.shields.io/gem/dt/roundhouse.svg)
+
 If you have Ruby 1.8.6+ (and Gems 1.3.7+) installed, you can get the current release of RoundhousE to your machine quickly!  
   
 1. Type `gem install roundhouse`  
 2. Then from anywhere you can type `rh [options]`  
   
 ### NuGet  
+
+![](https://img.shields.io/nuget/dt/roundhouse.svg)
+
 With NuGet you can get the current release of RoundhousE to your application quickly!  
   
 1. In Visual Studio Package Manager Console type `install-package roundhouse`  
 2. There is also `roundhouse.lib`, `roundhouse.msbuild`, and `roundhouse.refreshdatabase`  
   
 ### Chocolatey  
+![](https://img.shields.io/chocolatey/dt/roundhouse.svg)
+
 Chocolatey is like apt-get, but for Windows! This is an alternative method to get the current release of RoundhousE to your machine quickly!  
+
   
 1. Type `cinst roundhouse`  
 2. Then from anywhere you can type `rh [options]`  
 
-### Dotnet core (Linux, macOS, etc)
-We have a new build of RoundhousE, built on the new(er) mean and lean dotnet core. 
-Dotnet core runs on all major OS-es, including Windows, Linux and macOS.
-RoundhousE is distributed as a .net core 2.1 _global tool_, and can be installed like this:
+### Dotnet core global tool (Windows, Linux, macOS, etc)
+![](https://img.shields.io/nuget/dt/dotnet-roundhouse.svg)
 
-`dotnet tool install -g dotnet-roundhouse`
+1. Type `dotnet tool install -g dotnet-roundhouse` 
+1. Then from anywhere you can type `rh [options]`  
 
 You can read more about what happens in the background e.g. here:
 https://natemcmaster.com/blog/2018/05/12/dotnet-global-tools/, but in short, it installs
-the binaries to your `~/.dotnet/tools` folder. You can run RoundhousE by typing
-
-`rh`
+the binaries to your `~/.dotnet/tools` folder. 
 
 You will need dotnet core installed on your box for this to work. You can get it here: [https://dot.net](https://dot.net).
-
-So, to sum up: 
-1. Install dotnet core 2.1 from either [https://dot.net](https://dot.net), or use a package manager of choice [(e.g. `apt-get` on Debian/Ubuntu)](https://www.microsoft.com/net/download/linux-package-manager/ubuntu17-10/runtime-2.1.0), if you haven't already
-1. `dotnet tool install -g dotnet-roundhouse`
-1. `rh`
-  
+ 
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
 
 1. Clone the source down to your machine.  
   `git clone git://github.com/chucknorris/roundhouse.git`  
-2. Type `cd roundhouse`  
-3. Type `git config core.autocrlf false` to leave line endings as they are.  
-4. Type `git status`. You should not see any files to change.
-5. Run `build.bat`. NOTE: You must have git on the path (open a regular command line and type git).
+1. Type `cd roundhouse`  
+1. Type `git config core.autocrlf false` to leave line endings as they are.  
+1. Type `git status`. You should not see any files to change.
+1. Run `build.ps1`. NOTE: You must have git on the path (open a regular command line and type git).
+ 
+### Developing
+
+The build system has been using UppercuT, but this will probably not be maintained going forward. We will try to 
+standardize on more "main stream" build tools like MSBuild and Powershell. There are still some remains of UppercuT in the 
+source code (esp. in the `build` folder), but this is probably going to be removed in the near future.
+
+To work with the command line, you will need the following in your path:
+ - MS Build
+ - GitVersion (easiest to run choco install gitversion.portable. You are running choclately aren't you?)
+ - NuGet Command Line (easiest to run choco install nuget.commandline. You are running choclately aren't you?)
+
+### IMPORTANT
+NOTE: If you are looking at the source - please run build.ps1 before opening the solution. It extracts the `keywords.txt` files needed for ILMerge-ing MySql dlls, and build will complain without them.
   
   
 # REQUIREMENTS
 * .NET Framework 4.6.1 (for the full framework version), _or_
-* .net core 2.0+ (for the dotnet core distribution)
+* .NET Core 2.1+ (for the dotnet core distribution)
 * SA access to the sql server (for creation or deletion)  
 * change access to the database (for everything else)  
 
@@ -110,25 +104,42 @@ Donations Accepted - If you enjoy using this product or it has saved you time an
 It helps keep to the product updated, pays for site hosting, etc. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2RA38UKSK6EZU
 
 # RELEASE NOTES
-## [0.9.1](https://github.com/chucknorris/roundhouse/releases/tag/0.9.1)
+
+_Please see [releases](../../releases) for the full release logs_
+
+## [1.0.2](../../releases/tag/1.0.2)
+**Bugfix release**
+
+Fixed bug in packaging of dotnet core tool, and another bug with log folder paths and colon in connection string.
+
+## [1.0.1](../../releases/tag/1.0.1)
+**Merge-error release fix**
+
+
+## [1.0.0](../../releases/tag/1.0.0)
+**Cross-platform dotnet core and dotnet standard ++**
+
+Big technological release. RoundhousE now runs on .NET Core in addition to the good, old .NET framework.
+
+## [0.9.1](../../releases/tag/0.9.1)
  **Two Bugfixes**
 
 After the 0.9.0 release, users identifed two significant bugs. These are fixed in a quick point release.
 
  (See release for the full release notes)
 
-## [0.9.0](https://github.com/chucknorris/roundhouse/releases/tag/0.9.0)
+## [0.9.0](../../releases/tag/0.9.0)
  **Focus on modernising tooling**
 
  RoundhousE has had some catching-up to do tooling-wise. Dependency on .NET 3.5, old, NAnt-based build chain, etc. We are starting this work. It is not done yet, but on its way. Feature-wise not a lot to brag about, but RH.exe should now be able to run on Windows Server 2016 out-of-the-box, because it is no longer dependent on .NET 3.5.
 
  (See release for the full release notes)
 
-## [0.8.8](https://github.com/chucknorris/roundhouse/releases/tag/0.8.8)
+## [0.8.8](../../releases/tag/0.8.8)
  **Catching up with Pull Requests**
  (See release for the release notes)
 
-## [0.8.7](https://github.com/chucknorris/roundhouse/releases/tag/0.8.7)
+## [0.8.7](../../releases/tag/0.8.7)
  **OMG!! It's a RoundhousE release!!**
 
  *It's been a long time coming. I didn't want to get bogged down into writing 
