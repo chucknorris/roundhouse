@@ -1,6 +1,6 @@
 Project RoundhousE - Database Change Management done right
 =======
-<img src="http://github.com/ferventcoder/roundhouse/raw/master/docs/logo/RoundhousE_Logo.jpg" height="200" alt="RoundhousE - Professional Database Management" />  
+<img src="https://github.com/ferventcoder/roundhouse/raw/master/docs/logo/RoundhousE_Logo.jpg" height="200" alt="RoundhousE - Professional Database Management" />  
   
 # LICENSE
 Apache 2.0 - see docs\legal (just LEGAL in the zip folder)  
