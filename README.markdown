@@ -79,14 +79,14 @@ You can read more about what happens in the background e.g. here:
 https://natemcmaster.com/blog/2018/05/12/dotnet-global-tools/, but in short, it installs
 the binaries to your `~/.dotnet/tools` folder. You can run RoundhousE by typing
 
-`dotnet rh`
+`rh`
 
 You will need dotnet core installed on your box for this to work. You can get it here: [https://dot.net](https://dot.net).
 
 So, to sum up: 
 1. Install dotnet core 2.1 from either [https://dot.net](https://dot.net), or use a package manager of choice [(e.g. `apt-get` on Debian/Ubuntu)](https://www.microsoft.com/net/download/linux-package-manager/ubuntu17-10/runtime-2.1.0), if you haven't already
 1. `dotnet tool install -g dotnet-roundhouse`
-1. `dotnet rh`
+1. `rh`
   
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
