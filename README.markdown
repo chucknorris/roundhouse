@@ -25,7 +25,7 @@ It seeks to solve both maintenance concerns and ease of deployment. We follow so
   
 ## Getting started with RoundhousE
 ### Downloads
- You can download RoundhousE from [https://github.com/chucknorris/roundhouse/releases](https://github.com/erikbra/roundhouse/releases)
+ You can download RoundhousE from [https://github.com/chucknorris/roundhouse/releases](https://github.com/chucknorris/roundhouse/releases)
 
  You can also obtain a copy from the build server at [https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts](https://ci.appveyor.com/project/chucknorris/roundhouse/build/artifacts).  
   
