@@ -67,6 +67,12 @@ https://natemcmaster.com/blog/2018/05/12/dotnet-global-tools/, but in short, it 
 the binaries to your `~/.dotnet/tools` folder. 
 
 You will need dotnet core installed on your box for this to work. You can get it here: [https://dot.net](https://dot.net).
+
+
+### Docker: Dotnet core global tool
+
+1. docker pull dotnetroundhouse/roundhouse
+
  
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
