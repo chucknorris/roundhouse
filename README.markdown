@@ -71,7 +71,10 @@ You will need dotnet core installed on your box for this to work. You can get it
 
 ### Docker: Dotnet core global tool
 
-1. docker pull dotnetroundhouse/roundhouse
+You can easily integrate RoundhousE in your existing docker infrastructure. Use docker compose, or just pull it down directly and run it. Yopu should probably build upon the image, and add your own customisations, as appropriate. The docker image has the dotnet core global tool distribution of RoundhousE in a Alpine Linux bases container.
+
+1. Type `docker pull dotnetroundhouse/roundhouse`
+1. Type `docker run dotnetroundhouse/roundhouse`
 
  
 ### Source
