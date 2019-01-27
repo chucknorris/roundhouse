@@ -67,6 +67,15 @@ https://natemcmaster.com/blog/2018/05/12/dotnet-global-tools/, but in short, it 
 the binaries to your `~/.dotnet/tools` folder. 
 
 You will need dotnet core installed on your box for this to work. You can get it here: [https://dot.net](https://dot.net).
+
+
+### Docker: Dotnet core global tool
+
+You can easily integrate RoundhousE in your existing docker infrastructure. Use docker compose, or just pull it down directly and run it. Yopu should probably build upon the image, and add your own customisations, as appropriate. The docker image has the dotnet core global tool distribution of RoundhousE in a Alpine Linux bases container.
+
+1. Type `docker pull dotnetroundhouse/roundhouse`
+1. Type `docker run dotnetroundhouse/roundhouse`
+
  
 ### Source
 This is the best way to get to the bleeding edge of what we are doing.  
