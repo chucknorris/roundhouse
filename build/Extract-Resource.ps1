@@ -30,8 +30,8 @@ If (! (Test-Path $OutputFile)) {
 }
 
 #Powershell and powershell Core have different ways of doing this, so safeguard.
-$IsWin = ($IsWindows -or $env:OS -eq "Windows_NT")
-If ($IsWin) {
+$IsFullFramework = ($PSVersionTable.PSEdition -eq "Desktop")
+If ($IsFullFramework) {
     [System.Reflection.Assembly] $assembly = [System.Reflection.Assembly]::ReflectionOnlyLoadFrom($f);
 } Else {
     [System.Reflection.Assembly] $assembly = [System.Reflection.Assembly]::LoadFile($f);

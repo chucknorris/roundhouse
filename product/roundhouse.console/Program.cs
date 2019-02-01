@@ -65,6 +65,8 @@ namespace roundhouse.console
                     run_migrator(cf);
                 }
             }
+          
+            
             catch (Exception ex)
             {
                 the_logger.Error(ex.Message, ex);
