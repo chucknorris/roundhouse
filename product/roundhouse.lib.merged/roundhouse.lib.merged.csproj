@@ -74,9 +74,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="../../generated/MySql.Data/keywords.txt" Link="$(AssemblyName).keywords.txt" >
+    <EmbeddedResource Include="../../generated/MySql.Data/keywords.txt" Link="$(AssemblyName).keywords.txt">
       <LogicalName>$(AssemblyName).keywords.txt</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ILMerge" Version="3.0.21" />
   </ItemGroup>
   
   
@@ -95,6 +98,7 @@
     <PropertyGroup>
       <IgnoreFile>..\..\build.custom\ilmerge.internalize.ignore.txt</IgnoreFile>
       <ILMerge>..\..\lib\ILMerge\ILMerge.exe</ILMerge>
+      <ILMerge>$(NugetPackageRoot)\ilmerge\3.0.21\tools\net452\ILMerge.exe</ILMerge>
       <ILMergeLog>$(LogDir)roundhouse.ILMerge.log</ILMergeLog>
       <ILMergeCommand>$(ILMerge) /internalize:$(IgnoreFile) /target:dll /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup  @(ILMergeAssemblies, ' ')</ILMergeCommand>
     </PropertyGroup>

@@ -62,7 +62,6 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
     <PackageReference Include="System.Security.Principal.Windows" Version="4.5.1" />
-    <PackageReference Include="ILRepack" Version="2.0.16" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
@@ -104,18 +103,20 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <ILMergeTarget>$(ILMergeDir)$(AssemblyName)$(Extension)</ILMergeTarget>
+    <CopySource>$(MSBuildProjectDirectory)/$(OutputPath)/$(TargetFramework)/$(RuntimeIdentifier)/$(AssemblyName)$(Extension)</CopySource>
+    <CopyDestination>$(DropDir)$(AssemblyName)$(Extension)</CopyDestination>
   </PropertyGroup>
 
   <Target Name="CopyOutput" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true' and '$(TargetFramework)' == 'net461'">
-    <Copy SourceFiles="$(ILMergeTarget" DestinationFolder="$(DropDir)" />
+    <Message Importance="high" Text="Source: $(CopySource)" />
+    <Copy SourceFiles="$(CopySource)" DestinationFolder="$(DropDir)" />
   </Target>
  
     
   <!-- Nuspec properties (for generating NuGet package) -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
     <NuspecFile>roundhouse.nuspec</NuspecFile>
-    <NuspecProperties>mergedExe=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
+    <NuspecProperties>mergedExe=$(CopyDestination);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
     
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
