@@ -14,24 +14,21 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFranework)' == 'net461'">
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Castle.Core" Version="4.3.1" />
+    <PackageReference Include="Castle.Core" Version="4.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
-    <PackageReference Include="Moq" Version="4.10.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.13" />
-    <PackageReference Include="Npgsql" Version="4.0.4" />
-    <PackageReference Include="NUnit" Version="3.11.0" />
-    <PackageReference Include="NUnit.ConsoleRunner" Version="3.9.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.11.2" />
+    <PackageReference Include="Moq" Version="4.11.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.16" />
+    <PackageReference Include="Npgsql" Version="4.0.7" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.10.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
     <PackageReference Include="Should" Version="1.1.20" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
     <PackageReference Include="TinySpec.NUnit" Version="0.9.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System.Data.OracleClient" />
@@ -47,7 +44,7 @@
     <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" />
     <ProjectReference Include="..\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj" />
     <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
-    <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
+    <ProjectReference Include="..\roundhouse.core\roundhouse.core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="infrastructure\filesystem\*.txt">

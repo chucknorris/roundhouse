@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
@@ -8,15 +8,30 @@
     <OutputType>Library</OutputType>
     <RootNamespace>roundhouse.databases.sqlserver2000</RootNamespace>
     <AssemblyName>roundhouse.databases.sqlserver2000</AssemblyName>
+    <PackageId>roundhouse.sqlserver2000</PackageId>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <NoWarn>NU1701</NoWarn>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFranework)' == 'net461'">
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+   
+  <PropertyGroup>
+    <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
+    <PackageVersion>$(NugetVersion)</PackageVersion>
+    <PackageId>roundhouse.sqlserver2000</PackageId>
+    <Title>RoundhousE Library - SQLServer 2000</Title>
+    <Authors>Rob Reynolds, Erik A. Brandstadmoen</Authors>
+    <Description>
+     RoundhousE is a Professional Database Change and Versioning Management tool. 
+      
+This is the Microsoft SQL Server 2000 database package.
+    </Description>
+    <PackageProjectUrl>http://projectroundhouse.org</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>roundhouse db migration database migrator chucknorris sqlserver sqlserver2000</PackageTags>
+    <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,11 +53,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentNHibernate" Version="2.1.2" />
-    <PackageReference Include="Iesi.Collections" Version="4.0.4" />
-    <PackageReference Include="NHibernate" Version="5.1.3" />
+    <ProjectReference Include="..\roundhouse.core\roundhouse.core.csproj" />
   </ItemGroup>
 </Project>

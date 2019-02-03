@@ -14,11 +14,26 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFranework)' == 'net461'">
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+   
+  <PropertyGroup>
+    <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
+    <PackageVersion>$(NugetVersion)</PackageVersion>
+    <PackageId>roundhouse.sqlite</PackageId>
+    <Title>RoundhousE Library - SQLite</Title>
+    <Authors>Rob Reynolds, Erik A. Brandstadmoen</Authors>
+    <Description>
+     RoundhousE is a Professional Database Change and Versioning Management tool. 
+      
+This is the SQLite database package.
+    </Description>
+    <PackageProjectUrl>http://projectroundhouse.org</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>roundhouse db migration database migrator chucknorris sqlite</PackageTags>
+    <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
   </PropertyGroup>
-
+  
+    
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -40,14 +55,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.2.0" />
-    <PackageReference Include="FluentNHibernate" Version="2.1.2" />
-    <PackageReference Include="Iesi.Collections" Version="4.0.4" />
-    <PackageReference Include="NHibernate" Version="5.1.3" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.110" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\roundhouse\roundhouse.csproj" />
+    <ProjectReference Include="..\roundhouse.core\roundhouse.core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

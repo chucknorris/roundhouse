@@ -5,6 +5,7 @@ $MSBUILD=msbuild
 $root = $PSScriptRoot;
 
 $CODEDROP="$($root)/code_drop";
+$PACKAGEDIR="$($CODEDROP)/packages";
 $LOGDIR="$($CODEDROP)/log";
 
 $TESTOUTDIR="$($root)/product/roundhouse.tests/bin"
@@ -25,12 +26,15 @@ If ($onAppVeyor) {
     appveyor UpdateBuild -Version "$newVersion"
 }
 
+" * Updating NuGet to handle newer license metadata"
+nuget update -self -Verbosity quiet
+
 " * Restoring nuget packages"
 nuget restore -NonInteractive -Verbosity quiet
 
 # Create output and log dirs if they don't exist (don't know why this is necessary - works on my box...)
-If (!(Test-Path $CODEDROP)) {
-    $null = mkdir $CODEDROP;
+If (!(Test-Path $PACKAGEDIR)) {
+    $null = mkdir $PACKAGEDIR;
 }
 If (!(Test-Path $LOGDIR)) {
     $null = mkdir $LOGDIR;
@@ -45,17 +49,24 @@ $file = $(Get-ChildItem -Recurse -Include MySql.Data.dll ~/.nuget/packages/mysql
 " * Building and packaging"
 msbuild /t:"Build" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
-"`n    - Packaging net461 packages`n"
+"    - NuGet libraries"
+dotnet pack -nologo --no-build -v q -p:Version="$($gitVersion.FullSemVer)" -p:NoPackageAnalysis=true -p:Configuration=Build -p:Platform="Any CPU" -o ${PACKAGEDIR}
 
-nuget pack product/roundhouse.console/roundhouse.nuspec -OutputDirectory "$CODEDROP/packages" -Properties "mergedExe=$CODEDROP/merge/rh.exe" -Verbosity quiet -NoPackageAnalysis -Version "$($gitVersion.FullSemVer)" 
-msbuild /t:"Pack" product/roundhouse.lib.merged/roundhouse.lib.merged.csproj  /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.roundhouse.lib.pack.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
+
+"    - net461 command-line nuget package"
+
+nuget pack product/roundhouse.console/roundhouse.nuspec -OutputDirectory "$CODEDROP/packages" -Verbosity quiet -NoPackageAnalysis -Version "$($gitVersion.FullSemVer)" 
 msbuild /t:"Pack" product/roundhouse.tasks/roundhouse.tasks.csproj  /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.roundhouse.tasks.pack.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
-"`n    - Packaging netcoreapp2.1 global tool dotnet-roundhouse`n"
+"    - netcoreapp2.1 global tool dotnet-roundhouse"
 
-dotnet publish -v q --no-restore product/roundhouse.console -p:Version="$($gitVersion.FullSemVer)" -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -p:Version="$($gitVersion.FullSemVer)" -p:RunILMerge=false -p:Configuration=Build -p:Platform="Any CPU"
-dotnet pack -v q --no-restore product/roundhouse.console -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -o $CODEDROP/packages -p:Version="$($gitVersion.FullSemVer)" -p:RunILMerge=false -p:Configuration=Build -p:Platform="Any CPU"
+dotnet publish -v q -nologo --no-restore product/roundhouse.console -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -p:Version="$($gitVersion.FullSemVer)" -p:Configuration=Build -p:Platform="Any CPU"
+dotnet pack -v q -nologo --no-restore --no-build product/roundhouse.console -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -o ${PACKAGEDIR} -p:Version="$($gitVersion.FullSemVer)" -p:Configuration=Build -p:Platform="Any CPU"
 
+
+# " * Packaging netcoreapp2.1 global tool dotnet-roundhouse`n"
+
+# nuget pack -Verbosity quiet -outputdirectory ${PACKAGEDIR} .\product\roundhouse.console\roundhouse.tool.nuspec -Properties "Version=$($gitVersion.FullSemVer);NoPackageAnalysis=true"
 
 # AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe. 
 # But we want to run the tests on localhost too.
@@ -64,13 +75,10 @@ If (! $onAppVeyor) {
     "`n * Running unit tests`n"
 
     # Find test projects
-    $testProjects = $(dir -r -i *.tests.csproj)
+    $testAssemblies = $(dir -r -i *.tests.dll)
 
-    $testProjects | % {
-        Push-Location $_.Directory
-        dotnet test -v q
-        Pop-Location
+    $testAssemblies | ? { $_.FullName -NotLike "*obj*" } | % {
+        dotnet vstest $_
     }
 }
 
-Pop-Location

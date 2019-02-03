@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <CLSCompliant>true</CLSCompliant>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>roundhouse</RootNamespace>
+    <AssemblyName>roundhouse.lib</AssemblyName>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <NoWarn>NU1701</NoWarn>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Nuget properties">
+    <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
+    <PackageVersion>$(NugetVersion)</PackageVersion>
+    <PackageId>roundhouse.lib</PackageId>
+    <Title>RoundhousE Library - all in one</Title>
+    <Authors>Rob Reynolds</Authors>
+    <Description>
+     RoundhousE is a Professional Database Change and Versioning Management tool. 
+      
+This is an "include all" package that gives you all the databases. If you want only a single one, please feel fre to reference only the database of your choice (e.g. roundhouse.sqlserver).
+    </Description>
+    <PackageProjectUrl>http://projectroundhouse.org</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>roundhouse db migration database migrator chucknorris</PackageTags>
+    <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
+  </PropertyGroup>
+    
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\roundhouse.databases.mysql\roundhouse.databases.mysql.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.postgresql\roundhouse.databases.postgresql.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlite\roundhouse.databases.sqlite.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver2000\roundhouse.databases.sqlserver2000.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserverce\roundhouse.databases.sqlserverce.csproj" />
+    <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
+    <ProjectReference Include="..\roundhouse.core\roundhouse.core.csproj" />
+  </ItemGroup>
+    
+  <ItemGroup>
+    <None Include="..\..\docs\logo\roundhouse.ico">
+      <Link>roundhouse.ico</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../generated/MySql.Data/keywords.txt" Link="$(AssemblyName).keywords.txt">
+      <LogicalName>$(AssemblyName).keywords.txt</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ILMerge" Version="3.0.29" />
+  </ItemGroup>
+  
+</Project>

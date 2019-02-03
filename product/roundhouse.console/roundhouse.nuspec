@@ -9,14 +9,14 @@
     <summary>RoundhousE - Professional Database Change and Versioning Management</summary>
     <description>RoundhousE is a Professional Database Change and Versioning Management tool. Type rh /? for options</description>
     <projectUrl>http://projectroundhouse.org</projectUrl>
-    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <license type="expression">Apache-2.0</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>roundhouse db migration database migrator chucknorris</tags>
     <dependencies />
-	  <iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
+	<iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
   </metadata>
   <files>
-    <file src="$mergedExe$" target="tools\" />
+    <file src="bin\net461\win7-x86\rh.exe" target="tools\" />
     <file src="..\..\docs\legal\*" target="tools\" />
   </files>
 </package>

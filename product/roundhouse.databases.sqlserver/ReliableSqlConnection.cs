@@ -14,7 +14,7 @@ using Polly.Retry;
 
 namespace roundhouse.databases.sqlserver
 {
-    public sealed class ReliableSqlConnection : IDbConnection, ICloneable
+    internal sealed class ReliableSqlConnection : IDbConnection, ICloneable
     {
         private static readonly TransientErrorDetectionStrategy error_detection_strategy = new TransientErrorDetectionStrategy();
         
