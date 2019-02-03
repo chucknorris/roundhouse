@@ -1,4 +1,7 @@
+using System;
 using System.Data;
+using System.Linq;
+using System.Reflection;
 
 namespace roundhouse.connections
 {
@@ -15,7 +18,26 @@ namespace roundhouse.connections
 
         public void open()
         {
-            server_connection.Open();
+            try
+            {
+                
+            server_connection.Open();  }
+            
+            catch (ReflectionTypeLoadException rtle)
+            {
+                throw rtle.LoaderExceptions.First();
+
+            }
+
+            catch (TypeInitializationException tie)
+            {
+                var inner = tie.InnerException;
+                if (inner is ReflectionTypeLoadException r)
+                {
+                    throw r.LoaderExceptions.First();
+                }
+            }
+            
         }
 
         public void clear_pool()

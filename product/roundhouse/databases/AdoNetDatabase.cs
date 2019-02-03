@@ -1,4 +1,6 @@
-﻿namespace roundhouse.databases
+﻿using System.Linq;
+
+namespace roundhouse.databases
 {
     using System.Collections.Generic;
     using System.Data;
@@ -27,7 +29,7 @@
             provider_factory = get_db_provider_factory();
             IDbConnection connection = provider_factory.CreateConnection();
             connection_specific_setup(connection);
-            
+
             connection.ConnectionString = conn_string;
             return new AdoNetConnection(connection);
         }
@@ -38,11 +40,11 @@
         {
         }
 
-     
 
         public override void open_admin_connection()
         {
-            Log.bound_to(this).log_a_debug_event_containing("Opening admin connection to '{0}'", admin_connection_string);
+            Log.bound_to(this)
+                .log_a_debug_event_containing("Opening admin connection to '{0}'", admin_connection_string);
             admin_connection = GetAdoNetConnection(admin_connection_string);
             admin_connection.open();
         }
@@ -82,6 +84,7 @@
                 transaction.Commit();
                 transaction = null;
             }
+
             if (repository != null)
             {
                 repository.finish();
@@ -115,7 +118,8 @@
             }
         }
 
-        protected override void run_sql(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
+        protected override void run_sql(string sql_to_run, ConnectionType connection_type,
+            IList<IParameter<IDbDataParameter>> parameters)
         {
             if (string.IsNullOrEmpty(sql_to_run)) return;
 
@@ -129,7 +133,8 @@
             }
         }
 
-        private void run_command_with(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
+        private void run_command_with(string sql_to_run, ConnectionType connection_type,
+            IList<IParameter<IDbDataParameter>> parameters)
         {
             using (IDbCommand command = setup_database_command(sql_to_run, connection_type, parameters))
             {
@@ -137,7 +142,8 @@
             }
         }
 
-        protected override object run_sql_scalar(string sql_to_run, ConnectionType connection_type, IList<IParameter<IDbDataParameter>> parameters)
+        protected override object run_sql_scalar(string sql_to_run, ConnectionType connection_type,
+            IList<IParameter<IDbDataParameter>> parameters)
         {
             object return_value = new object();
             if (string.IsNullOrEmpty(sql_to_run)) return return_value;
@@ -157,25 +163,32 @@
             return return_value;
         }
 
-        protected IDbCommand setup_database_command(string sql_to_run, ConnectionType connection_type, IEnumerable<IParameter<IDbDataParameter>> parameters)
+        protected IDbCommand setup_database_command(string sql_to_run, ConnectionType connection_type,
+            IEnumerable<IParameter<IDbDataParameter>> parameters)
         {
             IDbCommand command = null;
+
+
             switch (connection_type)
             {
                 case ConnectionType.Default:
-                    if (server_connection == null || server_connection.underlying_type().State != ConnectionState.Open)
+                    if (server_connection == null ||
+                        server_connection.underlying_type().State != ConnectionState.Open)
                     {
                         open_connection(false);
                     }
+
                     Log.bound_to(this).log_a_debug_event_containing("Setting up command for normal connection");
                     command = server_connection.underlying_type().CreateCommand();
                     command.CommandTimeout = command_timeout;
                     break;
                 case ConnectionType.Admin:
-                    if (admin_connection == null || admin_connection.underlying_type().State != ConnectionState.Open)
+                    if (admin_connection == null ||
+                        admin_connection.underlying_type().State != ConnectionState.Open)
                     {
                         open_admin_connection();
                     }
+
                     Log.bound_to(this).log_a_debug_event_containing("Setting up command for admin connection");
                     command = admin_connection.underlying_type().CreateCommand();
                     command.CommandTimeout = admin_command_timeout;
@@ -189,12 +202,15 @@
                     command.Parameters.Add(parameter.underlying_type);
                 }
             }
+
             if (connection_type != ConnectionType.Admin)
             {
                 command.Transaction = transaction;
             }
+
             command.CommandText = sql_to_run;
             command.CommandType = CommandType.Text;
+
 
             return command;
         }

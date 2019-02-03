@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(TargetFramework)' == ''" >netcoreapp2.1;net461</TargetFrameworks>
-    <TargetFramework Condition="'$(TargetFramework)' == ''" >net461</TargetFramework>
+    <TargetFrameworks Condition="'$(TargetFramework)' == ''">netcoreapp2.1;net461</TargetFrameworks>
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net461</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -45,7 +45,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="3.3.2" />
     <PackageReference Include="FluentNHibernate" Version="2.1.2" />
+    <PackageReference Include="Fody" Version="3.3.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Iesi.Collections" Version="4.0.4" />
     <PackageReference Include="Microsoft.Build.Framework" Version="15.9.20" />
     <PackageReference Include="MySql.Data" Version="8.0.13" />
@@ -77,7 +82,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="../../generated/MySql.Data/keywords.txt" Link="$(AssemblyName).keywords.txt" >
+    <EmbeddedResource Include="../../generated/MySql.Data/keywords.txt" Link="$(AssemblyName).keywords.txt">
       <LogicalName>$(AssemblyName).keywords.txt</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
@@ -87,34 +92,31 @@
     <None Include="rh.bat" CopyToOutputDirectory="PreserveNewest" />
     <None Include="DotnetToolSettings.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-  
-  <!-- Merge properties and target -->
+
   <PropertyGroup>
-    <ILMergeDir>..\..\code_drop\merge\</ILMergeDir>
-    <LogDir>..\..\code_drop\log\</LogDir>
-    <ILMergeTarget>$(ILMergeDir)$(AssemblyName).exe</ILMergeTarget>
+    <DropDir>..\..\code_drop\merge\</DropDir>
+    <Extension>.dll</Extension>
   </PropertyGroup>
-  <Target Name="ILMerge" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true' and '$(TargetFramework)' == 'net461'">
-    <ItemGroup>
-      <ILMergeAssemblies Include="$(OutputPath)*.dll" />
-    </ItemGroup>
-    <PropertyGroup>
-      <IgnoreFile>..\..\build.custom\ilmerge.internalize.ignore.txt</IgnoreFile>
-      <ILMerge>..\..\lib\ILMerge\ILMerge.exe</ILMerge>
-      <ILMergeLog>$(LogDir)roundhouse.console.ILMerge.log</ILMergeLog>
-      <ILMergeSource>$(OutputPath)$(AssemblyName).exe</ILMergeSource>
-      <ILMergeCommand>$(ILMerge) /internalize:$(IgnoreFile) /target:exe /out:$(ILMergeTarget) /log:$(ILMergeLog) /ndebug /zeroPeKind /allowDup $(ILMergeSource)  @(ILMergeAssemblies, ' ')</ILMergeCommand>
-    </PropertyGroup>
-    <Delete Files="$(ILMergeLog);$(ILMergeTarget)" Condition="Exists($(ILMergeDir))" />
-    <MakeDir Directories="$(ILMergeDir)" />
-    <Message Importance="high" Text="ILMerge-ing into $(ILMergeTarget)" />
-    <Exec Command="$(ILMergeCommand)" />
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Extension>.exe</Extension>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CopySource>$(MSBuildProjectDirectory)/$(OutputPath)/$(TargetFramework)/$(RuntimeIdentifier)/$(AssemblyName)$(Extension)</CopySource>
+    <CopyDestination>$(DropDir)$(AssemblyName)$(Extension)</CopyDestination>
+  </PropertyGroup>
+
+  <Target Name="CopyOutput" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)' != 'true' and '$(TargetFramework)' == 'net461'">
+    <Message Importance="high" Text="Source: $(CopySource)" />
+    <Copy SourceFiles="$(CopySource)" DestinationFolder="$(DropDir)" />
   </Target>
+ 
     
   <!-- Nuspec properties (for generating NuGet package) -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
     <NuspecFile>roundhouse.nuspec</NuspecFile>
-    <NuspecProperties>mergedExe=$(ILMergeTarget);version=$(NugetVersion)</NuspecProperties>
+    <NuspecProperties>mergedExe=$(CopyDestination);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
     
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
