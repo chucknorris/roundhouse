@@ -233,54 +233,50 @@ namespace roundhouse.databases.sqlserver
 
                         if (result_type == typeof(XmlReader))
                         {
+							close_opened_connection_on_success = false;
+							
                             if (!(command is SqlCommand))
                                 throw new NotSupportedException();
+							
                             XmlReader inner_reader = (command as SqlCommand).ExecuteXmlReader();
-                            close_opened_connection_on_success = false;
                             if ((behavior & CommandBehavior.CloseConnection) != CommandBehavior.CloseConnection)
                                 return (T) (object) inner_reader;
-                            else
-                                throw new ApplicationException("Don't have any SqlXmlReader");
+                            
+							throw new ApplicationException("Don't have any SqlXmlReader");
                         }
 
                         if (result_type == typeof(NonQueryResult))
                         {
-                            NonQueryResult nonQueryResult =
-                                new NonQueryResult()
-                                {
+							close_opened_connection_on_success = true;
+							
+                            NonQueryResult nonQueryResult = new NonQueryResult()
+								{
                                     RecordsAffected = command.ExecuteNonQuery()
                                 };
-                            close_opened_connection_on_success = true;
-                            return (T) Convert.ChangeType(nonQueryResult, result_type,
-                                CultureInfo.InvariantCulture);
+                            
+                            return (T) Convert.ChangeType(nonQueryResult, result_type, CultureInfo.InvariantCulture);
                         }
 
-                        object obj = command.ExecuteScalar();
-                        close_opened_connection_on_success = true;
+						close_opened_connection_on_success = true;
+						
+                        object obj = command.ExecuteScalar();                        
                         if (obj != null)
-                            return (T) Convert.ChangeType(obj, result_type,
-                                CultureInfo.InvariantCulture);
-                        return default(T);
+                            return (T) Convert.ChangeType(obj, result_type, CultureInfo.InvariantCulture);
+                        
+						return default(T);
                     }))));
-                if (has_opened_connection)
-                {
-                    if (close_opened_connection_on_success)
-                    {
-                        if (command.Connection != null)
-                        {
-                            if (command.Connection.State == ConnectionState.Open)
-                                command.Connection.Close();
-                        }
-                    }
-                }
             }
             catch (Exception)
             {
-                if (has_opened_connection && command.Connection != null &&
-                    command.Connection.State == ConnectionState.Open)
-                    command.Connection.Close();
+                if (has_opened_connection && command.Connection != null && command.Connection.State == ConnectionState.Open) 
+					command.Connection.Close();
                 throw;
             }
+			finally
+			{
+				if (close_opened_connection_on_success && has_opened_connection && command.Connection != null && command.Connection.State == ConnectionState.Open) 
+					command.Connection.Close();
+			}
 
             return action_result;
         }
