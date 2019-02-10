@@ -1,5 +1,8 @@
 image: Visual Studio 2017
 
+services:
+- docker
+
 install:
   - choco install gitversion.portable -y
 
@@ -8,13 +11,13 @@ before_build:
 
 build_script:
   - ps: .\build.ps1
-  
+
 test:
   assemblies:
     only:
       - '**\*tests.dll'
 
-      
+
 artifacts:
   - path: .\code_drop\packages\*.nupkg
     name: Nuget packages
@@ -26,6 +29,11 @@ deploy:
   server:  https://www.myget.org/F/roundhouse/api/v2/package
   api_key:
     secure: XWER/H0IkJ8JWFm+n3/lr7hHoNFAX/VpRD+AfpZo2EUgQkQKhrMxHa4aYZPogsvY
-  skip_symbols: true 
+  skip_symbols: true
   artifact: /.*\.nupkg/
   disable_publish_on_pr: true
+
+deploy_script:
+  - docker login -u="$env:DOCKER_USER" -p="$env:DOCKER_PASS"
+  - docker push dotnetroundhouse/roundhouse:latest
+  - docker push dotnetroundhouse/roundhouse:"$env:APPVEYOR_BUILD_VERSION"

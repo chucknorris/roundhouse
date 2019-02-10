@@ -47,7 +47,7 @@ msbuild /t:"Build" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)
 
 "`n    - Packaging net461 packages`n"
 
-nuget pack product/roundhouse.console/roundhouse.nuspec -OutputDirectory "$CODEDROP/packages" -Properties "mergedExe=$CODEDROP/merge/rh.exe" -Verbosity quiet -NoPackageAnalysis -Version "$($gitVersion.FullSemVer)" 
+nuget pack product/roundhouse.console/roundhouse.nuspec -OutputDirectory "$CODEDROP/packages" -Properties "mergedExe=$CODEDROP/merge/rh.exe" -Verbosity quiet -NoPackageAnalysis -Version "$($gitVersion.FullSemVer)"
 msbuild /t:"Pack" product/roundhouse.lib.merged/roundhouse.lib.merged.csproj  /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.roundhouse.lib.pack.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 msbuild /t:"Pack" product/roundhouse.tasks/roundhouse.tasks.csproj  /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.roundhouse.tasks.pack.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
@@ -56,8 +56,11 @@ msbuild /t:"Pack" product/roundhouse.tasks/roundhouse.tasks.csproj  /p:DropFolde
 dotnet publish -v q --no-restore product/roundhouse.console -p:Version="$($gitVersion.FullSemVer)" -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -p:Version="$($gitVersion.FullSemVer)" -p:RunILMerge=false -p:Configuration=Build -p:Platform="Any CPU"
 dotnet pack -v q --no-restore product/roundhouse.console -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -o $CODEDROP/packages -p:Version="$($gitVersion.FullSemVer)" -p:RunILMerge=false -p:Configuration=Build -p:Platform="Any CPU"
 
+"`n    - Building docker image`n"
 
-# AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe. 
+docker build --build-arg roundhouse_version="$($gitVersion.FullSemVer)" . -t dotnetroundhouse/roundhouse:latest -t dotnetroundhouse/roundhouse:$gitVersion.FullSemVer
+
+# AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe.
 # But we want to run the tests on localhost too.
 If (! $onAppVeyor) {
 
