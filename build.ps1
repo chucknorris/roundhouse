@@ -58,7 +58,7 @@ dotnet pack -v q --no-restore product/roundhouse.console -p:NoPackageAnalysis=tr
 
 "`n    - Building docker image`n"
 
-docker build --build-arg roundhouse_version="$($gitVersion.FullSemVer)" . -t dotnetroundhouse/roundhouse:latest -t dotnetroundhouse/roundhouse:$gitVersion.FullSemVer
+docker build --build-arg roundhouse_version="$($gitVersion.FullSemVer)" . -t dotnetroundhouse/roundhouse:latest -t dotnetroundhouse/roundhouse:"$($gitVersion.FullSemVer)"
 
 # AppVeyor runs the test automagically, no need to run explicitly with nunit-console.exe.
 # But we want to run the tests on localhost too.
