@@ -36,4 +36,4 @@ deploy:
 deploy_script:
   - docker login -u="$env:DOCKER_USER" -p="$env:DOCKER_PASS"
   - docker push dotnetroundhouse/roundhouse:latest
-  - docker push dotnetroundhouse/roundhouse:"$env:APPVEYOR_BUILD_VERSION"
+  - docker push dotnetroundhouse/roundhouse:"$env:GitVersion_FullSemVer"
