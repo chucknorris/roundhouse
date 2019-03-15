@@ -33,7 +33,7 @@ namespace roundhouse.tests.sqlsplitters
                 List<ParsedStatement> statements = parser.Parse();
                 WriteStatements(statements);
 
-                TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
+                WriteOutput("Statements parsed: " + statements.Count);
                 Assert.AreEqual("select * from test1" + Environment.NewLine, statements[0].Value);
                 Assert.AreEqual(2, statements.Count);
             }
@@ -60,7 +60,7 @@ namespace roundhouse.tests.sqlsplitters
                 List<ParsedStatement> statements = parser.Parse();
                 WriteStatements(statements);
 
-                TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
+                WriteOutput("Statements parsed: " + statements.Count);
                 Assert.AreEqual("select * from test1" + Environment.NewLine, statements[0].Value);
                 Assert.AreEqual(2, statements.Count);
             }
@@ -74,7 +74,7 @@ namespace roundhouse.tests.sqlsplitters
                 List<ParsedStatement> statements = parser.Parse();
                 WriteStatements(statements);
 
-                TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
+                WriteOutput("Statements parsed: " + statements.Count);
                 Assert.AreEqual("select * from test1" + Environment.NewLine, statements[0].Value);
                 Assert.AreEqual(2, statements.Count);
             }
@@ -88,7 +88,7 @@ namespace roundhouse.tests.sqlsplitters
                 List<ParsedStatement> statements = parser.Parse();
                 WriteStatements(statements);
 
-                TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
+                WriteOutput("Statements parsed: " + statements.Count);
                 Assert.AreEqual("select * from test1" + Environment.NewLine, statements[0].Value);
                 Assert.AreEqual(2, statements.Count);
             }
@@ -102,7 +102,7 @@ namespace roundhouse.tests.sqlsplitters
                 List<ParsedStatement> statements = parser.Parse();
                 WriteStatements(statements);
 
-                TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
+                WriteOutput("Statements parsed: " + statements.Count);
                 Assert.AreEqual("select * from test1" + Environment.NewLine, statements[0].Value);
                 Assert.AreEqual(2, statements.Count);
             }
@@ -116,7 +116,7 @@ namespace roundhouse.tests.sqlsplitters
                 List<ParsedStatement> statements = parser.Parse();
                 WriteStatements(statements);
 
-                TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
+                WriteOutput("Statements parsed: " + statements.Count);
                 Assert.AreEqual("select * from test1" + Environment.NewLine, statements[0].Value);
                 Assert.AreEqual(2, statements.Count);
             }
@@ -130,21 +130,40 @@ namespace roundhouse.tests.sqlsplitters
                 List<ParsedStatement> statements = parser.Parse();
                 WriteStatements(statements);
 
-                TestContext.Out.WriteLine("Statements parsed: " + statements.Count);
+                WriteOutput("Statements parsed: " + statements.Count);
                 Assert.AreEqual("select * from test1" + Environment.NewLine, statements[0].Value);
+                Assert.AreEqual(3, statements.Count);
+            }
+
+            [Observation]
+            public void should_honor_quoted_semicolon()
+            {
+                string script = "set ps = 'select * from test;';\nprepare ps;\nexecute ps;";
+
+                Parser parser = new Parser(script);
+                List<ParsedStatement> statements = parser.Parse();
+                WriteStatements(statements);
+
+                WriteOutput("Statements parsed: " + statements.Count);
+                Assert.AreEqual("set ps = 'select * from test;'" + Environment.NewLine, statements[0].Value);
                 Assert.AreEqual(3, statements.Count);
             }
 
             private void WriteStatements(List<ParsedStatement> statements) {
                 int index = 0;
                 foreach (ParsedStatement statement in statements) {
-                    TestContext.Out.WriteLine(index + ":");
+                    WriteOutput(index + ":");
                     WriteStatement(statement);
                     index++;
                 }
             }
+
             private void WriteStatement(ParsedStatement statement) {
-                TestContext.Out.Write(statement.Value);
+                WriteOutput(statement.Value);
+            }
+
+            private void WriteOutput(string value) {
+                //NUnit.Framework.TestContext.Progress.WriteLine(value);
             }
         }
     }
