@@ -151,8 +151,12 @@ namespace roundhouse.databases.mysql.parser
                         AnsiQuoted();
                         break;
                     } else {
-                        goto case '`';
+                        goto case '\'';
                     }
+
+                case '\'':
+                    SingleQuoted();
+                    break;
 
                 case '`':
                     Quoted();
@@ -285,12 +289,32 @@ namespace roundhouse.databases.mysql.parser
 
                 if (IsAtEnd()) {
                     // unterminated string
-                    throw new ParserException("Unterminated quoted value on line " + line);
+                    throw new ParserException("Unterminated double quoted value on line " + line);
                 }
             }
 
             Advance(); // closing quote
             AddToken(Token.Type.AnsiQuote);
+        }
+
+        private void SingleQuoted()
+        {
+            while (!IsAtEnd() && !IsSingleQuote(Peek())) {
+                
+                if (Peek() == '\n') {
+                    line++;
+                }
+
+                Advance();
+
+                if (IsAtEnd()) {
+                    // unterminated string
+                    throw new ParserException("Unterminated single quoted value on line " + line);
+                }
+            }
+
+            Advance(); // closing quote
+            AddToken(Token.Type.SingleQuote);
         }
 
         private void General()
@@ -391,6 +415,11 @@ namespace roundhouse.databases.mysql.parser
         private static bool IsAnsiQuote(char c) 
         {
             return c == '"';
+        }
+
+        private static bool IsSingleQuote(char c)
+        {
+            return c == '\'';
         }
 
         private void DelimiterDeclaration() {

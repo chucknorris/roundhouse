@@ -15,6 +15,7 @@ namespace roundhouse.databases.mysql.parser
             Text,              // SQL script text
             Quote,             // quoted text
             AnsiQuote,         // ANSI quoted text
+            SingleQuote,       // Single quited text
             Whitespace,        // whitespace
             EndOfLine,         // end of line
             EndOfFile          // end of file
