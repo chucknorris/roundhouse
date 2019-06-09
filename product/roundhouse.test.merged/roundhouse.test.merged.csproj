@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--<TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>-->
+    <TargetFramework>net461</TargetFramework>
+    <CLSCompliant>true</CLSCompliant>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <OutputType>Library</OutputType>
+    <RootNamespace>roundhouse.test.merged</RootNamespace>
+    <AssemblyName>roundhouse.test.merged</AssemblyName>
+    <NoWarn>NU1701;CS0618</NoWarn>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Castle.Core" Version="4.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
+    <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
+    <PackageReference Include="Moq" Version="4.11.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.16" />
+    <PackageReference Include="Npgsql" Version="4.0.7" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.10.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+    <PackageReference Include="roundhouse.lib" Version="1.0-*" />
+    <PackageReference Include="Should" Version="1.1.20" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
+    <PackageReference Include="TinySpec.NUnit" Version="0.9.5" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="System.Data.OracleClient" />
+  </ItemGroup>
+
+  <ItemGroup Condition="false">
+    <Compile Include="../roundhouse.tests/**/*.cs" Exclude="**/bin/**;**/**/obj/**;../roundhouse.tests/sqlsplitters/MySqlStatementSplitterSpecs.cs;../roundhouse.tests/infrastructure.app/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="infrastructure\filesystem\*.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<log4net>
+
+  <root>
+    <level value="INFO"/>
+  </root>
+
+  <!--Standard NHibernate Logging Settings-->
+  <logger name="NHibernate">
+    <level value="ERROR"/>
+  </logger>
+
+  <logger name="NHibernate.SQL">
+    <level value="ERROR"/>
+  </logger>
+  
+  <logger name="roundhouse">
+    <level value="INFO"/>
+  </logger>
+  
+</log4net>
