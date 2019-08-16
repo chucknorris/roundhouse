@@ -18,7 +18,6 @@ WHERE datname = lower('{database_name}');";
             return db_exists == 0 
                 ? $"CREATE DATABASE {database_name};" 
                 : "SELECT 0";
-
         }
 
         protected override string build_connection_string(string host, string database, string username, string password)
