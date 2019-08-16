@@ -92,13 +92,13 @@ namespace roundhouse.databases.postgresql
             provider = "Npgsql";
         }
 
-        private static string build_connection_string(string server_name, string database_name, string user_name, string password)
+        protected virtual string build_connection_string(string host, string database, string username, string password)
         {
             var csb = new NpgsqlConnectionStringBuilder();
             
-            csb.Host = server_name;
-            csb.Database = database_name;
-            csb.Username = user_name;
+            csb.Host = host;
+            csb.Database = database;
+            csb.Username = username;
             csb.Password = password;
             csb.Port = 5432;
 
