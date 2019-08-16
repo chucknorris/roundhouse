@@ -6,6 +6,21 @@
 
     public class RedshiftSQLDatabase : PostgreSQLDatabase
     {
+        public override string create_database_script()
+        {
+            var check_database_exists_script = $@"
+SELECT 
+count (*)
+FROM pg_catalog.pg_database
+WHERE datname = lower('{database_name}');";
+
+            var db_exists = (long) run_sql_scalar(check_database_exists_script, ConnectionType.Default);
+            return db_exists == 0 
+                ? $"CREATE DATABASE {database_name};" 
+                : "SELECT 0";
+
+        }
+
         protected override string build_connection_string(string host, string database, string username, string password)
         {
             var cs = base.build_connection_string(host, database, username, password);
