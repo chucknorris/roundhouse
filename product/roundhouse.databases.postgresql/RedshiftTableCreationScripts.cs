@@ -33,7 +33,7 @@ WHERE schemaname = lower('{roundhouse_schema_name}') AND tablename = lower('{ver
             return $@"
 CREATE TABLE {full_version_table_name}
 (
-	id			        INTEGER IDENTITY(1,1)	NOT NULL
+	id			        INTEGER                 NOT NULL
 	,repository_path    VARCHAR(255)	        NULL
 	,version		    VARCHAR(50)	            NULL
 	,entry_date		    TIMESTAMP       	    NOT NULL DEFAULT current_timestamp
@@ -60,7 +60,7 @@ GRANT SELECT ON TABLE {full_version_table_name} TO public;
 			return $@"
 CREATE TABLE {full_scripts_run_table_name}
 (
-	 id			        INTEGER IDENTITY(1,1)   NOT NULL
+	 id			        INTEGER                 NOT NULL
 	,version_id		    INTEGER			        NULL
 	,script_name		VARCHAR(255)		    NULL
 	,text_of_script		TEXT			        NULL
@@ -70,7 +70,7 @@ CREATE TABLE {full_scripts_run_table_name}
 	,modified_date		TIMESTAMP		        NOT NULL DEFAULT current_timestamp
 	,entered_by		    VARCHAR(50)		        NULL
 );
-​
+
 ALTER TABLE {full_scripts_run_table_name} ADD CONSTRAINT {scripts_run_table_name}_pk PRIMARY KEY(id);
 
 ALTER TABLE {full_scripts_run_table_name} ADD CONSTRAINT {scripts_run_table_name}_{version_table_name}_fk FOREIGN KEY(version_id) REFERENCES {full_version_table_name}(id);
@@ -91,7 +91,7 @@ GRANT SELECT ON TABLE {full_scripts_run_table_name} TO public;
             return $@"
 CREATE TABLE {full_run_errors_table_name}
 (
-	 id			                INTEGER IDENTITY(1,1)   NOT NULL
+	 id			                INTEGER                 NOT NULL
 	,repository_path			VARCHAR(255)	        NULL
 	,version				    VARCHAR(50)	            NULL
 	,script_name				VARCHAR(255)	        NULL
@@ -103,7 +103,7 @@ CREATE TABLE {full_run_errors_table_name}
 	,entered_by				    VARCHAR(50)	            NULL
 );
 
-ALTER TABLE {full_run_errors_table_name} ADD CONSTRAINT {full_run_errors_table_name}_pk PRIMARY KEY(id);
+ALTER TABLE {full_run_errors_table_name} ADD CONSTRAINT {scripts_run_errors_table_name}_pk PRIMARY KEY(id);
 
 GRANT SELECT ON TABLE {full_run_errors_table_name} TO public;
 ";
