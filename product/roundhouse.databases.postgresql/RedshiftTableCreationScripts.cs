@@ -63,7 +63,7 @@ CREATE TABLE {full_scripts_run_table_name}
 	 id			        INTEGER                 NOT NULL
 	,version_id		    INTEGER			        NULL
 	,script_name		VARCHAR(255)		    NULL
-	,text_of_script		TEXT			        NULL
+	,text_of_script		VARCHAR(MAX)	        NULL
 	,text_hash		    VARCHAR(512)	        NULL
 	,one_time_script	BOOLEAN			        NULL DEFAULT false
 	,entry_date		    TIMESTAMP		        NOT NULL DEFAULT current_timestamp
@@ -95,9 +95,9 @@ CREATE TABLE {full_run_errors_table_name}
 	,repository_path			VARCHAR(255)	        NULL
 	,version				    VARCHAR(50)	            NULL
 	,script_name				VARCHAR(255)	        NULL
-	,text_of_script				TEXT		            NULL
-	,erroneous_part_of_script   TEXT		            NULL
-	,error_message				TEXT		            NULL
+    ,text_of_script				VARCHAR(MAX)		    NULL
+	,erroneous_part_of_script   VARCHAR(MAX)		    NULL
+	,error_message				VARCHAR(MAX)		    NULL
 	,entry_date				    TIMESTAMP	            NOT NULL DEFAULT current_timestamp
 	,modified_date				TIMESTAMP	            NOT NULL DEFAULT current_timestamp
 	,entered_by				    VARCHAR(50)	            NULL
