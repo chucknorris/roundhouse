@@ -1,24 +1,21 @@
 using System.Collections.Generic;
-using System.Linq;
 using roundhouse.environments;
 
 namespace roundhouse.migrators
 {
     using System;
-    using cryptography;
     using databases;
     using infrastructure.app;
     using infrastructure.app.tokens;
     using infrastructure.extensions;
     using infrastructure.logging;
     using sqlsplitters;
-    using Environment = roundhouse.environments.Environment;
     using System.Linq;
 
     public sealed class DefaultDatabaseMigrator : DatabaseMigrator
     {
         public Database database { get; set; }
-        private readonly CryptographicService crypto_provider;
+        private readonly HashGenerator hash_generator;
         private readonly ConfigurationPropertyHolder configuration;
         private readonly bool restoring_database;
         private readonly string restore_path;
@@ -31,10 +28,10 @@ namespace roundhouse.migrators
         private readonly bool is_baseline;
         private readonly bool is_dryrun;
 
-        public DefaultDatabaseMigrator(Database database, CryptographicService crypto_provider, ConfigurationPropertyHolder configuration)
+        public DefaultDatabaseMigrator(Database database, HashGenerator hash_generator, ConfigurationPropertyHolder configuration)
         {
             this.database = database;
-            this.crypto_provider = crypto_provider;
+            this.hash_generator = hash_generator;
             this.configuration = configuration;
             restoring_database = configuration.Restore;
             restore_path = configuration.RestoreFromPath;
@@ -259,21 +256,13 @@ namespace roundhouse.migrators
         public void record_script_in_scripts_run_table(string script_name, string sql_to_run, bool run_this_script_once, long version_id)
         {
             Log.bound_to(this).log_a_debug_event_containing("Recording {0} script ran on {1} - {2}.", script_name, database.server_name, database.database_name);
-            database.insert_script_run(script_name, sql_to_run, create_hash(sql_to_run, true), run_this_script_once, version_id);
+            database.insert_script_run(script_name, sql_to_run, hash_generator.create_hash(sql_to_run, true), run_this_script_once, version_id);
         }
 
         public void record_script_in_scripts_run_errors_table(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
         {
             Log.bound_to(this).log_a_debug_event_containing("Recording {0} script ran with error on {1} - {2}.", script_name, database.server_name, database.database_name);
             database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, repository_version, repository_path);
-        }
-
-        private string create_hash(string sql_to_run, bool normalizeEndings)
-        {
-            var input = sql_to_run.Replace(@"'", @"''");
-            if (normalizeEndings)
-                input = input.Replace(WindowsLineEnding, UnixLineEnding).Replace(MacLineEnding, UnixLineEnding);
-            return crypto_provider.hash(input);
         }
 
         public bool this_is_an_every_time_script(string script_name, bool run_this_script_every_time)
@@ -322,44 +311,7 @@ namespace roundhouse.migrators
 
             if (string.IsNullOrEmpty(old_text_hash)) return true;
 
-
-            // These check hashes from before the normalization change and after
-            // The change does result in a different hash that will not be the result of
-            // any sore of file change and therefore should not be logged.
-            bool hash_is_same = 
-                hashes_are_equal(create_hash(sql_to_run, true), old_text_hash) ||   // New hash
-                hashes_are_equal(create_hash(sql_to_run, false), old_text_hash);    // Old hash
-
-            if (!hash_is_same)
-            {
-                // extra checks if only line endings have changed
-                hash_is_same = have_same_hash_ignoring_platform(sql_to_run, old_text_hash);
-                if (hash_is_same)
-                {
-                    Log.bound_to(this).log_a_warning_event_containing("Script {0} had different line endings than before but equal content", script_name);
-                }
-            }
-
-            return !hash_is_same;
-        }
-
-        private bool hashes_are_equal(string new_text_hash, string old_text_hash)
-        {
-            return string.Compare(old_text_hash, new_text_hash, true) == 0;
-        }
-
-        private const string WindowsLineEnding = "\r\n";
-        private const string UnixLineEnding = "\n";
-        private const string MacLineEnding = "\r";
-
-        private bool have_same_hash_ignoring_platform(string sql_to_run, string old_text_hash)
-        {
-            var lineEndingVariations = new List<string> {WindowsLineEnding, UnixLineEnding, MacLineEnding};
-
-            return lineEndingVariations.Any(variation => {
-                var normalized_sql = lineEndingVariations.Aggregate(sql_to_run, (norm, ending) => norm.Replace(ending, variation));
-                return hashes_are_equal(create_hash(normalized_sql, false), old_text_hash);
-            });
+            return !hash_generator.have_same_hash(script_name, sql_to_run, old_text_hash);
         }
 
         private bool this_script_should_run(string script_name, string sql_to_run, bool run_this_script_once, bool run_this_script_every_time)
