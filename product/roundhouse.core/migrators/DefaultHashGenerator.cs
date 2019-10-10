@@ -12,10 +12,12 @@ namespace roundhouse.migrators
         private const string MacLineEnding = "\r";
 
         private readonly CryptographicService crypto_provider;
+        private readonly IReadOnlyCollection<string> line_ending_variations;
 
         public DefaultHashGenerator(CryptographicService crypto_provider)
         {
             this.crypto_provider = crypto_provider;
+            this.line_ending_variations = new List<string> { WindowsLineEnding, UnixLineEnding, MacLineEnding };
         }
 
         public string create_hash(string sql_to_run, bool normalizeEndings)
@@ -55,10 +57,8 @@ namespace roundhouse.migrators
 
         private bool have_same_hash_ignoring_platform(string sql_to_run, string old_text_hash)
         {
-            var lineEndingVariations = new List<string> {WindowsLineEnding, UnixLineEnding, MacLineEnding};
-
-            return lineEndingVariations.Any(variation => {
-                var normalized_sql = lineEndingVariations.Aggregate(sql_to_run, (norm, ending) => norm.Replace(ending, variation));
+            return line_ending_variations.Any(variation => {
+                var normalized_sql = line_ending_variations.Aggregate(sql_to_run, (norm, ending) => norm.Replace(ending, variation));
                 return hashes_are_equal(create_hash(normalized_sql, false), old_text_hash);
             });
         }
