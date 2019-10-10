@@ -13,11 +13,17 @@ namespace roundhouse.migrators
 
         private readonly CryptographicService crypto_provider;
         private readonly IReadOnlyCollection<string> line_ending_variations;
+        private readonly IReadOnlyCollection<(string variation1, string variation2)> line_ending_conversions;
 
         public DefaultHashGenerator(CryptographicService crypto_provider)
         {
             this.crypto_provider = crypto_provider;
-            this.line_ending_variations = new List<string> { WindowsLineEnding, UnixLineEnding, MacLineEnding };
+            this.line_ending_variations = new [] { WindowsLineEnding, UnixLineEnding, MacLineEnding };
+            this.line_ending_conversions = line_ending_variations
+                .SelectMany(variation1 => line_ending_variations
+                    .Where(variation2 => variation2 != variation1)
+                    .Select(variation2 => (variation1, variation2)))
+                .ToArray();
         }
 
         public string create_hash(string sql_to_run, bool normalizeEndings)
@@ -32,7 +38,7 @@ namespace roundhouse.migrators
         {
             // These check hashes from before the normalization change and after
             // The change does result in a different hash that will not be the result of
-            // any sore of file change and therefore should not be logged.
+            // any sort of file change and therefore should not be logged.
             bool hash_is_same =
                 hashes_are_equal(create_hash(sql_to_run, true), old_text_hash) ||   // New hash
                 hashes_are_equal(create_hash(sql_to_run, false), old_text_hash);    // Old hash
@@ -57,8 +63,9 @@ namespace roundhouse.migrators
 
         private bool have_same_hash_ignoring_platform(string sql_to_run, string old_text_hash)
         {
-            return line_ending_variations.Any(variation => {
-                var normalized_sql = line_ending_variations.Aggregate(sql_to_run, (norm, ending) => norm.Replace(ending, variation));
+            return line_ending_conversions.Any(conversion =>
+            {
+                var normalized_sql = sql_to_run.Replace(conversion.variation1, conversion.variation2);
                 return hashes_are_equal(create_hash(normalized_sql, false), old_text_hash);
             });
         }
