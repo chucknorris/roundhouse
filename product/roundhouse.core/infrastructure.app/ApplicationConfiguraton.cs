@@ -182,7 +182,8 @@ namespace roundhouse.infrastructure.app
             var known_folders = KnownFoldersBuilder.build(file_system, configuration_property_holder);
             var log_factory = new MultipleLoggerLogFactory();
             var crypto_service = new MD5CryptographicService();
-            var db_migrator = new DefaultDatabaseMigrator(database, crypto_service, configuration_property_holder);
+            var hash_generator = new DefaultHashGenerator(crypto_service);
+            var db_migrator = new DefaultDatabaseMigrator(database, hash_generator, configuration_property_holder);
             var version_resolver = VersionResolverBuilder.build(file_system, configuration_property_holder);
             var environment_set = new DefaultEnvironmentSet(configuration_property_holder);
             var initializer = new FileSystemInitializer(known_folders);
