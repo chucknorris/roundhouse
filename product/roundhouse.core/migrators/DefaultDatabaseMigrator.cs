@@ -256,7 +256,7 @@ namespace roundhouse.migrators
         public void record_script_in_scripts_run_table(string script_name, string sql_to_run, bool run_this_script_once, long version_id)
         {
             var hash = hash_generator.create_hash(sql_to_run, true);
-            if (!configuration.DoNotStoreScriptsRunText)
+            if (configuration.DoNotStoreScriptsRunText)
             {
                 sql_to_run = null;
             }
@@ -267,7 +267,7 @@ namespace roundhouse.migrators
 
         public void record_script_in_scripts_run_errors_table(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
         {
-            if (!configuration.DoNotStoreScriptsRunText)
+            if (configuration.DoNotStoreScriptsRunText)
             {
                 sql_to_run = null;
             }
