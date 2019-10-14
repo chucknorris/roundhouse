@@ -255,12 +255,23 @@ namespace roundhouse.migrators
 
         public void record_script_in_scripts_run_table(string script_name, string sql_to_run, bool run_this_script_once, long version_id)
         {
+            var hash = hash_generator.create_hash(sql_to_run, true);
+            if (configuration.DoNotStoreScriptsRunText)
+            {
+                sql_to_run = null;
+            }
+
             Log.bound_to(this).log_a_debug_event_containing("Recording {0} script ran on {1} - {2}.", script_name, database.server_name, database.database_name);
-            database.insert_script_run(script_name, sql_to_run, hash_generator.create_hash(sql_to_run, true), run_this_script_once, version_id);
+            database.insert_script_run(script_name, sql_to_run, hash, run_this_script_once, version_id);
         }
 
         public void record_script_in_scripts_run_errors_table(string script_name, string sql_to_run, string sql_erroneous_part, string error_message, string repository_version, string repository_path)
         {
+            if (configuration.DoNotStoreScriptsRunText)
+            {
+                sql_to_run = null;
+            }
+
             Log.bound_to(this).log_a_debug_event_containing("Recording {0} script ran with error on {1} - {2}.", script_name, database.server_name, database.database_name);
             database.insert_script_run_error(script_name, sql_to_run, sql_erroneous_part, error_message, repository_version, repository_path);
         }

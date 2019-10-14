@@ -46,6 +46,7 @@ namespace roundhouse.consoles
         public string VersionTableName { get; set; }
         public string ScriptsRunTableName { get; set; }
         public string ScriptsRunErrorsTableName { get; set; }
+        public bool DoNotStoreScriptsRunText { get; set; }
         [Obsolete("Use EnvironmentNames")]
         public string EnvironmentName {
             get { return EnvironmentNames.SingleOrDefault(); }
@@ -105,6 +106,7 @@ namespace roundhouse.consoles
             tokens["DisableTokenReplacement"] = DisableTokenReplacement.to_string();
             tokens["DoNotAlterDatabase"] = DoNotAlterDatabase.to_string();
             tokens["DoNotCreateDatabase"] = DoNotCreateDatabase.to_string();
+            tokens["DoNotStoreScriptsRunText"] = DoNotStoreScriptsRunText.to_string();
             tokens["DownFolderName"] = DownFolderName.to_string();
             tokens["Drop"] = Drop.to_string();
             tokens["DryRun"] = DryRun.to_string();

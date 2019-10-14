@@ -359,6 +359,10 @@ namespace roundhouse.console
                 .Add("isuptodate",
                      "This option prints whether there are any database updates or not, without actually running them. Other output except errors is disabled, to make it easy to use in scripts.",
                      option => { })
+                //do not store full text of run scripts
+                .Add("donotstorescriptsruntext",
+                     "DoNotStoreScriptsRunText - This instructs RH to not store the full script text in the database. Defaults to false.",
+                     option => configuration.DoNotStoreScriptsRunText = option != null)
                 // default encoding
                 .Add("defaultencoding=",
                      "Default encoding to use for loading script file from disk if file doesn't contain BOM. For the list of possible values see the column Name in table listed in .NET Encoding class documentation. Defaults to UTF-8",

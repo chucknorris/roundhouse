@@ -112,6 +112,8 @@ namespace roundhouse.tasks
 
         public string ScriptsRunErrorsTableName { get; set; }
 
+        public bool DoNotStoreScriptsRunText { get; set; }
+
         [Obsolete("Use EnvironmentNames")]
         public string EnvironmentName {
             get { return EnvironmentNames.SingleOrDefault(); }
@@ -229,6 +231,7 @@ namespace roundhouse.tasks
                 { nameof(DisableTokenReplacement), DisableTokenReplacement.to_string() },
                 { nameof(DoNotAlterDatabase), DoNotAlterDatabase.to_string() },
                 { nameof(DoNotCreateDatabase), DoNotCreateDatabase.to_string() },
+                { nameof(DoNotStoreScriptsRunText), DoNotStoreScriptsRunText.to_string() },
                 { nameof(DownFolderName), DownFolderName.to_string() },
                 { nameof(Drop), Drop.to_string() },
                 { nameof(DryRun), DryRun.to_string() },
