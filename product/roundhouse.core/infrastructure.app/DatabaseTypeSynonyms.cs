@@ -54,6 +54,9 @@ namespace roundhouse.infrastructure.app
                 case "postgresql":
                     database_type_full_name = "roundhouse.databases.postgresql.PostgreSQLDatabase, roundhouse.databases.postgresql";
                     break;
+                case "redshift":
+                    database_type_full_name = "roundhouse.databases.postgresql.RedshiftSQLDatabase, roundhouse.databases.postgresql";
+                    break;
                     //case "oledb":
                     //    database_type_full_name =
                     //        "roundhouse.databases.oledb.OleDbDatabase, roundhouse.databases.oledb";

@@ -40,6 +40,8 @@ namespace roundhouse.infrastructure.persistence
                                 () => SQLiteConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.postgresql.PostgreSQLDatabase, roundhouse.databases.postgresql",
                                 () => PostgreSQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
+            func_dictionary.Add("roundhouse.databases.postgresql.RedshiftSQLDatabase, roundhouse.databases.postgresql",
+                                () => PostgreSQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             // merged
             string merged_assembly_name = ApplicationParameters.get_merged_assembly_name();
             func_dictionary.Add("roundhouse.databases.sqlserver.SqlServerDatabase, " + merged_assembly_name,
@@ -58,6 +60,8 @@ namespace roundhouse.infrastructure.persistence
             func_dictionary.Add("roundhouse.databases.sqlite.SqliteDatabase, " + merged_assembly_name,
                                 () => SQLiteConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
             func_dictionary.Add("roundhouse.databases.postgresql.PostgreSQLDatabase, " + merged_assembly_name,
+                                () => PostgreSQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
+            func_dictionary.Add("roundhouse.databases.postgresql.RedshiftSQLDatabase, " + merged_assembly_name,
                                 () => PostgreSQLConfiguration.Standard.ConnectionString(configuration_holder.ConnectionString));
         }
 

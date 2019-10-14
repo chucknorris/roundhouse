@@ -53,6 +53,11 @@ namespace roundhouse.tests.databases
             public DbProviderFactory factory => get_db_provider_factory();
         }
 
+        public class TestableRedshiftSQLDatabase : RedshiftSQLDatabase, ITestableDatabase
+        {
+            public DbProviderFactory factory => get_db_provider_factory();
+        }
+
         public class TestableSqliteDatabase : SqliteDatabase, ITestableDatabase
         {
             public DbProviderFactory factory => get_db_provider_factory();
