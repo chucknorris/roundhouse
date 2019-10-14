@@ -297,7 +297,7 @@ namespace roundhouse.databases.sqlserverce
             }
         }
 
-        public override long insert_version_and_get_version_id(string repository_path, string repository_version)
+        public override long insert_version_and_get_version_id(string repository_path, string repository_version, bool is_dry_run)
         {
             string version = get_version(null);
 
@@ -315,7 +315,7 @@ namespace roundhouse.databases.sqlserverce
 
                     DateTime now = DateTime.Now;
 
-                    if (lNewVersion > lVersion)
+                    if (lNewVersion > lVersion && !is_dry_run)
                     {
                         using (SqlCeCommand cmd = conn.CreateCommand())
                         {

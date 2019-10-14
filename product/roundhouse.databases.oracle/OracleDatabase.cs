@@ -148,16 +148,19 @@ namespace roundhouse.databases.oracle
                roundhouse_schema_name, table_name);
         }
 
-        public override long insert_version_and_get_version_id(string repository_path, string repository_version)
+        public override long insert_version_and_get_version_id(string repository_path, string repository_version, bool is_dry_run)
         {
-            var insert_parameters = new List<IParameter<IDbDataParameter>>
+            if (!is_dry_run)
+            {
+                var insert_parameters = new List<IParameter<IDbDataParameter>>
                                         {
                                             create_parameter("repository_path", DbType.AnsiString, repository_path, 255),
                                             create_parameter("repository_version", DbType.AnsiString, repository_version, 35),
                                             create_parameter("user_name", DbType.AnsiString, user_name, 50)
                                         };
-            run_sql(insert_version_script(), ConnectionType.Default, insert_parameters);
-
+                run_sql(insert_version_script(), ConnectionType.Default, insert_parameters);
+            }
+            
             var select_parameters = new List<IParameter<IDbDataParameter>> { create_parameter("repository_path", DbType.AnsiString, repository_path, 255) };
             return Convert.ToInt64(run_sql_scalar(get_version_id_script(), ConnectionType.Default, select_parameters));
         }

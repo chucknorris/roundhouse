@@ -162,7 +162,7 @@ namespace roundhouse.migrators
         public long version_the_database(string repository_path, string repository_version)
         {
             Log.bound_to(this).log_an_info_event_containing(" Versioning {0} database with version {1} based on {2}.", database.database_name, repository_version, repository_path);
-            return database.insert_version_and_get_version_id(repository_path, repository_version);
+            return database.insert_version_and_get_version_id(repository_path, repository_version, is_dryrun);
         }
 
         public bool run_sql(string sql_to_run, string script_name, bool run_this_script_once, bool run_this_script_every_time, long version_id, EnvironmentSet environment_set, string repository_version, string repository_path, ConnectionType connection_type)

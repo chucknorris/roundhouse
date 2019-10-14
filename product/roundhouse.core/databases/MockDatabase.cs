@@ -238,7 +238,7 @@ namespace roundhouse.databases
             return string.Empty;
         }
 
-        public long insert_version_and_get_version_id(string repository_path, string repository_version)
+        public long insert_version_and_get_version_id(string repository_path, string repository_version, bool is_dry_run)
         {
             return 0;
         }
