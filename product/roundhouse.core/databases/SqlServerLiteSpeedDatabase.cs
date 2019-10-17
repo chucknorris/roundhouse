@@ -231,9 +231,9 @@ namespace roundhouse.databases
             return database.get_version(repository_path);
         }
 
-        public long insert_version_and_get_version_id(string repository_path, string repository_version)
+        public long insert_version_and_get_version_id(string repository_path, string repository_version, bool is_dry_run)
         {
-            return database.insert_version_and_get_version_id(repository_path, repository_version);
+            return database.insert_version_and_get_version_id(repository_path, repository_version, is_dry_run);
         }
 
         public bool has_run_script_already(string script_name)

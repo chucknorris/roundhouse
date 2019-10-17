@@ -306,28 +306,31 @@ namespace roundhouse.databases
         }
 
         //get rid of the virtual
-        public virtual long insert_version_and_get_version_id(string repository_path, string repository_version)
+        public virtual long insert_version_and_get_version_id(string repository_path, string repository_version, bool is_dry_run)
         {
             long version_id = 0;
 
-            Version version = new Version
-                                  {
-                                      version = repository_version ?? string.Empty,
-                                      repository_path = repository_path ?? string.Empty,
-                                  };
-
-            try
+            if (!is_dry_run)
             {
-                retry_policy.Execute(() => repository.save_or_update(version));
-                version_id = version.id;
-            }
-            catch (Exception ex)
-            {
-                Log.bound_to(this).log_an_error_event_containing("{0} with provider {1} does not provide a facility for inserting versions at this time.{2}{3}",
-                                                                 GetType(), provider, Environment.NewLine, ex.Message);
-                throw;
-            }
+                Version version = new Version
+                {
+                    version = repository_version ?? string.Empty,
+                    repository_path = repository_path ?? string.Empty,
+                };
 
+                try
+                {
+                    retry_policy.Execute(() => repository.save_or_update(version));
+                    version_id = version.id;
+                }
+                catch (Exception ex)
+                {
+                    Log.bound_to(this).log_an_error_event_containing("{0} with provider {1} does not provide a facility for inserting versions at this time.{2}{3}",
+                                                                     GetType(), provider, Environment.NewLine, ex.Message);
+                    throw;
+                }
+            }
+            
             return version_id;
         }
 
