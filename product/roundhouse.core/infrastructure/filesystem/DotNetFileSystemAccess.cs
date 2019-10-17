@@ -370,7 +370,7 @@ namespace roundhouse.infrastructure.filesystem
         /// <returns>A list of subdirectories inside of the existing directory</returns>
         public string[] get_all_directory_name_strings_in(string directory)
         {
-            return Directory.GetDirectories(directory);
+            return Directory.GetDirectories(directory).OrderBy(d => d).ToArray();
         }
 
         /// <summary>
