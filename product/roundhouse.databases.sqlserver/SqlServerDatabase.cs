@@ -35,6 +35,7 @@ namespace roundhouse.databases.sqlserver
 
         private string connect_options = "Integrated Security=SSPI;";
         private readonly TransientErrorDetectionStrategy error_detection_strategy = new TransientErrorDetectionStrategy();
+        private string access_token;
 
         public override string sql_statement_separator_regex_pattern
         {
@@ -50,6 +51,8 @@ namespace roundhouse.databases.sqlserver
 
         public override void initialize_connections(ConfigurationPropertyHolder configuration_property_holder)
         {
+            access_token = configuration_property_holder.AccessToken;
+
             if (!string.IsNullOrEmpty(connection_string))
             {
                 var connection_string_builder = new SqlConnectionStringBuilder(connection_string);
@@ -102,6 +105,10 @@ namespace roundhouse.databases.sqlserver
             var command_retry_policy = Policy.Handle<Exception>().Retry(0);
 
             var connection = new ReliableSqlConnection(conn_string, connection_retry_policy, command_retry_policy);
+            if (!string.IsNullOrEmpty(access_token))
+            {
+                connection.AccessToken = access_token;
+            }
 
             connection_specific_setup(connection);
             return new AdoNetConnection(connection);

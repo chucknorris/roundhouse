@@ -133,6 +133,9 @@ namespace roundhouse.console
                      string.Format(
                          "ConnectionStringAdministration - This is used for connecting to master when you may have a different uid and password than normal."),
                      option => configuration.ConnectionStringAdmin = option)
+                .Add("accesstoken=",
+                     "AccessToken - This connection property is used to connect to a SQL Database using an access token (for example Azure AD token).",
+                     option => configuration.AccessToken = option)
                 .Add("ct=|commandtimeout=",
                      string.Format(
                          "CommandTimeout - This is the timeout when commands are run. This is not for admin commands or restore. Defaults to \"{0}\".",
@@ -398,6 +401,7 @@ namespace roundhouse.console
                         "/[sql]f[ilesdirectory] VALUE " +
                         "/s[ervername] VALUE " +
                         "/c[onnection]s[tring]a[dministration] VALUE " +
+                        "/accesstoken VALUE " +
                         "/c[ommand]t[imeout] VALUE /c[ommand]t[imeout]a[dmin] VALUE " +
                         "/r[epositorypath] VALUE /v[ersion] VALUE /v[ersion]f[ile] VALUE /v[ersion]x[path] VALUE " +
                         "/a[lter]d[atabasefoldername] /r[un]a[fter]c[reate]d[atabasefoldername] VALUE VALUE " +

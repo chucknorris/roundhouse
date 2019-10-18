@@ -28,7 +28,8 @@ namespace roundhouse.databases.sqlserver
         private readonly RetryPolicy connection_string_failover_policy = get_default_retry_policy();
         
         private string connection_string;
-        
+        private string access_token;
+
        
         private static RetryPolicy get_default_retry_policy()
         {
@@ -96,6 +97,19 @@ namespace roundhouse.databases.sqlserver
             {
                 connection_string = value;
                 underlying_connection.ConnectionString = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the access token for a connection
+        /// </summary>
+        public string AccessToken
+        {
+            get => access_token;
+            set
+            {
+                access_token = value;
+                underlying_connection.AccessToken = value;
             }
         }
 

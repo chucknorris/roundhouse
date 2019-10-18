@@ -20,6 +20,7 @@ namespace roundhouse.consoles
         public string DatabaseName { get; set; }
         public string ConnectionString { get; set; }
         public string ConnectionStringAdmin { get; set; }
+        public string AccessToken { get; set; }
         public int CommandTimeout { get; set; }
         public int CommandTimeoutAdmin { get; set; }
         public string SqlFilesDirectory { get; set; }
@@ -89,6 +90,7 @@ namespace roundhouse.consoles
         public IDictionary<string, string> to_token_dictionary()
         {
             var tokens = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            tokens["AccessToken"] = AccessToken.to_string();
             tokens["AfterMigrationFolderName"] = AfterMigrationFolderName.to_string();
             tokens["AlterDatabaseFolderName"] = AlterDatabaseFolderName.to_string();
             tokens["Baseline"] = Baseline.to_string();
