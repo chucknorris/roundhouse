@@ -95,8 +95,8 @@ source code (esp. in the `build` folder), but this is probably going to be remov
 
 To work with the command line, you will need the following in your path:
  - MS Build
- - GitVersion (easiest to run choco install gitversion.portable. You are running chocolately aren't you?)
- - NuGet Command Line (easiest to run choco install nuget.commandline. You are running chocolately aren't you?)
+ - GitVersion (easiest to run choco install gitversion.portable. You are running chocolatey aren't you?)
+ - NuGet Command Line (easiest to run choco install nuget.commandline. You are running chocolatey aren't you?)
 
 ### IMPORTANT
 NOTE: If you are looking at the source - please run build.ps1 before opening the solution. It extracts the `keywords.txt` files needed for ILMerge-ing MySql dlls, and build will complain without them.
