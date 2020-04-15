@@ -14,6 +14,7 @@ namespace roundhouse.infrastructure.app
         string DatabaseName { get; set; }
         string ConnectionString { get; set; }
         string ConnectionStringAdmin { get; set; }
+        string AccessToken { get; set; }
         int CommandTimeout { get; set; }
         int CommandTimeoutAdmin { get; set; }
         string SqlFilesDirectory { get; set; }

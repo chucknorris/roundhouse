@@ -60,6 +60,8 @@ namespace roundhouse.tasks
 
         public string ConnectionStringAdmin { get; set; }
 
+        public string AccessToken { get; set; }
+
         public int CommandTimeout { get; set; }
 
         public int CommandTimeoutAdmin { get; set; }
@@ -214,6 +216,7 @@ namespace roundhouse.tasks
         {
             var tokens = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
+                { nameof(AccessToken), AccessToken.to_string() },
                 { nameof(AfterMigrationFolderName), AfterMigrationFolderName.to_string() },
                 { nameof(AlterDatabaseFolderName), AlterDatabaseFolderName.to_string() },
                 { nameof(Baseline), Baseline.to_string() },
