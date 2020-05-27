@@ -22,6 +22,7 @@ using log4net.Repository;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using log4net.Core;
+using System.Text;
 
 namespace roundhouse.console
 {
@@ -376,6 +377,24 @@ namespace roundhouse.console
                                  configuration.DefaultEncoding = System.Text.Encoding.GetEncoding(option);
                              }
                          })
+                 .Add("cse|connectionstringbase64encoded",
+                     "Use Base64 encoded connection string to avoid issues with special symbols",
+                    option =>
+                    {
+                        if (option != null)
+                        {
+                            configuration.ConnectionString = Encoding.UTF8.GetString(Convert.FromBase64String(configuration.ConnectionString));
+                        }
+                    })
+                .Add("csae|connectionstringadminbase64encoded",
+                     "Use Base64 encoded admin connection string to avoid issues with special symbols",
+                    option =>
+                    {
+                        if (option != null)
+                        {
+                            configuration.ConnectionStringAdmin = Encoding.UTF8.GetString(Convert.FromBase64String(configuration.ConnectionStringAdmin));
+                        }
+                    })
                 //load configuration from file
                 .Add("cf=|configfile=|configurationfile=",
                     "Loads configuration options from a JSON file",
@@ -427,7 +446,9 @@ namespace roundhouse.console
                         "/disabletokenreplacement " +
                         "/baseline " +
                         "/dryrun " +
-                        "/search[allsubdirectories]insteadoftraverse " +
+                        "/search[allsubdirectories]insteadoftraverse " + 
+                        "/c[onnection]s[tringbase64]e[ncoded] " +
+                        "/c[onnection]s[tring]a[dminbase64]e[ncoded] " +
                         "/isuptodate" +
                         "/defaultencoding VALUE" +
                         "]", Environment.NewLine);
