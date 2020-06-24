@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.2-sdk
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 
 LABEL maintainer="erik@brandstadmoen.net"
 
