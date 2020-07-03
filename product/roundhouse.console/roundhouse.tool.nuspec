@@ -18,9 +18,10 @@
     <dependencies>
       <group targetFramework=".NETCoreApp2.1" />
     </dependencies>
-    <iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
+    <icon>images/RoundhousE_Logo.NuGet.jpg</icon>
   </metadata>
   <files>
-    <file src="bin\netcoreapp2.1\publish\**\**" target="tools\netcoreapp2.1\any" />
+    <file src="bin/netcoreapp2.1/publish/**/**" target="tools/netcoreapp2.1/any" />
+    <file src="../../nuget/RoundhousE_Logo.NuGet.jpg" target="images/" />
   </files>
 </package>
