@@ -30,7 +30,7 @@ This is the SQLite database package.
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>roundhouse db migration database migrator chucknorris sqlite</PackageTags>
-    <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
+    <PackageIcon>images/RoundhousE_Logo.NuGet.jpg</PackageIcon>
   </PropertyGroup>
   
     
@@ -62,6 +62,7 @@ This is the SQLite database package.
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="../../nuget/RoundhousE_Logo.NuGet.jpg" Pack="true" PackagePath="/images"/>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(NuGetPackageRoot)system.data.sqlite.core\1.0.109.2\lib\$(TargetFramework)\System.Data.SQLite.dll">

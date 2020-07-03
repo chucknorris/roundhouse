@@ -31,7 +31,7 @@ This is the Microsoft SQL Server 2000 database package.
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>roundhouse db migration database migrator chucknorris sqlserver sqlserver2000</PackageTags>
-    <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
+    <PackageIcon>images/RoundhousE_Logo.NuGet.jpg</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -52,6 +52,9 @@ This is the Microsoft SQL Server 2000 database package.
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../nuget/RoundhousE_Logo.NuGet.jpg" Pack="true" PackagePath="/images"/>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\roundhouse.core\roundhouse.core.csproj" />
   </ItemGroup>

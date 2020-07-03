@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.test.merged", "p
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.core", "product\roundhouse.core\roundhouse.core.csproj", "{328AA2A7-D213-46EB-861E-5D9CA94F8BFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "roundhouse.console.tests", "product\roundhouse.console.tests\roundhouse.console.tests.csproj", "{8A5A3D22-F391-4C5E-8540-B34D6C74A8D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Build|Any CPU = Build|Any CPU
@@ -146,6 +148,12 @@ Global
 		{328AA2A7-D213-46EB-861E-5D9CA94F8BFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{328AA2A7-D213-46EB-861E-5D9CA94F8BFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{328AA2A7-D213-46EB-861E-5D9CA94F8BFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A5A3D22-F391-4C5E-8540-B34D6C74A8D1}.Build|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A5A3D22-F391-4C5E-8540-B34D6C74A8D1}.Build|Any CPU.Build.0 = Debug|Any CPU
+		{8A5A3D22-F391-4C5E-8540-B34D6C74A8D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A5A3D22-F391-4C5E-8540-B34D6C74A8D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A5A3D22-F391-4C5E-8540-B34D6C74A8D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A5A3D22-F391-4C5E-8540-B34D6C74A8D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -162,6 +170,7 @@ Global
 		{41CE538E-E6F1-4AB6-AB66-508DEF669A39} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{3447F080-CF50-4B02-9521-671E7AEE8D34} = {BCFAF88B-B6C0-48C1-B23E-FCC95B75588C}
 		{729625F9-E8E5-472B-BAA8-F7DEDACBD700} = {807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}
+		{8A5A3D22-F391-4C5E-8540-B34D6C74A8D1} = {807C6B2C-496F-4A41-ABFE-EA5478EB9CFF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {54AD825C-DC48-4C69-88E5-356B43AC3674}

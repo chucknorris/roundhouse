@@ -31,7 +31,7 @@ This is the Oracle database package.
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>roundhouse db migration database migrator chucknorris oracle</PackageTags>
-    <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
+    <PackageIcon>images/RoundhousE_Logo.NuGet.jpg</PackageIcon>
   </PropertyGroup>
   
     
@@ -54,6 +54,9 @@ This is the Oracle database package.
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../nuget/RoundhousE_Logo.NuGet.jpg" Pack="true" PackagePath="/images"/>
+  </ItemGroup>
  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
