@@ -41,10 +41,7 @@ namespace roundhouse.databases
         public string master_database_name { get; set; }
         public IRepository repository { get; set; }
 
-        public virtual string sql_statement_separator_regex_pattern
-        {
-            get { return @"(?<KEEP1>^(?:[\s\t])*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>'{1}(?:[^']|\n[^'])*?'{1})|(?<KEEP1>^|\s)(?<BATCHSPLITTER>\;)(?<KEEP2>\s|$)"; }
-        }
+        public virtual string sql_statement_separator_regex_pattern => DefaultDatabase.default_sql_statement_separator_regex_pattern;
 
         public int command_timeout { get; set; }
         public int admin_command_timeout { get; set; }
