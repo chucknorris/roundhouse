@@ -14,7 +14,7 @@ namespace roundhouse.databases.oracle
 
     public class OracleDatabase : AdoNetDatabase
     {
-        public const string default_sql_statement_separator_regex_pattern = @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>^|\s)(?<BATCHSPLITTER>;)(?<KEEP2>\s|$)";
+        public static readonly string default_sql_statement_separator_regex_pattern = @"(?<KEEP1>^(?:.)*(?:-{2}).*$)|(?<KEEP1>/{1}\*{1}[\S\s]*?\*{1}/{1})|(?<KEEP1>^|\s)(?<BATCHSPLITTER>;)(?<KEEP2>\s|$)";
         private string connect_options = "Integrated Security";
 
         public override string sql_statement_separator_regex_pattern => default_sql_statement_separator_regex_pattern;

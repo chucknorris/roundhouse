@@ -12,7 +12,7 @@ namespace roundhouse.databases.access
 
     public class AccessDatabase : AdoNetDatabase
     {
-        public const string default_sql_statement_separator_regex_pattern =
+        public static readonly string default_sql_statement_separator_regex_pattern =
             DefaultDatabase.default_sql_statement_separator_regex_pattern;
         private string connect_options = "Trusted_Connection";
 
