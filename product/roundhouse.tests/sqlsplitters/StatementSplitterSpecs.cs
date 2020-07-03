@@ -27,10 +27,8 @@ namespace roundhouse.tests.sqlsplitters
                 tsql_separator_regex_string = database.sql_statement_separator_regex_pattern;
                 
 #if NET461
-                database = new AccessDatabase();
-                access_sql_separator_regex_string = database.sql_statement_separator_regex_pattern;
-                database = new OracleDatabase();
-                plsql_separator_regex_string = database.sql_statement_separator_regex_pattern;
+                access_sql_separator_regex_string =  AccessDatabase.default_sql_statement_separator_regex_pattern;
+                plsql_separator_regex_string = OracleDatabase.default_sql_statement_separator_regex_pattern;
 #endif
             }
         }
@@ -588,6 +586,7 @@ GO
 
         }
 
+#if NET461
         [Concern(typeof(StatementSplitter))]
         public class when_replacing_plsql_statements_with_the_statement_splitters_match_evaluator : concern_for_StatementSplitter
         {
@@ -655,6 +654,7 @@ EXECUTE IMMEDIATE tmpSql; ";
                 Assert.AreEqual(expected_scrubbed, sql_statement_scrubbed);
             }
         }
+#endif
     }
 }
 

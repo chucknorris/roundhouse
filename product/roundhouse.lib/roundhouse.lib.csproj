@@ -68,6 +68,13 @@ This is an "include all" package that gives you all the databases. If you want o
     <ProjectReference Include="..\roundhouse.databases.sqlserver\roundhouse.databases.sqlserver.csproj" />
     <ProjectReference Include="..\roundhouse.core\roundhouse.core.csproj" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
     
   <ItemGroup>
     <None Include="..\..\docs\logo\roundhouse.ico">

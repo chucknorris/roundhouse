@@ -1,5 +1,6 @@
 using System.Data.Common;
 using roundhouse.infrastructure.logging;
+using roundhouse.sqlsplitters;
 
 namespace roundhouse.databases.access
 {
@@ -11,6 +12,8 @@ namespace roundhouse.databases.access
 
     public class AccessDatabase : AdoNetDatabase
     {
+        public const string default_sql_statement_separator_regex_pattern =
+            DefaultDatabase.default_sql_statement_separator_regex_pattern;
         private string connect_options = "Trusted_Connection";
 
         public AccessDatabase()

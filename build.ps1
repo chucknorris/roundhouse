@@ -1,14 +1,10 @@
 #!/usr/bin/env pwsh
 
-$MSBUILD=msbuild
-
 $root = $PSScriptRoot;
 
 $CODEDROP="$($root)/code_drop";
 $PACKAGEDIR="$($CODEDROP)/packages";
 $LOGDIR="$($CODEDROP)/log";
-
-$TESTOUTDIR="$($root)/product/roundhouse.tests/bin"
 
 $onAppVeyor = $("$($env:APPVEYOR)" -eq "True");
 
@@ -26,13 +22,13 @@ If ($onAppVeyor) {
     appveyor UpdateBuild -Version "$newVersion"
 }
 
-" * Updating NuGet to handle newer license metadata"
-nuget update -self -Verbosity quiet
-
 " * Restoring nuget packages"
 nuget restore -NonInteractive -Verbosity quiet
 
 # Create output and log dirs if they don't exist (don't know why this is necessary - works on my box...)
+If (!(Test-Path $CODEDROP)) {
+    $null = mkdir $CODEDROP;
+}
 If (!(Test-Path $PACKAGEDIR)) {
     $null = mkdir $PACKAGEDIR;
 }
@@ -77,7 +73,8 @@ If (! $onAppVeyor) {
     # Find test projects
     $testAssemblies = $(dir -r -i *.tests.dll)
 
-    $testAssemblies | ? { $_.FullName -NotLike "*obj*" } | % {
+    $testAssemblies | ? { $_.FullName -NotLike "*obj*" -and $_.FullName -NotLike "*Debug*" } | % {
+        $_.FullName
         dotnet vstest $_
     }
 }
