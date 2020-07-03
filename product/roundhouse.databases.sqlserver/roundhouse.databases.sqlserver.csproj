@@ -32,7 +32,7 @@ This is the Microsoft SQL Server database package.
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>roundhouse db migration database migrator chucknorris sqlserver</PackageTags>
-    <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
+    <PackageIcon>images/RoundhousE_Logo.NuGet.jpg</PackageIcon>
   </PropertyGroup>
   
     
@@ -57,6 +57,9 @@ This is the Microsoft SQL Server database package.
   <ItemGroup>
     <PackageReference Include="Polly" Version="7.1.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../nuget/RoundhousE_Logo.NuGet.jpg" Pack="true" PackagePath="/images"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\roundhouse.core\roundhouse.core.csproj" />

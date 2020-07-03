@@ -31,7 +31,7 @@ This is an "include all" package that gives you all the databases. If you want o
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>roundhouse db migration database migrator chucknorris</PackageTags>
-    <PackageIconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</PackageIconUrl>
+    <PackageIcon>images/RoundhousE_Logo.NuGet.jpg</PackageIcon>
   </PropertyGroup>
     
 
@@ -85,6 +85,9 @@ This is an "include all" package that gives you all the databases. If you want o
     <EmbeddedResource Include="../../generated/MySql.Data/keywords.txt" Link="$(AssemblyName).keywords.txt">
       <LogicalName>$(AssemblyName).keywords.txt</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../nuget/RoundhousE_Logo.NuGet.jpg" Pack="true" PackagePath="/images"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ILMerge" Version="3.0.29" />
