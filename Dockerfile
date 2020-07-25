@@ -38,4 +38,4 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:2.1
 WORKDIR /app
 COPY --from=build-env /app/out .
 
-ENTRYPOINT dotnet rh.dll
+ENTRYPOINT ["dotnet", "rh.dll"]
