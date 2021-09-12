@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(TargetFramework)' == ''">netcoreapp2.1;net461</TargetFrameworks>
+    <TargetFrameworks Condition="'$(TargetFramework)' == ''">netcoreapp3.1;net461</TargetFrameworks>
     <TargetFramework Condition="'$(TargetFramework)' == ''">net461</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -18,7 +18,7 @@
     <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <NuspecFile>roundhouse.tool.nuspec</NuspecFile>
   </PropertyGroup>
 
@@ -45,8 +45,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
-    <PackageReference Include="System.Security.Principal.Windows" Version="4.5.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+    <PackageReference Include="System.Threading" Version="4.3.0" />
+    <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
   </ItemGroup>
     
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
@@ -86,7 +89,7 @@
     </EmbeddedResource>
   </ItemGroup>
   
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <None Include="rh" CopyToOutputDirectory="PreserveNewest" />
     <None Include="rh.bat" CopyToOutputDirectory="PreserveNewest" />
     <None Include="DotnetToolSettings.xml" CopyToOutputDirectory="PreserveNewest" />
@@ -99,7 +102,7 @@
     <NuspecProperties>mergedExe=$(CopyDestination);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
     
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <NuspecFile>roundhouse.tool.nuspec</NuspecFile>
     <NuspecProperties>version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
