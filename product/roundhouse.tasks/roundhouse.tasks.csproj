@@ -65,7 +65,7 @@
     <PackageReference Include="FluentNHibernate" Version="2.1.2" />
     <PackageReference Include="Iesi.Collections" Version="4.0.4" />
     <PackageReference Include="NHibernate" Version="5.2.5" />
-    <PackageReference Include="log4net" Version="2.0.8.0" />
+    <PackageReference Include="log4net" Version="2.0.10" />
     <PackageReference Include="NHibernate.JetDriver" Version="2.0.0.1002" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
