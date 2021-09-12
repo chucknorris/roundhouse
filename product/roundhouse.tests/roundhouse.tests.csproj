@@ -32,6 +32,8 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
     <PackageReference Include="TinySpec.NUnit" Version="0.9.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System.Data.OracleClient" />
