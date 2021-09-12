@@ -64,7 +64,7 @@ This is the core package, which implements the basic functionality. If you want 
     <PackageReference Include="FluentNHibernate" Version="2.1.2" />
     <PackageReference Include="Iesi.Collections" Version="4.0.4" />
     <PackageReference Include="Microsoft.Build.Framework" Version="16.0.461" />
-    <PackageReference Include="log4net" Version="2.0.8.0" />
+    <PackageReference Include="log4net" Version="2.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Polly" Version="7.1.0" />
     <PackageReference Include="NHibernate" Version="5.2.5" />
