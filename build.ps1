@@ -54,13 +54,13 @@ dotnet pack -nologo --no-build -v q -p:Version="$($gitVersion.FullSemVer)" -p:No
 nuget pack product/roundhouse.console/roundhouse.nuspec -OutputDirectory "$CODEDROP/packages" -Verbosity quiet -NoPackageAnalysis -Version "$($gitVersion.FullSemVer)" 
 msbuild /t:"Pack" product/roundhouse.tasks/roundhouse.tasks.csproj  /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.roundhouse.tasks.pack.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"
 
-"    - netcoreapp2.1 global tool dotnet-roundhouse"
+"    - netcoreapp3.1 global tool dotnet-roundhouse"
 
-dotnet publish -v q -nologo --no-restore product/roundhouse.console -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -p:Version="$($gitVersion.FullSemVer)" -p:Configuration=Build -p:Platform="Any CPU"
-dotnet pack -v q -nologo --no-restore --no-build product/roundhouse.console -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp2.1 -o ${PACKAGEDIR} -p:Version="$($gitVersion.FullSemVer)" -p:Configuration=Build -p:Platform="Any CPU"
+dotnet publish -v q -nologo --no-restore product/roundhouse.console -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp3.1 -p:Version="$($gitVersion.FullSemVer)" -p:Configuration=Build -p:Platform="Any CPU"
+dotnet pack -v q -nologo --no-restore --no-build product/roundhouse.console -p:NoPackageAnalysis=true -p:TargetFramework=netcoreapp3.1 -o ${PACKAGEDIR} -p:Version="$($gitVersion.FullSemVer)" -p:Configuration=Build -p:Platform="Any CPU"
 
 
-# " * Packaging netcoreapp2.1 global tool dotnet-roundhouse`n"
+# " * Packaging netcoreapp3.1 global tool dotnet-roundhouse`n"
 
 # nuget pack -Verbosity quiet -outputdirectory ${PACKAGEDIR} .\product\roundhouse.console\roundhouse.tool.nuspec -Properties "Version=$($gitVersion.FullSemVer);NoPackageAnalysis=true"
 

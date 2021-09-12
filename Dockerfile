@@ -31,7 +31,7 @@ RUN ./build/Extract-Resource.ps1 -File "$(find ~/.nuget/packages/mysql.data/ -na
 
 COPY . ./
 
-RUN dotnet publish -v q -nologo --no-restore product/roundhouse.console -o /app/out -p:TargetFramework=netcoreapp2.1 -p:Version="${VERSION}" -p:Configuration=Build -p:Platform="Any CPU"
+RUN dotnet publish -v q -nologo --no-restore product/roundhouse.console -o /app/out -p:TargetFramework=netcoreapp3.1 -p:Version="${VERSION}" -p:Configuration=Build -p:Platform="Any CPU"
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 
