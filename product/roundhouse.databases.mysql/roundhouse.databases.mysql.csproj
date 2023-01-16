@@ -55,7 +55,7 @@ This is the MySql database package.
     <None Include="../../nuget/RoundhousE_Logo.NuGet.jpg" Pack="true" PackagePath="/images" /> 
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mysql.Data" Version="8.0.16" />
+    <PackageReference Include="Mysql.Data" Version="8.0.31" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
