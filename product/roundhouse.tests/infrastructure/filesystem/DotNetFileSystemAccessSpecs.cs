@@ -112,7 +112,7 @@ namespace roundhouse.tests.infrastructure.filesystem
             }
         }
 
-#if net48
+#if net472
         [Concern(typeof(DotNetFileSystemAccess))]
         public class when_reading_files_with_different_formats_with_ansi_encoding_configuration : concern_for_file_system
         {

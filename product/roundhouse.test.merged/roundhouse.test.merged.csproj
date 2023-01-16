@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <!--<TargetFrameworks>net6.0;net48</TargetFrameworks>-->
-    <TargetFramework>net48</TargetFramework>
+    <!--<TargetFrameworks>net6.0;net472</TargetFrameworks>-->
+    <TargetFramework>net472</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
@@ -30,7 +30,7 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
     <PackageReference Include="TinySpec.NUnit" Version="0.9.5" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <Reference Include="System.Data.OracleClient" />
   </ItemGroup>
 

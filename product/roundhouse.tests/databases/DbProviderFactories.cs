@@ -10,7 +10,7 @@ namespace roundhouse.tests.databases
     using roundhouse.databases.sqlserver;
     using roundhouse.databases.sqlserverce;
     using roundhouse.databases.mysql;
-#if net48
+#if net472
     using roundhouse.databases.oracle;
     using roundhouse.databases.access;
 #endif
@@ -35,7 +35,7 @@ namespace roundhouse.tests.databases
             public DbProviderFactory factory => get_db_provider_factory();
         }
 
-#if net48
+#if net472
         public class TestableOracleDatabase : OracleDatabase, ITestableDatabase
         {
             public DbProviderFactory factory => get_db_provider_factory();
@@ -131,7 +131,7 @@ namespace roundhouse.tests.databases
             }
         }
         
-#if net48
+#if net472
         [Concern(typeof(TestableOracleDatabase))]
         public class concern_for_OracleDatabase : concern_for_Database<TestableOracleDatabase>
         {
@@ -144,7 +144,7 @@ namespace roundhouse.tests.databases
         }
 #endif
 
-#if (net48 && _WINDOWS)
+#if (net472 && _WINDOWS)
         [Concern(typeof(TestableAccessDatabase))]
         public class concern_for_AccessDatabase : concern_for_Database<TestableAccessDatabase>
         {
@@ -198,7 +198,7 @@ namespace roundhouse.tests.databases
             }
         }
 
-#if net48
+#if net472
         [Concern(typeof(TestableSqlServerCEDatabase))]
         public class concern_for_SqlServerCEDatabase : concern_for_Database<TestableSqlServerCEDatabase>
         {

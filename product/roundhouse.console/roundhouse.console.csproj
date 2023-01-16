@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(TargetFramework)' == ''">net6.0;net48</TargetFrameworks>
-    <TargetFramework Condition="'$(TargetFramework)' == ''">net48</TargetFramework>
+    <TargetFrameworks Condition="'$(TargetFramework)' == ''">net6.0;net472</TargetFrameworks>
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net472</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -22,7 +22,7 @@
     <NuspecFile>roundhouse.tool.nuspec</NuspecFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net472'">
     <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
   </PropertyGroup>
   
@@ -53,7 +53,7 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
     
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <PackageReference Include="Costura.Fody" Version="3.3.2" />
     <PackageReference Include="Fody" Version="3.3.5">
       <PrivateAssets>all</PrivateAssets>
@@ -66,7 +66,7 @@
   </ItemGroup>
 
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
     <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
   </ItemGroup>
@@ -98,7 +98,7 @@
 
     
   <!-- Nuspec properties (for generating NuGet package) -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net472'">
     <NuspecFile>roundhouse.nuspec</NuspecFile>
     <NuspecProperties>mergedExe=$(CopyDestination);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
