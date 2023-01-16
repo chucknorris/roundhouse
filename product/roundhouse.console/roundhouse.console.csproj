@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(TargetFramework)' == ''">netcoreapp3.1;net462</TargetFrameworks>
-    <TargetFramework Condition="'$(TargetFramework)' == ''">net462</TargetFramework>
+    <TargetFrameworks Condition="'$(TargetFramework)' == ''">net6.0;net48</TargetFrameworks>
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net48</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -18,11 +18,11 @@
     <NugetVersion Condition="'$(NugetVersion)' == ''">$(Version)</NugetVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <NuspecFile>roundhouse.tool.nuspec</NuspecFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net462'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
     <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
   </PropertyGroup>
   
@@ -53,7 +53,7 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
     
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <PackageReference Include="Costura.Fody" Version="3.3.2" />
     <PackageReference Include="Fody" Version="3.3.5">
       <PrivateAssets>all</PrivateAssets>
@@ -66,7 +66,7 @@
   </ItemGroup>
 
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <ProjectReference Include="..\roundhouse.databases.access\roundhouse.databases.access.csproj" />
     <ProjectReference Include="..\roundhouse.databases.oracle\roundhouse.databases.oracle.csproj" />
   </ItemGroup>
@@ -90,7 +90,7 @@
     </EmbeddedResource>
   </ItemGroup>
   
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <None Include="rh" CopyToOutputDirectory="PreserveNewest" />
     <None Include="rh.bat" CopyToOutputDirectory="PreserveNewest" />
     <None Include="DotnetToolSettings.xml" CopyToOutputDirectory="PreserveNewest" />
@@ -98,12 +98,12 @@
 
     
   <!-- Nuspec properties (for generating NuGet package) -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net462'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
     <NuspecFile>roundhouse.nuspec</NuspecFile>
     <NuspecProperties>mergedExe=$(CopyDestination);version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
     
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <NuspecFile>roundhouse.tool.nuspec</NuspecFile>
     <NuspecProperties>version=$(NugetVersion)</NuspecProperties>
   </PropertyGroup>
