@@ -16,7 +16,7 @@
 	<iconUrl>https://raw.github.com/chucknorris/roundhouse/master/nuget/RoundhousE_Logo.NuGet.jpg</iconUrl>
   </metadata>
   <files>
-    <file src="bin\net461\win7-x86\rh.exe" target="tools\" />
+    <file src="bin\net462\win7-x86\rh.exe" target="tools\" />
     <file src="..\..\docs\legal\*" target="tools\" />
   </files>
 </package>

@@ -49,7 +49,7 @@ msbuild /t:"Build" /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)
 dotnet pack -nologo --no-build -v q -p:Version="$($gitVersion.FullSemVer)" -p:NoPackageAnalysis=true -p:Configuration=Build -p:Platform="Any CPU" -o ${PACKAGEDIR}
 
 
-"    - net461 command-line nuget package"
+"    - net462 command-line nuget package"
 
 nuget pack product/roundhouse.console/roundhouse.nuspec -OutputDirectory "$CODEDROP/packages" -Verbosity quiet -NoPackageAnalysis -Version "$($gitVersion.FullSemVer)" 
 msbuild /t:"Pack" product/roundhouse.tasks/roundhouse.tasks.csproj  /p:DropFolder=$CODEDROP /p:Version="$($gitVersion.FullSemVer)" /p:NoPackageAnalysis=true /nologo /v:q /fl /flp:"LogFile=$LOGDIR/msbuild.roundhouse.tasks.pack.log;Verbosity=n" /p:Configuration=Build /p:Platform="Any CPU"

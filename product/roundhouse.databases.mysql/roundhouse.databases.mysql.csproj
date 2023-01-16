@@ -52,7 +52,7 @@ This is the MySql database package.
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="../../nuget/RoundhousE_Logo.NuGet.jpg" Pack="true" PackagePath="/images"/> 
+    <None Include="../../nuget/RoundhousE_Logo.NuGet.jpg" Pack="true" PackagePath="/images" /> 
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mysql.Data" Version="8.0.16" />
