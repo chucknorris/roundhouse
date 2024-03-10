@@ -1,3 +1,15 @@
+# NOTE: RoundhousE is "abandoned"
+
+RoundhousE is a wonderful tool, and I was one of the main maintainers for a couple of years, as
+no one else was maintaining it, and it provided great value to me. However, the project has been around for many years, and had begun accruing some technical debt that became tough to work with when trying to introduct new features or refactor.
+
+After giving it some thought, I decided to start from zero, and create a successor to RoundhousE, starting from the ground up on modern .NET (started on .NET 6 in 2021, now on .NET 8), cross-platform, using the latest 3rd party libraries to connect to the various databases, etc. I removed NHibernate as a dependency, as it was only used to create the versioning tables, and seemed like a bit of an overkill, and it was hard to move fast forward technology wise with such a large dependency. Log4net was also replaced with Serilog.
+
+RoundhousE will of course never disappear, and the source code will stay here. But, there is no active development of RoundhousE for now. I continue my journey with the successor, [grate](https://github.com/erikbra/grate). It's now on version 1.6, and considered stable. It's in active development.
+
+Please head over there, and try it out. If should be almost feature-complete with RoundhousE, and should you find anything that's missing, please file an issue, or submit a PR.
+
+
 Project RoundhousE - Database Change Management done right
 =======
 <a href=https://ci.appveyor.com/project/chucknorris/roundhouse>
