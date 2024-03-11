@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 ARG VERSION
 
 LABEL maintainer="erik@brandstadmoen.net"
@@ -31,9 +31,9 @@ RUN ./build/Extract-Resource.ps1 -File "$(find ~/.nuget/packages/mysql.data/ -na
 
 COPY . ./
 
-RUN dotnet publish -v q -nologo --no-restore product/roundhouse.console -o /app/out -p:TargetFramework=netcoreapp3.1 -p:Version="${VERSION}" -p:Configuration=Build -p:Platform="Any CPU"
+RUN dotnet publish -v q -nologo --no-restore product/roundhouse.console -o /app/out -p:TargetFramework=net6.0 -p:Version="${VERSION}" -p:Configuration=Build -p:Platform="Any CPU"
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 
 WORKDIR /app
 COPY --from=build-env /app/out .

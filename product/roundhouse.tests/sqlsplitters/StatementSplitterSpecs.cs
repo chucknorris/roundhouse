@@ -6,7 +6,7 @@ namespace roundhouse.tests.sqlsplitters
     using System.Text.RegularExpressions;
 
     using roundhouse.databases;
-#if NET461
+#if net472
     using roundhouse.databases.access;
     using roundhouse.databases.oracle;
 #endif
@@ -26,7 +26,7 @@ namespace roundhouse.tests.sqlsplitters
                 Database database = new SqlServerDatabase();
                 tsql_separator_regex_string = database.sql_statement_separator_regex_pattern;
                 
-#if NET461
+#if net472
                 access_sql_separator_regex_string =  AccessDatabase.default_sql_statement_separator_regex_pattern;
                 plsql_separator_regex_string = OracleDatabase.default_sql_statement_separator_regex_pattern;
 #endif
@@ -586,7 +586,7 @@ GO
 
         }
 
-#if NET461
+#if net472
         [Concern(typeof(StatementSplitter))]
         public class when_replacing_plsql_statements_with_the_statement_splitters_match_evaluator : concern_for_StatementSplitter
         {
